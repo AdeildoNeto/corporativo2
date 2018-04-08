@@ -18,18 +18,21 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author eduardo.f.amaral
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
     
     private static EntityManagerFactory emf;
     private static Logger logger;
     private EntityManager em;
     private EntityTransaction et;
-    private static long idQuestao;
+    private long idQuestao = 1;
     
     
     public QuestaoTest() {
@@ -89,7 +92,7 @@ public class QuestaoTest {
         logger.log(Level.INFO, "Questão {0} incluída com sucesso.", questao.getId());
 
     }
-
+    
     @Test
     public void t02_atualizarQuestaoValida() {
         logger.info("Executando t02: atualizarQuestaoValida");
@@ -98,11 +101,11 @@ public class QuestaoTest {
         query.setParameter("id", idQuestao);
 
         Questao questao = (Questao) query.getSingleResult();
-        assertNotNull(query);
+        assertNotNull(questao);
 
         questao.setEnunciado("Teste 2?");
-        em.flush();
-        assertEquals(0, query.getResultList().size());
+        em.merge(questao);
+        assertEquals(1, query.getResultList().size());
     }
 
     @Test
@@ -112,9 +115,10 @@ public class QuestaoTest {
         TypedQuery<Questao> query = em.createNamedQuery("Questao.PorId", Questao.class);
         query.setParameter("id", idQuestao);
 
-        assertEquals(1, query.getResultList().size());
+        assertEquals(1, query.getResultList().size());        
     }
-
+    
+    
     @Test
     public void t04_removerQuestaoValida() {
         logger.info("Executando t04: removerQuestaoValida");
@@ -124,9 +128,12 @@ public class QuestaoTest {
 
         Questao questao = (Questao) query.getSingleResult();
         
+        assertNotNull(questao);
+        
         em.remove(questao);
         em.flush();
-        assertEquals(0, query.getResultList().size());
+        
+        assertNull(query.getSingleResult());
     }
 
 }
