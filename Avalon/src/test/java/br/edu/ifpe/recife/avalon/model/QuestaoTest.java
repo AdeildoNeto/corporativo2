@@ -8,6 +8,8 @@ package br.edu.ifpe.recife.avalon.model;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -100,6 +102,7 @@ public class QuestaoTest {
         questao.setEnunciado("Teste?");
         questao.setAutor(usuario);
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
 
         em.persist(questao);
         em.flush();

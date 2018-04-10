@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -65,7 +68,13 @@ public class Questao implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "TXT_TIPO")
     private TipoQuestaoEnum tipo;
+    
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DT_CRIACAO")
+    private Date dataCriacao;
 
     public Long getId() {
         return id;
@@ -97,6 +106,14 @@ public class Questao implements Serializable {
 
     public void setTipo(TipoQuestaoEnum tipo) {
         this.tipo = tipo;
+    }
+
+    public Date getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(Date dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
 }
