@@ -132,8 +132,9 @@ public class QuestaoTest {
         
         em.remove(questao);
         em.flush();
+        em.clear();
         
-        assertNull(query.getSingleResult());
+        assertEquals(0, query.getResultList().size());
     }
 
 }
