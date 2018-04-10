@@ -15,11 +15,19 @@ public enum TipoQuestaoEnum {
     MULTIPLA_ESCOLHA(2, "Multipla Escolha"),
     VERDADEIRO_FALSO(3, "Verdadeiro ou Falso");
     
-    public int codigo;
-    public String descricao;
+    private int codigo;
+    private final String descricao;
 
     private TipoQuestaoEnum(int codigo, String descricao) {
         this.descricao = descricao;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
     
 }

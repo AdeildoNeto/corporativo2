@@ -5,6 +5,10 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
+import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.SessionContext;
@@ -16,6 +20,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -32,5 +37,17 @@ public class QuestaoServico {
     
     @PersistenceContext(name = "avalondb", type = TRANSACTION)
     private EntityManager entityManager;
+    
+    public void salvar(Questao questao){
+        entityManager.persist(questao);
+    }
+    
+    public List<Questao> buscarQuestoesPorAutorTipo(Usuario autor, TipoQuestaoEnum tipo){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorAutorTipo", Questao.class);
+        query.setParameter("idAutor", autor.getId());
+        query.setParameter("tipo", tipo);
+        
+        return query.getResultList();
+    }
     
 }
