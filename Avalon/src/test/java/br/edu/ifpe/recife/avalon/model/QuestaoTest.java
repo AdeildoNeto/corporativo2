@@ -33,7 +33,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
 
-    private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
+    /*private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
     
     private static EntityManagerFactory emf;
     private static Logger logger;
@@ -187,5 +187,5 @@ public class QuestaoTest {
 
         assertEquals(0, query.getResultList().size());
     }
-
+*/
 }

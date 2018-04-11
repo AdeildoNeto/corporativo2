@@ -34,20 +34,38 @@ public class QuestaoServico {
 
     @Resource
     private SessionContext sessao;
-    
-    @PersistenceContext(name = "avalondb", type = TRANSACTION)
+
+    @PersistenceContext(name = "avalon", type = TRANSACTION)
     private EntityManager entityManager;
-    
-    public void salvar(Questao questao){
+
+    public void salvar(Questao questao) {
         entityManager.persist(questao);
     }
-    
-    public List<Questao> buscarQuestoesPorAutorTipo(Usuario autor, TipoQuestaoEnum tipo){
+
+    public void alterar(Questao questao) {
+        entityManager.merge(questao);
+    }
+
+    public void remover(Questao questao) {
+        if (!entityManager.contains(questao)) {
+            questao = entityManager.merge(questao);
+        }
+        entityManager.remove(questao);
+    }
+
+    public List<Questao> buscarQuestoesPorAutorTipo(Usuario autor, TipoQuestaoEnum tipo) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorAutorTipo", Questao.class);
         query.setParameter("idAutor", autor.getId());
         query.setParameter("tipo", tipo);
-        
+
         return query.getResultList();
     }
     
+    public List<Questao> buscarQuestoesPorAutor(Usuario autor){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorAutor", Questao.class);
+        query.setParameter("idAutor", autor.getId());
+        
+        return query.getResultList();
+    }
+
 }
