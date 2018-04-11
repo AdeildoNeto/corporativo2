@@ -6,14 +6,41 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      template="/template/layout.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        
+        <h:form>
+
+            <div class="row">
+                <div class="offset-md-1 col-md-6">
+                    <div class="form-group">
+                        <label for="questao-enunciado">Enunciado:</label>
+                        <h:inputTextarea class="form-control" id="questao-enunciado" rows="3" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h:selectOneMenu value="#{questaoBean.tipoSelecionado}" class="btn btn-secondary dropdown-toggle">
+                        <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
+                    </h:selectOneMenu>
+                </div>
+            </div>
+            <div class="container-answers">
+                
+            </div>
+            <div class="row buttons-save">
+                <div class="offset-md-3 col-sm-1 form-group">
+                    <h:commandButton value="Cancelar" action="goListar" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                </div>
+                <div class="col-sm-1 form-group">
+                    <h:commandButton value="Salvar" action="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                </div>
+            </div>
+
+        </h:form>
     </ui:define>
 
 </ui:composition>

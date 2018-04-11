@@ -11,6 +11,7 @@ import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.validation.Valid;
@@ -26,7 +27,9 @@ public class QuestaoBean implements Serializable {
     @EJB
     private QuestaoServico questaoServico;
     
-    private List<TipoQuestaoEnum> tipoQuestoes;
+    private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
+    
+    private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
     
     @Valid
     private Questao novaQuestao;
@@ -41,7 +44,13 @@ public class QuestaoBean implements Serializable {
         this.tipoQuestoes.add(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         this.tipoQuestoes.add(TipoQuestaoEnum.VERDADEIRO_FALSO);
     }
-
+    
+    public String salvar(){
+        questaoServico.salvar(novaQuestao);
+        
+        return "";
+    }
+    
     public QuestaoServico getQuestaoServico() {
         return questaoServico;
     }
@@ -64,6 +73,14 @@ public class QuestaoBean implements Serializable {
 
     public void setNovaQuestao(Questao novaQuestao) {
         this.novaQuestao = novaQuestao;
+    }
+
+    public TipoQuestaoEnum getTipoSelecionado() {
+        return tipoSelecionado;
+    }
+
+    public void setTipoSelecionado(TipoQuestaoEnum tipoSelecionado) {
+        this.tipoSelecionado = tipoSelecionado;
     }
     
 }

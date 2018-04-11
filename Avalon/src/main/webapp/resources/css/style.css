@@ -8,6 +8,18 @@ and open the template in the editor.
     Author     : eduardo.f.amaral
 */
 
+.container-principal{
+    padding-top: 40px; 
+}
+
 .bg-default{
     background-color: #19882c;
+}
+
+.font-color-default{
+    color: white;
+}
+
+.container-answers{
+    min-height: 100px;
 }
