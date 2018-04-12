@@ -12,7 +12,7 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
-            <from-outcome>questao-salvar</from-outcome>
+            <from-outcome>goAdicionarQuestao</from-outcome>
             <to-view-id>/professor/questao/adicionar.xhtml</to-view-id>
             <redirect />
         </navigation-case>

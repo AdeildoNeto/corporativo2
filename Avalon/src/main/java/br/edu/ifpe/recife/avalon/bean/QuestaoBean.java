@@ -62,9 +62,10 @@ public class QuestaoBean implements Serializable {
         novaQuestao.setAutor(usuario);
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
         
-        questaoServico.salvar(novaQuestao);
-        
-        limparTela();
+        if(questaoServico.isEnunciadoPorTipoValido(novaQuestao)){
+            questaoServico.salvar(novaQuestao);
+            limparTela();
+        }
         
         return "";
     }

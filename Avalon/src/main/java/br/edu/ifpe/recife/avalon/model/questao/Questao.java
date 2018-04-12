@@ -49,6 +49,9 @@ import org.hibernate.validator.constraints.NotBlank;
             ,@NamedQuery(
                     name = "Questao.PorAutorTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.autor.id = :idAutor"
+            ),@NamedQuery(
+                    name = "Questao.PorEnunciadoTipo",
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado"
             )
         })
 public class Questao implements Serializable {

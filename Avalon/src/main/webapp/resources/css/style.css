@@ -23,3 +23,11 @@ and open the template in the editor.
 .container-answers{
     min-height: 100px;
 }
+
+.ui-blockui-content.ui-shadow {
+    box-shadow: none;
+}
+
+textarea{
+    resize: none;
+}

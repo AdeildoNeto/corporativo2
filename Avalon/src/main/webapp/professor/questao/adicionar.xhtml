@@ -13,9 +13,9 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form>
+        <h:form id="form">
 
-            <p:panel id="pn1">
+            <p:panel id="panelQuestao">
 
                 <div class="row">
                     <div class="offset-md-1 col-md-6">
@@ -35,20 +35,21 @@ and open the template in the editor.
                         </div>
                     </div>
                 </div>
-                <div class="container-answers">
+                <div class="container-answers row">
 
                 </div>
                 <div class="row buttons-save">
-                    <div class="offset-md-3 col-sm-1 form-group">
-                        <h:commandButton id="btnCancel" value="Cancelar" action="goListar" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                    <div class="offset-md-3 col-md-1 form-group">
+                        <p:commandButton id="btnCancel" value="Cancelar" action="goListar" class="btn bg-default btn-block font-color-default"></p:commandButton>
                     </div>
-                    <div class="col-sm-1 form-group">
-                        <h:commandButton id="btnSave" value="Salvar" action="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                    <div class="col-md-1 form-group">
+                        <p:commandButton id="btnSave" value="Salvar" actionListener="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default"></p:commandButton>
                     </div>
                 </div>
-
             </p:panel>
-            <p:blockUI block="pn1" trigger="btnSave" />
+            <p:blockUI animate="true" block="panelQuestao" trigger="btnSave">
+                <p:graphicImage name="img/loading.gif" width="120" height="120"/>
+            </p:blockUI>
 
         </h:form>
     </ui:define>
