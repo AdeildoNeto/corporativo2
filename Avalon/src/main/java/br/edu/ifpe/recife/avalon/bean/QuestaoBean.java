@@ -27,7 +27,7 @@ import javax.validation.Valid;
  */
 @Named(value = "questaoBean")
 @SessionScoped
-public class QuestaoBean implements Serializable{
+public class QuestaoBean extends BaseBean implements Serializable{
 
     @EJB
     private QuestaoServico questaoServico;
@@ -68,10 +68,10 @@ public class QuestaoBean implements Serializable{
         if(questaoServico.isEnunciadoPorTipoValido(novaQuestao)){
             questaoServico.salvar(novaQuestao);
             limparTela();
-        }/*else{
-            //FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagem(MSG_QUESTAO_UNICA), null);
-            //FacesContext.getCurrentInstance().addMessage(null, mensagem);
-        }*/
+        }else{
+            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagem(MSG_QUESTAO_UNICA), null);
+            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+        }
         
         return "";
     }
