@@ -37,8 +37,8 @@ public class DBunitUtil {
         IDatabaseConnection db_conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/avalondb", "root", "root");
-            db_conn = new DatabaseConnection(conn, "avalondb");
+                    "jdbc:mysql://localhost:3306/avalon", "root", "root");
+            db_conn = new DatabaseConnection(conn, "avalon");
             DatabaseConfig dbConfig = db_conn.getConfig();
             dbConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
             dbConfig.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, new MySqlMetadataHandler());
