@@ -7,12 +7,16 @@ package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
+import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import javax.ejb.EJB;
 import javax.validation.Valid;
 
@@ -26,6 +30,9 @@ public class QuestaoBean implements Serializable {
 
     @EJB
     private QuestaoServico questaoServico;
+    
+    @EJB
+    private UsuarioServico usuarioServico;
     
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
     
@@ -46,9 +53,25 @@ public class QuestaoBean implements Serializable {
     }
     
     public String salvar(){
+        Usuario usuario = new Usuario();
+        usuario.setEmail("email@email.com");
+        usuario.setSenha("TESTE");
+        usuario = usuarioServico.buscarUsuarioPorLogin(usuario);
+        
+        novaQuestao.setTipo(tipoSelecionado);
+        novaQuestao.setAutor(usuario);
+        novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
+        
         questaoServico.salvar(novaQuestao);
         
+        limparTela();
+        
         return "";
+    }
+    
+    private void limparTela(){
+        tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
+        novaQuestao = new Questao();
     }
     
     public QuestaoServico getQuestaoServico() {

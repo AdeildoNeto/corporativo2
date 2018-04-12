@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.Email;
@@ -26,6 +28,9 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "TB_USUARIO")
+@NamedQueries({
+    @NamedQuery(name = "Usuario.PorLogin", query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
+})
 public class Usuario implements Serializable {
     
     @Id

@@ -15,30 +15,40 @@ and open the template in the editor.
     <ui:define name="conteudo">
         <h:form>
 
-            <div class="row">
-                <div class="offset-md-1 col-md-6">
-                    <div class="form-group">
-                        <label for="questao-enunciado">Enunciado:</label>
-                        <h:inputTextarea class="form-control" id="questao-enunciado" rows="3" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+            <p:panel id="pn1">
+
+                <div class="row">
+                    <div class="offset-md-1 col-md-6">
+                        <div class="form-group">
+                            <label for="questao-enunciado">Enunciado:</label>
+                            <h:inputTextarea class="form-control" id="questao-enunciado" rows="3" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div>
+                            <label for="tipoQuestao">Tipo:</label>
+                            <div>
+                                <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn btn-secondary dropdown-toggle">
+                                    <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <h:selectOneMenu value="#{questaoBean.tipoSelecionado}" class="btn btn-secondary dropdown-toggle">
-                        <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
-                    </h:selectOneMenu>
+                <div class="container-answers">
+
                 </div>
-            </div>
-            <div class="container-answers">
-                
-            </div>
-            <div class="row buttons-save">
-                <div class="offset-md-3 col-sm-1 form-group">
-                    <h:commandButton value="Cancelar" action="goListar" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                <div class="row buttons-save">
+                    <div class="offset-md-3 col-sm-1 form-group">
+                        <h:commandButton id="btnCancel" value="Cancelar" action="goListar" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                    </div>
+                    <div class="col-sm-1 form-group">
+                        <h:commandButton id="btnSave" value="Salvar" action="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default"></h:commandButton>
+                    </div>
                 </div>
-                <div class="col-sm-1 form-group">
-                    <h:commandButton value="Salvar" action="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default"></h:commandButton>
-                </div>
-            </div>
+
+            </p:panel>
+            <p:blockUI block="pn1" trigger="btnSave" />
 
         </h:form>
     </ui:define>
