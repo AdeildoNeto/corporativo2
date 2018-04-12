@@ -8,7 +8,7 @@ package br.edu.ifpe.recife.avalon.model;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import java.time.LocalDate;
+import br.edu.ifpe.recife.avalon.testes.DBunitUtil;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +33,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
 
-    /*private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
+    private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
     
     private static EntityManagerFactory emf;
     private static Logger logger;
@@ -49,7 +49,8 @@ public class QuestaoTest {
     public static void setUpClass() {
         logger = Logger.getGlobal();
         logger.setLevel(Level.INFO);
-        emf = Persistence.createEntityManagerFactory("avalondb");
+        emf = Persistence.createEntityManagerFactory("avalon");
+        DBunitUtil.inserirDados();
     }
 
     @AfterClass
@@ -187,5 +188,5 @@ public class QuestaoTest {
 
         assertEquals(0, query.getResultList().size());
     }
-*/
+
 }

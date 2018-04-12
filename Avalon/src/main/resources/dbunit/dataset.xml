@@ -7,5 +7,6 @@ and open the template in the editor.
 
 
 <dataset>
-    <TB_QUESTAO id="1" TXT_ENUNCIADO="TESTE"></TB_QUESTAO>
+    <TB_USUARIO id="1" TXT_EMAIL="teste@gmail.com" TXT_SENHA="teste" TXT_NONE="Teste" TXT_SOBRENOME="Silva"></TB_USUARIO>
+    <TB_QUESTAO id="1" TXT_ENUNCIADO="TESTE" DT_CRIACAO="2018-04-01" TXT_TIPO="Discursiva" ID_USUARIO="1"></TB_QUESTAO>
 </dataset>

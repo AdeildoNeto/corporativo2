@@ -29,7 +29,7 @@ import org.dbunit.operation.DatabaseOperation;
 public class DBunitUtil {
     
     
-        private static final String XML_FILE = "/dbunit/dataset.xml";
+    private static final String XML_FILE = "/dbunit/dataset.xml";
     
     @SuppressWarnings("UseSpecificCatch")
     public static void inserirDados() {
