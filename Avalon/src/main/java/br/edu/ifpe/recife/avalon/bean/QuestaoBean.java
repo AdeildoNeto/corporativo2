@@ -62,14 +62,14 @@ public class QuestaoBean extends BaseBean implements Serializable{
         usuario = usuarioServico.buscarUsuarioPorLogin(usuario);
         
         novaQuestao.setTipo(tipoSelecionado);
-        novaQuestao.setAutor(usuario);
+        novaQuestao.setCriador(usuario);
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
         
         if(questaoServico.isEnunciadoPorTipoValido(novaQuestao)){
             questaoServico.salvar(novaQuestao);
             limparTela();
         }else{
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagem(MSG_QUESTAO_UNICA), null);
+            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagemValidacao(MSG_QUESTAO_UNICA), null);
             FacesContext.getCurrentInstance().addMessage(null, mensagem);
         }
         

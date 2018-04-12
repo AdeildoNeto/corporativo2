@@ -21,7 +21,7 @@ public class BaseBean implements Serializable {
 
     public BaseBean() {
        messageBundle = ResourceBundle.getBundle("mensagens.mensagem", new Locale("pt", "BR"));
-       validationBundle = ResourceBundle.getBundle("questao.enunciado.repetido", new Locale("pt", "BR"));
+       validationBundle = ResourceBundle.getBundle("ValidationMessages", new Locale("pt", "BR"));
     }
 
     protected String getMensagem(String chave){

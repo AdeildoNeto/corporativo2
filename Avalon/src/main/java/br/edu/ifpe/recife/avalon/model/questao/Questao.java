@@ -67,7 +67,7 @@ public class Questao implements Serializable {
     @NotNull(message = "{questao.autor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario autor;
+    private Usuario criador;
 
     @NotNull(message = "{questao.tipo.obrigatorio}")
     @Enumerated(EnumType.STRING)
@@ -95,12 +95,12 @@ public class Questao implements Serializable {
         this.enunciado = enunciado;
     }
 
-    public Usuario getAutor() {
-        return autor;
+    public Usuario getCriador() {
+        return criador;
     }
 
-    public void setAutor(Usuario autor) {
-        this.autor = autor;
+    public void setCriador(Usuario criador) {
+        this.criador = criador;
     }
 
     public TipoQuestaoEnum getTipo() {
