@@ -10,14 +10,15 @@ import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.validation.Valid;
 
 /**
@@ -26,7 +27,7 @@ import javax.validation.Valid;
  */
 @Named(value = "questaoBean")
 @SessionScoped
-public class QuestaoBean implements Serializable {
+public class QuestaoBean implements Serializable{
 
     @EJB
     private QuestaoServico questaoServico;
@@ -40,6 +41,8 @@ public class QuestaoBean implements Serializable {
     
     @Valid
     private Questao novaQuestao;
+    
+    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     
     public QuestaoBean() {
         this.novaQuestao = new Questao();
@@ -65,7 +68,10 @@ public class QuestaoBean implements Serializable {
         if(questaoServico.isEnunciadoPorTipoValido(novaQuestao)){
             questaoServico.salvar(novaQuestao);
             limparTela();
-        }
+        }/*else{
+            //FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagem(MSG_QUESTAO_UNICA), null);
+            //FacesContext.getCurrentInstance().addMessage(null, mensagem);
+        }*/
         
         return "";
     }

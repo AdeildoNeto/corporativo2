@@ -60,16 +60,16 @@ public class Questao implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "{questao.enunciado.obrigatorio}")
     @Column(name = "TXT_ENUNCIADO")
     private String enunciado;
 
-    @NotNull
+    @NotNull(message = "{questao.autor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     private Usuario autor;
 
-    @NotNull
+    @NotNull(message = "{questao.tipo.obrigatorio}")
     @Enumerated(EnumType.STRING)
     @Column(name = "TXT_TIPO")
     private TipoQuestaoEnum tipo;
