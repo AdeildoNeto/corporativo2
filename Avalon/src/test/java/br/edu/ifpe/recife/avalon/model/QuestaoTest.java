@@ -30,15 +30,14 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
 
-            
-        private static EJBContainer container;
+    private static EJBContainer container;
 
-        @EJB
-        private QuestaoServico questaoServico;
-        
-        @EJB
-        private UsuarioServico usuarioServico;
-    
+    @EJB
+    private QuestaoServico questaoServico;
+
+    @EJB
+    private UsuarioServico usuarioServico;
+
     @BeforeClass
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();
@@ -48,23 +47,19 @@ public class QuestaoTest {
     public static void tearDownClass() {
         container.close();
     }
-    
+
     @Before
     public void setUp() throws NamingException {
         questaoServico = (QuestaoServico) container.getContext().lookup("java:global/classes/QuestaoServico");
         usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
     }
-    
-    
+
     @After
     public void tearDown() {
     }
-    
-    
-    
-   @Test
+
+    @Test
     public void t01_inserirQuestaoDiscursiva() {
-       
 
         Usuario usuario = new Usuario();
 
@@ -73,22 +68,19 @@ public class QuestaoTest {
         usuario.setSenha("TESTE");
         usuario.setSobrenome("TESTE");
 
-
         usuarioServico.salvar(usuario);
 
         Questao questao = new Questao();
 
         questao.setEnunciado("Teste?");
-        questao.setAutor(usuario);
+        questao.setCriador(usuario);
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
         questao.setDataCriacao(Calendar.getInstance().getTime());
 
-      
-        
         questaoServico.salvar(questao);
-        
+
         assertNotNull(questao.getId());
-      
+
     }
 
 
@@ -249,5 +241,5 @@ public class QuestaoTest {
 
         assertEquals(0, query.getResultList().size());
     }
-*/
+     */
 }
