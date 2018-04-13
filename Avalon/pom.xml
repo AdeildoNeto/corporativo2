@@ -12,6 +12,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <glassfish.embedded-static-shell.jar>/home/aneto/glassfish-4.1.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
+
     </properties>
     
     <dependencies>
@@ -33,6 +35,13 @@
             <version>2.5.3</version>
             <scope>test</scope>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.extras</groupId>
+            <artifactId>glassfish-embedded-shell</artifactId>
+            <version>3.1.1</version>
+            <scope>system</scope>
+            <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

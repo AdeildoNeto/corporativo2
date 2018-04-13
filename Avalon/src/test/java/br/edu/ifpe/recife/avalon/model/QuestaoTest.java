@@ -8,22 +8,19 @@ package br.edu.ifpe.recife.avalon.model;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import br.edu.ifpe.recife.avalon.testes.DBunitUtil;
+import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
+import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import javax.ejb.EJB;
+import javax.ejb.embeddable.EJBContainer;
+import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 /**
@@ -32,7 +29,71 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
-/*
+
+            
+        private static EJBContainer container;
+
+        @EJB
+        private QuestaoServico questaoServico;
+        
+        @EJB
+        private UsuarioServico usuarioServico;
+    
+    @BeforeClass
+    public static void setUpClass() {
+        container = EJBContainer.createEJBContainer();
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+        container.close();
+    }
+    
+    @Before
+    public void setUp() throws NamingException {
+        questaoServico = (QuestaoServico) container.getContext().lookup("java:global/classes/QuestaoServico");
+        usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
+    }
+    
+    
+    @After
+    public void tearDown() {
+    }
+    
+    
+    
+   @Test
+    public void t01_inserirQuestaoDiscursiva() {
+       
+
+        Usuario usuario = new Usuario();
+
+        usuario.setEmail("email@email.com");
+        usuario.setNome("TESTE");
+        usuario.setSenha("TESTE");
+        usuario.setSobrenome("TESTE");
+
+
+        usuarioServico.salvar(usuario);
+
+        Questao questao = new Questao();
+
+        questao.setEnunciado("Teste?");
+        questao.setAutor(usuario);
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+
+      
+        
+        questaoServico.salvar(questao);
+        
+        assertNotNull(questao.getId());
+      
+    }
+
+
+    /*
+    
     private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
     
     private static EntityManagerFactory emf;
