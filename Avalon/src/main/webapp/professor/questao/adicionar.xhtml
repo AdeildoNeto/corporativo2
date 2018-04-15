@@ -43,15 +43,15 @@ and open the template in the editor.
             </div>
             <div class="row buttons-save">
                 <div class="offset-md-2 col-md-2 form-group">
-                    <p:commandButton id="btnCancel" value="#{msg['btn.cancelar']}" action="goListar" immediate="true" class="btn bg-default btn-block font-color-default"></p:commandButton>
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" action="goListarQuestao" immediate="true" class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
                 <div class="col-md-2 form-group">
-                    <p:commandButton id="btnSave" value="#{msg['btn.salvar']}" actionListener="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default" ajax="false" validateClient="true" onclick="PF('block').show()" 
+                    <p:commandButton id="btnSave" value="#{msg['btn.salvar']}" action="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default" ajax="false" validateClient="true" onclick="PF('block').show()" 
                                      oncomplete="PF('block').hide()"></p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="formAdicionar" widgetVar="block" trigger="btnSave">
+            <p:blockUI animate="true" block="formAdicionar" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="120" height="120"/>
             </p:blockUI>
 

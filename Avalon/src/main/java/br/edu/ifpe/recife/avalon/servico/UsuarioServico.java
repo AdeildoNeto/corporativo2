@@ -5,10 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
-import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.SessionContext;
@@ -74,8 +71,23 @@ public class UsuarioServico {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
         query.setParameter("senha", usuario.getSenha());
+        
+        if(!query.getResultList().isEmpty()){
+            return query.getSingleResult();
+        }
 
-        return query.getSingleResult();
+        return null;
+    }
+    
+    public Usuario buscarUsuarioPorId(long id){
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorId", Usuario.class);
+        query.setParameter("id", id);
+        
+        if(!query.getResultList().isEmpty()){
+            return query.getSingleResult();
+        }
+
+        return null;
     }
 
 }

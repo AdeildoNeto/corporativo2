@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <h:dataTable value="#{listarQuestaoBean.questoes}" var="questao" styleClass="table">
+                        <h:column headerClass="width-20">
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.id']}</span>
+                            </f:facet>
+                            <span>#{questao.id}</span>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.tipo']}</span>
+                            </f:facet>
+                            <span>#{questao.tipo.descricao}</span>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.questao']}</span>
+                            </f:facet>
+                            <span>#{questao.enunciado}</span>
+                        </h:column>
+                        <h:column>
+                            <span>#{questao.id}</span>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </div>
+            <div class="row buttons-save">
+                <div class="offset-md-8 col-md-2 form-group">
+                    <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="goAddQuestao" class="btn bg-default btn-block font-color-default"></p:commandButton>
+                </div>
+            </div>
+
+            <p:blockUI animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="120" height="120"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

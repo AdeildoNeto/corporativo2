@@ -28,36 +28,43 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "TB_USUARIO")
-@NamedQueries({
-    @NamedQuery(name = "Usuario.PorLogin", query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
-})
+@NamedQueries(
+        {
+            @NamedQuery(
+                    name = "Usuario.PorLogin",
+                    query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
+            ,
+            @NamedQuery(
+                    name = "Usuario.PorId",
+                    query = "Select u from Usuario u where u.id = :id")
+        }
+)
 public class Usuario implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    
+
     @NotBlank
     @Email
     @Column(name = "TXT_EMAIL", unique = true)
     private String email;
-    
+
     @NotBlank
     @Column(name = "TXT_NOME")
     private String nome;
-    
+
     @NotBlank
     @Column(name = "TXT_SOBRENOME")
     private String sobrenome;
-    
+
     @Column(name = "TXT_SENHA")
     private String senha;
-    
+
     @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Questao> questoes;
-    
 
     public Long getId() {
         return id;
