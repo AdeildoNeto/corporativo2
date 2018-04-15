@@ -38,15 +38,27 @@ public class QuestaoServico {
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
 
+    /**
+     * Método para salvar um Questão 
+     * @param questao 
+     */
     public void salvar(Questao questao) {
         questao.setEnunciado(questao.getEnunciado().trim());
         entityManager.persist(questao);
     }
 
+    /**
+     * Método para alterar uma Questão
+     * @param questao 
+     */
     public void alterar(Questao questao) {
         entityManager.merge(questao);
     }
 
+    /**
+     * Método para remover uma Questão
+     * @param questao 
+     */
     public void remover(Questao questao) {
         if (!entityManager.contains(questao)) {
             questao = entityManager.merge(questao);
@@ -54,6 +66,12 @@ public class QuestaoServico {
         entityManager.remove(questao);
     }
 
+    /**
+     * Método para consultar Questões por Tipo e Criador
+     * @param criador
+     * @param tipo
+     * @return lista de questões
+     */
     public List<Questao> buscarQuestoesPorCriadorTipo(Usuario criador, TipoQuestaoEnum tipo) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
         query.setParameter("idCriador", criador.getId());
@@ -62,6 +80,11 @@ public class QuestaoServico {
         return query.getResultList();
     }
     
+    /**
+     * Método para consultar Questões por Criador
+     * @param criador
+     * @return lista de questões
+     */
     public List<Questao> buscarQuestoesPorCriador(Usuario criador){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
         query.setParameter("idCriador", criador.getId());
@@ -69,6 +92,11 @@ public class QuestaoServico {
         return query.getResultList();
     }
     
+    /**
+     * Método para validar o enunciado da Questão por Tipo
+     * @param questao
+     * @return isQuestaoValida
+     */
     public boolean isEnunciadoPorTipoValido(Questao questao){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());

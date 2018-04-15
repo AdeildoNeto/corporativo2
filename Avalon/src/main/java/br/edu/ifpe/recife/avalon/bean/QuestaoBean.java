@@ -49,12 +49,19 @@ public class QuestaoBean extends BaseBean implements Serializable{
         this.carregarTiposQuestao();
     }
     
+    /**
+     * Método responsável por carregar os tipos de questão disponíveis.
+     */
     private void carregarTiposQuestao(){
         this.tipoQuestoes.add(TipoQuestaoEnum.DISCURSIVA);
         this.tipoQuestoes.add(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         this.tipoQuestoes.add(TipoQuestaoEnum.VERDADEIRO_FALSO);
     }
-    
+
+    /**
+     * Método responsável por enviar ao servico a Questão à salvar.
+     * @return rota da próxima tela.
+     */
     public String salvar(){
         Usuario usuario = new Usuario();
         usuario.setEmail("teste@gmail.com");
@@ -75,11 +82,15 @@ public class QuestaoBean extends BaseBean implements Serializable{
         
         return "";
     }
-    
+
+    /**
+     * Método para limpar os campos da tela.
+     */
     private void limparTela(){
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         novaQuestao = new Questao();
     }
+    
     
     public QuestaoServico getQuestaoServico() {
         return questaoServico;

@@ -24,6 +24,11 @@ public class BaseBean implements Serializable {
        validationBundle = ResourceBundle.getBundle("ValidationMessages", new Locale("pt", "BR"));
     }
 
+    /**
+     * Método responsável por recuperar uma mensagem internacionalizada.
+     * @param chave
+     * @return mensagem
+     */
     protected String getMensagem(String chave){
         if(chave == null){
             return "";
@@ -32,6 +37,11 @@ public class BaseBean implements Serializable {
         return messageBundle.getString(chave);
     }
     
+    /**
+     * Método responsável por recuperar uma mensagem de validação internacionalizada.
+     * @param chave
+     * @return mensagem de validação
+     */
     protected String getMensagemValidacao(String chave){
         if(chave == null){
             return "";
