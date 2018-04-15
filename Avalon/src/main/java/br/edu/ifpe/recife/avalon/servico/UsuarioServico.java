@@ -35,17 +35,29 @@ public class UsuarioServico {
     @Resource
     private SessionContext sessao;
 
-    @PersistenceContext(name = "avalon", type = TRANSACTION)
+    @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
 
+    /**
+     * Método para salvar um usuário.
+     * @param usuario 
+     */
     public void salvar(Usuario usuario) {
         entityManager.persist(usuario);
     }
 
+    /**
+     * Método para alterar um usuário.
+     * @param usuario 
+     */
     public void alterar(Usuario usuario) {
         entityManager.merge(usuario);
     }
 
+    /**
+     * Método para remover um usuário.
+     * @param usuario 
+     */
     public void remover(Usuario usuario) {
         if (!entityManager.contains(usuario)) {
             usuario = entityManager.merge(usuario);
@@ -53,6 +65,11 @@ public class UsuarioServico {
         entityManager.remove(usuario);
     }
 
+    /**
+     * Método para consultar um usuário por Email e Senha.
+     * @param usuario
+     * @return usuário
+     */
     public Usuario buscarUsuarioPorLogin(Usuario usuario) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
