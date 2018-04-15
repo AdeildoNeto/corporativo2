@@ -66,7 +66,7 @@ public class Questao implements Serializable {
     private String enunciado;
 
     @NotNull(message = "{questao.criador.obrigatorio}")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     private Usuario criador;
 
