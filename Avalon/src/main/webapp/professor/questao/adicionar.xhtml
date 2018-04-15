@@ -14,43 +14,44 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="formAdicionar">
-            <div class="row">
-                <div class="offset-md-1 col-md-6">
-                    <p:messages id="msgs" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="offset-md-1 col-md-6">
-                    <div class="form-group">
-                        <label for="questao-enunciado">#{msg['questao.label.enunciado']}:</label>
-                        <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+            <p:panel id="panel">
+                <div class="row">
+                    <div class="offset-md-1 col-md-6">
+                        <p:messages id="msgs" />
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div>
-                        <label for="tipoQuestao">#{msg['questao.label.selecione.tipo']}:</label>
+
+                <div class="row">
+                    <div class="offset-md-1 col-md-6">
+                        <div class="form-group">
+                            <label for="questao-enunciado">#{msg['questao.label.enunciado']}:</label>
+                            <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <div>
-                            <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
-                                <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
-                            </h:selectOneMenu>
+                            <label for="tipoQuestao">#{msg['questao.label.selecione.tipo']}:</label>
+                            <div>
+                                <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
+                                    <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
+                                </h:selectOneMenu>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container-answers row">
+                <div class="container-answers row">
 
-            </div>
-            <div class="row buttons-save">
-                <div class="offset-md-2 col-md-2 form-group">
-                    <p:commandButton id="btnCancel" value="#{msg['btn.cancelar']}" action="goListar" immediate="true" class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
-                <div class="col-md-2 form-group">
-                    <p:commandButton id="btnSave" value="#{msg['btn.salvar']}" actionListener="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default" ajax="false" validateClient="true"></p:commandButton>
+                <div class="row buttons-save">
+                    <div class="offset-md-2 col-md-2 form-group">
+                        <p:commandButton id="btnCancel" value="#{msg['btn.cancelar']}" action="goListar" immediate="true" class="btn bg-default btn-block font-color-default"></p:commandButton>
+                    </div>
+                    <div class="col-md-2 form-group">
+                        <p:commandButton id="btnSave" value="#{msg['btn.salvar']}" actionListener="#{questaoBean.salvar()}" class="btn bg-default btn-block font-color-default" ajax="false" validateClient="true"></p:commandButton>
+                    </div>
                 </div>
-            </div>
-
-            <p:blockUI animate="true" block="formAdicionar" trigger="btnSave">
+            </p:panel>
+            <p:blockUI animate="true" block="panel" trigger="btnSave">
                 <p:graphicImage name="img/loading.gif" width="120" height="120"/>
             </p:blockUI>
 

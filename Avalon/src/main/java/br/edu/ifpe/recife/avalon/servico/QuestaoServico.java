@@ -35,7 +35,7 @@ public class QuestaoServico {
     @Resource
     private SessionContext sessao;
 
-    @PersistenceContext(name = "avalon", type = TRANSACTION)
+    @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
 
     public void salvar(Questao questao) {
@@ -53,17 +53,17 @@ public class QuestaoServico {
         entityManager.remove(questao);
     }
 
-    public List<Questao> buscarQuestoesPorAutorTipo(Usuario autor, TipoQuestaoEnum tipo) {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorAutorTipo", Questao.class);
-        query.setParameter("idAutor", autor.getId());
+    public List<Questao> buscarQuestoesPorCriadorTipo(Usuario criador, TipoQuestaoEnum tipo) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
+        query.setParameter("idCriador", criador.getId());
         query.setParameter("tipo", tipo);
 
         return query.getResultList();
     }
     
-    public List<Questao> buscarQuestoesPorAutor(Usuario autor){
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorAutor", Questao.class);
-        query.setParameter("idAutor", autor.getId());
+    public List<Questao> buscarQuestoesPorCriador(Usuario criador){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
+        query.setParameter("idCriador", criador.getId());
         
         return query.getResultList();
     }

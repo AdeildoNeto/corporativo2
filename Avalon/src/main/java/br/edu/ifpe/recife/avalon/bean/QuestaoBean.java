@@ -57,8 +57,8 @@ public class QuestaoBean extends BaseBean implements Serializable{
     
     public String salvar(){
         Usuario usuario = new Usuario();
-        usuario.setEmail("email@email.com");
-        usuario.setSenha("TESTE");
+        usuario.setEmail("teste@gmail.com");
+        usuario.setSenha("teste");
         usuario = usuarioServico.buscarUsuarioPorLogin(usuario);
         
         novaQuestao.setTipo(tipoSelecionado);

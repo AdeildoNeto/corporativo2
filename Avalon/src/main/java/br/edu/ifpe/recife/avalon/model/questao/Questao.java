@@ -38,19 +38,18 @@ import org.hibernate.validator.constraints.NotBlank;
             @NamedQuery(
                     name = "Questao.PorId",
                     query = "SELECT q FROM Questao q WHERE q.id = :id"
+            ),@NamedQuery(
+                    name = "Questao.PorCriador",
+                    query = "SELECT q FROM Questao q WHERE q.criador.id = :idCriador"
             )
-            /*,@NamedQuery(
-                    name = "Questao.PorAutor",
-                    query = "SELECT q FROM Questao q WHERE q.autor.id = :idAutor"
-            )*/
             ,@NamedQuery(
                     name = "Questao.PorTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo"
             )
-            ,/*@NamedQuery(
-                    name = "Questao.PorAutorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.autor.id = :idAutor"
-            ),*/@NamedQuery(
+            ,@NamedQuery(
+                    name = "Questao.PorCriadorTipo",
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.id = :idCriador"
+            ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado"
             )
@@ -66,7 +65,7 @@ public class Questao implements Serializable {
     @Column(name = "TXT_ENUNCIADO")
     private String enunciado;
 
-    @NotNull(message = "{questao.autor.obrigatorio}")
+    @NotNull(message = "{questao.criador.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     private Usuario criador;
