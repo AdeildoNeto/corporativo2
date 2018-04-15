@@ -39,6 +39,7 @@ public class QuestaoServico {
     private EntityManager entityManager;
 
     public void salvar(Questao questao) {
+        questao.setEnunciado(questao.getEnunciado().trim());
         entityManager.persist(questao);
     }
 
@@ -70,7 +71,7 @@ public class QuestaoServico {
     
     public boolean isEnunciadoPorTipoValido(Questao questao){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
-        query.setParameter("enunciado", questao.getEnunciado());
+        query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
         
         if(TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())){
