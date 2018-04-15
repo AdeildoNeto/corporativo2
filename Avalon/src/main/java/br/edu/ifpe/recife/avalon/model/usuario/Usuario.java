@@ -35,6 +35,7 @@ public class Usuario implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
     
     @NotBlank
@@ -53,9 +54,10 @@ public class Usuario implements Serializable {
     @Column(name = "TXT_SENHA")
     private String senha;
     
-    @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Questao> questoes;
+    
 
     public Long getId() {
         return id;

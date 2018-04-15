@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,18 +39,18 @@ import org.hibernate.validator.constraints.NotBlank;
                     name = "Questao.PorId",
                     query = "SELECT q FROM Questao q WHERE q.id = :id"
             )
-            ,@NamedQuery(
+            /*,@NamedQuery(
                     name = "Questao.PorAutor",
                     query = "SELECT q FROM Questao q WHERE q.autor.id = :idAutor"
-            )
+            )*/
             ,@NamedQuery(
                     name = "Questao.PorTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo"
             )
-            ,@NamedQuery(
+            ,/*@NamedQuery(
                     name = "Questao.PorAutorTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.autor.id = :idAutor"
-            ),@NamedQuery(
+            ),*/@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado"
             )
@@ -58,6 +59,7 @@ public class Questao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_QUESTAO")
     private Long id;
 
     @NotBlank(message = "{questao.enunciado.obrigatorio}")
@@ -65,7 +67,7 @@ public class Questao implements Serializable {
     private String enunciado;
 
     @NotNull(message = "{questao.autor.obrigatorio}")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     private Usuario criador;
 
