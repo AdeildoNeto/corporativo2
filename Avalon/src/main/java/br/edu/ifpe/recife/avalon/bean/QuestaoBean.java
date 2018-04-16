@@ -115,24 +115,27 @@ public class QuestaoBean implements Serializable {
         novaQuestao = new Questao();
     }
     
+    /**
+     * Método para selecionar uma questão da lista de questões.
+     * @param questao 
+     */
     public void selecionarQuestao(Questao questao){
         questaoSelecionada = questao;
     }
     
+    /**
+     * Método para excluir uma questão
+     */
     public void excluir(){
         questaoServico.remover(questaoSelecionada);
         questoes.remove(questaoSelecionada);
         questaoSelecionada = null;
     }
     
-    public QuestaoServico getQuestaoServico() {
-        return questaoServico;
-    }
-
-    public void setQuestaoServico(QuestaoServico questaoServico) {
-        this.questaoServico = questaoServico;
-    }
-
+    /*
+        GETTERS AND SETTERS
+    */
+    
     public List<TipoQuestaoEnum> getTipoQuestoes() {
         return tipoQuestoes;
     }
