@@ -45,6 +45,10 @@ public class QuestaoBean implements Serializable {
 
     @Valid
     private Questao novaQuestao;
+    
+    private Questao questaoSelecionada;
+    
+    private boolean exibirModalConfirmarExclusao = false;
 
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
 
@@ -110,7 +114,17 @@ public class QuestaoBean implements Serializable {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         novaQuestao = new Questao();
     }
-
+    
+    public void selecionarQuestao(Questao questao){
+        questaoSelecionada = questao;
+    }
+    
+    public void excluir(){
+        questaoServico.remover(questaoSelecionada);
+        questoes.remove(questaoSelecionada);
+        questaoSelecionada = null;
+    }
+    
     public QuestaoServico getQuestaoServico() {
         return questaoServico;
     }
@@ -149,6 +163,14 @@ public class QuestaoBean implements Serializable {
 
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
+    }
+
+    public boolean isExibirModalConfirmarExclusao() {
+        return exibirModalConfirmarExclusao;
+    }
+
+    public void setExibirModalConfirmarExclusao(boolean exibirModalConfirmarExclusao) {
+        this.exibirModalConfirmarExclusao = exibirModalConfirmarExclusao;
     }
     
 }
