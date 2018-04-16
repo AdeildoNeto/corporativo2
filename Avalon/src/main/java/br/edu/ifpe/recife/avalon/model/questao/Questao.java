@@ -8,7 +8,6 @@ package br.edu.ifpe.recife.avalon.model.questao;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,21 +36,21 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Questao.PorId",
-                    query = "SELECT q FROM Questao q WHERE q.id = :id"
+                    query = "SELECT q FROM Questao q WHERE q.id = :id AND q.ativa = true"
             ),@NamedQuery(
                     name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.criador.id = :idCriador"
+                    query = "SELECT q FROM Questao q WHERE q.criador.id = :idCriador AND q.ativa = true"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.ativa = true"
             )
             ,@NamedQuery(
                     name = "Questao.PorCriadorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.id = :idCriador"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.id = :idCriador AND q.ativa = true"
             ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.ativa = true"
             )
         })
 public class Questao implements Serializable {
@@ -79,6 +78,9 @@ public class Questao implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
+    
+    @Column(name = "SN_ATIVA", nullable = false)
+    private Boolean ativa = true;
 
     public Long getId() {
         return id;
@@ -120,4 +122,12 @@ public class Questao implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
+    public boolean isAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(boolean ativa) {
+        this.ativa = ativa;
+    }
+    
 }

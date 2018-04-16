@@ -10,12 +10,14 @@ import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -27,33 +29,50 @@ import javax.validation.Valid;
  */
 @Named(value = "questaoBean")
 @SessionScoped
-public class QuestaoBean extends BaseBean implements Serializable{
+public class QuestaoBean implements Serializable {
 
     @EJB
     private QuestaoServico questaoServico;
-    
+
     @EJB
     private UsuarioServico usuarioServico;
-    
+
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
-    
+
     private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
-    
+
+    private List<Questao> questoes = new ArrayList<>();
+
     @Valid
     private Questao novaQuestao;
-    
+
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
-    
+
     public QuestaoBean() {
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();
         this.limparTela();
     }
+
+    /**
+     * Método para inicializar a busca de questões. 
+     */
+    @PostConstruct
+    private void init() {
+        buscarQuestoes();
+    }
     
+    /**
+     * Método para carregar as questões do usuário.
+     */
+    private void buscarQuestoes() {
+        this.questoes = questaoServico.buscarQuestoesPorCriador(1l);
+    }
+
     /**
      * Método responsável por carregar os tipos de questão disponíveis.
      */
-    private void carregarTiposQuestao(){
+    private void carregarTiposQuestao() {
         this.tipoQuestoes.add(TipoQuestaoEnum.DISCURSIVA);
         this.tipoQuestoes.add(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         this.tipoQuestoes.add(TipoQuestaoEnum.VERDADEIRO_FALSO);
@@ -61,36 +80,37 @@ public class QuestaoBean extends BaseBean implements Serializable{
 
     /**
      * Método responsável por enviar ao servico a Questão à salvar.
+     *
      * @return rota da próxima tela.
      */
-    public String salvar(){
+    public String salvar() {
         Usuario usuario = usuarioServico.buscarUsuarioPorId(1l);
-        
+
         novaQuestao.setTipo(tipoSelecionado);
         novaQuestao.setCriador(usuario);
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
-        
-        if(questaoServico.isEnunciadoPorTipoValido(novaQuestao)){
+
+        if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
             questaoServico.salvar(novaQuestao);
             limparTela();
-        }else{
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMensagemValidacao(MSG_QUESTAO_UNICA), null);
+            buscarQuestoes();
+        } else {
+            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
             FacesContext.getCurrentInstance().addMessage(null, mensagem);
             return "";
         }
-        
+
         return "goListarQuestao";
     }
 
     /**
      * Método para limpar os campos da tela.
      */
-    private void limparTela(){
+    private void limparTela() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         novaQuestao = new Questao();
     }
-    
-    
+
     public QuestaoServico getQuestaoServico() {
         return questaoServico;
     }
@@ -121,6 +141,14 @@ public class QuestaoBean extends BaseBean implements Serializable{
 
     public void setTipoSelecionado(TipoQuestaoEnum tipoSelecionado) {
         this.tipoSelecionado = tipoSelecionado;
+    }
+
+    public List<Questao> getQuestoes() {
+        return questoes;
+    }
+
+    public void setQuestoes(List<Questao> questoes) {
+        this.questoes = questoes;
     }
     
 }

@@ -79,6 +79,11 @@ public class UsuarioServico {
         return null;
     }
     
+    /**
+     * Método para buscar um usuário por id
+     * @param id
+     * @return usuario
+     */
     public Usuario buscarUsuarioPorId(long id){
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorId", Usuario.class);
         query.setParameter("id", id);
