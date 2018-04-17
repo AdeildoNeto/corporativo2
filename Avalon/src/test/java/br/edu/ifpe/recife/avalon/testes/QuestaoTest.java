@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model;
+package br.edu.ifpe.recife.avalon.testes;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
@@ -40,9 +40,9 @@ public class QuestaoTest {
 
     @BeforeClass
     public static void setUpClass() {
-       // container = EJBContainer.createEJBContainer();
+       container = EJBContainer.createEJBContainer();
        System.out.println("ERRO setUpClass");
-        container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        //container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         System.out.println("ERRO setUpClass2");
     }
 
@@ -74,7 +74,7 @@ public class QuestaoTest {
 
         usuarioServico.salvar(usuario);
 
-        /*Questao questao = new Questao();
+        Questao questao = new Questao();
 
         questao.setEnunciado("Teste?");
         questao.setCriador(usuario);
@@ -83,7 +83,7 @@ public class QuestaoTest {
 
         questaoServico.salvar(questao);
 
-        assertNotNull(questao.getId());*/
+        assertNotNull(questao.getId());
 
     }
 

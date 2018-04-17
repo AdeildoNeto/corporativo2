@@ -1,6 +1,5 @@
 package br.edu.ifpe.recife.avalon.testes;
 
-import br.edu.ifpe.recife.avalon.model.QuestaoTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
