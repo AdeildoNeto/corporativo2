@@ -16,8 +16,8 @@ and open the template in the editor.
         <h:form id="form">
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <h:dataTable value="#{listarQuestaoBean.questoes}" var="questao" styleClass="table">
-                        <h:column headerClass="width-20">
+                    <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-questoes">
+                        <h:column>
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.id']}</span>
                             </f:facet>
@@ -36,7 +36,10 @@ and open the template in the editor.
                             <span>#{questao.enunciado}</span>
                         </h:column>
                         <h:column>
-                            <span>#{questao.id}</span>
+                            <p:commandLink action="#{questaoBean.selecionarQuestao(questao)}" onclick="PF('block').show()"
+                                             oncomplete="PF('block').hide(); PF('modalExclusao').show();">
+                                <span class="material-icons">delete</span>
+                            </p:commandLink>
                         </h:column>
                     </h:dataTable>
                 </div>
@@ -48,9 +51,18 @@ and open the template in the editor.
             </div>
 
             <p:blockUI animate="true" block="form" widgetVar="block">
-                <p:graphicImage name="img/loading.gif" width="120" height="120"/>
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
+        </h:form>
+
+        <h:form id="formModalExcluir">
+            <p:confirmDialog message="#{msg['questao.mensagem.excluir']}"
+                             header="#{msg['questao.header.excluir']}" severity="alert"
+                             widgetVar="modalExclusao" closeOnEscape="true">
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide();" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.excluir()}" oncomplete="PF('modalExclusao').hide()" update="form" styleClass="btn btn-primary" />
+            </p:confirmDialog>
         </h:form>
     </ui:define>
 

@@ -82,12 +82,12 @@ public class QuestaoServico {
     
     /**
      * Método para consultar Questões por Criador
-     * @param criador
+     * @param id
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriador(Usuario criador){
+    public List<Questao> buscarQuestoesPorCriador(Long id){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
-        query.setParameter("idCriador", criador.getId());
+        query.setParameter("idCriador", id);
         
         return query.getResultList();
     }
