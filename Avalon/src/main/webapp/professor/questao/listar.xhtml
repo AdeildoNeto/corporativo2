@@ -60,8 +60,8 @@ and open the template in the editor.
             <p:confirmDialog message="#{msg['questao.mensagem.excluir']}"
                              header="#{msg['questao.header.excluir']}" severity="alert"
                              widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.excluir()}" oncomplete="PF('modalExclusao').hide()" update="form" />
-                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide();" type="button" />
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide();" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.excluir()}" oncomplete="PF('modalExclusao').hide()" update="form" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>
     </ui:define>

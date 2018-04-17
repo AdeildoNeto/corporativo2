@@ -16,6 +16,14 @@ and open the template in the editor.
     background-color: #19882c;
 }
 
+.btn-primary{
+    background-color: #19882c !important;
+}
+
+.btn-secondary {
+    background-color: #7f7f7f !important;
+}
+
 .font-color-default{
     color: white;
 }
@@ -59,4 +67,73 @@ label{
 
 .table-questoes td:last-child{
     width: 80px;
+}
+
+.ui-dialog .ui-dialog-titlebar{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    border-bottom: 1px solid #e9ecef !important;
+    border-top-left-radius: .3rem !important;
+    border-top-right-radius: .3rem !important;
+    padding: 1rem !important;
+    position: initial !important;
+    font-weight: bold;
+    line-height: 1.5;
+    font-size: 1.25rem;
+}
+
+.ui-confirm-dialog .ui-dialog-content {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1rem !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.ui-dialog {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    outline: 0;
+    min-width: 450px;
+}
+
+.ui-shadow {
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2) !important;
+}
+
+.nav-link{
+    color: white !important;
 }
