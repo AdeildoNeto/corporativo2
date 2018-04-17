@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -35,10 +36,7 @@ public class UsuarioServico {
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
-    private Logger log;
- 
-    
-    
+   
     /**
      * Método para salvar um usuário.
      *
@@ -49,8 +47,8 @@ public class UsuarioServico {
         query.setParameter("email", usuario.getEmail());
         if (query.getResultList().isEmpty()) {
             entityManager.persist(usuario);
-        }else{
-            System.out.println("USUÁRIO JÁ CADASTRADO");
+        } else {
+            throw new Error("USUARIO CADASTRADO");
         }
 
     }
@@ -85,20 +83,21 @@ public class UsuarioServico {
     public Usuario buscarUsuarioPorLogin(Usuario usuario) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
-        query.setParameter("senha", usuario.getSenha());
 
         if (!query.getResultList().isEmpty()) {
             return query.getSingleResult();
         }
 
         return null;
-    }    
+    }
+
     /**
      * Método para buscar um usuário por id
+     *
      * @param id
      * @return usuario
      */
-    public Usuario buscarUsuarioPorId(long id){
+    public Usuario buscarUsuarioPorId(long id) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorId", Usuario.class);
         query.setParameter("id", id);
 
