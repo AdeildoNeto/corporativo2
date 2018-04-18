@@ -92,6 +92,14 @@ public class QuestaoServico {
         return query.getResultList();
     }
     
+    
+    public Questao buscarQuestaoPorId(Questao questao){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorId", Questao.class);
+        query.setParameter("id", questao.getId());
+        
+        return query.getSingleResult();
+    }
+    
     /**
      * Método para validar o enunciado da Questão por Tipo
      * @param questao

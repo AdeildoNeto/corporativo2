@@ -32,7 +32,7 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Usuario.PorLogin",
-                    query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
+                    query = "Select u from Usuario u where u.email = :email")
             ,
             @NamedQuery(
                     name = "Usuario.PorId",

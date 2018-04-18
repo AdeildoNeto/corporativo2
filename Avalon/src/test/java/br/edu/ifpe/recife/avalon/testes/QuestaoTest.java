@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model;
+package br.edu.ifpe.recife.avalon.testes;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
@@ -11,12 +11,16 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -37,13 +41,15 @@ public class QuestaoTest {
 
     @EJB
     private UsuarioServico usuarioServico;
+    
+    private static Logger logger;
 
     @BeforeClass
     public static void setUpClass() {
-       // container = EJBContainer.createEJBContainer();
-       System.out.println("ERRO setUpClass");
-        container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        System.out.println("ERRO setUpClass2");
+       container = EJBContainer.createEJBContainer();
+       logger = Logger.getGlobal();
+       logger.setLevel(Level.INFO);
+      
     }
 
     @AfterClass
@@ -53,7 +59,7 @@ public class QuestaoTest {
 
     @Before
     public void setUp() throws NamingException {
-        System.out.println("ERRO setUp1");
+     
         questaoServico = (QuestaoServico) container.getContext().lookup("java:global/classes/QuestaoServico");
         usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
     }
@@ -64,7 +70,9 @@ public class QuestaoTest {
 
     @Test
     public void t01_inserirQuestaoDiscursiva() {
-        System.out.println("ERRO T01_InserirQuestaoDiscursiva");
+        
+        logger.info("INICIALIZANDO T01");
+        
         Usuario usuario = new Usuario();
         
         usuario.setEmail("email2@email.com");
@@ -74,7 +82,7 @@ public class QuestaoTest {
 
         usuarioServico.salvar(usuario);
 
-        /*Questao questao = new Questao();
+        Questao questao = new Questao();
 
         questao.setEnunciado("Teste?");
         questao.setCriador(usuario);
@@ -83,8 +91,39 @@ public class QuestaoTest {
 
         questaoServico.salvar(questao);
 
-        assertNotNull(questao.getId());*/
+        assertNotNull(questao.getId());
 
+    }
+    
+     @Test
+    public void t02_buscarQuestaoPorId() {
+        logger.info("Executando t02: buscarQuestaoPorId");
+
+        List<Questao> questao = questaoServico.buscarQuestoesPorCriador(1L);
+        
+        assertNotNull(questao);
+        
+    }
+    
+    @Test
+    public void t03_excluirQuestao() {
+        logger.info("Executando t03: ExcluirQuestão");
+        
+        Questao questao = new Questao();
+        
+        questao.setId(1L);
+        questao.setAtiva(true);
+        
+        Questao questaoBuscada = questaoServico.buscarQuestaoPorId(questao);
+        
+        assertNotNull(questaoBuscada);
+        
+        questaoServico.remover(questaoBuscada);
+        
+        Questao questaoRemovida = questaoServico.buscarQuestaoPorId(questao);
+        
+        assertNull(questaoRemovida.getId());
+    
     }
 
 
@@ -172,15 +211,7 @@ public class QuestaoTest {
 
     }
 
-    @Test
-    public void t02_buscarQuestaoPorId() {
-        logger.info("Executando t02: buscarQuestaoPorId");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorId", Questao.class);
-        query.setParameter("id", idQuestao);
-
-        assertEquals(1, query.getResultList().size());
-    }
+   
     
     @Test
     public void t03_buscarQuestoesDiscursivas() {
