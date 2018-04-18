@@ -32,11 +32,15 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Usuario.PorLogin",
-                    query = "Select u from Usuario u where u.email = :email")
+                    query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
             ,
             @NamedQuery(
                     name = "Usuario.PorId",
                     query = "Select u from Usuario u where u.id = :id")
+                ,
+            @NamedQuery(
+                    name = "Usuario.PorEmail",
+                    query = "Select u from Usuario u where u.email = :email")
         }
 )
 public class Usuario implements Serializable {

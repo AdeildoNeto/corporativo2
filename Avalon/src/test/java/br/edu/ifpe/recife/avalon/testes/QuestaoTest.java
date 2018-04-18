@@ -19,8 +19,8 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -96,34 +96,49 @@ public class QuestaoTest {
     }
     
      @Test
-    public void t02_buscarQuestaoPorId() {
-        logger.info("Executando t02: buscarQuestaoPorId");
+    public void t02_buscarQuestaoPorCriador() {
+        logger.info("Executando t02: buscarQuestaoPorCriador");
 
-        List<Questao> questao = questaoServico.buscarQuestoesPorCriador(1L);
-        
-        assertNotNull(questao);
+        List<Questao> questao = questaoServico.buscarQuestoesPorEmail("email2@email.com");
+       
+         assertNotNull(questao.get(0));
         
     }
     
+   
     @Test
     public void t03_excluirQuestao() {
         logger.info("Executando t03: ExcluirQuestão");
         
-        Questao questao = new Questao();
+     
         
-        questao.setId(1L);
-        questao.setAtiva(true);
-        
-        Questao questaoBuscada = questaoServico.buscarQuestaoPorId(questao);
+        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
         
         assertNotNull(questaoBuscada);
         
-        questaoServico.remover(questaoBuscada);
+        questaoServico.remover(questaoBuscada.get(0));
         
-        Questao questaoRemovida = questaoServico.buscarQuestaoPorId(questao);
+        List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorEmail("email2@email.com");
         
-        assertNull(questaoRemovida.getId());
+        Assert.assertEquals(0, questaoRemovida.size());
     
+    }
+    
+    @Test
+    public void t04_excluirUsuario(){
+        logger.info("Executando: T04 Excluir usuário");
+        
+        Usuario usuario = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
+        
+        usuarioServico.remover(usuario);
+        
+        Usuario usuarioRemovido = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
+        
+        Assert.assertNull(usuarioRemovido);
+        
+        
+        
+
     }
 
 

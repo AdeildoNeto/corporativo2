@@ -6,8 +6,6 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.SessionContext;
@@ -17,6 +15,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 import javax.persistence.TypedQuery;
@@ -36,7 +35,7 @@ public class UsuarioServico {
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
-   
+
     /**
      * Método para salvar um usuário.
      *
@@ -45,6 +44,8 @@ public class UsuarioServico {
     public void salvar(Usuario usuario) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
+        query.setParameter("senha", usuario.getSenha());
+
         if (query.getResultList().isEmpty()) {
             entityManager.persist(usuario);
         } else {
@@ -83,12 +84,40 @@ public class UsuarioServico {
     public Usuario buscarUsuarioPorLogin(Usuario usuario) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
+        query.setParameter("senha", usuario.getSenha());
 
         if (!query.getResultList().isEmpty()) {
             return query.getSingleResult();
         }
 
         return null;
+    }
+
+    public Usuario buscarUsuarioPorEmail(Usuario usuario) {
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
+        query.setParameter("email", usuario.getEmail());
+
+        if (!query.getResultList().isEmpty()) {
+            return query.getSingleResult();
+        }
+        return null;
+    }
+
+    //MÉTODO PARA TESTE(LEMBRAR DE REFATORAR)
+    public Usuario ts_buscarUsuarioPorEmail(String email) {
+
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
+
+        query.setParameter("email", email);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException resultado) {
+
+            resultado.printStackTrace();
+            return null;
+        }
+
     }
 
     /**

@@ -14,7 +14,7 @@ public class Teste {
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();
         assertNotNull(container);
-        DbUnitUtil.inserirDados();
+        //DbUnitUtil.inserirDados();
     }
 
     @AfterClass

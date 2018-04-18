@@ -93,13 +93,19 @@ public class QuestaoServico {
     }
     
     
-    public Questao buscarQuestaoPorId(Questao questao){
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorId", Questao.class);
-        query.setParameter("id", questao.getId());
-        
-        return query.getSingleResult();
-    }
+   public List<Questao> buscarQuestoesPorEmail(String email){
+       TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
+       query.setParameter("email", email);
+       
+       Usuario usuario = query.getSingleResult();
+       
+       TypedQuery<Questao> query2 = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
+       query2.setParameter("idCriador", usuario.getId());
+       
+       return query2.getResultList();
+   }
     
+
     /**
      * Método para validar o enunciado da Questão por Tipo
      * @param questao
