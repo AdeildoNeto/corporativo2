@@ -141,3 +141,7 @@ label{
 .ui-blockui-content.ui-shadow {
     box-shadow: none !important;
 }
+
+.margin-bottom-30{
+    margin-bottom: 30px;
+}
