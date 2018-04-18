@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
 
 <dataset>
-    <TB_USUARIO id="1" TXT_EMAIL="teste@gmail.com" TXT_SENHA="teste" TXT_NONE="Teste" TXT_SOBRENOME="Silva"></TB_USUARIO>
-    <TB_QUESTAO id="1" TXT_ENUNCIADO="TESTE" DT_CRIACAO="2018-04-01" TXT_TIPO="Discursiva" ID_USUARIO="1"></TB_QUESTAO>
+    <TB_USUARIO TXT_EMAIL="teste@gmail.com"  TXT_NOME="Teste" TXT_SENHA="TESTE" TXT_SOBRENOME="Silva"></TB_USUARIO>
+    <TB_USUARIO TXT_EMAIL="blabla@gmail.com"  TXT_NOME="bla" TXT_SENHA="TESTE" TXT_SOBRENOME="blas"></TB_USUARIO>
+    <TB_QUESTAO SN_ATIVA="1" DT_CRIACAO="2018-04-01" TXT_ENUNCIADO="TESTE"  TXT_TIPO="Discursiva" ID_USUARIO="1"></TB_QUESTAO>
+    <TB_QUESTAO SN_ATIVA="1" DT_CRIACAO="2015-05-05" TXT_ENUNCIADO="QUEM MATOU KENEDY"  TXT_TIPO="MULTIPLA ESCOLHA" ID_USUARIO="2"></TB_QUESTAO>
 </dataset>
