@@ -25,8 +25,8 @@ public class DbUnitUtil {
         IDatabaseConnection db_conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/loja_virtual", "root", "root");
-            db_conn = new DatabaseConnection(conn, "loja_virtual");
+                    "jdbc:mysql://localhost/avalondb", "root", "root");
+            db_conn = new DatabaseConnection(conn, "avalondb");
             DatabaseConfig dbConfig = db_conn.getConfig();
             dbConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
             dbConfig.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, new MySqlMetadataHandler());
