@@ -44,7 +44,7 @@ public class QuestaoBean implements Serializable {
     private List<Questao> questoes = new ArrayList<>();
 
     @Valid
-    private Questao novaQuestao;
+    private Questao novaQuestao = new Questao();
     
     private Questao questaoSelecionada;
     
@@ -53,15 +53,18 @@ public class QuestaoBean implements Serializable {
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
 
     public String iniciarPagina(){
-        limparTela();
         buscarQuestoes();
         return "goListarQuestao";
+    }
+    
+    public String iniciarPaginaInclusao(){
+        this.limparTela();
+        return "goAddQuestao";
     }
     
     public QuestaoBean() {
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();
-        this.limparTela();
     }
 
     /**

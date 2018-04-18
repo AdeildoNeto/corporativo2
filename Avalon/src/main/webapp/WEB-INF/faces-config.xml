@@ -40,6 +40,11 @@
             <to-view-id>/professor/prova/gerar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goImprimirProva</from-outcome>
+            <to-view-id>/professor/prova/impressao.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

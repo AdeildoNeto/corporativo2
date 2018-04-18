@@ -14,8 +14,9 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -101,6 +102,10 @@ public class ProvaBean implements Serializable {
         
     }
     
+    public void imprimirProva(){
+        RequestContext.getCurrentInstance().execute("window.open('http://localhost:8080/Avalon/professor/prova/impressao.xhtml')");
+    }
+    
     /*
         GETTERS AND SETTERS
     */
@@ -135,6 +140,14 @@ public class ProvaBean implements Serializable {
 
     public void setTodosSelecionados(boolean todosSelecionados) {
         this.todosSelecionados = todosSelecionados;
+    }
+
+    public List<Questao> getQuestoesSelecionadas() {
+        return questoesSelecionadas;
+    }
+
+    public void setQuestoesSelecionadas(List<Questao> questoesSelecionadas) {
+        this.questoesSelecionadas = questoesSelecionadas;
     }
     
 }

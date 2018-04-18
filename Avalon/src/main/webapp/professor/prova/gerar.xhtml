@@ -13,7 +13,7 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="form">
+        <h:form id="form" target="_blank">
             <div class="row margin-bottom-30">
                 <div class="offset-md-8">
                     <label for="tipoQuestao">#{msg['label.filtrar.por.tipo']}:</label>
@@ -28,7 +28,7 @@ and open the template in the editor.
             
             <div class="row">
                 <div class="offset-md-2 col-md-8">
-                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao" styleClass="table table-striped table-questoes">
+                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao" styleClass="table table-striped table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
@@ -41,12 +41,6 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['questao.listar.header.id']}</span>
-                            </f:facet>
-                            <span>#{questao.id}</span>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
                             <span>#{questao.enunciado}</span>
@@ -56,7 +50,10 @@ and open the template in the editor.
             </div>
             <div class="row buttons-save">
                 <div class="offset-md-8 col-md-2 form-group">
-                    <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="goAddQuestao" class="btn bg-default btn-block font-color-default"></p:commandButton>
+                    <p:commandButton id="btnAdd" value="#{msg['btn.imprimir.prova']}"
+                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>
 
@@ -64,15 +61,6 @@ and open the template in the editor.
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
-        </h:form>
-
-        <h:form id="formModalExcluir">
-            <p:confirmDialog message="#{msg['questao.mensagem.excluir']}"
-                             header="#{msg['questao.header.excluir']}" severity="alert"
-                             widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide();" type="button" styleClass="btn btn-secondary" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.excluir()}" oncomplete="PF('modalExclusao').hide()" update="form" styleClass="btn btn-primary" />
-            </p:confirmDialog>
         </h:form>
     </ui:define>
 

@@ -85,6 +85,22 @@ public class Questao implements Serializable {
     
     @Transient
     private boolean selecionada;
+    
+    public String formatarQuestao(int numero){
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(numero + 1).append(")").append(" ");
+        
+        sb.append(this.enunciado).append("\n");
+        
+        if(TipoQuestaoEnum.VERDADEIRO_FALSO.equals(this.tipo)){
+            sb.append("( ) Verdadeiro\n");
+            sb.append("( ) Falso\n");
+            sb.append("\n");
+        }
+        
+        return sb.toString();
+    }
 
     public Long getId() {
         return id;
