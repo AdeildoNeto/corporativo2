@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
+import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -39,8 +40,9 @@ public class QuestaoServico {
     private EntityManager entityManager;
 
     /**
-     * Método para salvar um Questão 
-     * @param questao 
+     * Método para salvar um Questão
+     *
+     * @param questao
      */
     public void salvar(Questao questao) {
         questao.setEnunciado(questao.getEnunciado().trim());
@@ -49,7 +51,8 @@ public class QuestaoServico {
 
     /**
      * Método para alterar uma Questão
-     * @param questao 
+     *
+     * @param questao
      */
     public void alterar(Questao questao) {
         entityManager.merge(questao);
@@ -57,7 +60,8 @@ public class QuestaoServico {
 
     /**
      * Método para remover uma Questão
-     * @param questao 
+     *
+     * @param questao
      */
     public void remover(Questao questao) {
         if (!entityManager.contains(questao)) {
@@ -68,6 +72,7 @@ public class QuestaoServico {
 
     /**
      * Método para consultar Questões por Tipo e Criador
+     *
      * @param criador
      * @param tipo
      * @return lista de questões
@@ -79,47 +84,47 @@ public class QuestaoServico {
 
         return query.getResultList();
     }
-    
+
     /**
      * Método para consultar Questões por Criador
+     *
      * @param id
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriador(Long id){
+    public List<Questao> buscarQuestoesPorCriador(Long id) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
         query.setParameter("idCriador", id);
-        
+
         return query.getResultList();
     }
-    
-    
-   public List<Questao> buscarQuestoesPorEmail(String email){
-       TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
-       query.setParameter("email", email);
-       
-       Usuario usuario = query.getSingleResult();
-       
-       TypedQuery<Questao> query2 = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
-       query2.setParameter("idCriador", usuario.getId());
-       
-       return query2.getResultList();
-   }
-    
+
+    public List<Questao> buscarQuestoesPorEmail(String email) {
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
+        query.setParameter("email", email);
+
+        Usuario usuario = query.getSingleResult();
+
+        TypedQuery<Questao> query2 = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
+        query2.setParameter("idCriador", usuario.getId());
+
+        return query2.getResultList();
+    }
 
     /**
      * Método para validar o enunciado da Questão por Tipo
+     *
      * @param questao
      * @return isQuestaoValida
      */
-    public boolean isEnunciadoPorTipoValido(Questao questao){
+    public boolean isEnunciadoPorTipoValido(Questao questao) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
-        
-        if(TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())){
+
+        if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
             return true;
         }
-        
+
         return query.getResultList().isEmpty();
     }
 

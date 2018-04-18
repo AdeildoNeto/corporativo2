@@ -5,12 +5,15 @@
  */
 package br.edu.ifpe.recife.avalon.testes;
 
+import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import br.ifpe.avalon.testesEjb.DbUnitUtil;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,7 +34,7 @@ import org.junit.runners.MethodSorters;
 /**
  *
  * @author eduardo.f.amaral
-*/
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {
 
@@ -42,16 +45,16 @@ public class QuestaoTest {
 
     @EJB
     private UsuarioServico usuarioServico;
-    
+
     private static Logger logger;
 
     @BeforeClass
     public static void setUpClass() {
-       container = EJBContainer.createEJBContainer();
-       logger = Logger.getGlobal();
-       logger.setLevel(Level.INFO);
-       DbUnitUtil.inserirDados();
-      
+        container = EJBContainer.createEJBContainer();
+        logger = Logger.getGlobal();
+        logger.setLevel(Level.INFO);
+        DbUnitUtil.inserirDados();
+
     }
 
     @AfterClass
@@ -61,7 +64,7 @@ public class QuestaoTest {
 
     @Before
     public void setUp() throws NamingException {
-     
+
         questaoServico = (QuestaoServico) container.getContext().lookup("java:global/classes/QuestaoServico");
         usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
     }
@@ -72,11 +75,11 @@ public class QuestaoTest {
 
     @Test
     public void t01_inserirQuestaoDiscursiva() {
-        
+
         logger.info("Executando t01: InserirQuestaoDiscursiva");
-        
+
         Usuario usuario = new Usuario();
-        
+
         usuario.setEmail("email2@email.com");
         usuario.setNome("TESTE2");
         usuario.setSenha("TESTE2");
@@ -96,50 +99,98 @@ public class QuestaoTest {
         assertNotNull(questao.getId());
 
     }
-    
-     @Test
+
+    @Test
     public void t02_buscarQuestaoPorCriador() {
         logger.info("Executando t02: buscarQuestaoPorCriador");
 
         List<Questao> questao = questaoServico.buscarQuestoesPorEmail("email2@email.com");
-       
-         assertNotNull(questao.get(0));
-        
+
+        assertNotNull(questao.get(0));
+
     }
-    
-   
+
     @Test
     public void t03_excluirQuestao() {
         logger.info("Executando t03: ExcluirQuestão");
-        
-     
-        
+
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
-        
+
         assertNotNull(questaoBuscada);
-        
+
         questaoServico.remover(questaoBuscada.get(0));
-        
+
         List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorEmail("email2@email.com");
-        
+
         Assert.assertEquals(0, questaoRemovida.size());
-    
+
     }
-    
+
     @Test
-    public void t04_excluirUsuario(){
+    public void t04_excluirUsuario() {
         logger.info("Executando: T04 Excluir usuário");
-        
+
         Usuario usuario = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
-        
+
         usuarioServico.remover(usuario);
-        
+
         Usuario usuarioRemovido = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
-        
+
         Assert.assertNull(usuarioRemovido);
+
+    }
+
+    @Test
+    public void t05_inserirQuestaoMultiplaEscolha() {
+
+        logger.info("Executando t05: InserirQuestaoMultiplaEscolha");
+
+        Usuario usuario = new Usuario();
+
+        usuario.setEmail("email3@email.com");
+        usuario.setNome("TESTE3");
+        usuario.setSenha("TESTE3");
+        usuario.setSobrenome("TESTE3");
+
+        usuarioServico.salvar(usuario);
+
+        MultiplaEscolha questao = new MultiplaEscolha();
+
+        questao.setEnunciado("Teste?");
+        questao.setCriador(usuario);
+        questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+        List alternativas = new ArrayList();
         
+        Alternativa alternativaA = new Alternativa();
+        alternativaA.setAlternativa("alternativa a");
+        alternativaA.setQuestao(questao);
+        alternativas.add(alternativaA);
+
+        Alternativa alternativaB = new Alternativa();
+        alternativaB.setAlternativa("alternativa b");
+        alternativaB.setQuestao(questao);
+        alternativas.add(alternativaB);
         
+        Alternativa alternativaC = new Alternativa();
+        alternativaC.setAlternativa("alternativa c");
+        alternativaC.setQuestao(questao);
+        alternativas.add(alternativaC);
+
+        Alternativa alternativaD = new Alternativa();
+        alternativaD.setAlternativa("alternativa d");
+        alternativaD.setQuestao(questao);
+        alternativas.add(alternativaD);
+
+        Alternativa alternativaE = new Alternativa();
+        alternativaE.setAlternativa("alternativa e");
+        alternativaE.setQuestao(questao);
+        alternativas.add(alternativaE);
         
+        questao.setAlternativas(alternativas);
+        questaoServico.salvar(questao);
+
+        assertNotNull(questao.getId());
 
     }
 
@@ -293,5 +344,4 @@ public class QuestaoTest {
 
         assertEquals(0, query.getResultList().size());
     }*/
-     
 }
