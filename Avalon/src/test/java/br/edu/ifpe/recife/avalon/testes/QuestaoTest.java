@@ -10,6 +10,7 @@ import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import br.ifpe.avalon.testesEjb.DbUnitUtil;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,6 +50,7 @@ public class QuestaoTest {
        container = EJBContainer.createEJBContainer();
        logger = Logger.getGlobal();
        logger.setLevel(Level.INFO);
+       DbUnitUtil.inserirDados();
       
     }
 
@@ -71,7 +73,7 @@ public class QuestaoTest {
     @Test
     public void t01_inserirQuestaoDiscursiva() {
         
-        logger.info("INICIALIZANDO T01");
+        logger.info("Executando t01: InserirQuestaoDiscursiva");
         
         Usuario usuario = new Usuario();
         
