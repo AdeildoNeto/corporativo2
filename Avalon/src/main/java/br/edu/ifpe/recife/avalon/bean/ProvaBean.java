@@ -7,29 +7,24 @@ package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
-import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.validation.Valid;
+import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author eduardo.f.amaral
  */
-@Named(value = "questaoBean")
+@Named(value = "provaBean")
 @SessionScoped
-public class QuestaoBean implements Serializable {
+public class ProvaBean implements Serializable {
 
     @EJB
     private QuestaoServico questaoServico;
@@ -43,43 +38,25 @@ public class QuestaoBean implements Serializable {
 
     private List<Questao> questoes = new ArrayList<>();
 
-    @Valid
-    private Questao novaQuestao = new Questao();
+    private List<Questao> questoesSelecionadas = new ArrayList<>();
     
-    private Questao questaoSelecionada;
+    private boolean todosSelecionados = false;
     
-    private boolean exibirModalConfirmarExclusao = false;
-
-    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
-
     public String iniciarPagina(){
+        limparTela();
         buscarQuestoes();
-        return "goListarQuestao";
+        return "goGerarProva";
     }
     
-    public String iniciarPaginaInclusao(){
+    public ProvaBean() {
         this.limparTela();
-        return "goAddQuestao";
-    }
-    
-    public QuestaoBean() {
-        this.novaQuestao = new Questao();
-        this.carregarTiposQuestao();
-    }
-
-    /**
-     * Método para inicializar a busca de questões. 
-     */
-    @PostConstruct
-    private void init() {
-        buscarQuestoes();
     }
     
     /**
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriador(1l);
+        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo(1l, tipoSelecionado);
     }
 
     /**
@@ -92,36 +69,11 @@ public class QuestaoBean implements Serializable {
     }
 
     /**
-     * Método responsável por enviar ao servico a Questão à salvar.
-     *
-     * @return rota da próxima tela.
-     */
-    public String salvar() {
-        Usuario usuario = usuarioServico.buscarUsuarioPorId(1l);
-
-        novaQuestao.setTipo(tipoSelecionado);
-        novaQuestao.setCriador(usuario);
-        novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
-
-        if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
-            questaoServico.salvar(novaQuestao);
-            limparTela();
-            buscarQuestoes();
-        } else {
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
-            FacesContext.getCurrentInstance().addMessage(null, mensagem);
-            return "";
-        }
-
-        return "goListarQuestao";
-    }
-
-    /**
      * Método para limpar os campos da tela.
      */
     private void limparTela() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
-        novaQuestao = new Questao();
+        todosSelecionados = false;
     }
     
     /**
@@ -129,16 +81,29 @@ public class QuestaoBean implements Serializable {
      * @param questao 
      */
     public void selecionarQuestao(Questao questao){
-        questaoSelecionada = questao;
+        if(questao.isSelecionada()){
+            questoesSelecionadas.add(questao);
+        }else{
+            questoesSelecionadas.remove(questao);
+            todosSelecionados = false;
+        }
     }
     
-    /**
-     * Método para excluir uma questão
-     */
-    public void excluir(){
-        questaoServico.remover(questaoSelecionada);
-        questoes.remove(questaoSelecionada);
-        questaoSelecionada = null;
+    public void selecionarTipoQuestao(){
+        buscarQuestoes();
+    }
+    
+    public void selecionarTodos(){
+        
+        for(Questao questao : questoes){
+            questao.setSelecionada(todosSelecionados);
+            selecionarQuestao(questao);
+        }
+        
+    }
+    
+    public void imprimirProva(){
+        RequestContext.getCurrentInstance().execute("window.open('http://localhost:8080/Avalon/professor/prova/impressao.xhtml')");
     }
     
     /*
@@ -151,14 +116,6 @@ public class QuestaoBean implements Serializable {
 
     public void setTipoQuestoes(List<TipoQuestaoEnum> tipoQuestoes) {
         this.tipoQuestoes = tipoQuestoes;
-    }
-
-    public Questao getNovaQuestao() {
-        return novaQuestao;
-    }
-
-    public void setNovaQuestao(Questao novaQuestao) {
-        this.novaQuestao = novaQuestao;
     }
 
     public TipoQuestaoEnum getTipoSelecionado() {
@@ -177,12 +134,20 @@ public class QuestaoBean implements Serializable {
         this.questoes = questoes;
     }
 
-    public boolean isExibirModalConfirmarExclusao() {
-        return exibirModalConfirmarExclusao;
+    public boolean isTodosSelecionados() {
+        return todosSelecionados;
     }
 
-    public void setExibirModalConfirmarExclusao(boolean exibirModalConfirmarExclusao) {
-        this.exibirModalConfirmarExclusao = exibirModalConfirmarExclusao;
+    public void setTodosSelecionados(boolean todosSelecionados) {
+        this.todosSelecionados = todosSelecionados;
+    }
+
+    public List<Questao> getQuestoesSelecionadas() {
+        return questoesSelecionadas;
+    }
+
+    public void setQuestoesSelecionadas(List<Questao> questoesSelecionadas) {
+        this.questoesSelecionadas = questoesSelecionadas;
     }
     
 }

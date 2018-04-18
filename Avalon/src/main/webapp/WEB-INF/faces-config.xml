@@ -30,10 +30,19 @@
             <to-view-id>/professor/questao/adicionar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-        <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>goListarQuestao</from-outcome>
             <to-view-id>/professor/questao/listar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goGerarProva</from-outcome>
+            <to-view-id>/professor/prova/gerar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goImprimirProva</from-outcome>
+            <to-view-id>/professor/prova/impressao.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

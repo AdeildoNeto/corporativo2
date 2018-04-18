@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" target="_blank">
+            <div class="row margin-bottom-30">
+                <div class="offset-md-8">
+                    <label for="tipoQuestao">#{msg['label.filtrar.por.tipo']}:</label>
+                    <div>
+                        <h:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
+                            <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
+                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="table" />
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao" styleClass="table table-striped table-questoes-prova">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
+                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="table" />
+                                </h:selectBooleanCheckbox>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{questao.selecionada}">
+                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" />
+                            </h:selectBooleanCheckbox>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.questao']}</span>
+                            </f:facet>
+                            <span>#{questao.enunciado}</span>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </div>
+            <div class="row buttons-save">
+                <div class="offset-md-8 col-md-2 form-group">
+                    <p:commandButton id="btnAdd" value="#{msg['btn.imprimir.prova']}"
+                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                </div>
+            </div>
+
+            <p:blockUI animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
