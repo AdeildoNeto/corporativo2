@@ -35,23 +35,20 @@ public class ProvaBean implements Serializable {
 
     private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
 
-    private List<Questao> questoes = new ArrayList<Questao>();
+    private List<Questao> questoes = new ArrayList<>();
 
-    private List<Questao> questoesSelecionadas = new ArrayList<Questao>();
+    private List<Questao> questoesSelecionadas = new ArrayList<>();
     
     private boolean todosSelecionados = false;
     
+    public String iniciarPagina(){
+        limparTela();
+        buscarQuestoes();
+        return "goGerarProva";
+    }
     
     public ProvaBean() {
         this.limparTela();
-    }
-
-    /**
-     * Método para inicializar a busca de questões. 
-     */
-    @PostConstruct
-    private void init() {
-        buscarQuestoes();
     }
     
     /**
@@ -74,6 +71,7 @@ public class ProvaBean implements Serializable {
      * Método para limpar os campos da tela.
      */
     private void limparTela() {
+        tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         todosSelecionados = false;
     }
     
@@ -86,6 +84,7 @@ public class ProvaBean implements Serializable {
             questoesSelecionadas.add(questao);
         }else{
             questoesSelecionadas.remove(questao);
+            todosSelecionados = false;
         }
     }
     

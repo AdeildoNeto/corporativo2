@@ -32,10 +32,10 @@ and open the template in the editor.
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['menu.questoes']}" action="goListarQuestao" />
+                            <h:commandLink styleClass="nav-link" value="#{msg['menu.questoes']}" action="#{questaoBean.iniciarPagina()}" />
                         </li>
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['menu.provas']}" action="goGerarProva" />
+                            <h:commandLink styleClass="nav-link" value="#{msg['menu.provas']}" action="#{provaBean.iniciarPagina()}" />
                         </li>
                     </ul>
                 </div>

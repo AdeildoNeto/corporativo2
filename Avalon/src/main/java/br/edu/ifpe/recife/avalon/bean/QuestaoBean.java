@@ -52,6 +52,12 @@ public class QuestaoBean implements Serializable {
 
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
 
+    public String iniciarPagina(){
+        limparTela();
+        buscarQuestoes();
+        return "goListarQuestao";
+    }
+    
     public QuestaoBean() {
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();
