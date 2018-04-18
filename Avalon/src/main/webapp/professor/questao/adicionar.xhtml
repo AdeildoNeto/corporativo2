@@ -23,13 +23,13 @@ and open the template in the editor.
             <div class="row">
                 <div class="offset-md-1 col-md-6">
                     <div class="form-group">
-                        <label for="questao-enunciado">#{msg['questao.label.enunciado']}:</label>
+                        <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
                         <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div>
-                        <label for="tipoQuestao">#{msg['questao.label.selecione.tipo']}:</label>
+                        <label for="tipoQuestao">#{msg['label.selecione.tipo']}:</label>
                         <div>
                             <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
                                 <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />

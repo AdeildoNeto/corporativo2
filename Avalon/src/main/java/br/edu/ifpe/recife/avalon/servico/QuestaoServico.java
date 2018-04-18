@@ -72,9 +72,9 @@ public class QuestaoServico {
      * @param tipo
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriadorTipo(Usuario criador, TipoQuestaoEnum tipo) {
+    public List<Questao> buscarQuestoesPorCriadorTipo(Long idCriador, TipoQuestaoEnum tipo) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
-        query.setParameter("idCriador", criador.getId());
+        query.setParameter("idCriador", idCriador);
         query.setParameter("tipo", tipo);
 
         return query.getResultList();

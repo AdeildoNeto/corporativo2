@@ -23,6 +23,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -81,6 +82,9 @@ public class Questao implements Serializable {
     
     @Column(name = "SN_ATIVA", nullable = false)
     private Boolean ativa = true;
+    
+    @Transient
+    private boolean selecionada;
 
     public Long getId() {
         return id;
@@ -122,12 +126,20 @@ public class Questao implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
-    public boolean isAtiva() {
+    public Boolean getAtiva() {
         return ativa;
     }
 
-    public void setAtiva(boolean ativa) {
+    public void setAtiva(Boolean ativa) {
         this.ativa = ativa;
     }
-    
+
+    public boolean isSelecionada() {
+        return selecionada;
+    }
+
+    public void setSelecionada(boolean selecionada) {
+        this.selecionada = selecionada;
+    }
+        
 }
