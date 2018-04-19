@@ -19,7 +19,7 @@ public class DbUnitUtil {
 
     //private static final String XML_FILE = "/home/danilop/Documentos/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
     //private static final String XML_FILE = "/home/aneto/Documents/IFPE/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
-    
+    //private static final String XML_FILE = "/home/aldenio/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
     private static final String XML_FILE = "/Users/eduardoamaral/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
     
     @SuppressWarnings("UseSpecificCatch")
@@ -35,7 +35,7 @@ public class DbUnitUtil {
             dbConfig.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, new MySqlMetadataHandler());
             FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
             builder.setColumnSensing(true);
-            InputStream in = new FileInputStream(new File(XML_FILE)); 
+            InputStream in = new FileInputStream(new File(XML_FILE));
             IDataSet dataSet = builder.build(in);
             DatabaseOperation.CLEAN_INSERT.execute(db_conn, dataSet);
         } catch (Exception ex) {

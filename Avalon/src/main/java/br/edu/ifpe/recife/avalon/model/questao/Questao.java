@@ -9,7 +9,10 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +20,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -34,13 +39,15 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "TB_QUESTAO")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("Q")
+@Access(AccessType.FIELD)
 @NamedQueries(
         {
             @NamedQuery(
                     name = "Questao.PorId",
                     query = "SELECT q FROM Questao q WHERE q.id = :id AND q.ativa = true"
-            )
-            ,@NamedQuery(
+            ),@NamedQuery(
                     name = "Questao.PorCriador",
                     query = "SELECT q FROM Questao q WHERE q.criador.id = :idCriador AND q.ativa = true"
             )
@@ -51,8 +58,7 @@ import org.hibernate.validator.constraints.NotBlank;
             ,@NamedQuery(
                     name = "Questao.PorCriadorTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.id = :idCriador AND q.ativa = true"
-            )
-            ,@NamedQuery(
+            ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.ativa = true"
             )
@@ -77,18 +83,18 @@ public class Questao implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "TXT_TIPO")
     private TipoQuestaoEnum tipo;
-
+    
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
-
+    
     @Column(name = "SN_ATIVA", nullable = false)
     private Boolean ativa = true;
-
+    
     @Transient
     private boolean selecionada;
-
+    
     public String formatarQuestao(int numero) {
         StringBuilder sb = new StringBuilder();
 
@@ -163,5 +169,5 @@ public class Questao implements Serializable {
     public void setSelecionada(boolean selecionada) {
         this.selecionada = selecionada;
     }
-
+        
 }
