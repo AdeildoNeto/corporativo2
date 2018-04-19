@@ -9,12 +9,17 @@ import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
@@ -38,7 +43,7 @@ public class ProvaBean implements Serializable {
 
     private List<Questao> questoes = new ArrayList<>();
 
-    private List<Questao> questoesSelecionadas = new ArrayList<>();
+    private Set<Questao> questoesSelecionadas = new HashSet<Questao>();
     
     private boolean todosSelecionados = false;
     
@@ -74,6 +79,7 @@ public class ProvaBean implements Serializable {
     private void limparTela() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         todosSelecionados = false;
+        questoesSelecionadas = new HashSet<>();
     }
     
     /**
@@ -94,6 +100,7 @@ public class ProvaBean implements Serializable {
     }
     
     public void selecionarTodos(){
+        questoesSelecionadas = new HashSet<>();
         
         for(Questao questao : questoes){
             questao.setSelecionada(todosSelecionados);
@@ -103,7 +110,12 @@ public class ProvaBean implements Serializable {
     }
     
     public void imprimirProva(){
-        RequestContext.getCurrentInstance().execute("window.open('http://localhost:8080/Avalon/professor/prova/impressao.xhtml')");
+        if(questoesSelecionadas.isEmpty()){
+            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("prova.selecionar.questoes"), null);
+            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+        }else{
+            RequestContext.getCurrentInstance().execute("window.open('http://localhost:8080/Avalon/professor/prova/impressao.xhtml')");
+        }
     }
     
     /*
@@ -142,11 +154,11 @@ public class ProvaBean implements Serializable {
         this.todosSelecionados = todosSelecionados;
     }
 
-    public List<Questao> getQuestoesSelecionadas() {
+    public Set<Questao> getQuestoesSelecionadas() {
         return questoesSelecionadas;
     }
 
-    public void setQuestoesSelecionadas(List<Questao> questoesSelecionadas) {
+    public void setQuestoesSelecionadas(Set<Questao> questoesSelecionadas) {
         this.questoesSelecionadas = questoesSelecionadas;
     }
     

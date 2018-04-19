@@ -53,4 +53,8 @@ public class AvalonUtil {
         return validationBundle.getString(chave);
     }
     
+    public static String quebrarLinha(){
+        return "&lt;br /&gt;";
+    }
+    
 }

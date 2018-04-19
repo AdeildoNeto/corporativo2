@@ -15,8 +15,8 @@ and open the template in the editor.
         <title>Avalon</title>
     </h:head>
     <h:body>
-        <ui:repeat value="#{provaBean.questoesSelecionadas}" var="questao" varStatus="posicao">
-            <span>#{questao.formatarQuestao(posicao.index)}</span>
+        <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
+            <p:outputLabel value="#{questao.formatarQuestao(posicao.index).replace('')}" escape="false"></p:outputLabel>
         </ui:repeat>
     </h:body>
 </html>

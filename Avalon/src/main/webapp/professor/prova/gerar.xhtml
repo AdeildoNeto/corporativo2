@@ -13,14 +13,19 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="form" target="_blank">
+        <h:form id="form">
+            <div class="row">
+                <div class="offset-md-2 col-md-6">
+                    <p:messages id="msgs" />
+                </div>
+            </div>
             <div class="row margin-bottom-30">
                 <div class="offset-md-8">
                     <label for="tipoQuestao">#{msg['label.filtrar.por.tipo']}:</label>
                     <div>
                         <h:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
                             <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
-                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="table" />
+                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="table"/>
                         </h:selectOneMenu>
                     </div>
                 </div>
@@ -32,11 +37,11 @@ and open the template in the editor.
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
-                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="table" />
+                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{questao.selecionada}">
-                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" />
+                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
@@ -48,11 +53,11 @@ and open the template in the editor.
                     </h:dataTable>
                 </div>
             </div>
-            <div class="row buttons-save">
+            <div id="button-container" class="row buttons-save">
                 <div class="offset-md-8 col-md-2 form-group">
-                    <p:commandButton id="btnAdd" value="#{msg['btn.imprimir.prova']}"
+                    <p:commandButton id="btnImprimir" value="#{msg['btn.imprimir.prova']}" update="@form"
                                      action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()"
+                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>
