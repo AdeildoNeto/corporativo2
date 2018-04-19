@@ -5,7 +5,6 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
-import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -65,15 +64,15 @@ public class QuestaoServico {
      */
     public void remover(Questao questao) {
         if (!entityManager.contains(questao)) {
-            questao = entityManager.merge(questao);
+            questao.setAtiva(false);
+            entityManager.merge(questao);
         }
-        entityManager.remove(questao);
     }
 
     /**
      * Método para consultar Questões por Tipo e Criador
      *
-     * @param criador
+     * @param idCriador
      * @param tipo
      * @return lista de questões
      */

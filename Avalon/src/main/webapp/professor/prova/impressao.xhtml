@@ -16,7 +16,8 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
-            <p:outputLabel value="#{questao.formatarQuestao(posicao.index).replace('')}" escape="false"></p:outputLabel>
+            <p:outputLabel value="#{questao.formatarQuestao(posicao.index)}"  escape="false"></p:outputLabel> 
+            
         </ui:repeat>
     </h:body>
 </html>

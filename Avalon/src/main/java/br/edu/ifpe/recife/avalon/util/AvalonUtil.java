@@ -54,7 +54,17 @@ public class AvalonUtil {
     }
     
     public static String quebrarLinha(){
-        return "&lt;br /&gt;";
+        return "<br />";
+    }
+    
+    public static String formatarEnunciado(String enunciado){
+        
+        if(enunciado == null){
+            return "";
+        }
+        
+        return enunciado.replaceAll("\r\n", quebrarLinha());
+        
     }
     
 }

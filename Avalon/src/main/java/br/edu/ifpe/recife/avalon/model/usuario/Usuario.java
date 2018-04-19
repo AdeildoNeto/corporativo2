@@ -67,7 +67,7 @@ public class Usuario implements Serializable {
     private String senha;
 
     @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+            cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Questao> questoes;
 
     public Long getId() {

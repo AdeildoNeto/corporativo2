@@ -31,6 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -71,6 +72,7 @@ public class Questao implements Serializable {
     private Long id;
 
     @NotBlank(message = "{questao.enunciado.obrigatorio}")
+    @Size(max = 2000)
     @Column(name = "TXT_ENUNCIADO")
     private String enunciado;
 
@@ -100,7 +102,7 @@ public class Questao implements Serializable {
 
         sb.append(numero + 1).append(")").append(" ");
 
-        sb.append(this.enunciado);
+        sb.append(AvalonUtil.formatarEnunciado(this.enunciado));
         sb.append(AvalonUtil.quebrarLinha());
 
         if (TipoQuestaoEnum.VERDADEIRO_FALSO.equals(this.tipo)) {
