@@ -54,7 +54,7 @@ public class AvalonUtil {
     }
     
     public static String quebrarLinha(){
-        return "<br />";
+        return System.getProperty("line.separator");
     }
     
     public static String formatarEnunciado(String enunciado){

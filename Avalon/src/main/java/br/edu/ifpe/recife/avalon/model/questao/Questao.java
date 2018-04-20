@@ -72,8 +72,7 @@ public class Questao implements Serializable {
     private Long id;
 
     @NotBlank(message = "{questao.enunciado.obrigatorio}")
-    @Size(max = 2000)
-    @Column(name = "TXT_ENUNCIADO")
+    @Column(name = "TXT_ENUNCIADO", length = 2000)
     private String enunciado;
 
     @NotNull(message = "{questao.criador.obrigatorio}")
@@ -97,20 +96,13 @@ public class Questao implements Serializable {
     @Transient
     private boolean selecionada;
     
-    public String formatarQuestao(int numero) {
+    public String formatarQuestao() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append(numero + 1).append(")").append(" ");
-
-        sb.append(AvalonUtil.formatarEnunciado(this.enunciado));
-        sb.append(AvalonUtil.quebrarLinha());
 
         if (TipoQuestaoEnum.VERDADEIRO_FALSO.equals(this.tipo)) {
             sb.append("( ) Verdadeiro");
             sb.append(AvalonUtil.quebrarLinha());
             sb.append("( ) Falso");
-            sb.append(AvalonUtil.quebrarLinha());
-            sb.append(AvalonUtil.quebrarLinha());
         }
 
         return sb.toString();

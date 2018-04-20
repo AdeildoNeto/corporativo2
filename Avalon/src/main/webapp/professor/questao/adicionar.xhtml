@@ -24,7 +24,9 @@ and open the template in the editor.
                 <div class="offset-md-1 col-md-6">
                     <div class="form-group">
                         <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
-                        <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}"></h:inputTextarea>
+                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}" validatorMessage="#{msg['validacao.tamanho.enunciado']}">
+                            <f:validateLength maximum="2000" />
+                        </h:inputTextarea>
                     </div>
                 </div>
                 <div class="col-md-4">

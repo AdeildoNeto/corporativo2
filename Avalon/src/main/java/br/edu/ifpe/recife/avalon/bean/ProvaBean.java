@@ -14,7 +14,6 @@ import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +42,14 @@ public class ProvaBean implements Serializable {
 
     private List<Questao> questoes = new ArrayList<>();
 
-    private Set<Questao> questoesSelecionadas = new HashSet<Questao>();
+    private Set<Questao> questoesSelecionadas = new HashSet<>();
     
     private boolean todosSelecionados = false;
     
+    /**
+     * Método para iniciar a página de geração de prova.
+     * @return rota para página de geração de prova
+     */
     public String iniciarPagina(){
         limparTela();
         buscarQuestoes();
@@ -95,10 +98,16 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    /**
+     * Método para atualizar a lista de questões disponíveis para impressão.
+     */
     public void selecionarTipoQuestao(){
         buscarQuestoes();
     }
     
+    /**
+     * Método para selecionar todas as questões disponíveis.
+     */
     public void selecionarTodos(){
         questoesSelecionadas = new HashSet<>();
         
@@ -109,6 +118,9 @@ public class ProvaBean implements Serializable {
         
     }
     
+    /**
+     * Método para gerar uma prova a partir das questões selecionada.
+     */
     public void imprimirProva(){
         if(questoesSelecionadas.isEmpty()){
             FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("prova.selecionar.questoes"), null);

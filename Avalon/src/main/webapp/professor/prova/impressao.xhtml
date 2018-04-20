@@ -7,17 +7,28 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Avalon</title>
+        <h:outputStylesheet name="css/style.css" />
     </h:head>
     <h:body>
-        <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
-            <p:outputLabel value="#{questao.formatarQuestao(posicao.index)}"  escape="false"></p:outputLabel> 
-            
-        </ui:repeat>
+        <div class="container-prova">
+            <div class="cabecalho">
+                <h:graphicImage value="img/logo_ifpe.jpg" width="60px" height="60px" />
+                <div>Prova</div>                
+            </div>
+            <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
+                <div>
+                    <p:outputLabel>#{posicao.index+1}) #{questao.enunciado}</p:outputLabel>
+                </div>
+                <div class="prova-alternativa">
+                    <h:outputText value="#{questao.formatarQuestao()}"></h:outputText>
+                </div>
+                <br />
+            </ui:repeat>
+        </div>
     </h:body>
 </html>

@@ -61,6 +61,13 @@ label{
     width: 200px;
 }
 
+.table-questoes td:nth-child(3){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px !important;
+}
+
 .table-questoes td:last-child{
     width: 80px;
 }
@@ -149,3 +156,35 @@ label{
 .table-questoes-prova th:first-child{
     width: 25px;
 }
+
+.table-questoes-prova td:nth-child(2){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 500px !important;
+}
+
+.container-prova{
+    white-space: pre-line;
+    margin: 27mm 16mm 27mm 16mm;
+}
+
+.prova-alternativa{
+    padding-left: 1.5em;
+}
+
+@media print {
+    
+  @page { 
+      margin: 0;
+  }
+  
+  body {
+      margin: 27mm 16mm 27mm 16mm;
+  }
+  
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+ }
