@@ -1,0 +1,44 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21/04/2018, 12:18:17
+    Author     : eduardoamaral
+*/
+
+
+.container-prova{
+    white-space: pre-line;
+    margin: 0.5cm 2cm 2cm 3cm;
+}
+
+.prova-alternativa{
+    padding-left: 1.5em;
+}
+
+label{
+    font-weight: bold;
+}
+
+@media print {
+    
+  @page {
+      size: A4;
+      margin: 0mm;
+  }
+  
+  head{
+      display: none;
+  }
+  
+  .body{
+    margin: 0.5cm 2cm 2cm 3cm;
+  }
+  
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+ }

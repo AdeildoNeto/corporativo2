@@ -12,12 +12,12 @@ and open the template in the editor.
 
     <h:head>
         <title>Avalon</title>
-        <h:outputStylesheet name="css/style.css" />
+        <link href="../../resources/css/impressao.css" rel="stylesheet" type="text/css"/>
     </h:head>
     <h:body>
         <div class="container-prova">
             <div class="cabecalho">
-                <h:graphicImage value="img/logo-ifpe.jpg" width="60px" height="60px" />
+                <h:graphicImage name="img/logo-ifpe.png" width="220px" height="100px" />
                 <div>Prova</div>                
             </div>
             <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">

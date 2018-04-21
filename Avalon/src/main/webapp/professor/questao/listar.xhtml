@@ -14,9 +14,9 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form">
-            <div class="row">
+            <div class="row container-table">
                 <div class="offset-md-2 col-md-8">
-                    <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-questoes">
+                    <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.id']}</span>
@@ -36,6 +36,9 @@ and open the template in the editor.
                             <span>#{questao.enunciado}</span>
                         </h:column>
                         <h:column>
+                            <f:facet name="header">
+                                
+                            </f:facet>
                             <p:commandLink action="#{questaoBean.selecionarQuestao(questao)}" onclick="PF('block').show()"
                                              oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>
@@ -44,7 +47,7 @@ and open the template in the editor.
                     </h:dataTable>
                 </div>
             </div>
-            <div class="row buttons-save">
+            <div class="row">
                 <div class="offset-md-8 col-md-2 form-group">
                     <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="#{questaoBean.iniciarPaginaInclusao()}" class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
