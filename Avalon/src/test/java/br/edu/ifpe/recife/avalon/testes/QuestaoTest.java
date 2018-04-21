@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
@@ -126,17 +127,13 @@ public class QuestaoTest {
 
     }
 
-    @Test
-    public void t04_excluirUsuario() {
+    @Test(expected = EJBException.class)
+    public void t04_criticarExclusaoUsuarioComQuestoes() {
         logger.info("Executando: T04 Excluir usuário");
 
         Usuario usuario = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
 
         usuarioServico.remover(usuario);
-
-        Usuario usuarioRemovido = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
-
-        Assert.assertNull(usuarioRemovido);
 
     }
 

@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.model.questao;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Alternativa implements Serializable {
     private String alternativa;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
     private MultiplaEscolha questao;
 
