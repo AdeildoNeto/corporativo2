@@ -18,9 +18,9 @@ import org.dbunit.operation.DatabaseOperation;
 public class DbUnitUtil {
 
     //private static final String XML_FILE = "/home/danilop/Documentos/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
-    //private static final String XML_FILE = "/home/aneto/Documents/IFPE/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
+    private static final String XML_FILE = "/home/aneto/Documents/IFPE/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
     //private static final String XML_FILE = "/home/aldenio/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
-    private static final String XML_FILE = "/Users/eduardoamaral/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
+    //private static final String XML_FILE = "/Users/eduardoamaral/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
     
     @SuppressWarnings("UseSpecificCatch")
     public static void inserirDados() {
