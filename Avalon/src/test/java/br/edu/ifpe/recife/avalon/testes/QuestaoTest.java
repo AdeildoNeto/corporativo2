@@ -110,9 +110,22 @@ public class QuestaoTest {
         assertNotNull(questao.get(0));
 
     }
+    
+        @Test
+    public void t03_alterarQuestao(){
+        logger.info("Executando t03: AlterarQuestão");
+          List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
+          Questao questao = questaoBuscada.get(0);
+          
+          questao.setEnunciado("Enunciado alterado");
+          
+          questaoServico.alterar(questao);
+        
+        
+    }
 
     @Test
-    public void t03_excluirQuestao() {
+    public void t04_excluirQuestao() {
         logger.info("Executando t03: ExcluirQuestão");
 
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
@@ -126,9 +139,11 @@ public class QuestaoTest {
         Assert.assertEquals(0, questaoRemovida.size());
 
     }
+    
+
 
     @Test(expected = EJBException.class)
-    public void t04_criticarExclusaoUsuarioComQuestoes() {
+    public void t05_criticarExclusaoUsuarioComQuestoes() {
         logger.info("Executando: T04 Excluir usuário");
 
         Usuario usuario = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
@@ -138,7 +153,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t05_inserirQuestaoMultiplaEscolha() {
+    public void t06_inserirQuestaoMultiplaEscolha() {
 
         logger.info("Executando t05: InserirQuestaoMultiplaEscolha");
 
@@ -190,6 +205,8 @@ public class QuestaoTest {
         assertNotNull(questao.getId());
 
     }
+    
+    
 
 
     /*
