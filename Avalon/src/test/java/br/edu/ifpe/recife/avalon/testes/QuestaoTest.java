@@ -24,8 +24,7 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -105,48 +104,45 @@ public class QuestaoTest {
     public void t02_buscarQuestaoPorCriador() {
         logger.info("Executando t02: buscarQuestaoPorCriador");
 
-        List<Questao> questao = questaoServico.buscarQuestoesPorEmail("email2@email.com");
+        List<Questao> questao = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
         assertNotNull(questao.get(0));
 
     }
-    
-        @Test
-    public void t03_alterarQuestao(){
+
+    @Test
+    public void t03_alterarQuestao() {
         logger.info("Executando t03: AlterarQuestão");
-          List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
-          Questao questao = questaoBuscada.get(0);
-          
-          questao.setEnunciado("Enunciado alterado");
-          
-          questaoServico.alterar(questao);
-        
-        
+        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        Questao questao = questaoBuscada.get(0);
+
+        questao.setEnunciado("Enunciado alterado");
+
+        questaoServico.alterar(questao);
+
     }
 
     @Test
     public void t04_excluirQuestao() {
         logger.info("Executando t03: ExcluirQuestão");
 
-        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorEmail("email2@email.com");
+        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
         assertNotNull(questaoBuscada);
 
         questaoServico.remover(questaoBuscada.get(0));
 
-        List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorEmail("email2@email.com");
+        List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
-        Assert.assertEquals(0, questaoRemovida.size());
+        assertEquals(0, questaoRemovida.size());
 
     }
-    
-
 
     @Test(expected = EJBException.class)
     public void t05_criticarExclusaoUsuarioComQuestoes() {
         logger.info("Executando: T04 Excluir usuário");
 
-        Usuario usuario = usuarioServico.ts_buscarUsuarioPorEmail("email2@email.com");
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email2@email.com");
 
         usuarioServico.remover(usuario);
 
@@ -173,7 +169,7 @@ public class QuestaoTest {
         questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         questao.setDataCriacao(Calendar.getInstance().getTime());
         List alternativas = new ArrayList();
-        
+
         Alternativa alternativaA = new Alternativa();
         alternativaA.setAlternativa("alternativa a");
         alternativaA.setQuestao(questao);
@@ -183,7 +179,7 @@ public class QuestaoTest {
         alternativaB.setAlternativa("alternativa b");
         alternativaB.setQuestao(questao);
         alternativas.add(alternativaB);
-        
+
         Alternativa alternativaC = new Alternativa();
         alternativaC.setAlternativa("alternativa c");
         alternativaC.setQuestao(questao);
@@ -198,16 +194,49 @@ public class QuestaoTest {
         alternativaE.setAlternativa("alternativa e");
         alternativaE.setQuestao(questao);
         alternativas.add(alternativaE);
-        
+
         questao.setAlternativas(alternativas);
         questaoServico.salvar(questao);
 
         assertNotNull(questao.getId());
 
     }
-    
-    
 
+    @Test
+    public void t07_salvarQuestaoVF() {
+        Questao questao = new Questao();
+
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email2@email.com");
+
+        questao.setCriador(usuario);
+        questao.setEnunciado("Questao V/F teste");
+        questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+
+        questaoServico.salvar(questao);
+
+        assertNotNull(questao.getId());
+    }
+
+    @Test
+    public void t08_selecionarQuestaoVF() {
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+
+        assertEquals(1, questoes.size());
+    }
+
+    @Test
+    public void t09_excluirQuestaoVF() {
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+
+        Questao questao = questoes.get(0);
+
+        questaoServico.remover(questao);
+
+        questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+
+        assertEquals(0, questoes.size());
+    }
 
     /*
     

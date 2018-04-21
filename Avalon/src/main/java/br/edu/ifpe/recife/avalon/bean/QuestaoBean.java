@@ -79,7 +79,7 @@ public class QuestaoBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriador(1l);
+        this.questoes = questaoServico.buscarQuestoesPorCriador("email@email.com");
     }
 
     /**
@@ -97,7 +97,7 @@ public class QuestaoBean implements Serializable {
      * @return rota da próxima tela.
      */
     public String salvar() {
-        Usuario usuario = usuarioServico.buscarUsuarioPorId(1l);
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email@email.com");
 
         novaQuestao.setTipo(tipoSelecionado);
         novaQuestao.setCriador(usuario);

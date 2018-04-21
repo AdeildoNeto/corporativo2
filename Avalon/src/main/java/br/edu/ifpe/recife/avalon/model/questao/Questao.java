@@ -46,11 +46,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "Questao.PorId",
-                    query = "SELECT q FROM Questao q WHERE q.id = :id AND q.ativa = true"
-            ),@NamedQuery(
                     name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.criador.id = :idCriador AND q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.criador.email = :emailCriador AND q.ativa = true"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipo",
@@ -58,7 +55,7 @@ import org.hibernate.validator.constraints.NotBlank;
             )
             ,@NamedQuery(
                     name = "Questao.PorCriadorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.id = :idCriador AND q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.criador.email = :emailCriador AND q.ativa = true"
             ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.ativa = true"

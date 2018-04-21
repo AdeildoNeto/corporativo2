@@ -93,47 +93,13 @@ public class UsuarioServico {
         return null;
     }
 
-    public Usuario buscarUsuarioPorEmail(Usuario usuario) {
+    public Usuario buscarUsuarioPorEmail(String email) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
-        query.setParameter("email", usuario.getEmail());
-
-        if (!query.getResultList().isEmpty()) {
-            return query.getSingleResult();
-        }
-        return null;
-    }
-
-    //MÉTODO PARA TESTE(LEMBRAR DE REFATORAR)
-    public Usuario ts_buscarUsuarioPorEmail(String email) {
-
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
-
         query.setParameter("email", email);
 
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException resultado) {
-
-            resultado.printStackTrace();
-            return null;
-        }
-
-    }
-
-    /**
-     * Método para buscar um usuário por id
-     *
-     * @param id
-     * @return usuario
-     */
-    public Usuario buscarUsuarioPorId(long id) {
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorId", Usuario.class);
-        query.setParameter("id", id);
-
         if (!query.getResultList().isEmpty()) {
             return query.getSingleResult();
         }
-
         return null;
     }
 

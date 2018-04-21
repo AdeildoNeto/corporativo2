@@ -7,7 +7,6 @@ package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -72,13 +71,13 @@ public class QuestaoServico {
     /**
      * Método para consultar Questões por Tipo e Criador
      *
-     * @param idCriador
+     * @param emailCriador
      * @param tipo
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriadorTipo(Long idCriador, TipoQuestaoEnum tipo) {
+    public List<Questao> buscarQuestoesPorCriadorTipo(String emailCriador, TipoQuestaoEnum tipo) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
-        query.setParameter("idCriador", idCriador);
+        query.setParameter("emailCriador", emailCriador);
         query.setParameter("tipo", tipo);
 
         return query.getResultList();
@@ -87,26 +86,14 @@ public class QuestaoServico {
     /**
      * Método para consultar Questões por Criador
      *
-     * @param id
+     * @param emailCriador
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriador(Long id) {
+    public List<Questao> buscarQuestoesPorCriador(String emailCriador) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
-        query.setParameter("idCriador", id);
+        query.setParameter("emailCriador", emailCriador);
 
         return query.getResultList();
-    }
-
-    public List<Questao> buscarQuestoesPorEmail(String email) {
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
-        query.setParameter("email", email);
-
-        Usuario usuario = query.getSingleResult();
-
-        TypedQuery<Questao> query2 = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
-        query2.setParameter("idCriador", usuario.getId());
-
-        return query2.getResultList();
     }
 
     /**
