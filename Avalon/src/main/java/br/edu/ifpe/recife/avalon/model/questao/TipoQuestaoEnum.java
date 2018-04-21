@@ -12,7 +12,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 public enum TipoQuestaoEnum {
     
     DISCURSIVA(1, "Discursiva"),
-    MULTIPLA_ESCOLHA(2, "Multipla Escolha"),
+    MULTIPLA_ESCOLHA(2, "Múltipla Escolha"),
     VERDADEIRO_FALSO(3, "Verdadeiro ou Falso");
     
     private int codigo;

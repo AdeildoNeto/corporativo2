@@ -8,20 +8,12 @@ and open the template in the editor.
     Author     : eduardo.f.amaral
 */
 
+body{
+    height: 100%;
+}
+
 .container-principal{
     padding-top: 40px; 
-}
-
-.bg-default{
-    background-color: #19882c;
-}
-
-.btn-primary{
-    background-color: #19882c !important;
-}
-
-.btn-secondary {
-    background-color: #7f7f7f !important;
 }
 
 .font-color-default{
@@ -36,42 +28,15 @@ textarea{
     resize: none !important;
 }
 
-.bg-select-menu {
-    background-color: #EEE;
-    border: 1px solid #C3C3C3 !important;
-}
-
-.bg-select-menu option {
-    background-color: #FAFAFA;
-}
-
 label{
     font-weight: bold;
 }
 
-.table-questoes{
-    margin-bottom: 60px !important;
+.margin-bottom-30{
+    margin-bottom: 30px;
 }
 
-.table-questoes td:first-child{
-    width: 60px;
-}
-
-.table-questoes td:nth-child(2){
-    width: 200px;
-}
-
-.table-questoes td:nth-child(3){
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 300px !important;
-}
-
-.table-questoes td:last-child{
-    width: 80px;
-}
-
+/* Dialog */
 .ui-dialog .ui-dialog-titlebar{
     display: -webkit-box;
     display: -ms-flexbox;
@@ -137,20 +102,66 @@ label{
     box-shadow: 0px 5px 10px rgba(0,0,0,0.2) !important;
 }
 
+/* Menu */
 .nav-link{
     color: white !important;
 }
 
-.material-icons{
-    color: black !important;
-}
-
+/* BlockUI */
 .ui-blockui-content.ui-shadow {
     box-shadow: none !important;
 }
 
-.margin-bottom-30{
-    margin-bottom: 30px;
+/* Icons */
+.material-icons{
+    color: black !important;
+}
+
+/* List Table */
+.container-table{
+    max-height: 540px;
+    margin-bottom: 40px !important;
+}
+
+.table-questoes{
+    display: block;
+    overflow-x: scroll;
+    max-height: 100%;
+}
+
+.table-questoes td:nth-child(3){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.table-questoes td:first-child{
+    width: 40px;
+}
+
+.table-questoes td:nth-child(2){
+    width: 20%;
+}
+
+.table-questoes td:nth-child(3){
+    width: 70%;
+    max-width: 300px;
+}
+
+.table-questoes td:last-child{
+    width: 10%;
+}
+
+/* Generate Table */
+.container-table-prova{
+    max-height: 460px;
+    margin-bottom: 40px !important;
+}
+
+.table-questoes-prova{
+    display: block;
+    overflow-x: scroll;
+    max-height: 100%;
 }
 
 .table-questoes-prova th:first-child{
@@ -162,29 +173,29 @@ label{
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 500px !important;
+    width: 100%;
 }
 
-.container-prova{
-    white-space: pre-line;
-    margin: 27mm 16mm 27mm 16mm;
+/* Button */
+
+.btn-primary{
+    background-color: #19882c !important;
 }
 
-.prova-alternativa{
-    padding-left: 1.5em;
+.btn-secondary {
+    background-color: #7f7f7f !important;
 }
 
-@media print {
-    
-  @page { 
-      margin: 0;
-  }
-  
-  body {
-      margin: 27mm 16mm 27mm 16mm;
-  }
-  
-  html, body {
-    width: 210mm;
-    height: 297mm;
-  }
- }
+/* Background */
+.bg-select-menu {
+    background-color: #EEE;
+    border: 1px solid #C3C3C3 !important;
+}
+
+.bg-select-menu option {
+    background-color: #FAFAFA;
+}
+
+.bg-default{
+    background-color: #19882c;
+}
