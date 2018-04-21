@@ -24,8 +24,7 @@ and open the template in the editor.
                 <div class="offset-md-1 col-md-6">
                     <div class="form-group">
                         <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
-                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}" validatorMessage="#{msg['validacao.tamanho.enunciado']}">
-                            <f:validateLength maximum="2000" />
+                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}">
                         </h:inputTextarea>
                     </div>
                 </div>
@@ -48,16 +47,30 @@ and open the template in the editor.
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" action="goListarQuestao" immediate="true" class="btn btn-secondary btn-block font-color-default"></p:commandButton>
                 </div>
                 <div class="col-md-2 form-group">
-                    <p:commandButton id="btnSave" value="#{msg['btn.salvar']}" action="#{questaoBean.salvar()}" class="btn btn-primary btn-block font-color-default" ajax="false" validateClient="true" onclick="PF('block').show()" 
-                                     oncomplete="PF('block').hide()"></p:commandButton>
+                    <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
+                                     class="btn btn-primary btn-block font-color-default">
+                    </p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="formAdicionar" widgetVar="block">
+            <p:blockUI animate="true" block="formAdicionar menu" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
+            <p:confirmDialog message="#{msg['questao.mensagem.salvar']}" id="modalSalvar"
+                             header="#{msg['questao.header.salvar']}" severity="alert"
+                             widgetVar="modalSalvar" closeOnEscape="true">
+                
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
+                                 type="button" styleClass="btn btn-secondary" />
+                
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}" validateClient="true"
+                                 onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
+                                 styleClass="btn btn-primary" update="formAdicionar" />
+            </p:confirmDialog>
+            
         </h:form>
+            
     </ui:define>
 
 </ui:composition>

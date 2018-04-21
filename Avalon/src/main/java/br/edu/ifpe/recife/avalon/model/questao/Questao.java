@@ -72,7 +72,8 @@ public class Questao implements Serializable {
     private Long id;
 
     @NotBlank(message = "{questao.enunciado.obrigatorio}")
-    @Column(name = "TXT_ENUNCIADO", length = 2000)
+    @Size(max = 2000, message = "{questao.tamanho.enunciado}")
+    @Column(name = "TXT_ENUNCIADO", columnDefinition="varchar(2000)")
     private String enunciado;
 
     @NotNull(message = "{questao.criador.obrigatorio}")
