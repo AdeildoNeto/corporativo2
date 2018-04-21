@@ -20,6 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 import javax.persistence.TypedQuery;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -42,7 +44,7 @@ public class QuestaoServico {
      *
      * @param questao
      */
-    public void salvar(Questao questao) {
+    public void salvar(@Valid Questao questao) {
         questao.setEnunciado(questao.getEnunciado().trim());
         entityManager.persist(questao);
     }
@@ -52,7 +54,7 @@ public class QuestaoServico {
      *
      * @param questao
      */
-    public void alterar(Questao questao) {
+    public void alterar(@Valid Questao questao) {
         entityManager.merge(questao);
     }
 
@@ -61,7 +63,7 @@ public class QuestaoServico {
      *
      * @param questao
      */
-    public void remover(Questao questao) {
+    public void remover(@Valid Questao questao) {
         if (!entityManager.contains(questao)) {
             questao.setAtiva(false);
             entityManager.merge(questao);
@@ -75,7 +77,7 @@ public class QuestaoServico {
      * @param tipo
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriadorTipo(String emailCriador, TipoQuestaoEnum tipo) {
+    public List<Questao> buscarQuestoesPorCriadorTipo(@NotNull String emailCriador, TipoQuestaoEnum tipo) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
         query.setParameter("emailCriador", emailCriador);
         query.setParameter("tipo", tipo);
@@ -89,7 +91,7 @@ public class QuestaoServico {
      * @param emailCriador
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriador(String emailCriador) {
+    public List<Questao> buscarQuestoesPorCriador(@NotNull String emailCriador) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
         query.setParameter("emailCriador", emailCriador);
 
@@ -102,7 +104,7 @@ public class QuestaoServico {
      * @param questao
      * @return isQuestaoValida
      */
-    public boolean isEnunciadoPorTipoValido(Questao questao) {
+    public boolean isEnunciadoPorTipoValido(@Valid Questao questao) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());

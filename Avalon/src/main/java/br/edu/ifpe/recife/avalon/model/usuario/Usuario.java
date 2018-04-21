@@ -59,7 +59,7 @@ public class Usuario implements Serializable {
     @Column(name = "TXT_SOBRENOME")
     private String sobrenome;
 
-    @Column(name = "TXT_SENHA")
+    @Column(name = "TXT_SENHA", columnDefinition = "varchar(2000)")
     private String senha;
 
     @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY,

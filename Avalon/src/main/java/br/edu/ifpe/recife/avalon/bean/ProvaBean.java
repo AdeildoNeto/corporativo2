@@ -7,8 +7,8 @@ package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
-import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -33,9 +34,8 @@ public class ProvaBean implements Serializable {
     @EJB
     private QuestaoServico questaoServico;
 
-    @EJB
-    private UsuarioServico usuarioServico;
-
+    private Usuario usuarioLogado;
+    
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
 
     private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
@@ -45,6 +45,8 @@ public class ProvaBean implements Serializable {
     private Set<Questao> questoesSelecionadas = new HashSet<>();
     
     private boolean todosSelecionados = false;
+    
+    private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     
     /**
      * Método para iniciar a página de geração de prova.
@@ -57,6 +59,7 @@ public class ProvaBean implements Serializable {
     }
     
     public ProvaBean() {
+        usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.limparTela();
     }
     
@@ -64,7 +67,7 @@ public class ProvaBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo("email@email.com", tipoSelecionado);
+        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo(usuarioLogado.getEmail(), tipoSelecionado);
     }
 
     /**

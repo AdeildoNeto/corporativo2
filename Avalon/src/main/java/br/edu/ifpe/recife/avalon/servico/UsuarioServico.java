@@ -15,10 +15,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 import javax.persistence.TypedQuery;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -41,7 +42,7 @@ public class UsuarioServico {
      *
      * @param usuario
      */
-    public void salvar(Usuario usuario) {
+    public void salvar(@Valid Usuario usuario) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
         query.setParameter("email", usuario.getEmail());
         query.setParameter("senha", usuario.getSenha());
@@ -59,7 +60,7 @@ public class UsuarioServico {
      *
      * @param usuario
      */
-    public void alterar(Usuario usuario) {
+    public void alterar(@Valid Usuario usuario) {
         entityManager.merge(usuario);
     }
 
@@ -68,7 +69,7 @@ public class UsuarioServico {
      *
      * @param usuario
      */
-    public void remover(Usuario usuario) {
+    public void remover(@Valid Usuario usuario) {
         if (!entityManager.contains(usuario)) {
             usuario = entityManager.merge(usuario);
         }
@@ -77,14 +78,15 @@ public class UsuarioServico {
 
     /**
      * Método para consultar um usuário por Email e Senha.
-     *
-     * @param usuario
-     * @return usuário
+     * 
+     * @param email
+     * @param token
+     * @return usuario
      */
-    public Usuario buscarUsuarioPorLogin(Usuario usuario) {
+    public Usuario buscarUsuarioPorLogin(@NotNull String email, @NotNull String token) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
-        query.setParameter("email", usuario.getEmail());
-        query.setParameter("senha", usuario.getSenha());
+        query.setParameter("email", email);
+        query.setParameter("senha", token);
 
         if (!query.getResultList().isEmpty()) {
             return query.getSingleResult();
@@ -93,7 +95,13 @@ public class UsuarioServico {
         return null;
     }
 
-    public Usuario buscarUsuarioPorEmail(String email) {
+    /**
+     * Método para consultar um usuário por Email.
+     * 
+     * @param email
+     * @return usuario.
+     */
+    public Usuario buscarUsuarioPorEmail(@NotNull String email) {
         TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
         query.setParameter("email", email);
 

@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -49,6 +50,10 @@ public class QuestaoBean implements Serializable {
     private Questao questaoSelecionada;
     
     private boolean exibirModalConfirmarExclusao = false;
+    
+    private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    
+    private Usuario usuarioLogado;
 
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
 
@@ -63,6 +68,7 @@ public class QuestaoBean implements Serializable {
     }
     
     public QuestaoBean() {
+        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();
     }
@@ -79,7 +85,7 @@ public class QuestaoBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriador("email@email.com");
+        this.questoes = questaoServico.buscarQuestoesPorCriador(usuarioLogado.getEmail());
     }
 
     /**
@@ -97,10 +103,8 @@ public class QuestaoBean implements Serializable {
      * @return rota da próxima tela.
      */
     public String salvar() {
-        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email@email.com");
-
         novaQuestao.setTipo(tipoSelecionado);
-        novaQuestao.setCriador(usuario);
+        novaQuestao.setCriador(usuarioLogado);
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
 
         if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
