@@ -102,6 +102,10 @@ label{
     box-shadow: 0px 5px 10px rgba(0,0,0,0.2) !important;
 }
 
+.ui-widget-overlay{
+  background: rgba(0,0,0,0.5);
+}
+
 /* Menu */
 .nav-link{
     color: white !important;
@@ -110,6 +114,10 @@ label{
 /* BlockUI */
 .ui-blockui-content.ui-shadow {
     box-shadow: none !important;
+}
+
+.ui-blockui.ui-widget-overlay{
+    background: transparent;
 }
 
 /* Icons */

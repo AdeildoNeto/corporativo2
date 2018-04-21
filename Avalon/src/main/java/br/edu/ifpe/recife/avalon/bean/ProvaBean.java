@@ -64,7 +64,7 @@ public class ProvaBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", tipoSelecionado);
+        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo("email@email.com", tipoSelecionado);
     }
 
     /**
