@@ -53,18 +53,12 @@ public class AvalonUtil {
         return validationBundle.getString(chave);
     }
     
+    /**
+     * Método que retornar um quebrar linha.
+     * @return 
+     */
     public static String quebrarLinha(){
         return System.getProperty("line.separator");
-    }
-    
-    public static String formatarEnunciado(String enunciado){
-        
-        if(enunciado == null){
-            return "";
-        }
-        
-        return enunciado.replaceAll("\r\n", quebrarLinha());
-        
     }
     
 }

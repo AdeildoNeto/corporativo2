@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -38,6 +39,10 @@ import javax.validation.Valid;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+    private static final String NAV_INICIAL = "goListarQuestao";
+    private static final String LOGIN_FALHA_GERAL = "login.falha.geral";
+    private static final String LOGIN_FALHA_TOKEN = "login.falha.token";
+
     @EJB
     private UsuarioServico usuarioServico;
 
@@ -51,17 +56,30 @@ public class LoginBean implements Serializable {
 
     private Payload payload;
 
+    /**
+     * Método para realizar login via conta Google.
+     */
     public void googleLogin() {
-        verificarToken();
 
-        if (isNotUsuarioCadastrado()) {
-            salvarNovoUsuario();
+        if (token != null) {
+
+            verificarToken();
+
+            if (isNotUsuarioCadastrado()) {
+                salvarNovoUsuario();
+            }
+
+            realizarLogin();
+
+        }else{
+            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
-
-        realizarLogin();
 
     }
 
+    /**
+     * Método para verificar o token enviado.
+     */
     private void verificarToken() {
         GoogleIdTokenVerifier verificador = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
                 .setAudience(Collections.singletonList("131562098478-bvjjnubvmsauka865rsd8rrdol9flj9n.apps.googleusercontent.com"))
@@ -83,16 +101,19 @@ public class LoginBean implements Serializable {
                 usuario.setEmail(payload.getEmail());
                 usuario.setSenha(new BigInteger(1, digest.digest()).toString(16));
             } else {
-                contexto.addMessage(null, new FacesMessage("Token inválido."));
+                contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_TOKEN)));
             }
 
         } catch (IOException | GeneralSecurityException e) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, e);
-            contexto.addMessage(null, new FacesMessage("Falha ao tentar realizar o acesso."));
+            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
     }
 
+    /**
+     * Método para salvar um novo usuário.
+     */
     private void salvarNovoUsuario() {
         if (payload != null) {
 
@@ -108,26 +129,34 @@ public class LoginBean implements Serializable {
         }
     }
 
+    /**
+     * Método para verificar se o usuário já existe.
+     *
+     * @return boolean
+     */
     private boolean isNotUsuarioCadastrado() {
         Usuario usuarioAplicao = usuarioServico.buscarUsuarioPorEmail(payload.getEmail());
         return usuarioAplicao == null;
     }
 
+    /**
+     * Método para realizar Login.
+     */
     private void realizarLogin() {
         HttpSession sessao = (HttpSession) contexto.getExternalContext().getSession(true);
 
         usuario = usuarioServico.buscarUsuarioPorLogin(usuario.getEmail(), usuario.getSenha());
 
-        if(usuario != null){
-        sessao.setAttribute("usuario", usuario);
-        sessao.setAttribute("emailUsuario", usuario.getEmail());
+        if (usuario != null) {
+            sessao.setAttribute("usuario", usuario);
+            sessao.setAttribute("emailUsuario", usuario.getEmail());
 
-        NavigationHandler navigationHandler = contexto.getApplication().getNavigationHandler();
-        navigationHandler.handleNavigation(contexto, null, "goListarQuestao");
-        } else{
-            contexto.addMessage(null, new FacesMessage("Falha ao realizar login."));
+            NavigationHandler navigationHandler = contexto.getApplication().getNavigationHandler();
+            navigationHandler.handleNavigation(contexto, null, NAV_INICIAL);
+        } else {
+            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
-        
+
     }
 
     public String getToken() {

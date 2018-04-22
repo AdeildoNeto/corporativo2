@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="row">
+        <div class="logo-ifpe caixa-cabecalho">
+            <h:graphicImage name="img/logo-ifpe.png" width="180px" height="50px" />
+        </div>
+        <div class="column" style="width: 436px">
+            <div class="caixa-cabecalho" style="width: 430px">
+                #{msg['cabecalho.disciplina']}:
+            </div>
+            <div class="row">
+                <div class="caixa-cabecalho" style="width: 232px; margin-left: 0">
+                    #{msg['cabecalho.prova']}/#{msg['cabecalho.unidade']}:
+                </div>
+                <div class="caixa-cabecalho" style="width: 192px; margin-right: 0;">
+                    #{msg['cabecalho.professor']}:
+                </div>
+            </div>
+        </div>
+        <div class="caixa-cabecalho text-center" style="width: 80px">
+            #{msg['cabecalho.nota']}
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="row">
+                <div class="caixa-cabecalho">
+                    #{msg['cabecalho.curso']}:
+                </div>
+                <div class="caixa-cabecalho">
+                    #{msg['cabecalho.periodo']}:
+                </div>
+            </div>
+            <div class="caixa-cabecalho">
+                #{msg['cabecalho.aluno']}:
+            </div>
+        </div>
+        <div class="column">
+            <div class="row">
+                <div class="caixa-cabecalho">
+                    #{msg['cabecalho.turno']}:
+                </div>
+                <div class="caixa-cabecalho">
+                    #{msg['cabecalho.data']}:
+                </div>
+            </div>
+            <div class="caixa-cabecalho">
+                #{msg['cabecalho.matricula']}:
+            </div>
+        </div>
+        <div class="caixa-cabecalho">
+            
+        </div>
+    </div>  
+    
+</ui:composition>

@@ -15,17 +15,15 @@
 
     <h:body>
         <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-        <h:form id="remoteForm">
+        <h:form id="loginForm">
             <div class="row">
                 <div class="offset-md-1 col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
-            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" update="remoteForm" />
-        </h:form>
-
-        <h:form>
-
+            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" update="loginForm"
+                             onstart="PF('block').show()" oncomplete="PF('block').hide()" />
+        
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div id="btnGoogleLogin" class="btn btn-primary">
@@ -33,9 +31,12 @@
                     </div>
                 </div>
             </div>
+            
+            <p:blockUI animate="true" block="loginForm" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
 
         </h:form>
-
 
         <h:outputScript name="js/login-google.js" />
         <script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>

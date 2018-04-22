@@ -94,6 +94,10 @@ public class Questao implements Serializable {
     @Transient
     private boolean selecionada;
     
+    /**
+     * Método para formatar apresentação da questão de acordo com o tipo.
+     * @return 
+     */
     public String formatarQuestao() {
         StringBuilder sb = new StringBuilder();
 

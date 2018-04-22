@@ -9,7 +9,6 @@ import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
-import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
@@ -17,7 +16,6 @@ import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -32,11 +30,12 @@ import javax.validation.Valid;
 @SessionScoped
 public class QuestaoBean implements Serializable {
 
+    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
+    private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
+    private static final String GO_ADD_QUESTAO = "goAddQuestao";
+    
     @EJB
     private QuestaoServico questaoServico;
-
-    @EJB
-    private UsuarioServico usuarioServico;
 
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
 
@@ -51,34 +50,34 @@ public class QuestaoBean implements Serializable {
     
     private boolean exibirModalConfirmarExclusao = false;
     
-    private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    private final Usuario usuarioLogado;
+
     
-    private Usuario usuarioLogado;
-
-    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
-
+    /**
+     * Método para inicializar variáveis utilizadas na tela Listar Questões.
+     * @return 
+     */
     public String iniciarPagina(){
         buscarQuestoes();
-        return "goListarQuestao";
+        return GO_LISTAR_QUESTAO;
     }
     
+    
+    /**
+     * Método para inicializar as variáveis da tela de inclusão de questão.
+     * @return nav
+     */
     public String iniciarPaginaInclusao(){
         this.limparTela();
-        return "goAddQuestao";
+        return GO_ADD_QUESTAO;
     }
     
+    
     public QuestaoBean() {
+        HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();
-    }
-
-    /**
-     * Método para inicializar a busca de questões. 
-     */
-    @PostConstruct
-    private void init() {
-        buscarQuestoes();
     }
     
     /**
@@ -117,7 +116,7 @@ public class QuestaoBean implements Serializable {
             return "";
         }
 
-        return "goListarQuestao";
+        return GO_LISTAR_QUESTAO;
     }
 
     /**

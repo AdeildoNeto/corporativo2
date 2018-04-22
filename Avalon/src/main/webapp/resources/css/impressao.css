@@ -8,37 +8,78 @@ and open the template in the editor.
     Author     : eduardoamaral
 */
 
+@media all {
 
-.container-prova{
-    white-space: pre-line;
-    margin: 0.5cm 2cm 2cm 3cm;
-}
+    @page {
+        size: A4;
+        margin: 0mm;
+    }
 
-.prova-alternativa{
-    padding-left: 1.5em;
-}
+    /* Impressão */
+    .caixa-cabecalho{
+        border: 1px solid black;
+        min-height: 27px;
+        max-height: 60px;
+        text-transform: uppercase;
+        font-size: 8px;
+        padding: 1px 0 0 2px;
+    }
 
-label{
-    font-weight: bold;
-}
+    .row{
+        display: flex;
+    }
 
-@media print {
+    .column{
+        flex-direction: column;
+    }
+
+    .row div{
+        margin: 1px;
+        display: flex;
+    }
+
+    .container-prova{
+        white-space: pre-line;
+    }
+
+    .prova-alternativa{
+        padding-left: 1.5em;
+    }
+
+    .cabecalho{
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    .logo-ifpe{
+        padding: 1px;
+        width: 182px;
+        height: 62px;
+        text-align: center;
+    }
+
+    .text-center{
+        text-align: center;
+    }
     
-  @page {
-      size: A4;
-      margin: 0mm;
-  }
-  
-  head{
-      display: none;
-  }
-  
-  .body{
-    margin: 0.5cm 2cm 2cm 3cm;
-  }
-  
-  html, body {
-    width: 210mm;
-    height: 297mm;
-  }
- }
+    label{
+        font-weight: bold;
+    }
+
+    head{
+        display: none;
+    }
+
+    body{
+        margin: 3cm 2cm 2cm 3cm;
+        width: 210mm;
+        height: 297mm;
+    }
+}
+
+@media screen {
+    body{
+        width: 210mm;
+        margin: 0 auto !important;
+    }
+}
