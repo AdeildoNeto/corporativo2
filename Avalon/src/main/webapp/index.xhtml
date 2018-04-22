@@ -16,15 +16,15 @@
     <h:body>
         <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
         <h:form id="remoteForm">
-            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" />
-        </h:form>
-
-        <h:form>
             <div class="row">
                 <div class="offset-md-1 col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
+            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" update="remoteForm" />
+        </h:form>
+
+        <h:form>
 
             <div class="row">
                 <div class="col-md-12 text-center">

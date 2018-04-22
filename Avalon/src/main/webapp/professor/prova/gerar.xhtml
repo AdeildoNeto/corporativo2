@@ -25,7 +25,7 @@ and open the template in the editor.
                     <div>
                         <h:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
                             <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
-                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="table"/>
+                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="@form"/>
                         </h:selectOneMenu>
                     </div>
                 </div>
