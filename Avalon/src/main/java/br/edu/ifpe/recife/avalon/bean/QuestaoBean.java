@@ -50,14 +50,16 @@ public class QuestaoBean implements Serializable {
     
     private boolean exibirModalConfirmarExclusao = false;
     
-    private final Usuario usuarioLogado;
+    private Usuario usuarioLogado;
 
+    HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     
     /**
      * Método para inicializar variáveis utilizadas na tela Listar Questões.
      * @return 
      */
     public String iniciarPagina(){
+        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         buscarQuestoes();
         return GO_LISTAR_QUESTAO;
     }
@@ -68,13 +70,13 @@ public class QuestaoBean implements Serializable {
      * @return nav
      */
     public String iniciarPaginaInclusao(){
+        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.limparTela();
         return GO_ADD_QUESTAO;
     }
     
     
     public QuestaoBean() {
-        HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.novaQuestao = new Questao();
         this.carregarTiposQuestao();

@@ -39,10 +39,6 @@ and open the template in the editor.
         display: flex;
     }
 
-    .container-prova{
-        white-space: pre-line;
-    }
-
     .prova-alternativa{
         padding-left: 1.5em;
     }
@@ -71,6 +67,14 @@ and open the template in the editor.
         display: inline-block;
         margin: 0 auto;
         text-align: center;
+    }
+    
+    .container-questao{
+        white-space: pre-line;
+    }
+    
+    .DISCURSIVA{
+        margin-bottom: 60px;
     }
     
     label{

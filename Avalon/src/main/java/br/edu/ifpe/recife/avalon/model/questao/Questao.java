@@ -102,9 +102,9 @@ public class Questao implements Serializable {
         StringBuilder sb = new StringBuilder();
 
         if (TipoQuestaoEnum.VERDADEIRO_FALSO.equals(this.tipo)) {
-            sb.append("( ) Verdadeiro");
+            sb.append("(  ) Verdadeiro");
             sb.append(AvalonUtil.quebrarLinha());
-            sb.append("( ) Falso");
+            sb.append("(  ) Falso");
         }
 
         return sb.toString();

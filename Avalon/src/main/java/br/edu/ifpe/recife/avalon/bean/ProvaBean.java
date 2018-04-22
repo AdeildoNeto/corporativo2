@@ -53,6 +53,7 @@ public class ProvaBean implements Serializable {
      * @return rota para página de geração de prova
      */
     public String iniciarPagina(){
+        usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         limparTela();
         buscarQuestoes();
         return "goGerarProva";
