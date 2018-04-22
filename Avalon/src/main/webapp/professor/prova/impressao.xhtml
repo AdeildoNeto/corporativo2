@@ -23,10 +23,9 @@ and open the template in the editor.
                 <div>
                     <p:outputLabel>#{posicao.index+1}) #{questao.enunciado}</p:outputLabel>
                 </div>
-                <p:outputPanel styleClass="prova-alternativa" rendered="#{questao.tipo.codigo == 2 || questao.tipo.codigo == 3}">
+                <p:outputPanel styleClass="prova-alternativa" rendered="#{questao.tipo == 'VERDADEIRO_FALSO' || questao.tipo == 'MULTIPLA_ESCOLHA'}">
                     <h:outputText value="#{questao.formatarQuestao()}"></h:outputText>
                 </p:outputPanel>
-                <br />
             </ui:repeat>
         </div>
     </h:body>
