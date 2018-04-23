@@ -27,6 +27,13 @@ and open the template in the editor.
                         <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}">
                         </h:inputTextarea>
                     </div>
+                    <p:outputPanel id="panelAlt">
+                        <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
+                        <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao" rendered="#{questaoBean.tipoSelecionado.descricao=='Múltipla Escolha'}">    
+                            
+                            <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
+                        </ui:repeat>
+                    </p:outputPanel>
                 </div>
                 <div class="col-md-4">
                     <div>
@@ -34,6 +41,7 @@ and open the template in the editor.
                         <div>
                             <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
                                 <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
+                                <p:ajax update="panelAlt" event="change"/>
                             </h:selectOneMenu>
                         </div>
                     </div>
@@ -60,17 +68,17 @@ and open the template in the editor.
             <p:confirmDialog message="#{msg['questao.mensagem.salvar']}" id="modalSalvar"
                              header="#{msg['questao.header.salvar']}" severity="alert"
                              widgetVar="modalSalvar" closeOnEscape="true">
-                
+
                 <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
                                  type="button" styleClass="btn btn-secondary" />
-                
+
                 <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}" validateClient="true"
                                  onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
                                  styleClass="btn btn-primary" update="formAdicionar" />
             </p:confirmDialog>
-            
+
         </h:form>
-            
+
     </ui:define>
 
 </ui:composition>
