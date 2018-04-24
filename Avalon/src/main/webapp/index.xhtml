@@ -10,6 +10,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous" defer="defer"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <h:outputStylesheet name="css/style.css" />
         <title>Avalon</title>
     </h:head>
 
@@ -24,7 +25,7 @@
             <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" update="loginForm"
                              onstart="PF('block').show()" oncomplete="PF('block').hide()" />
         
-            <div class="row">
+            <div class="row" id="loginRow">
                 <div class="col-md-12 text-center">
                     <div id="btnGoogleLogin" class="btn btn-primary">
                         Login

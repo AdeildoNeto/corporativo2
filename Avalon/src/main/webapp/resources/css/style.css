@@ -103,7 +103,7 @@ label{
 }
 
 .ui-widget-overlay{
-  background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.5);
 }
 
 /* Menu */
@@ -206,3 +206,15 @@ label{
 .bg-default{
     background-color: #19882c;
 }
+
+/* Login */
+
+#btnGoogleLogin{
+    width: 16%;
+}
+
+#loginRow{
+    height: 100vh;
+    align-items: center;
+}
+
