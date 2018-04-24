@@ -21,7 +21,7 @@ and open the template in the editor.
             </div>
             <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
                 <p:outputPanel styleClass="container-questao #{questao.tipo}">
-                    <div>
+                    <div class="enunciado">
                         <p:outputLabel>#{posicao.index+1}) #{questao.enunciado}</p:outputLabel>
                     </div>
                     <p:outputPanel styleClass="prova-alternativa" rendered="#{questao.tipo == 'VERDADEIRO_FALSO' || questao.tipo == 'MULTIPLA_ESCOLHA'}">

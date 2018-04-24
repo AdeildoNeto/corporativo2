@@ -90,6 +90,10 @@ and open the template in the editor.
         width: 210mm;
         height: 100%;
     }
+    
+    .enunciado{
+        word-wrap: break-word;
+    }
 }
 
 @media screen {

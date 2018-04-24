@@ -13,13 +13,14 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
-import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -28,7 +29,7 @@ import javax.validation.Valid;
  *
  * @author eduardo.f.amaral
  */
-@Named(value = "questaoBean")
+@ManagedBean
 @SessionScoped
 public class QuestaoBean implements Serializable {
 
@@ -66,6 +67,11 @@ public class QuestaoBean implements Serializable {
 
     HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
+    @PostConstruct
+    private void init(){
+        iniciarPagina();
+    }
+    
     /**
      * Método para inicializar variáveis utilizadas na tela Listar Questões.
      *
