@@ -106,9 +106,10 @@ public class QuestaoServico {
      * @return isQuestaoValida
      */
     public boolean isEnunciadoPorTipoValido(@Valid Questao questao) {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoCriador", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
+        query.setParameter("idCriador", questao.getCriador().getId());
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
             return true;

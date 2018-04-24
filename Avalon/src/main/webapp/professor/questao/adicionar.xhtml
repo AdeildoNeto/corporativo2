@@ -69,7 +69,7 @@ and open the template in the editor.
                 <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
                                  type="button" styleClass="btn btn-secondary" />
 
-                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}" validateClient="true"
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}" validateClient="true" process="@all"
                                  onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
                                  styleClass="btn btn-primary" update="formAdicionar" />
             </p:confirmDialog>

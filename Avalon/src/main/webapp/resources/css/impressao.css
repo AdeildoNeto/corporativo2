@@ -88,7 +88,7 @@ and open the template in the editor.
     body{
         margin: 3cm 2cm 2cm 3cm;
         width: 210mm;
-        height: 297mm;
+        height: 100%;
     }
 }
 
