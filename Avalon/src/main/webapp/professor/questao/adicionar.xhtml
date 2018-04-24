@@ -27,9 +27,9 @@ and open the template in the editor.
                         <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}">
                         </h:inputTextarea>
                     </div>
-                    <p:outputPanel id="panelAlt">
+                    <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}">
                         <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
-                        <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao" rendered="#{questaoBean.tipoSelecionado.descricao=='Múltipla Escolha'}">    
+                        <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao">    
                             
                             <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
                         </ui:repeat>
@@ -41,14 +41,11 @@ and open the template in the editor.
                         <div>
                             <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
                                 <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
-                                <p:ajax update="panelAlt" event="change"/>
+                                <p:ajax update="@form" event="change"/>
                             </h:selectOneMenu>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container-answers row">
-
             </div>
             <div class="row buttons-save">
                 <div class="offset-md-2 col-md-2 form-group">

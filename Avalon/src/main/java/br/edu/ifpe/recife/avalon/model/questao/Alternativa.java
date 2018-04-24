@@ -41,6 +41,15 @@ public class Alternativa implements Serializable {
     @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
     private MultiplaEscolha questao;
 
+    public String formatarAlternativa(char opcao){
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(opcao).append(")").append(" ");
+        sb.append(this.alternativa);
+        
+        return sb.toString();
+    }
+    
     public Long getId() {
         return id;
     }

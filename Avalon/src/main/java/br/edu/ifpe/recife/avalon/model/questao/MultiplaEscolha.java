@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.model.questao;
 
+import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -25,6 +26,19 @@ public class MultiplaEscolha extends Questao implements Serializable{
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alternativa> alternativas;
 
+    @Override
+    public String formatarQuestao(){
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < this.alternativas.size(); i++){
+            char opcao = (char) (i+97);
+            sb.append(this.alternativas.get(i).formatarAlternativa(opcao));
+            sb.append(AvalonUtil.quebrarLinha());
+        }
+        
+        return sb.toString();
+    }
+    
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }
