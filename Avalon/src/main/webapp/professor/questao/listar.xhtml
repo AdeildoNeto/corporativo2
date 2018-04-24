@@ -19,12 +19,6 @@ and open the template in the editor.
                     <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['questao.listar.header.id']}</span>
-                            </f:facet>
-                            <span>#{questao.id}</span>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
                                 <span>#{msg['questao.listar.header.tipo']}</span>
                             </f:facet>
                             <span>#{questao.tipo.descricao}</span>
@@ -39,6 +33,10 @@ and open the template in the editor.
                             <f:facet name="header">
                                 
                             </f:facet>
+                            <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}" onclick="PF('block').show()"
+                                             oncomplete="PF('block').hide();">
+                                <span class="material-icons">mode_edit</span>
+                            </p:commandLink>
                             <p:commandLink action="#{questaoBean.selecionarQuestao(questao)}" onclick="PF('block').show()"
                                              oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>

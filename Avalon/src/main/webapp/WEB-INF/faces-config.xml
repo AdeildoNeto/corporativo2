@@ -11,7 +11,6 @@
         <locale-config>
             <default-locale>pt_BR</default-locale>
             <supported-locale>pt_BR</supported-locale>
-            <supported-locale>en</supported-locale>
         </locale-config>
         <resource-bundle>
             <base-name>mensagens.mensagem</base-name>
@@ -33,6 +32,11 @@
         <navigation-case>
             <from-outcome>goListarQuestao</from-outcome>
             <to-view-id>/professor/questao/listar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goAlterarQuestao</from-outcome>
+            <to-view-id>/professor/questao/editar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>

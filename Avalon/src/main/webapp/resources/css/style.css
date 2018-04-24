@@ -137,27 +137,26 @@ label{
     max-height: 100%;
 }
 
-.table-questoes td:nth-child(3){
+.table-questoes td:nth-child(2){
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.table-questoes td:first-child{
-    width: 40px;
+.table-questoes th:first-child{
+    width: 202px;
+}
+
+.table-questoes th:nth-child(2){
+    width: 651px;
 }
 
 .table-questoes td:nth-child(2){
-    width: 20%;
+    max-width: 651px;
 }
 
-.table-questoes td:nth-child(3){
-    width: 70%;
-    max-width: 300px;
-}
-
-.table-questoes td:last-child{
-    width: 10%;
+.table-questoes th:last-child{
+    width: 80px;
 }
 
 /* Generate Table */

@@ -35,6 +35,7 @@ public class QuestaoBean implements Serializable {
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
+    private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
 
     private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
@@ -78,12 +79,27 @@ public class QuestaoBean implements Serializable {
     /**
      * Método para inicializar as variáveis da tela de inclusão de questão.
      *
-     * @return nav
+     * @return goAddQuestao
      */
     public String iniciarPaginaInclusao() {
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.limparTela();
         return GO_ADD_QUESTAO;
+    }
+    
+    /**
+     * Método para inicializar as variáveis da tela de alteração da questão.
+     * @param questaoSelecionada
+     * @return goAlterarQuestao
+     */
+    public String iniciparPaginaAlteracao(Questao questaoSelecionada){
+        this.questaoSelecionada = questaoSelecionada;
+        
+        if(TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())){
+            this.alternativas = ((MultiplaEscolha) questaoSelecionada).getAlternativas();
+        }
+        
+        return GO_ALTERAR_QUESTAO;
     }
 
     public QuestaoBean() {
@@ -126,8 +142,7 @@ public class QuestaoBean implements Serializable {
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
 
         if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
-            String tipoQuestao = getTipoSelecionado().getDescricao();
-            if ("Múltipla Escolha".equals(tipoQuestao)) {
+            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(tipoSelecionado)) {
                 MultiplaEscolha questaoMultipla = new MultiplaEscolha();
 
                 questaoMultipla.setEnunciado(novaQuestao.getEnunciado());
@@ -146,6 +161,25 @@ public class QuestaoBean implements Serializable {
             } else {
                 questaoServico.salvar(novaQuestao);
             }
+            limparTela();
+            buscarQuestoes();
+        } else {
+            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
+            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+            return "";
+        }
+
+        return GO_LISTAR_QUESTAO;
+    }
+    
+    /**
+     * Método para salvar as alterações realizadas em uma questão.
+     * @return nav
+     */
+    public String salvarEdicao() {
+        
+        if (questaoServico.isEdicaoEnunciadoPorTipoValido(questaoSelecionada)) {
+            questaoServico.alterar(questaoSelecionada);
             limparTela();
             buscarQuestoes();
         } else {
@@ -247,4 +281,12 @@ public class QuestaoBean implements Serializable {
         this.alternativas = alternativas;
     }
 
+    public Questao getQuestaoSelecionada() {
+        return questaoSelecionada;
+    }
+
+    public void setQuestaoSelecionada(Questao questaoSelecionada) {
+        this.questaoSelecionada = questaoSelecionada;
+    }
+    
 }

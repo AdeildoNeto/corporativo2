@@ -99,7 +99,7 @@ public class QuestaoServico {
     }
 
     /**
-     * Método para validar o enunciado da Questão por Tipo
+     * Método para validar se o enunciado de uma nova Questão é válido para um determinado Tipo
      *
      * @param questao
      * @return isQuestaoValida
@@ -108,6 +108,25 @@ public class QuestaoServico {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipo", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
+
+        if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
+            return true;
+        }
+
+        return query.getResultList().isEmpty();
+    }
+    
+    /**
+     * Método para validar se o enunciado de uma Questão a ser alterada é válido a depender do seu Tipo.
+     *
+     * @param questao
+     * @return isQuestaoValida
+     */
+    public boolean isEdicaoEnunciadoPorTipoValido(@Valid Questao questao) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoId", Questao.class);
+        query.setParameter("enunciado", questao.getEnunciado().trim());
+        query.setParameter("tipo", questao.getTipo());
+        query.setParameter("id", questao.getId());
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
             return true;

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="formEditar">
+            <div class="row">
+                <div class="offset-md-1 col-md-6">
+                    <p:messages id="msgs" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-md-1 col-md-6">
+                    <div class="form-group">
+                        <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
+                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.questaoSelecionada.enunciado}">
+                        </h:inputTextarea>
+                    </div>
+                    <p:outputPanel id="panelAlt" rendered="#{questaoBean.questaoSelecionada.tipo == 'MULTIPLA_ESCOLHA'}">
+                        <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
+                        <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao">    
+                            
+                            <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
+                        </ui:repeat>
+                    </p:outputPanel>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <label for="tipoQuestao">#{msg['questao.listar.header.tipo']}:</label> <span id="tipoQuestao">#{questaoBean.questaoSelecionada.tipo.descricao}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row buttons-save">
+                <div class="offset-md-2 col-md-2 form-group">
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" action="goListarQuestao" immediate="true" class="btn btn-secondary btn-block font-color-default"></p:commandButton>
+                </div>
+                <div class="col-md-2 form-group">
+                    <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
+                                     class="btn btn-primary btn-block font-color-default">
+                    </p:commandButton>
+                </div>
+            </div>
+
+            <p:blockUI animate="true" block="formEditar" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+            <p:confirmDialog message="#{msg['questao.mensagem.editar']}" id="modalSalvar"
+                             header="#{msg['questao.header.salvar']}" severity="alert"
+                             widgetVar="modalSalvar" closeOnEscape="true">
+
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
+                                 type="button" styleClass="btn btn-secondary" />
+
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvarEdicao()}" validateClient="true"
+                                 onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
+                                 styleClass="btn btn-primary" update="formEditar" />
+            </p:confirmDialog>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
