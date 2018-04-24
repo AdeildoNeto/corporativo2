@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
+import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import java.util.List;
@@ -133,6 +134,31 @@ public class QuestaoServico {
         }
 
         return query.getResultList().isEmpty();
+    }
+    
+    /**
+     * Método para verificar se todas as alternativas são diferentes entre si.
+     * @param alternativas
+     * @return alternativaValida
+     */
+    public boolean isAlternativasValidas(@NotNull List<Alternativa> alternativas){
+        if(alternativas.isEmpty()){
+            return false;
+        }
+        
+        int qtdeAlternativas = alternativas.size();
+        
+        for (int i = 0; i < qtdeAlternativas - 1; i++){
+            for(int j = i + 1; j < qtdeAlternativas; j++){
+                if(alternativas.get(i).getAlternativa()
+                        .equals(alternativas.get(j).getAlternativa())){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+        
     }
 
 }

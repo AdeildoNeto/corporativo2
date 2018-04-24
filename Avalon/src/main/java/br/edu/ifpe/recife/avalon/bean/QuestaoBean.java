@@ -36,6 +36,7 @@ public class QuestaoBean implements Serializable {
     private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
     private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
+    private static final String ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
 
     private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
@@ -86,19 +87,20 @@ public class QuestaoBean implements Serializable {
         this.limparTela();
         return GO_ADD_QUESTAO;
     }
-    
+
     /**
      * Método para inicializar as variáveis da tela de alteração da questão.
+     *
      * @param questaoSelecionada
      * @return goAlterarQuestao
      */
-    public String iniciparPaginaAlteracao(Questao questaoSelecionada){
+    public String iniciparPaginaAlteracao(Questao questaoSelecionada) {
         this.questaoSelecionada = questaoSelecionada;
-        
-        if(TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())){
+
+        if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
             this.alternativas = ((MultiplaEscolha) questaoSelecionada).getAlternativas();
         }
-        
+
         return GO_ALTERAR_QUESTAO;
     }
 
@@ -143,52 +145,92 @@ public class QuestaoBean implements Serializable {
 
         if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
             if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(tipoSelecionado)) {
-                MultiplaEscolha questaoMultipla = new MultiplaEscolha();
-
-                questaoMultipla.setEnunciado(novaQuestao.getEnunciado());
-                questaoMultipla.setCriador(novaQuestao.getCriador());
-                questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
-                questaoMultipla.setDataCriacao(novaQuestao.getDataCriacao());
-
-                alternativas.get(0).setQuestao(questaoMultipla);
-                alternativas.get(1).setQuestao(questaoMultipla);
-                alternativas.get(2).setQuestao(questaoMultipla);
-                alternativas.get(3).setQuestao(questaoMultipla);
-                alternativas.get(4).setQuestao(questaoMultipla);
-
-                questaoMultipla.setAlternativas(alternativas);
-                questaoServico.salvar(questaoMultipla);
+                return salvarQuestaoMultiplaEscolha();
             } else {
                 questaoServico.salvar(novaQuestao);
             }
             limparTela();
             buscarQuestoes();
         } else {
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
-            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+            exibirMensagemEnunciadoInvalido();
             return "";
         }
 
         return GO_LISTAR_QUESTAO;
     }
-    
+
+    /**
+     * Método para salvar uma questao de múltipla escolha.
+     *
+     * @return nav
+     */
+    private String salvarQuestaoMultiplaEscolha() {
+        if (questaoServico.isAlternativasValidas(alternativas)) {
+            MultiplaEscolha questaoMultipla = new MultiplaEscolha();
+
+            questaoMultipla.setEnunciado(novaQuestao.getEnunciado());
+            questaoMultipla.setCriador(novaQuestao.getCriador());
+            questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
+            questaoMultipla.setDataCriacao(novaQuestao.getDataCriacao());
+
+            alternativas.get(0).setQuestao(questaoMultipla);
+            alternativas.get(1).setQuestao(questaoMultipla);
+            alternativas.get(2).setQuestao(questaoMultipla);
+            alternativas.get(3).setQuestao(questaoMultipla);
+            alternativas.get(4).setQuestao(questaoMultipla);
+
+            questaoMultipla.setAlternativas(alternativas);
+            questaoServico.salvar(questaoMultipla);
+            
+            limparTela();
+            buscarQuestoes();
+
+            return GO_LISTAR_QUESTAO;
+        } else {
+            exibirMensagemAlternativasInvalidas();
+            return "";
+        }
+    }
+
     /**
      * Método para salvar as alterações realizadas em uma questão.
+     *
      * @return nav
      */
     public String salvarEdicao() {
-        
+
         if (questaoServico.isEdicaoEnunciadoPorTipoValido(questaoSelecionada)) {
+            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
+                if (!questaoServico.isAlternativasValidas(alternativas)) {
+                    exibirMensagemAlternativasInvalidas();
+                    return "";
+                }
+            }
             questaoServico.alterar(questaoSelecionada);
             limparTela();
             buscarQuestoes();
         } else {
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
-            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+            exibirMensagemEnunciadoInvalido();
             return "";
         }
 
         return GO_LISTAR_QUESTAO;
+    }
+
+    /**
+     * Método para exibição de mensagem de validação de alternativas.
+     */
+    private void exibirMensagemAlternativasInvalidas() {
+        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(ALTERNATIVAS_IGUAIS), null);
+        FacesContext.getCurrentInstance().addMessage(null, mensagem);
+    }
+
+    /**
+     * Método para exibição de mensagem de validação do enunciado.
+     */
+    private void exibirMensagemEnunciadoInvalido() {
+        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
+        FacesContext.getCurrentInstance().addMessage(null, mensagem);
     }
 
     /**
@@ -288,5 +330,5 @@ public class QuestaoBean implements Serializable {
     public void setQuestaoSelecionada(Questao questaoSelecionada) {
         this.questaoSelecionada = questaoSelecionada;
     }
-    
+
 }
