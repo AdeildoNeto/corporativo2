@@ -76,10 +76,6 @@ and open the template in the editor.
     .DISCURSIVA{
         margin-bottom: 60px;
     }
-    
-    label{
-        font-weight: bold;
-    }
 
     head{
         display: none;
