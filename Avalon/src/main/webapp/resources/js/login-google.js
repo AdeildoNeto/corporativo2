@@ -30,7 +30,7 @@ function attachSignin(element) {
                 onSignIn(googleUser);
             },
             function (error) {
-                alert(JSON.stringify(error, undefined, 2));
+                //alert(JSON.stringify(error, undefined, 2));
             });
 }
 
@@ -51,5 +51,5 @@ function onSignIn(googleUser) {
 
 function handleComplete(xhr, status, args) {
     var nomeDoAtributo = args.logou;
-    alert(nomeDoAtributo);
+    //alert(nomeDoAtributo);
 }

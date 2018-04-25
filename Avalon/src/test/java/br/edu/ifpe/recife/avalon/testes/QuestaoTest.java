@@ -238,6 +238,41 @@ public class QuestaoTest {
         assertEquals(0, questoes.size());
     }
 
+    @Test
+    public void t10_editarQuestaoMultiplaEscolha() {
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriador("email3@email.com");
+        MultiplaEscolha questaoMp = new MultiplaEscolha();
+
+        for (Questao questao : questoes) {
+            if ("Múltipla Escolha".equals(questao.getTipo().getDescricao())) {
+                questaoMp = (MultiplaEscolha) questao;
+            }
+        }
+
+        List<Alternativa> alternativas = questaoMp.getAlternativas();
+
+        Alternativa alternativa = alternativas.get(1);
+
+        alternativa.setAlternativa("Alternativa alterada");
+
+        alternativas.set(1, alternativa);
+
+        questaoMp.setAlternativas(alternativas);
+
+        questaoServico.alterar(questaoMp);
+
+        for (Questao questao : questoes) {
+            if ("Múltipla Escolha".equals(questao.getTipo().getDescricao())) {
+                questaoMp = (MultiplaEscolha) questao;
+            }
+        }
+
+        alternativas = questaoMp.getAlternativas();
+        alternativa = alternativas.get(1);
+
+        assertEquals("Alternativa alterada", alternativa.getAlternativa());
+    }
+
     /*
     
     private static final int QTDE_QUESTOES_DISCURSIVAS = 1;

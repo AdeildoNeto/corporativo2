@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -33,6 +34,7 @@ public class Alternativa implements Serializable {
     private Long id;
 
     @NotBlank(message = "{questao.alternativa.obrigatorio}")
+    @Size(max = 255, message = "{alternativa.tamanho.maximo}")
     @Column(name = "TXT_ALTERNATIVA")
     private String alternativa;
 

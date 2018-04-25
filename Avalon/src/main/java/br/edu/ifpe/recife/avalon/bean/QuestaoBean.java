@@ -278,6 +278,10 @@ public class QuestaoBean implements Serializable {
         questaoSelecionada = null;
     }
 
+    public String voltarListarQuestoes(){
+        return iniciarPagina();
+    }
+    
     /*
         GETTERS AND SETTERS
      */
