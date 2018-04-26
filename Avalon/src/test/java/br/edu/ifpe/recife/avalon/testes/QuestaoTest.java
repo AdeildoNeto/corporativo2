@@ -119,6 +119,11 @@ public class QuestaoTest {
         questao.setEnunciado("Enunciado alterado");
 
         questaoServico.alterar(questao);
+        
+        questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        Questao questao2 = questaoBuscada.get(0);
+
+        assertEquals("Enunciado alterado", questao2.getEnunciado());
 
     }
 
