@@ -54,7 +54,10 @@ and open the template in the editor.
             </div>
             <div class="row buttons-save">
                 <div class="offset-md-2 col-md-2 form-group">
-                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" action="goListarQuestao" immediate="true" class="btn btn-secondary btn-block font-color-default"></p:commandButton>
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
+                                     action="goListarQuestao" immediate="true"
+                                     class="btn btn-secondary btn-block font-color-default">
+                    </p:commandButton>
                 </div>
                 <div class="col-md-2 form-group">
                     <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
