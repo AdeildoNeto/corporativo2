@@ -34,6 +34,11 @@ and open the template in the editor.
                             <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
                         </ui:repeat>
                     </p:outputPanel>
+                    <div class="form-group display-flex">
+                        <label for="questao-compartilhad">#{msg['label.compartilhar.questao']}:</label>
+                        <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questaoSelecionada.compartilhada}"
+                                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div>

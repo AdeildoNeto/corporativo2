@@ -61,10 +61,16 @@ import org.hibernate.validator.constraints.NotBlank;
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.ativa = true"
             ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipoId",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.id <> :id AND q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND "
+                            + "q.id <> :id AND q.ativa = true"
             ),@NamedQuery(
                     name = "Questao.PorEnunciadoTipoCriador",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND q.criador.id = :idCriador AND q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND "
+                            + "q.criador.id = :idCriador AND q.ativa = true"
+            ),@NamedQuery(
+                    name = "Questao.ParaGerarProva",
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipoFiltro "
+                            + "AND (q.criador = :idCriador OR (q.criador <> :idCriador AND q.compartilhada = true))"
             )
         })
 public class Questao implements Serializable {
@@ -96,6 +102,9 @@ public class Questao implements Serializable {
     
     @Column(name = "SN_ATIVA", nullable = false)
     private Boolean ativa = true;
+    
+    @Column(name = "SN_COMPARTILHADA", nullable = false)
+    private Boolean compartilhada = true;
     
     @Transient
     private boolean selecionada;
@@ -170,6 +179,14 @@ public class Questao implements Serializable {
 
     public void setSelecionada(boolean selecionada) {
         this.selecionada = selecionada;
+    }
+
+    public Boolean getCompartilhada() {
+        return compartilhada;
+    }
+
+    public void setCompartilhada(Boolean compartilhada) {
+        this.compartilhada = compartilhada;
     }
         
 }

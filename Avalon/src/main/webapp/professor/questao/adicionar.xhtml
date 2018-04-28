@@ -24,16 +24,20 @@ and open the template in the editor.
                 <div class="offset-md-1 col-md-6">
                     <div class="form-group">
                         <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
-                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}">
+                        <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.novaQuestao.enunciado}">
                         </h:inputTextarea>
                     </div>
                     <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}">
                         <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
                         <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao">    
-                            
                             <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
                         </ui:repeat>
                     </p:outputPanel>
+                    <div class="form-group display-flex">
+                        <label for="questao-compartilhad">#{msg['label.compartilhar.questao']}:</label>
+                        <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.novaQuestao.compartilhada}"
+                                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div>

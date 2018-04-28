@@ -218,3 +218,40 @@ label{
     align-items: center;
 }
 
+/* Switch */
+.ui-inputswitch .ui-inputswitch-on,
+.ui-inputswitch .ui-inputswitch-off{
+    height: 100% !important;
+    padding-top: 0 !important;
+}
+
+.ui-inputswitch{
+    margin-left: 8px;
+    background-color: #DFDFDF;
+    border-radius: 3px;
+}
+
+.ui-inputswitch span{
+    font-weight: normal !important;
+}
+
+.ui-inputswitch-on span,
+.ui-inputswitch-off span{
+    font-size: 10pt;
+    padding: 4px;
+}
+
+.ui-inputswitch-off span{
+    background-color: #7f7f7f9c;
+    color: whitesmoke;
+}
+
+.ui-inputswitch-on span{
+    background-color: #19882c9c;
+    color: whitesmoke;
+}
+
+/* Flex */
+.display-flex{
+    display: flex;
+}
