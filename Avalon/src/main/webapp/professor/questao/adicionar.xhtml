@@ -43,7 +43,8 @@ and open the template in the editor.
                     <div>
                         <label for="tipoQuestao">#{msg['label.selecione.tipo']}:</label>
                         <div>
-                            <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
+                            <h:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}"
+                                             class="btn dropdown-toggle bg-select-menu">
                                 <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
                                 <p:ajax update="@form" event="change"/>
                             </h:selectOneMenu>
