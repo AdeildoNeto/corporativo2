@@ -5,9 +5,11 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
+import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -33,6 +35,9 @@ import javax.validation.constraints.NotNull;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class QuestaoServico {
+
+    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
+    private static final String MSG_ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
 
     @Resource
     private SessionContext sessao;
@@ -100,66 +105,63 @@ public class QuestaoServico {
     }
 
     /**
-     * Método para validar se o enunciado de uma nova Questão é válido para um determinado Tipo
+     * Método para validar se o enunciado de uma nova Questão é válido para um
+     * determinado Tipo
      *
      * @param questao
-     * @return isQuestaoValida
+     * @throws ValidacaoException
      */
-    public boolean isEnunciadoPorTipoValido(@Valid Questao questao) {
+    public void validarEnunciadoPorTipoValido(@Valid Questao questao) throws ValidacaoException {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoCriador", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
         query.setParameter("idCriador", questao.getCriador().getId());
 
-        if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
-            return true;
+        if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA));
         }
-
-        return query.getResultList().isEmpty();
     }
-    
+
     /**
-     * Método para validar se o enunciado de uma Questão a ser alterada é válido a depender do seu Tipo.
+     * Método para validar se o enunciado de uma Questão a ser alterada é válido
+     * a depender do seu Tipo.
      *
      * @param questao
-     * @return isQuestaoValida
+     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public boolean isEdicaoEnunciadoPorTipoValido(@Valid Questao questao) {
+    public void valirEnunciadoPorTipoValidoEdicao(@Valid Questao questao) throws ValidacaoException {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoId", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
         query.setParameter("id", questao.getId());
 
-        if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
-            return true;
+        if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA));
         }
-
-        return query.getResultList().isEmpty();
     }
-    
+
     /**
      * Método para verificar se todas as alternativas são diferentes entre si.
+     *
      * @param alternativas
-     * @return alternativaValida
+     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public boolean isAlternativasValidas(@NotNull List<Alternativa> alternativas){
-        if(alternativas.isEmpty()){
-            return false;
+    public void validarAlternativasDiferentes(@NotNull List<Alternativa> alternativas) throws ValidacaoException {
+        if (alternativas.isEmpty()) {
+            throw new ValidacaoException();
         }
-        
+
         int qtdeAlternativas = alternativas.size();
-        
-        for (int i = 0; i < qtdeAlternativas - 1; i++){
-            for(int j = i + 1; j < qtdeAlternativas; j++){
-                if(alternativas.get(i).getAlternativa()
-                        .equals(alternativas.get(j).getAlternativa())){
-                    return false;
+
+        for (int i = 0; i < qtdeAlternativas - 1; i++) {
+            for (int j = i + 1; j < qtdeAlternativas; j++) {
+                if (alternativas.get(i).getAlternativa()
+                        .equals(alternativas.get(j).getAlternativa())) {
+                    throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_ALTERNATIVAS_IGUAIS));
                 }
             }
         }
-        
-        return true;
-        
+
     }
 
 }

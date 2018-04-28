@@ -5,14 +5,16 @@
  */
 package br.edu.ifpe.recife.avalon.testes;
 
+import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
+import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
-import br.ifpe.avalon.testesEjb.DbUnitUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,7 +48,12 @@ public class QuestaoTest {
     @EJB
     private UsuarioServico usuarioServico;
 
+    @EJB
+    private ComponenteCurricularServico ccurricularServico;
+
     private static Logger logger;
+    
+    private static final String EMAIL_TESTE = "teste@gmail.com";
 
     @BeforeClass
     public static void setUpClass() {
@@ -64,9 +71,9 @@ public class QuestaoTest {
 
     @Before
     public void setUp() throws NamingException {
-
         questaoServico = (QuestaoServico) container.getContext().lookup("java:global/classes/QuestaoServico");
         usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
+        ccurricularServico = (ComponenteCurricularServico) container.getContext().lookup("java:global/classes/ComponenteCurricularServico");
     }
 
     @After
@@ -87,8 +94,15 @@ public class QuestaoTest {
 
         usuarioServico.salvar(usuario);
 
+        assertNotNull(usuario.getId());
+
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
+
+        assertNotNull(componente);
+
         Questao questao = new Questao();
 
+        questao.setComponenteCurricular(componente);
         questao.setEnunciado("Teste?");
         questao.setCriador(usuario);
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
@@ -114,12 +128,15 @@ public class QuestaoTest {
     public void t03_alterarQuestao() {
         logger.info("Executando t03: AlterarQuestão");
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+
         Questao questao = questaoBuscada.get(0);
+
+        assertNotNull(questao);
 
         questao.setEnunciado("Enunciado alterado");
 
         questaoServico.alterar(questao);
-        
+
         questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
         Questao questao2 = questaoBuscada.get(0);
 
@@ -158,17 +175,17 @@ public class QuestaoTest {
 
         logger.info("Executando t05: InserirQuestaoMultiplaEscolha");
 
-        Usuario usuario = new Usuario();
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
 
-        usuario.setEmail("email3@email.com");
-        usuario.setNome("TESTE3");
-        usuario.setSenha("TESTE3");
-        usuario.setSobrenome("TESTE3");
-
-        usuarioServico.salvar(usuario);
+        assertNotNull(usuario);
+        
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
+        
+        assertNotNull(componente);
 
         MultiplaEscolha questao = new MultiplaEscolha();
 
+        questao.setComponenteCurricular(componente);
         questao.setEnunciado("Teste?");
         questao.setCriador(usuario);
         questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
@@ -209,11 +226,18 @@ public class QuestaoTest {
 
     @Test
     public void t07_salvarQuestaoVF() {
+        logger.info("Executando t07: salvarQuestaoVF");
+        
         Questao questao = new Questao();
 
-        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email2@email.com");
-
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
+        assertNotNull(componente);
+        
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        assertNotNull(usuario);
+        
         questao.setCriador(usuario);
+        questao.setComponenteCurricular(componente);
         questao.setEnunciado("Questao V/F teste");
         questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
         questao.setDataCriacao(Calendar.getInstance().getTime());
@@ -225,31 +249,34 @@ public class QuestaoTest {
 
     @Test
     public void t08_selecionarQuestaoVF() {
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+        logger.info("Executando t08: selecionarQuestaoVF");
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
 
         assertEquals(1, questoes.size());
     }
 
     @Test
     public void t09_excluirQuestaoVF() {
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+        logger.info("Executando t09: excluirQuestaoVF");
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
 
         Questao questao = questoes.get(0);
 
         questaoServico.remover(questao);
 
-        questoes = questaoServico.buscarQuestoesPorCriadorTipo("email2@email.com", TipoQuestaoEnum.VERDADEIRO_FALSO);
+        questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
 
         assertEquals(0, questoes.size());
     }
 
     @Test
     public void t10_editarQuestaoMultiplaEscolha() {
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriador("email3@email.com");
+        logger.info("Executando t10: editarQuestaoMultiplaEscolha");
+        List<Questao> questoes = questaoServico.buscarQuestoesPorCriador(EMAIL_TESTE);
         MultiplaEscolha questaoMp = new MultiplaEscolha();
 
         for (Questao questao : questoes) {
-            if ("Múltipla Escolha".equals(questao.getTipo().getDescricao())) {
+            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
                 questaoMp = (MultiplaEscolha) questao;
             }
         }
@@ -267,7 +294,7 @@ public class QuestaoTest {
         questaoServico.alterar(questaoMp);
 
         for (Questao questao : questoes) {
-            if ("Múltipla Escolha".equals(questao.getTipo().getDescricao())) {
+            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
                 questaoMp = (MultiplaEscolha) questao;
             }
         }
@@ -277,154 +304,104 @@ public class QuestaoTest {
 
         assertEquals("Alternativa alterada", alternativa.getAlternativa());
     }
-
-    /*
     
-    private static final int QTDE_QUESTOES_DISCURSIVAS = 1;
-    
-    private static EntityManagerFactory emf;
-    private static Logger logger;
-    private EntityManager em;
-    private EntityTransaction et;
-    private static long idQuestao;
-    private static long idAutor;
-
-    public QuestaoTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-        logger = Logger.getGlobal();
-        logger.setLevel(Level.INFO);
-        emf = Persistence.createEntityManagerFactory("avalon");
-        DBunitUtil.inserirDados();
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-        if (emf != null) {
-            emf.close();
-        }
-    }
-
-    @Before
-    public void setUp() {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        et.begin();
-    }
-
-    @After
-    public void tearDown() {
-        try {
-            et.commit();
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
-
-            if (et.isActive()) {
-                et.rollback();
-            }
-        } finally {
-            em.close();
-            em = null;
-            et = null;
-        }
-    }
-
-    @Test
-    public void t01_inserirQuestaoDiscursiva() {
-        logger.info("Executando t01: inserirQuestaoDiscursiva");
-
-        Usuario usuario = new Usuario();
-
-        usuario.setEmail("email@email.com");
-        usuario.setNome("TESTE");
-        usuario.setSenha("TESTE");
-        usuario.setSobrenome("TESTE");
-
-        em.persist(usuario);
-        em.flush();
-
+    @Test(expected = EJBException.class)
+    public void t11_criticarQuestaoSemCriador(){
+        logger.info("Executando t11: criticarQuestaoSemCriador");
+        
         Questao questao = new Questao();
-
-        questao.setEnunciado("Teste?");
-        questao.setAutor(usuario);
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+        
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("Questao sem criador?");
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        
+        questaoServico.salvar(questao);
+    }
+
+    @Test(expected = EJBException.class)
+    public void t12_criticarQuestaoSemComponenteCurricular(){
+        logger.info("Executando t12: criticarQuestaoSemComponenteCurricular");
+        
+        Questao questao = new Questao();
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        
+        questao.setCriador(criador);
+        questao.setEnunciado("Questao sem componente?");
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        
+        questaoServico.salvar(questao);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t13_criticarQuestaoRepetida() throws ValidacaoException{
+        logger.info("Executando t13: criticarQuestaoRepetida");
+        
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+        Questao questao = new Questao();
+        String enunciado = "Questao repetida?";
+        
+        questao.setCriador(criador);
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado(enunciado);
         questao.setDataCriacao(Calendar.getInstance().getTime());
-
-        em.persist(questao);
-        em.flush();
-
-        assertNotNull(questao.getId());
-        idAutor = usuario.getId();
-        idQuestao = questao.getId();
-        logger.log(Level.INFO, "Questão {0} incluída com sucesso.", questao.getId());
-
-    }
-
-   
-    
-    @Test
-    public void t03_buscarQuestoesDiscursivas() {
-        logger.info("Executando t03: buscarQuestoesDiscursivas");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorTipo", Questao.class);
-        query.setParameter("tipo", TipoQuestaoEnum.DISCURSIVA);
-
-        assertEquals(QTDE_QUESTOES_DISCURSIVAS, query.getResultList().size());
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        
+        questaoServico.salvar(questao);
+        
+        Questao questao2 = new Questao();
+        
+        questao2.setCriador(criador);
+        questao2.setComponenteCurricular(componente);
+        questao2.setEnunciado(enunciado);
+        questao2.setDataCriacao(Calendar.getInstance().getTime());
+        questao2.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        
+        questaoServico.validarEnunciadoPorTipoValido(questao2);
     }
     
-    @Test
-    public void t04_buscarQuestoesPorAutor() {
-        logger.info("Executando t04: buscarQuestoesPorAutor");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorAutor", Questao.class);
-        query.setParameter("idAutor", idAutor);
-
-        assertEquals(QTDE_QUESTOES_DISCURSIVAS, query.getResultList().size());        
+    @Test(expected = ValidacaoException.class)
+    public void t14_criticarQuestaoRepetidaEdicao() throws ValidacaoException{
+        logger.info("Executando t14: criticarQuestaoRepetidaEdicao");
+        
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+        String enunciado = "Questao repetida?";
+        
+        Questao questao = new Questao();
+        
+        questao.setCriador(criador);
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("questao x");
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        
+        questaoServico.salvar(questao);
+        
+        List<Questao> lista = questaoServico.buscarQuestoesPorCriador(criador.getEmail());
+        
+        questao = lista.get(lista.size() - 1);
+        
+        questao.setEnunciado(enunciado);
+        
+        questaoServico.valirEnunciadoPorTipoValidoEdicao(questao);
     }
     
-    @Test
-    public void t05_buscarQuestoesDiscursivasPorAutor() {
-        logger.info("Executando t05: buscarQuestoesDiscursivasPorAutor");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorAutorTipo", Questao.class);
-        query.setParameter("idAutor", idAutor);
-        query.setParameter("tipo", TipoQuestaoEnum.DISCURSIVA);
-
-        assertEquals(QTDE_QUESTOES_DISCURSIVAS, query.getResultList().size());        
+    @Test(expected = ValidacaoException.class)
+    public void t15_criticarAlternativasRepetidas() throws ValidacaoException{
+        logger.info("Executando t15: criticarAlternativasRepetidas");
+        
+        List<Alternativa> alternativas = new ArrayList<>();
+        
+        alternativas.add(new Alternativa());
+        alternativas.get(0).setAlternativa("Teste");
+        
+        alternativas.add(new Alternativa());
+        alternativas.get(1).setAlternativa("Teste");
+        
+        questaoServico.validarAlternativasDiferentes(alternativas);
+        
     }
-
-    @Test
-    public void t06_atualizarQuestaoValida() {
-        logger.info("Executando t06: atualizarQuestaoValida");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorId", Questao.class);
-        query.setParameter("id", idQuestao);
-
-        Questao questao = (Questao) query.getSingleResult();
-        assertNotNull(questao);
-
-        questao.setEnunciado("Teste 2?");
-        em.merge(questao);
-        assertEquals(1, query.getResultList().size());
-    }
-
-    @Test
-    public void t07_removerQuestaoValida() {
-        logger.info("Executando t07: removerQuestaoValida");
-
-        TypedQuery<Questao> query = em.createNamedQuery("Questao.PorId", Questao.class);
-        query.setParameter("id", idQuestao);
-
-        Questao questao = (Questao) query.getSingleResult();
-
-        assertNotNull(questao);
-
-        em.remove(questao);
-        em.flush();
-        em.clear();
-
-        assertEquals(0, query.getResultList().size());
-    }*/
+    
 }

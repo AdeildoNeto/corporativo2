@@ -5,19 +5,20 @@
  */
 package br.edu.ifpe.recife.avalon.bean;
 
+import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
-import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -33,11 +34,9 @@ import javax.validation.Valid;
 @SessionScoped
 public class QuestaoBean implements Serializable {
 
-    private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
     private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
-    private static final String ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
 
     private List<Alternativa> alternativas = new ArrayList<Alternativa>();
 
@@ -68,10 +67,10 @@ public class QuestaoBean implements Serializable {
     HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     @PostConstruct
-    private void init(){
+    private void init() {
         iniciarPagina();
     }
-    
+
     /**
      * Método para inicializar variáveis utilizadas na tela Listar Questões.
      *
@@ -145,11 +144,15 @@ public class QuestaoBean implements Serializable {
      * @return rota da próxima tela.
      */
     public String salvar() {
+        String navegacao = GO_LISTAR_QUESTAO;
+        
         novaQuestao.setTipo(tipoSelecionado);
         novaQuestao.setCriador(usuarioLogado);
         novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
 
-        if (questaoServico.isEnunciadoPorTipoValido(novaQuestao)) {
+        try {
+            questaoServico.validarEnunciadoPorTipoValido(novaQuestao);
+
             if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(tipoSelecionado)) {
                 return salvarQuestaoMultiplaEscolha();
             } else {
@@ -157,12 +160,12 @@ public class QuestaoBean implements Serializable {
             }
             limparTela();
             buscarQuestoes();
-        } else {
-            exibirMensagemEnunciadoInvalido();
-            return "";
+        } catch (ValidacaoException | EJBException ve) {
+            exibirMensagem(ve.getMessage());
+            navegacao = "";
         }
 
-        return GO_LISTAR_QUESTAO;
+        return navegacao;
     }
 
     /**
@@ -171,7 +174,11 @@ public class QuestaoBean implements Serializable {
      * @return nav
      */
     private String salvarQuestaoMultiplaEscolha() {
-        if (questaoServico.isAlternativasValidas(alternativas)) {
+        String navegacao = GO_LISTAR_QUESTAO;
+        
+        try {
+            questaoServico.validarAlternativasDiferentes(alternativas);
+
             MultiplaEscolha questaoMultipla = new MultiplaEscolha();
 
             questaoMultipla.setEnunciado(novaQuestao.getEnunciado());
@@ -187,15 +194,16 @@ public class QuestaoBean implements Serializable {
 
             questaoMultipla.setAlternativas(alternativas);
             questaoServico.salvar(questaoMultipla);
-            
+
             limparTela();
             buscarQuestoes();
 
-            return GO_LISTAR_QUESTAO;
-        } else {
-            exibirMensagemAlternativasInvalidas();
-            return "";
+        } catch (ValidacaoException | EJBException ve) {
+            exibirMensagem(ve.getMessage());
+            navegacao = "";
         }
+        
+        return navegacao;
     }
 
     /**
@@ -204,39 +212,33 @@ public class QuestaoBean implements Serializable {
      * @return nav
      */
     public String salvarEdicao() {
+        String navegacao = GO_LISTAR_QUESTAO;
+        
+        try {
 
-        if (questaoServico.isEdicaoEnunciadoPorTipoValido(questaoSelecionada)) {
+            questaoServico.valirEnunciadoPorTipoValidoEdicao(questaoSelecionada);
+
             if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
-                if (!questaoServico.isAlternativasValidas(alternativas)) {
-                    exibirMensagemAlternativasInvalidas();
-                    return "";
-                }
+                questaoServico.validarAlternativasDiferentes(alternativas);
             }
+
             questaoServico.alterar(questaoSelecionada);
             limparTela();
             buscarQuestoes();
-        } else {
-            exibirMensagemEnunciadoInvalido();
-            return "";
+        } catch (ValidacaoException | EJBException ve) {
+            exibirMensagem(ve.getMessage());
+            navegacao = "";
         }
 
-        return GO_LISTAR_QUESTAO;
+        return navegacao;
     }
 
     /**
-     * Método para exibição de mensagem de validação de alternativas.
+     * Método para exibição de mensagens.
      */
-    private void exibirMensagemAlternativasInvalidas() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(ALTERNATIVAS_IGUAIS), null);
-        FacesContext.getCurrentInstance().addMessage(null, mensagem);
-    }
-
-    /**
-     * Método para exibição de mensagem de validação do enunciado.
-     */
-    private void exibirMensagemEnunciadoInvalido() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA), null);
-        FacesContext.getCurrentInstance().addMessage(null, mensagem);
+    private void exibirMensagem(String mensagem) {
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     /**
@@ -278,10 +280,10 @@ public class QuestaoBean implements Serializable {
         questaoSelecionada = null;
     }
 
-    public String voltarListarQuestoes(){
+    public String voltarListarQuestoes() {
         return iniciarPagina();
     }
-    
+
     /*
         GETTERS AND SETTERS
      */

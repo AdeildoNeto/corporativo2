@@ -9,6 +9,7 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -106,6 +107,11 @@ public class Questao implements Serializable {
     @Column(name = "SN_COMPARTILHADA", nullable = false)
     private Boolean compartilhada = true;
     
+    @NotNull(message = "{questao.componente.curricular.obrigatorio}")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
+    private ComponenteCurricular componenteCurricular;
+    
     @Transient
     private boolean selecionada;
     
@@ -187,6 +193,39 @@ public class Questao implements Serializable {
 
     public void setCompartilhada(Boolean compartilhada) {
         this.compartilhada = compartilhada;
+    }
+
+    public ComponenteCurricular getComponenteCurricular() {
+        return componenteCurricular;
+    }
+
+    public void setComponenteCurricular(ComponenteCurricular componenteCurricular) {
+        this.componenteCurricular = componenteCurricular;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Questao other = (Questao) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
         
 }
