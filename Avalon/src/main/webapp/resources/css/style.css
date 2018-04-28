@@ -111,6 +111,10 @@ label{
     color: white !important;
 }
 
+.navbar-brand{
+    color: white;
+}
+
 /* BlockUI */
 .ui-blockui-content.ui-shadow {
     box-shadow: none !important;
