@@ -13,26 +13,27 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="form">
+        <h:form id="form" class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-6">
+                <div class="col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
             <div class="row margin-bottom-30">
-                <div class="offset-md-8">
+                <div class="offset-md-9">
                     <label for="tipoQuestao">#{msg['label.filtrar.por.tipo']}:</label>
                     <div>
-                        <h:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}" class="btn dropdown-toggle bg-select-menu">
+                        <p:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}"
+                                         class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
                             <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
                             <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="@form"/>
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
                     </div>
                 </div>
             </div>
             
             <div class="row container-table-prova">
-                <div class="offset-md-2 col-md-8">
+                <div class="col-md-12">
                     <h:dataTable id="table" value="#{provaBean.questoes}" var="questao" styleClass="table table-striped table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
@@ -54,7 +55,7 @@ and open the template in the editor.
                 </div>
             </div>
             <div id="button-container" class="row buttons-save">
-                <div class="offset-md-8 col-md-2 form-group">
+                <div class="offset-md-9 col-md-2 form-group">
                     <p:commandButton id="btnImprimir" value="#{msg['btn.imprimir.prova']}" update="@form"
                                      action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"

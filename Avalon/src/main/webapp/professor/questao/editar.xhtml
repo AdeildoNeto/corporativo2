@@ -13,39 +13,21 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="formEditar">
+        <h:form id="formEditar" class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>#{msg['titulo.editar.questao']}</h1>
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="offset-md-1 col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
 
-            <div class="row">
-                <div class="offset-md-1 col-md-6">
-                    <div class="form-group">
-                        <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
-                        <h:inputTextarea class="form-control" id="enunciado" rows="4" value="#{questaoBean.questaoSelecionada.enunciado}">
-                        </h:inputTextarea>
-                    </div>
-                    <p:outputPanel id="panelAlt" rendered="#{questaoBean.questaoSelecionada.tipo == 'MULTIPLA_ESCOLHA'}">
-                        <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
-                        <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="questao" varStatus="posicao">    
-                            
-                            <h:inputText class="form-control" value="#{questao.alternativa}" /><br />
-                        </ui:repeat>
-                    </p:outputPanel>
-                    <div class="form-group display-flex">
-                        <label for="questao-compartilhad">#{msg['label.compartilhar.questao']}:</label>
-                        <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questaoSelecionada.compartilhada}"
-                                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div>
-                        <label for="tipoQuestao">#{msg['questao.listar.header.tipo']}:</label> <span id="tipoQuestao">#{questaoBean.questaoSelecionada.tipo.descricao}</span>
-                    </div>
-                </div>
-            </div>
+            <ui:include src="fragmento/conteudo-questao.xhtml" />
+            
             <div class="row buttons-save">
                 <div class="offset-md-2 col-md-2 form-group">
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" immediate="true"
@@ -63,17 +45,7 @@ and open the template in the editor.
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
-            <p:confirmDialog message="#{msg['questao.mensagem.editar']}" id="modalSalvar"
-                             header="#{msg['questao.header.salvar']}" severity="alert"
-                             widgetVar="modalSalvar" closeOnEscape="true">
-
-                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
-                                 type="button" styleClass="btn btn-secondary" />
-
-                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvarEdicao()}" validateClient="true"
-                                 onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
-                                 styleClass="btn btn-primary" update="formEditar" />
-            </p:confirmDialog>
+            <ui:include src="fragmento/modal-confirmar-editar.xhtml" />
 
         </h:form>
 

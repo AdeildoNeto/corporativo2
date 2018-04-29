@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.helper.ComponenteCurricularHelper;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
@@ -21,8 +22,10 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -49,6 +52,9 @@ public class QuestaoBean implements Serializable {
     @EJB
     private QuestaoServico questaoServico;
 
+    @ManagedProperty(value = "#{componenteCurricularHelper}")
+    private ComponenteCurricularHelper componenteCurricularHelper = new ComponenteCurricularHelper();
+    
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
 
     private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
@@ -56,15 +62,26 @@ public class QuestaoBean implements Serializable {
     private List<Questao> questoes = new ArrayList<>();
 
     @Valid
-    private Questao novaQuestao = new Questao();
-
-    private Questao questaoSelecionada;
+    private Questao questao = new Questao();
 
     private boolean exibirModalConfirmarExclusao = false;
 
     private Usuario usuarioLogado;
 
     HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+
+    public QuestaoBean() {
+        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+        this.questao = new Questao();
+        this.carregarTiposQuestao();
+
+        this.alternativas = new ArrayList<>();
+        alternativas.add(alt1);
+        alternativas.add(alt2);
+        alternativas.add(alt3);
+        alternativas.add(alt4);
+        alternativas.add(alt5);
+    }
 
     @PostConstruct
     private void init() {
@@ -89,7 +106,7 @@ public class QuestaoBean implements Serializable {
      */
     public String iniciarPaginaInclusao() {
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-        this.limparTela();
+        this.limparTelaInclusao();
         return GO_ADD_QUESTAO;
     }
 
@@ -100,26 +117,13 @@ public class QuestaoBean implements Serializable {
      * @return goAlterarQuestao
      */
     public String iniciparPaginaAlteracao(Questao questaoSelecionada) {
-        this.questaoSelecionada = questaoSelecionada;
+        this.questao = questaoSelecionada;
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
             this.alternativas = ((MultiplaEscolha) questaoSelecionada).getAlternativas();
         }
 
         return GO_ALTERAR_QUESTAO;
-    }
-
-    public QuestaoBean() {
-        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-        this.novaQuestao = new Questao();
-        this.carregarTiposQuestao();
-
-        this.alternativas = new ArrayList<>();
-        alternativas.add(alt1);
-        alternativas.add(alt2);
-        alternativas.add(alt3);
-        alternativas.add(alt4);
-        alternativas.add(alt5);
     }
 
     /**
@@ -146,22 +150,22 @@ public class QuestaoBean implements Serializable {
     public String salvar() {
         String navegacao = GO_LISTAR_QUESTAO;
         
-        novaQuestao.setTipo(tipoSelecionado);
-        novaQuestao.setCriador(usuarioLogado);
-        novaQuestao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setTipo(tipoSelecionado);
+        questao.setCriador(usuarioLogado);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
 
         try {
-            questaoServico.validarEnunciadoPorTipoValido(novaQuestao);
+            questaoServico.validarEnunciadoPorTipoValido(questao);
 
             if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(tipoSelecionado)) {
                 return salvarQuestaoMultiplaEscolha();
             } else {
-                questaoServico.salvar(novaQuestao);
+                questaoServico.salvar(questao);
             }
-            limparTela();
+            limparTelaInclusao();
             buscarQuestoes();
-        } catch (ValidacaoException | EJBException ve) {
-            exibirMensagem(ve.getMessage());
+        } catch (ValidacaoException | EJBException ex) {
+            exibirMensagem(ex.getMessage());
             navegacao = "";
         }
 
@@ -181,10 +185,10 @@ public class QuestaoBean implements Serializable {
 
             MultiplaEscolha questaoMultipla = new MultiplaEscolha();
 
-            questaoMultipla.setEnunciado(novaQuestao.getEnunciado());
-            questaoMultipla.setCriador(novaQuestao.getCriador());
+            questaoMultipla.setEnunciado(questao.getEnunciado());
+            questaoMultipla.setCriador(questao.getCriador());
             questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
-            questaoMultipla.setDataCriacao(novaQuestao.getDataCriacao());
+            questaoMultipla.setDataCriacao(questao.getDataCriacao());
 
             alternativas.get(0).setQuestao(questaoMultipla);
             alternativas.get(1).setQuestao(questaoMultipla);
@@ -195,11 +199,11 @@ public class QuestaoBean implements Serializable {
             questaoMultipla.setAlternativas(alternativas);
             questaoServico.salvar(questaoMultipla);
 
-            limparTela();
+            limparTelaInclusao();
             buscarQuestoes();
 
-        } catch (ValidacaoException | EJBException ve) {
-            exibirMensagem(ve.getMessage());
+        } catch (ValidacaoException | EJBException ex) {
+            exibirMensagem(ex.getMessage());
             navegacao = "";
         }
         
@@ -216,17 +220,17 @@ public class QuestaoBean implements Serializable {
         
         try {
 
-            questaoServico.valirEnunciadoPorTipoValidoEdicao(questaoSelecionada);
+            questaoServico.valirEnunciadoPorTipoValidoEdicao(questao);
 
-            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
+            if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
                 questaoServico.validarAlternativasDiferentes(alternativas);
             }
 
-            questaoServico.alterar(questaoSelecionada);
-            limparTela();
+            questaoServico.alterar(questao);
+            limparTelaInclusao();
             buscarQuestoes();
-        } catch (ValidacaoException | EJBException ve) {
-            exibirMensagem(ve.getMessage());
+        } catch (ValidacaoException | EJBException ex) {
+            exibirMensagem(ex.getMessage());
             navegacao = "";
         }
 
@@ -244,9 +248,9 @@ public class QuestaoBean implements Serializable {
     /**
      * Método para limpar os campos da tela.
      */
-    private void limparTela() {
+    private void limparTelaInclusao() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
-        novaQuestao = new Questao();
+        questao = new Questao();
 
         alternativas = new ArrayList<>();
         alt1 = new Alternativa();
@@ -265,23 +269,27 @@ public class QuestaoBean implements Serializable {
     /**
      * Método para selecionar uma questão da lista de questões.
      *
-     * @param questao
+     * @param questaoSelecionada
      */
-    public void selecionarQuestao(Questao questao) {
-        questaoSelecionada = questao;
+    public void selecionarQuestao(Questao questaoSelecionada) {
+        this.questao = questaoSelecionada;
     }
 
     /**
      * Método para excluir uma questão
      */
     public void excluir() {
-        questaoServico.remover(questaoSelecionada);
-        questoes.remove(questaoSelecionada);
-        questaoSelecionada = null;
+        questaoServico.remover(questao);
+        questoes.remove(questao);
+        questao = null;
     }
 
     public String voltarListarQuestoes() {
         return iniciarPagina();
+    }
+    
+    public boolean edicaoQuestao(){
+        return questao.getId() != null;
     }
 
     /*
@@ -295,12 +303,12 @@ public class QuestaoBean implements Serializable {
         this.tipoQuestoes = tipoQuestoes;
     }
 
-    public Questao getNovaQuestao() {
-        return novaQuestao;
+    public Questao getQuestao() {
+        return questao;
     }
 
-    public void setNovaQuestao(Questao novaQuestao) {
-        this.novaQuestao = novaQuestao;
+    public void setQuestao(Questao questao) {
+        this.questao = questao;
     }
 
     public TipoQuestaoEnum getTipoSelecionado() {
@@ -335,12 +343,12 @@ public class QuestaoBean implements Serializable {
         this.alternativas = alternativas;
     }
 
-    public Questao getQuestaoSelecionada() {
-        return questaoSelecionada;
+    public ComponenteCurricularHelper getComponenteCurricularHelper() {
+        return componenteCurricularHelper;
     }
 
-    public void setQuestaoSelecionada(Questao questaoSelecionada) {
-        this.questaoSelecionada = questaoSelecionada;
+    public void setComponenteCurricularHelper(ComponenteCurricularHelper componenteCurricularHelper) {
+        this.componenteCurricularHelper = componenteCurricularHelper;
     }
-
+    
 }

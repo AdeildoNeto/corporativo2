@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <div>
+                <label for="tipoQuestao">#{msg['label.selecione.tipo']}:</label>
+                <div>
+                    <p:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}"
+                                     disabled="#{questaoBean.edicaoQuestao()}"
+                                     class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
+                        <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
+                        <p:ajax update="@form" event="change"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 form-group">
+            <div>
+                <label for="componenteCurricular">#{msg['label.componente.curricular']}:</label>
+                <div>
+                    <p:selectOneMenu id="componenteCurricular"
+                                     value="#{questaoBean.componenteCurricularHelper.componenteSelecionado}"
+                                     class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="#{msg['label.selecione']}" noSelectionOption="true" />
+                        <f:selectItems value="#{questaoBean.componenteCurricularHelper.todosComponentesCurricular}"
+                                       itemLabel="#{componente.nome}" itemValue="#{componente}" var="componente" />
+                        <p:ajax update="@form" event="change"
+                                listener="#{questaoBean.componenteCurricularHelper.exibirModalNovoComponente}"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
+            <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.questao.enunciado}">
+            </h:inputTextarea>
+        </div>
+    </div>
+    <div>
+        <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
+                       styleClass="col-md-6 form-group">
+            <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
+            <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="alternativa" varStatus="posicao">    
+                <h:inputText class="form-control" value="#{alternativa.alternativa}" /><br />
+            </ui:repeat>
+        </p:outputPanel>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4 display-flex">
+            <label for="questao-compartilhad">#{msg['label.compartilhar.questao']}:</label>
+            <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questao.compartilhada}"
+                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
+        </div>
+    </div>
+
+</ui:composition>

@@ -14,7 +14,13 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form">
-            <div class="row container-table">
+            <div class="row">
+                <div class="offset-md-2 col-md-8">
+                    <h1>#{msg['titulo.minhas.questoes']}</h1>
+                </div>
+            </div>
+            
+            <div class="row container-questao">
                 <div class="offset-md-2 col-md-8">
                     <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>

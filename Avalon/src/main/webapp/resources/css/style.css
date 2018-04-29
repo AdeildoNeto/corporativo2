@@ -13,7 +13,7 @@ body{
 }
 
 .container-principal{
-    padding-top: 40px; 
+    padding-top: 15px; 
 }
 
 .font-color-default{
@@ -197,6 +197,19 @@ label{
     background-color: #7f7f7f !important;
 }
 
+.buttons-save{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.buttons-save button,
+.buttons-save a{
+    display: inline-block !important;
+    width: 200px !important;
+    margin-left: 20px;
+}
+
 /* Background */
 .bg-select-menu {
     background-color: #EEE;
@@ -258,4 +271,21 @@ label{
 /* Flex */
 .display-flex{
     display: flex;
+}
+
+/* Dropdown */
+.dropdown-toggle::after {
+    display: inline-block;
+    position: absolute;
+    right: 8px;
+    top: 45%;
+}
+
+.ui-selectonemenu-width{
+    min-width: 250px !important;
+}
+
+.ui-selectonemenu-list,
+.ui-selectonemenu-panel {
+    background: white;
 }
