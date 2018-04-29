@@ -210,6 +210,11 @@ label{
     margin-left: 20px;
 }
 
+.btn-add-componente{
+    margin-left: 5px;
+    color: white !important;
+}
+
 /* Background */
 .bg-select-menu {
     background-color: #EEE;

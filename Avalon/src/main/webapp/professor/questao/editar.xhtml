@@ -13,7 +13,7 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="formEditar" class="container">
+        <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h1>#{msg['titulo.editar.questao']}</h1>
@@ -29,19 +29,17 @@ and open the template in the editor.
             <ui:include src="fragmento/conteudo-questao.xhtml" />
             
             <div class="row buttons-save">
-                <div class="offset-md-2 col-md-2 form-group">
+                <div class="col-md-12">
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" immediate="true"
                                      action="#{questaoBean.voltarListarQuestoes()}"
-                                     class="btn btn-secondary btn-block font-color-default"></p:commandButton>
-                </div>
-                <div class="col-md-2 form-group">
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
-                                     class="btn btn-primary btn-block font-color-default">
+                                     class="btn btn-primary font-color-default">
                     </p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="formEditar" widgetVar="block">
+            <p:blockUI animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
@@ -49,6 +47,8 @@ and open the template in the editor.
 
         </h:form>
 
+        <ui:include src="fragmento/modal-componente-curricular.xhtml" />
+        
     </ui:define>
 
 </ui:composition>

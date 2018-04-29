@@ -31,15 +31,16 @@ and open the template in the editor.
                 <label for="componenteCurricular">#{msg['label.componente.curricular']}:</label>
                 <div>
                     <p:selectOneMenu id="componenteCurricular"
-                                     value="#{questaoBean.componenteCurricularHelper.componenteSelecionado}"
+                                     value="#{questaoBean.componenteSelecionado}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                                      filter="true" filterMatchMode="startsWith">
-                        <f:selectItem itemLabel="#{msg['label.selecione']}" noSelectionOption="true" />
-                        <f:selectItems value="#{questaoBean.componenteCurricularHelper.todosComponentesCurricular}"
-                                       itemLabel="#{componente.nome}" itemValue="#{componente}" var="componente" />
-                        <p:ajax update="@form" event="change"
-                                listener="#{questaoBean.componenteCurricularHelper.exibirModalNovoComponente}"/>
+                        <f:selectItems value="#{questaoBean.todosComponentesCurricular}"
+                                       itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
+                        <p:ajax update="@form" event="change" />
                     </p:selectOneMenu>
+                    <p:commandLink id="addComponente" value="add" class="btn material-icons bg-default btn-add-componente" action="#{questaoBean.carregarModalComponente()}"
+                                   update="formComponente:modalComponente" immediate="true" process="@this" title="#{msg['adicionar.componente.curricular']}">
+                    </p:commandLink>
                 </div>
             </div>
         </div>
@@ -69,5 +70,5 @@ and open the template in the editor.
                            offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
         </div>
     </div>
-
+    
 </ui:composition>

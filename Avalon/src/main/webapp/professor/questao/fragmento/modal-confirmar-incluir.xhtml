@@ -20,7 +20,7 @@ and open the template in the editor.
 
         <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}" validateClient="true"
                          onclick="PF('block').show(); PF('modalSalvar').hide()" oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
-                         styleClass="btn btn-primary" update="formAdicionar" />
+                         styleClass="btn btn-primary" update="form" />
     </p:confirmDialog>
 
 </ui:composition>

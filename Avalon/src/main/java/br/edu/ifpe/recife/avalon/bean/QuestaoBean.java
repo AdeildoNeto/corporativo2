@@ -6,12 +6,13 @@
 package br.edu.ifpe.recife.avalon.bean;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.helper.ComponenteCurricularHelper;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
+import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,10 +23,8 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -41,19 +40,11 @@ public class QuestaoBean implements Serializable {
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
     private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
 
-    private List<Alternativa> alternativas = new ArrayList<Alternativa>();
-
-    private Alternativa alt1 = new Alternativa();
-    private Alternativa alt2 = new Alternativa();
-    private Alternativa alt3 = new Alternativa();
-    private Alternativa alt4 = new Alternativa();
-    private Alternativa alt5 = new Alternativa();
-
     @EJB
     private QuestaoServico questaoServico;
-
-    @ManagedProperty(value = "#{componenteCurricularHelper}")
-    private ComponenteCurricularHelper componenteCurricularHelper = new ComponenteCurricularHelper();
+    
+    @EJB
+    private ComponenteCurricularServico componenteServico;
     
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
 
@@ -64,11 +55,24 @@ public class QuestaoBean implements Serializable {
     @Valid
     private Questao questao = new Questao();
 
-    private boolean exibirModalConfirmarExclusao = false;
-
     private Usuario usuarioLogado;
 
     HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    
+    private List<Alternativa> alternativas = new ArrayList<Alternativa>();
+
+    private Alternativa alt1 = new Alternativa();
+    private Alternativa alt2 = new Alternativa();
+    private Alternativa alt3 = new Alternativa();
+    private Alternativa alt4 = new Alternativa();
+    private Alternativa alt5 = new Alternativa();
+    
+    @Valid
+    private ComponenteCurricular novoComponenteCurricular = new ComponenteCurricular();
+    
+    private Long componenteSelecionado = null;
+    
+    private boolean exibirModalComponente = false;
 
     public QuestaoBean() {
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
@@ -118,6 +122,7 @@ public class QuestaoBean implements Serializable {
      */
     public String iniciparPaginaAlteracao(Questao questaoSelecionada) {
         this.questao = questaoSelecionada;
+        this.exibirModalComponente = false;
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
             this.alternativas = ((MultiplaEscolha) questaoSelecionada).getAlternativas();
@@ -153,6 +158,7 @@ public class QuestaoBean implements Serializable {
         questao.setTipo(tipoSelecionado);
         questao.setCriador(usuarioLogado);
         questao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setComponenteCurricular(buscarComponenteSelecionado());
 
         try {
             questaoServico.validarEnunciadoPorTipoValido(questao);
@@ -189,6 +195,7 @@ public class QuestaoBean implements Serializable {
             questaoMultipla.setCriador(questao.getCriador());
             questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
             questaoMultipla.setDataCriacao(questao.getDataCriacao());
+            questaoMultipla.setComponenteCurricular(buscarComponenteSelecionado());
 
             alternativas.get(0).setQuestao(questaoMultipla);
             alternativas.get(1).setQuestao(questaoMultipla);
@@ -226,6 +233,7 @@ public class QuestaoBean implements Serializable {
                 questaoServico.validarAlternativasDiferentes(alternativas);
             }
 
+            questao.setComponenteCurricular(buscarComponenteSelecionado());
             questaoServico.alterar(questao);
             limparTelaInclusao();
             buscarQuestoes();
@@ -250,6 +258,7 @@ public class QuestaoBean implements Serializable {
      */
     private void limparTelaInclusao() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
+        exibirModalComponente = false;
         questao = new Questao();
 
         alternativas = new ArrayList<>();
@@ -291,6 +300,42 @@ public class QuestaoBean implements Serializable {
     public boolean edicaoQuestao(){
         return questao.getId() != null;
     }
+    
+    public void salvarComponenteCurricular(){
+        try {
+            componenteServico.salvar(novoComponenteCurricular);
+            exibirModalComponente = false;
+        } catch (ValidacaoException ex) {
+            exibirMensagem(ex.getMessage());
+        }
+    }
+    
+    public List<ComponenteCurricular> getTodosComponentesCurricular(){
+        return componenteServico.buscarTodosComponentes();
+    }
+    
+    public void carregarModalComponente(){
+        novoComponenteCurricular = new ComponenteCurricular();
+        exibirModalComponente = true;
+    }
+    
+    private ComponenteCurricular buscarComponenteSelecionado(){
+        if(componenteSelecionado == null){
+            return null;
+        }
+        
+        for(ComponenteCurricular componente : getTodosComponentesCurricular()){
+            if(componenteSelecionado.equals(componente.getId())){
+                return componente;
+            }
+        }
+        
+        return null;
+    }
+    
+    public void fecharModalComponente(){
+        exibirModalComponente = false;
+    }
 
     /*
         GETTERS AND SETTERS
@@ -326,15 +371,7 @@ public class QuestaoBean implements Serializable {
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
     }
-
-    public boolean isExibirModalConfirmarExclusao() {
-        return exibirModalConfirmarExclusao;
-    }
-
-    public void setExibirModalConfirmarExclusao(boolean exibirModalConfirmarExclusao) {
-        this.exibirModalConfirmarExclusao = exibirModalConfirmarExclusao;
-    }
-
+    
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }
@@ -343,12 +380,28 @@ public class QuestaoBean implements Serializable {
         this.alternativas = alternativas;
     }
 
-    public ComponenteCurricularHelper getComponenteCurricularHelper() {
-        return componenteCurricularHelper;
+    public ComponenteCurricular getNovoComponenteCurricular() {
+        return novoComponenteCurricular;
     }
 
-    public void setComponenteCurricularHelper(ComponenteCurricularHelper componenteCurricularHelper) {
-        this.componenteCurricularHelper = componenteCurricularHelper;
+    public void setNovoComponenteCurricular(ComponenteCurricular novoComponenteCurricular) {
+        this.novoComponenteCurricular = novoComponenteCurricular;
+    }
+
+    public Long getComponenteSelecionado() {
+        return componenteSelecionado;
+    }
+
+    public void setComponenteSelecionado(Long componenteSelecionado) {
+        this.componenteSelecionado = componenteSelecionado;
+    }
+
+    public boolean isExibirModalComponente() {
+        return exibirModalComponente;
+    }
+
+    public void setExibirModalComponente(boolean exibirModalComponente) {
+        this.exibirModalComponente = exibirModalComponente;
     }
     
 }

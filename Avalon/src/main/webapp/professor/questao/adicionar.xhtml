@@ -13,13 +13,13 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="formAdicionar" class="container">
+        <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h1>#{msg['titulo.inserir.questao']}</h1>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-6">
                     <p:messages id="msgs" />
@@ -27,12 +27,12 @@ and open the template in the editor.
             </div>
 
             <ui:include src="fragmento/conteudo-questao.xhtml" />
-            
+
             <div class="row buttons-save">
                 <div class="col-md-12">
                     <p:commandLink id="goListarQuestao" value="#{msg['btn.cancelar']}"
-                                     action="#{questaoBean.voltarListarQuestoes()}" immediate="true"
-                                     class="btn btn-secondary font-color-default">
+                                   action="#{questaoBean.voltarListarQuestoes()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
                     </p:commandLink>
                     <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
                                      class="btn btn-primary font-color-default">
@@ -40,13 +40,15 @@ and open the template in the editor.
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="formAdicionar" widgetVar="block">
+            <p:blockUI animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
             <ui:include src="fragmento/modal-confirmar-incluir.xhtml" />
 
         </h:form>
+
+        <ui:include src="fragmento/modal-componente-curricular.xhtml" />
 
     </ui:define>
 
