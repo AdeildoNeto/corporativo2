@@ -13,7 +13,7 @@ and open the template in the editor.
 
 
     <div class="row">
-        <div class="col-md-6 form-group">
+        <div class="col-md-4 form-group">
             <div>
                 <label for="tipoQuestao">#{msg['label.selecione.tipo']}:</label>
                 <div>
@@ -38,8 +38,9 @@ and open the template in the editor.
                                        itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                         <p:ajax update="@form" event="change" />
                     </p:selectOneMenu>
-                    <p:commandLink id="addComponente" value="add" class="btn material-icons bg-default btn-add-componente" action="#{questaoBean.carregarModalComponente()}"
-                                   update="formComponente:modalComponente" immediate="true" process="@this" title="#{msg['adicionar.componente.curricular']}">
+                    <p:commandLink id="addComponente" value="add" class="btn material-icons bg-default btn-add-componente"
+                                   action="#{questaoBean.carregarModalComponente()}" update="formComponente:modalComponente"
+                                   immediate="true" process="@this" title="#{msg['adicionar.componente.curricular']}">
                     </p:commandLink>
                 </div>
             </div>

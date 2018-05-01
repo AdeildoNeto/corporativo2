@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,6 +38,8 @@ public class QuestaoBean implements Serializable {
     private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
     private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
+    private static final String MSG_PRINCIPAL = "msgPrincial";
+    private static final String MSG_MODAL_COMPONENTE = "msgComponente";
 
     @EJB
     private QuestaoServico questaoServico;
@@ -171,7 +172,7 @@ public class QuestaoBean implements Serializable {
             limparTelaInclusao();
             buscarQuestoes();
         } catch (ValidacaoException ex) {
-            exibirMensagem(ex.getMessage());
+            exibirMensagem(ex.getMessage(), MSG_PRINCIPAL);
             navegacao = "";
         }
 
@@ -210,7 +211,7 @@ public class QuestaoBean implements Serializable {
             buscarQuestoes();
 
         } catch (ValidacaoException ex) {
-            exibirMensagem(ex.getMessage());
+            exibirMensagem(ex.getMessage(), MSG_PRINCIPAL);
             navegacao = "";
         }
         
@@ -238,19 +239,22 @@ public class QuestaoBean implements Serializable {
             limparTelaInclusao();
             buscarQuestoes();
         } catch (ValidacaoException ex) {
-            exibirMensagem(ex.getMessage());
+            exibirMensagem(ex.getMessage(), MSG_PRINCIPAL);
             navegacao = "";
         }
 
         return navegacao;
     }
-
+    
     /**
-     * Método para exibição de mensagens.
+     * Método para exibição de mensagens de validação.
+     * 
+     * @param mensagem
+     * @param clientId 
      */
-    private void exibirMensagem(String mensagem) {
+    private void exibirMensagem(String mensagem, String clientId) {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        FacesContext.getCurrentInstance().addMessage(clientId, facesMessage);
     }
 
     /**
@@ -317,7 +321,7 @@ public class QuestaoBean implements Serializable {
             componenteServico.salvar(novoComponenteCurricular);
             exibirModalComponente = false;
         } catch (ValidacaoException ex) {
-            exibirMensagem(ex.getMessage());
+            exibirMensagem(ex.getMessage(), MSG_MODAL_COMPONENTE);
         }
     }
     

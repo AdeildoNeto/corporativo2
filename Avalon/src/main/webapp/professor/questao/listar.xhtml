@@ -31,9 +31,16 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText title="#{questao.componenteCurricular.nome}"
+                                          value="#{questao.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
-                            <span>#{questao.enunciado}</span>
+                            <h:outputText title="#{questao.enunciado}" value="#{questao.enunciado}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">

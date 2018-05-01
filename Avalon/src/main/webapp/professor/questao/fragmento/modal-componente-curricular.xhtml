@@ -14,14 +14,14 @@ and open the template in the editor.
     <h:form id="formComponente">
 
         <p:dialog id="modalComponente" visible="#{questaoBean.exibirModalComponente}"
-                  header="#{msg['novo.componente.header']}"
-                  widgetVar="modalComponente" closeOnEscape="true">
+                  header="#{msg['novo.componente.header']}" modal="true" resizable="false"
+                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
 
             <div class="row">
                 <div class="col-md-12">
-                    <p:messages id="msgsComponente" />
+                    <p:messages id="msgComponente" />
                     <div class="form-group">
-                        <label for="nomeComponente"></label>
+                        <label for="nomeComponente">#{msg['label.nome']}:</label>
                         <h:inputText class="form-control" value="#{questaoBean.novoComponenteCurricular.nome}" />
                     </div>
                 </div>
@@ -35,7 +35,7 @@ and open the template in the editor.
 
                     <p:commandButton value="#{msg['btn.salvar']}" action="#{questaoBean.salvarComponenteCurricular()}" validateClient="true"
                                      onclick="PF('block').show();" oncomplete="PF('block').hide()"
-                                     styleClass="btn btn-primary" update="formComponente form" />
+                                     styleClass="btn btn-primary" update="formComponente form:componenteCurricular" />
                 </div>
             </div>
         </p:dialog>

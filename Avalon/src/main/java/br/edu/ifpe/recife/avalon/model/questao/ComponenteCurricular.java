@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -45,6 +46,7 @@ public class ComponenteCurricular implements Serializable {
     private Long id;
     
     @NotBlank(message = "{componente.curricular.nome.obrigatorio}")
+    @Size(max = 255, message = "{componente.curricular.tamanho.nome}")
     @Column(name = "TXT_NOME", unique = true)
     private String nome;
     

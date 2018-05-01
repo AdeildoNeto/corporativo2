@@ -139,24 +139,34 @@ label{
     display: block;
     overflow-x: scroll;
     max-height: 100%;
+    margin-top: 24px;
 }
 
-.table-questoes td:nth-child(2){
+.table-questoes td:nth-child(2),
+.table-questoes td:nth-child(3){
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .table-questoes th:first-child{
-    width: 202px;
+    width: 172px;
 }
 
 .table-questoes th:nth-child(2){
-    width: 651px;
+    width: 250px;
 }
 
 .table-questoes td:nth-child(2){
-    max-width: 651px;
+    max-width: 250px;
+}
+
+.table-questoes th:nth-child(3){
+    width: 431px;
+}
+
+.table-questoes td:nth-child(3){
+    max-width: 431px;
 }
 
 .table-questoes th:last-child{
@@ -293,4 +303,16 @@ label{
 .ui-selectonemenu-list,
 .ui-selectonemenu-panel {
     background: white;
+}
+
+.ui-selectonemenu-label{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* h1 */
+h1 {
+    font-size: 2rem !important;
 }

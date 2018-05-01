@@ -11,15 +11,18 @@ package br.edu.ifpe.recife.avalon.model.questao;
  */
 public enum TipoQuestaoEnum {
     
-    DISCURSIVA(1, "Discursiva"),
-    MULTIPLA_ESCOLHA(2, "Múltipla Escolha"),
-    VERDADEIRO_FALSO(3, "Verdadeiro ou Falso");
+    DISCURSIVA(1, "Discursiva", "Discursiva"),
+    MULTIPLA_ESCOLHA(2, "Múltipla Escolha", "M. escolha"),
+    VERDADEIRO_FALSO(3, "Verdadeiro ou Falso", "V/F");
     
-    private int codigo;
+    private final int codigo;
     private final String descricao;
+    private final String abreviacao;
 
-    private TipoQuestaoEnum(int codigo, String descricao) {
+    private TipoQuestaoEnum(int codigo, String descricao, String abreviacao) {
+        this.codigo = codigo;
         this.descricao = descricao;
+        this.abreviacao = abreviacao;
     }
 
     public int getCodigo() {
@@ -28,6 +31,10 @@ public enum TipoQuestaoEnum {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public String getAbreviacao() {
+        return abreviacao;
     }
     
 }
