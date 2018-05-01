@@ -69,9 +69,12 @@ import org.hibernate.validator.constraints.NotBlank;
                     query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND q.enunciado = :enunciado AND "
                             + "q.criador.id = :idCriador AND q.ativa = true"
             ),@NamedQuery(
-                    name = "Questao.ParaGerarProva",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipoFiltro "
-                            + "AND (q.criador = :idCriador OR (q.criador <> :idCriador AND q.compartilhada = true))"
+                    name = "Questao.PorFiltroCompartilhada",
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipo "
+                            + "AND (q.criador.id = :idUsuario OR (q.criador.id <> :idUsuario AND q.compartilhada = true)) "
+                            + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
+                            + "AND (:idCriador is null OR :idCriador = q.criador.id) "
+                            + "AND (:enunciado is null OR q.enunciado like '%:enunciado%')"
             )
         })
 public class Questao implements Serializable {

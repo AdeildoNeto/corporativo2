@@ -170,7 +170,7 @@ public class QuestaoBean implements Serializable {
             }
             limparTelaInclusao();
             buscarQuestoes();
-        } catch (ValidacaoException | EJBException ex) {
+        } catch (ValidacaoException ex) {
             exibirMensagem(ex.getMessage());
             navegacao = "";
         }
@@ -209,7 +209,7 @@ public class QuestaoBean implements Serializable {
             limparTelaInclusao();
             buscarQuestoes();
 
-        } catch (ValidacaoException | EJBException ex) {
+        } catch (ValidacaoException ex) {
             exibirMensagem(ex.getMessage());
             navegacao = "";
         }
@@ -237,7 +237,7 @@ public class QuestaoBean implements Serializable {
             questaoServico.alterar(questao);
             limparTelaInclusao();
             buscarQuestoes();
-        } catch (ValidacaoException | EJBException ex) {
+        } catch (ValidacaoException ex) {
             exibirMensagem(ex.getMessage());
             navegacao = "";
         }
@@ -293,14 +293,25 @@ public class QuestaoBean implements Serializable {
         questao = null;
     }
 
+    /**
+     * Método para retornar a página "Minhas Questões"
+     * @return iniciarPagina()
+     */
     public String voltarListarQuestoes() {
         return iniciarPagina();
     }
     
+    /**
+     * Método para checar se a questão está em modo edição.
+     * @return boolean
+     */
     public boolean edicaoQuestao(){
         return questao.getId() != null;
     }
     
+    /**
+     * Método para salvar um componente curricular.
+     */
     public void salvarComponenteCurricular(){
         try {
             componenteServico.salvar(novoComponenteCurricular);
@@ -310,15 +321,26 @@ public class QuestaoBean implements Serializable {
         }
     }
     
+    /**
+     * Método para buscar todos os componentes curricular cadastrados.
+     * @return lista de componentes curricular
+     */
     public List<ComponenteCurricular> getTodosComponentesCurricular(){
         return componenteServico.buscarTodosComponentes();
     }
     
+    /**
+     * Método para carregar o modal de inserção de componente.
+     */
     public void carregarModalComponente(){
         novoComponenteCurricular = new ComponenteCurricular();
         exibirModalComponente = true;
     }
     
+    /**
+     * Método para buscar o componente curricular selecionado.
+     * @return 
+     */
     private ComponenteCurricular buscarComponenteSelecionado(){
         if(componenteSelecionado == null){
             return null;
@@ -333,6 +355,9 @@ public class QuestaoBean implements Serializable {
         return null;
     }
     
+    /**
+     * Método para fechar o modal de componente curricular.
+     */
     public void fecharModalComponente(){
         exibirModalComponente = false;
     }

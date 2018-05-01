@@ -161,7 +161,17 @@ public class QuestaoServico {
                 }
             }
         }
-
+    }
+    
+    public List<Questao> buscarQuestoesPorFiltro(Questao filtro, Long idUsuario){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorFiltroCompartilhada", Questao.class);
+        query.setParameter("idUsuario", idUsuario);
+        query.setParameter("tipo", filtro.getTipo());
+        query.setParameter("enunciado", filtro.getEnunciado());
+        query.setParameter("idComponenteCurricular", filtro.getComponenteCurricular() == null ? null : filtro.getComponenteCurricular().getId());
+        query.setParameter("idCriador", filtro.getCriador() == null ? null : filtro.getCriador().getId());
+        
+        return query.getResultList();
     }
 
 }

@@ -52,7 +52,7 @@ public class QuestaoTest {
     private ComponenteCurricularServico ccurricularServico;
 
     private static Logger logger;
-    
+
     private static final String EMAIL_TESTE = "teste@gmail.com";
 
     @BeforeClass
@@ -94,11 +94,7 @@ public class QuestaoTest {
 
         usuarioServico.salvar(usuario);
 
-        assertNotNull(usuario.getId());
-
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
-
-        assertNotNull(componente);
 
         Questao questao = new Questao();
 
@@ -131,8 +127,6 @@ public class QuestaoTest {
 
         Questao questao = questaoBuscada.get(0);
 
-        assertNotNull(questao);
-
         questao.setEnunciado("Enunciado alterado");
 
         questaoServico.alterar(questao);
@@ -149,8 +143,6 @@ public class QuestaoTest {
         logger.info("Executando t03: ExcluirQuestão");
 
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
-
-        assertNotNull(questaoBuscada);
 
         questaoServico.remover(questaoBuscada.get(0));
 
@@ -177,11 +169,7 @@ public class QuestaoTest {
 
         Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
 
-        assertNotNull(usuario);
-        
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
-        
-        assertNotNull(componente);
 
         MultiplaEscolha questao = new MultiplaEscolha();
 
@@ -227,15 +215,13 @@ public class QuestaoTest {
     @Test
     public void t07_salvarQuestaoVF() {
         logger.info("Executando t07: salvarQuestaoVF");
-        
+
         Questao questao = new Questao();
 
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
-        assertNotNull(componente);
-        
+
         Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
-        assertNotNull(usuario);
-        
+
         questao.setCriador(usuario);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Questao V/F teste");
@@ -304,104 +290,189 @@ public class QuestaoTest {
 
         assertEquals("Alternativa alterada", alternativa.getAlternativa());
     }
-    
+
     @Test(expected = EJBException.class)
-    public void t11_criticarQuestaoSemCriador(){
+    public void t11_criticarQuestaoSemCriador() {
         logger.info("Executando t11: criticarQuestaoSemCriador");
-        
+
         Questao questao = new Questao();
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
-        
+
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Questao sem criador?");
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        
+
         questaoServico.salvar(questao);
     }
 
     @Test(expected = EJBException.class)
-    public void t12_criticarQuestaoSemComponenteCurricular(){
+    public void t12_criticarQuestaoSemComponenteCurricular() {
         logger.info("Executando t12: criticarQuestaoSemComponenteCurricular");
-        
+
         Questao questao = new Questao();
         Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
-        
+
         questao.setCriador(criador);
         questao.setEnunciado("Questao sem componente?");
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        
+
         questaoServico.salvar(questao);
     }
-    
+
     @Test(expected = ValidacaoException.class)
-    public void t13_criticarQuestaoRepetida() throws ValidacaoException{
+    public void t13_criticarQuestaoRepetida() throws ValidacaoException {
         logger.info("Executando t13: criticarQuestaoRepetida");
-        
+
         Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
         Questao questao = new Questao();
         String enunciado = "Questao repetida?";
-        
+
         questao.setCriador(criador);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado(enunciado);
         questao.setDataCriacao(Calendar.getInstance().getTime());
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        
+
         questaoServico.salvar(questao);
-        
+
         Questao questao2 = new Questao();
-        
+
         questao2.setCriador(criador);
         questao2.setComponenteCurricular(componente);
         questao2.setEnunciado(enunciado);
         questao2.setDataCriacao(Calendar.getInstance().getTime());
         questao2.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        
+
         questaoServico.validarEnunciadoPorTipoValido(questao2);
     }
-    
+
     @Test(expected = ValidacaoException.class)
-    public void t14_criticarQuestaoRepetidaEdicao() throws ValidacaoException{
+    public void t14_criticarQuestaoRepetidaEdicao() throws ValidacaoException {
         logger.info("Executando t14: criticarQuestaoRepetidaEdicao");
-        
+
         Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
         String enunciado = "Questao repetida?";
-        
+
         Questao questao = new Questao();
-        
+
         questao.setCriador(criador);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("questao x");
         questao.setDataCriacao(Calendar.getInstance().getTime());
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        
+
         questaoServico.salvar(questao);
-        
+
         List<Questao> lista = questaoServico.buscarQuestoesPorCriador(criador.getEmail());
-        
+
         questao = lista.get(lista.size() - 1);
-        
+
         questao.setEnunciado(enunciado);
-        
+
         questaoServico.valirEnunciadoPorTipoValidoEdicao(questao);
     }
-    
+
     @Test(expected = ValidacaoException.class)
-    public void t15_criticarAlternativasRepetidas() throws ValidacaoException{
+    public void t15_criticarAlternativasRepetidas() throws ValidacaoException {
         logger.info("Executando t15: criticarAlternativasRepetidas");
-        
+
         List<Alternativa> alternativas = new ArrayList<>();
-        
+
         alternativas.add(new Alternativa());
         alternativas.get(0).setAlternativa("Teste");
-        
+
         alternativas.add(new Alternativa());
         alternativas.get(1).setAlternativa("Teste");
-        
+
         questaoServico.validarAlternativasDiferentes(alternativas);
+
+    }
+
+    @Test
+    public void t16_buscarQuestaoCompartilhadaCriador() {
+        logger.info("Executando t16: buscarQuestaoCompartilhadaCriador");
+        Questao filtro = new Questao();
+        Questao questao = new Questao();
+        List<Questao> lista;
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+
+        questao.setCriador(criador);
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("questao compartilhada?");
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+
+        questaoServico.salvar(questao);
+
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        filtro.setCriador(criador);
+
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro, criador.getId());
+
+        assertEquals(1, lista.size());
+    }
+
+    @Test
+    public void t17_buscarQuestaoCompartilhadaOutros() {
+        logger.info("Executando t17: buscarQuestaoCompartilhadaOutros");
+        Questao filtro = new Questao();
+        List<Questao> lista;
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("user2@gmail.com");
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        filtro.setCriador(criador);
+
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro, usuario.getId());
+
+        assertEquals(1, lista.size());
+
+    }
+
+    @Test
+    public void t18_buscarQuestaoNaoCompartilhadaCriador() {
+        logger.info("Executando t18: buscarQuestaoNaoCompartilhadaCriador");
+        Questao filtro = new Questao();
+        Questao questao = new Questao();
+        List<Questao> lista;
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+
+        questao.setCriador(criador);
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("questao não compartilhada?");
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        questao.setCompartilhada(Boolean.FALSE);
         
+        questaoServico.salvar(questao);
+
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        filtro.setCriador(criador);
+
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro, criador.getId());
+
+        assertEquals(2, lista.size());
+    }
+
+    @Test
+    public void t19_buscarQuestaoNaoCompartilhadaOutros() {
+        logger.info("Executando t19: buscarQuestaoNaoCompartilhadaOutros");
+        Questao filtro = new Questao();
+        List<Questao> lista;
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("user2@gmail.com");
+        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        filtro.setCriador(criador);
+
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro, usuario.getId());
+
+        assertEquals(1, lista.size());
     }
     
+
 }
