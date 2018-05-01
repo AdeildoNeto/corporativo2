@@ -339,7 +339,7 @@ public class QuestaoBean implements Serializable {
     
     /**
      * Método para buscar o componente curricular selecionado.
-     * @return 
+     * @return componente
      */
     private ComponenteCurricular buscarComponenteSelecionado(){
         if(componenteSelecionado == null){

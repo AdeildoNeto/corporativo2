@@ -74,7 +74,7 @@ import org.hibernate.validator.constraints.NotBlank;
                             + "AND (q.criador.id = :idUsuario OR (q.criador.id <> :idUsuario AND q.compartilhada = true)) "
                             + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
                             + "AND (:idCriador is null OR :idCriador = q.criador.id) "
-                            + "AND (:enunciado is null OR q.enunciado like '%:enunciado%')"
+                            + "AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
         })
 public class Questao implements Serializable {

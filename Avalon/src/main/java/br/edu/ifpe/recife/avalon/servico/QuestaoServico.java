@@ -163,13 +163,17 @@ public class QuestaoServico {
         }
     }
     
-    public List<Questao> buscarQuestoesPorFiltro(Questao filtro, Long idUsuario){
+    public List<Questao> buscarQuestoesPorFiltro(@NotNull Questao filtro, @NotNull Long idUsuario){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorFiltroCompartilhada", Questao.class);
+        String enunciado = filtro.getEnunciado() == null ? "" : filtro.getEnunciado();
+        Long idComponenteCurricular = filtro.getComponenteCurricular() == null ? null : filtro.getComponenteCurricular().getId();
+        Long idCriador = filtro.getCriador() == null ? null : filtro.getCriador().getId();
+        
         query.setParameter("idUsuario", idUsuario);
         query.setParameter("tipo", filtro.getTipo());
-        query.setParameter("enunciado", filtro.getEnunciado());
-        query.setParameter("idComponenteCurricular", filtro.getComponenteCurricular() == null ? null : filtro.getComponenteCurricular().getId());
-        query.setParameter("idCriador", filtro.getCriador() == null ? null : filtro.getCriador().getId());
+        query.setParameter("enunciado", "%".concat(enunciado).concat("%"));
+        query.setParameter("idComponenteCurricular", idComponenteCurricular);
+        query.setParameter("idCriador", idCriador);
         
         return query.getResultList();
     }
