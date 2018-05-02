@@ -44,7 +44,11 @@ public class ProvaBean implements Serializable {
 
     private Set<Questao> questoesSelecionadas = new HashSet<>();
     
+    private Questao questaoDetalhes = new Questao();
+    
     private boolean todosSelecionados = false;
+    
+    private boolean exibirModalDetalhes = false;
     
     private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     
@@ -88,7 +92,8 @@ public class ProvaBean implements Serializable {
     private void limparTela() {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         todosSelecionados = false;
-        questoesSelecionadas = new HashSet<>();
+        exibirModalDetalhes = false;
+        questoesSelecionadas = new HashSet<>();   
     }
     
     /**
@@ -136,6 +141,11 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    public void exibirDetalhes(Questao questao){
+        questaoDetalhes = questao;
+        exibirModalDetalhes = true;
+    }
+    
     /*
         GETTERS AND SETTERS
     */
@@ -178,6 +188,22 @@ public class ProvaBean implements Serializable {
 
     public void setQuestoesSelecionadas(Set<Questao> questoesSelecionadas) {
         this.questoesSelecionadas = questoesSelecionadas;
+    }
+
+    public Questao getQuestaoDetalhes() {
+        return questaoDetalhes;
+    }
+
+    public void setQuestaoDetalhes(Questao questaoDetalhes) {
+        this.questaoDetalhes = questaoDetalhes;
+    }
+
+    public boolean isExibirModalDetalhes() {
+        return exibirModalDetalhes;
+    }
+
+    public void setExibirModalDetalhes(boolean exibirModalDetalhes) {
+        this.exibirModalDetalhes = exibirModalDetalhes;
     }
     
 }

@@ -49,7 +49,28 @@ and open the template in the editor.
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
-                            <span>#{questao.enunciado}</span>
+                            <h:outputText title="#{questao.enunciado}"
+                                          value="#{questao.enunciado}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText title="#{questao.componenteCurricular.nome}"
+                                          value="#{questao.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.criador']}</span>
+                            </f:facet>
+                            <h:outputText title="#{questao.criador.nomeCompleto}"
+                                          value="#{questao.criador.nomeCompleto}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header"></f:facet>
+                            <p:commandLink action="#{provaBean.exibirDetalhes(questao)}" update="formDetalhes">
+                                <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
+                            </p:commandLink>
                         </h:column>
                     </h:dataTable>
                 </div>
@@ -68,6 +89,9 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
+        
+        <ui:include src="fragmento/modal-detalhes.xhtml" />
+        
     </ui:define>
 
 </ui:composition>

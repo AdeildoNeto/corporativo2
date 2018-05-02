@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formDetalhes">
+
+        <p:dialog id="modalComponente" visible="#{provaBean.exibirModalDetalhes}"
+                  header="#{msg['label.detalhes']}" modal="true" resizable="false"
+                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p:outputPanel styleClass="container-questao #{provaBean.questaoDetalhes.tipo}">
+                        <div class="enunciado">
+                            <h:outputText value="#{provaBean.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
+                        </div>
+                        <p:outputPanel styleClass="prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                            <h:outputText value="#{provaBean.questaoDetalhes.formatarQuestao()}"></h:outputText>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="detalhesComponenteCurricular">#{msg['label.componente.curricular']}:</label>
+                    <h:outputText id="detalhesComponenteCurricular" value="#{provaBean.questaoDetalhes.componenteCurricular.nome}" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="detalhesDataCriacao">#{msg['label.data.cadastro']}:</label>
+                    <h:outputText id="detalhesDataCriacao" value="#{provaBean.questaoDetalhes.dataCriacao}">
+                        <f:convertDateTime parent="dd/MMM/yyyy" />
+                    </h:outputText>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="detalhesCriadorNome">#{msg['label.criador']}:</label>
+                    <h:outputText id="detalhesCriadorNome" value="#{provaBean.questaoDetalhes.criador.nomeCompleto}" />
+                </div>
+            </div>
+        </p:dialog>
+
+    </h:form>   
+
+</ui:composition>

@@ -66,6 +66,15 @@ public class Usuario implements Serializable {
             cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Questao> questoes;
 
+    public String getNomeCompleto(){
+        StringBuilder builder = new StringBuilder();
+        builder.append(nome);
+        builder.append(" ");
+        builder.append(sobrenome);
+        
+        return builder.toString();
+    }
+    
     public Long getId() {
         return id;
     }
