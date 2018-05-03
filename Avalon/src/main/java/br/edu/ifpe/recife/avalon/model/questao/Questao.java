@@ -71,9 +71,9 @@ import org.hibernate.validator.constraints.NotBlank;
             ),@NamedQuery(
                     name = "Questao.PorFiltroCompartilhada",
                     query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipo "
-                            + "AND (q.criador.id = :idUsuario OR (q.criador.id <> :idUsuario AND q.compartilhada = true)) "
+                            + "AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
                             + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
-                            + "AND (:idCriador is null OR :idCriador = q.criador.id) "
+                            + "AND (:emailCriador is null OR :emailCriador = q.criador.email) "
                             + "AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
         })
@@ -120,7 +120,7 @@ public class Questao implements Serializable {
     
     /**
      * Método para formatar apresentação da questão de acordo com o tipo.
-     * @return 
+     * @return questao formatada.
      */
     public String formatarQuestao() {
         StringBuilder sb = new StringBuilder();

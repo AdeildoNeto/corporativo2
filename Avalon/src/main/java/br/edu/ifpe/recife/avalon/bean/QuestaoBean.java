@@ -124,6 +124,8 @@ public class QuestaoBean implements Serializable {
     public String iniciparPaginaAlteracao(Questao questaoSelecionada) {
         this.questao = questaoSelecionada;
         this.exibirModalComponente = false;
+        this.componenteSelecionado = questao.getComponenteCurricular().getId();
+        this.tipoSelecionado = questao.getTipo();
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questaoSelecionada.getTipo())) {
             this.alternativas = ((MultiplaEscolha) questaoSelecionada).getAlternativas();
@@ -197,6 +199,7 @@ public class QuestaoBean implements Serializable {
             questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
             questaoMultipla.setDataCriacao(questao.getDataCriacao());
             questaoMultipla.setComponenteCurricular(buscarComponenteSelecionado());
+            questaoMultipla.setAtiva(questao.isSelecionada());
 
             alternativas.get(0).setQuestao(questaoMultipla);
             alternativas.get(1).setQuestao(questaoMultipla);
@@ -264,6 +267,7 @@ public class QuestaoBean implements Serializable {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         exibirModalComponente = false;
         questao = new Questao();
+        componenteSelecionado = null;
 
         alternativas = new ArrayList<>();
         alt1 = new Alternativa();

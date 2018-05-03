@@ -33,7 +33,7 @@ and open the template in the editor.
                     <p:selectOneMenu id="componenteCurricular"
                                      value="#{questaoBean.componenteSelecionado}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
-                                     filter="true" filterMatchMode="startsWith">
+                                     filter="true" filterMatchMode="startsWith"  validatorMessage="questao.componente.curricular.obrigatorio" required="true">
                         <f:selectItems value="#{questaoBean.todosComponentesCurricular}"
                                        itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                         <p:ajax update="@form" event="change" />

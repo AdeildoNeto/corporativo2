@@ -52,6 +52,8 @@ public class ProvaBean implements Serializable {
     
     private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     
+    private Questao filtro = new Questao();
+    
     /**
      * Método para iniciar a página de geração de prova.
      * @return rota para página de geração de prova
@@ -74,7 +76,8 @@ public class ProvaBean implements Serializable {
     private void buscarQuestoes() {
         this.questoesSelecionadas = new HashSet<>();
         this.todosSelecionados = false;
-        this.questoes = questaoServico.buscarQuestoesPorCriadorTipo(usuarioLogado.getEmail(), tipoSelecionado);
+        this.filtro.setTipo(tipoSelecionado);
+        this.questoes = questaoServico.buscarQuestoesPorFiltro(filtro, this.usuarioLogado.getEmail());
     }
 
     /**
@@ -93,7 +96,8 @@ public class ProvaBean implements Serializable {
         tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         todosSelecionados = false;
         exibirModalDetalhes = false;
-        questoesSelecionadas = new HashSet<>();   
+        questoesSelecionadas = new HashSet<>();
+        this.filtro = new Questao();
     }
     
     /**
