@@ -199,7 +199,7 @@ public class QuestaoBean implements Serializable {
             questaoMultipla.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
             questaoMultipla.setDataCriacao(questao.getDataCriacao());
             questaoMultipla.setComponenteCurricular(buscarComponenteSelecionado());
-            questaoMultipla.setAtiva(questao.isSelecionada());
+            questaoMultipla.setCompartilhada(questao.getCompartilhada());
 
             alternativas.get(0).setQuestao(questaoMultipla);
             alternativas.get(1).setQuestao(questaoMultipla);
