@@ -330,3 +330,25 @@ label{
 h1 {
     font-size: 2rem !important;
 }
+
+/* Detalhes */
+.prova-alternativa{
+    padding-left: 1.5em;
+}
+
+.break-white-space{
+    white-space: pre-line;
+    word-wrap: break-word;
+}
+
+.container-questao{
+    margin-top: -20px;
+}
+
+.btn-modal{
+    margin-top: 15px;
+}
+
+.modal-detahes label{
+    margin-right: 5px;
+}

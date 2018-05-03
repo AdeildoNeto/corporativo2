@@ -15,15 +15,17 @@ and open the template in the editor.
 
         <p:dialog id="modalComponente" visible="#{provaBean.exibirModalDetalhes}"
                   header="#{msg['label.detalhes']}" modal="true" resizable="false"
-                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+                  widgetVar="modalComponente" closeOnEscape="true" draggable="false"
+                  onHide="#{provaBean.fecharModalDetalhes()}" class="modal-detahes">
 
             <div class="row">
-                <div class="col-md-12">
-                    <p:outputPanel styleClass="container-questao #{provaBean.questaoDetalhes.tipo}">
-                        <div class="enunciado">
-                            <h:outputText value="#{provaBean.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
+                <div class="col-md-12 form-group">
+                    <p:outputPanel styleClass="container-questao">
+                        <div class="break-white-space">
+                            <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
+                            <h:outputText id="detalhesEnunciado" value="#{provaBean.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
                         </div>
-                        <p:outputPanel styleClass="prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                        <p:outputPanel styleClass="break-white-space prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
                             <h:outputText value="#{provaBean.questaoDetalhes.formatarQuestao()}"></h:outputText>
                         </p:outputPanel>
                     </p:outputPanel>
@@ -31,24 +33,33 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="detalhesComponenteCurricular">#{msg['label.componente.curricular']}:</label>
+                    <label for="detalhesComponenteCurricular">#{msg['label.componente.curricular']}: </label>
                     <h:outputText id="detalhesComponenteCurricular" value="#{provaBean.questaoDetalhes.componenteCurricular.nome}" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="detalhesDataCriacao">#{msg['label.data.cadastro']}:</label>
+                    <label for="detalhesDataCriacao">#{msg['label.data.cadastro']}: </label>
                     <h:outputText id="detalhesDataCriacao" value="#{provaBean.questaoDetalhes.dataCriacao}">
-                        <f:convertDateTime parent="dd/MMM/yyyy" />
+                        <f:convertDateTime parent="dd/MM/yyyy" />
                     </h:outputText>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="detalhesCriadorNome">#{msg['label.criador']}:</label>
+                    <label for="detalhesCriadorNome">#{msg['label.criador']}: </label>
                     <h:outputText id="detalhesCriadorNome" value="#{provaBean.questaoDetalhes.criador.nomeCompleto}" />
                 </div>
             </div>
+
+            <div class="row btn-modal">
+                <div class="col text-right">
+                    <p:commandButton value="#{msg['btn.voltar']}" action="#{provaBean.fecharModalDetalhes()}"
+                                     styleClass="btn btn-secondary" update="modalComponente"
+                                     immediate="true" process="@this" />
+                </div>
+            </div>
+
         </p:dialog>
 
     </h:form>   

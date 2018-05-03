@@ -141,9 +141,21 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    /**
+     * Método para exibir o modal de detalhes
+     * @param questao 
+     */
     public void exibirDetalhes(Questao questao){
         questaoDetalhes = questao;
         exibirModalDetalhes = true;
+    }
+    
+    /**
+     * Método para fechar o modal de detalhes
+     */
+    public void fecharModalDetalhes(){
+        questaoDetalhes = new Questao();
+        exibirModalDetalhes = false;
     }
     
     /*
