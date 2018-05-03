@@ -57,9 +57,9 @@ and open the template in the editor.
     <div>
         <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
                        styleClass="col-md-6 form-group">
-            <p:outputLabel for="questao-alternativas" value="#{msg['label.alternativas']}:" />
+            <p:outputLabel value="#{msg['label.alternativas']}: *" />
             <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="alternativa" varStatus="posicao">    
-                <h:inputText class="form-control" value="#{alternativa.alternativa}" /><br />
+                <h:inputText class="form-control" value="#{alternativa.alternativa}" required="true" /><br />
             </ui:repeat>
         </p:outputPanel>
     </div>
