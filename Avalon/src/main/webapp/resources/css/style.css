@@ -340,6 +340,8 @@ h1 {
 .break-white-space{
     white-space: pre-line;
     word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .container-questao{
@@ -352,4 +354,9 @@ h1 {
 
 .modal-detahes label{
     margin-right: 5px;
+}
+
+.modal-detahes{
+    max-width: 850px;
+    max-height: 460px;
 }

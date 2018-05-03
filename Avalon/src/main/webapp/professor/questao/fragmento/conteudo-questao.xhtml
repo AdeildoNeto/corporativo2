@@ -15,10 +15,10 @@ and open the template in the editor.
     <div class="row">
         <div class="col-md-4 form-group">
             <div>
-                <label for="tipoQuestao">#{msg['label.selecione.tipo']}:</label>
+                <p:outputLabel for="tipoQuestao" value="#{msg['label.selecione.tipo']}:" />
                 <div>
                     <p:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}"
-                                     disabled="#{questaoBean.edicaoQuestao()}"
+                                     disabled="#{questaoBean.edicaoQuestao()}" required="true"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
                         <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
                         <p:ajax update="@form" event="change"/>
@@ -28,12 +28,12 @@ and open the template in the editor.
         </div>
         <div class="col-md-6 form-group">
             <div>
-                <label for="componenteCurricular">#{msg['label.componente.curricular']}:</label>
+                <p:outputLabel for="componenteCurricular" value="#{msg['label.componente.curricular']}:" />
                 <div>
-                    <p:selectOneMenu id="componenteCurricular"
+                    <p:selectOneMenu id="componenteCurricular" required="true"
                                      value="#{questaoBean.componenteSelecionado}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
-                                     filter="true" filterMatchMode="startsWith"  validatorMessage="questao.componente.curricular.obrigatorio" required="true">
+                                     filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{questaoBean.todosComponentesCurricular}"
                                        itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                         <p:ajax update="@form" event="change" />
@@ -49,15 +49,15 @@ and open the template in the editor.
 
     <div class="row">
         <div class="col-md-12 form-group">
-            <label for="questao-enunciado">#{msg['label.enunciado']}:</label>
-            <h:inputTextarea class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.questao.enunciado}">
+            <p:outputLabel for="questao-enunciado" value="#{msg['label.enunciado']}:" />
+            <h:inputTextarea required="true" class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.questao.enunciado}">
             </h:inputTextarea>
         </div>
     </div>
     <div>
         <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
                        styleClass="col-md-6 form-group">
-            <label for="questao-alternativas" >#{msg['label.alternativas']}:</label>
+            <p:outputLabel for="questao-alternativas" value="#{msg['label.alternativas']}:" />
             <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="alternativa" varStatus="posicao">    
                 <h:inputText class="form-control" value="#{alternativa.alternativa}" /><br />
             </ui:repeat>
@@ -66,9 +66,9 @@ and open the template in the editor.
     
     <div class="row">
         <div class="col-md-4 display-flex">
-            <label for="questao-compartilhad">#{msg['label.compartilhar.questao']}:</label>
+            <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />
             <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questao.compartilhada}"
-                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" />
+                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" required="true" />
         </div>
     </div>
     

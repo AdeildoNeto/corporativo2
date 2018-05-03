@@ -21,8 +21,8 @@ and open the template in the editor.
                 <div class="col-md-12">
                     <p:messages id="msgComponente" />
                     <div class="form-group">
-                        <label for="nomeComponente">#{msg['label.nome']}:</label>
-                        <h:inputText class="form-control" value="#{questaoBean.novoComponenteCurricular.nome}" />
+                        <p:outputLabel for="nomeComponente" value="#{msg['label.nome']}:" />
+                        <h:inputText required="true" class="form-control" value="#{questaoBean.novoComponenteCurricular.nome}" />
                     </div>
                 </div>
             </div>
