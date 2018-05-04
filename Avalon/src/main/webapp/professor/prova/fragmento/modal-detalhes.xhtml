@@ -20,15 +20,21 @@ and open the template in the editor.
 
             <div class="row">
                 <div class="col-md-12 form-group">
+                    <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
-                        <div class="break-white-space">
-                            <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
+                        <div class="container-enunciado break-white-space">
                             <h:outputText id="detalhesEnunciado" value="#{provaBean.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
                         </div>
-                        <p:outputPanel styleClass="break-white-space prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                        <p:outputPanel styleClass="prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
                             <h:outputText value="#{provaBean.questaoDetalhes.formatarQuestao()}"></h:outputText>
                         </p:outputPanel>
                     </p:outputPanel>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="detalhesTipoQuestao">#{msg['label.selecione.tipo']}: </label>
+                    <h:outputText id="detalhesTipoQuestao" value="#{provaBean.questaoDetalhes.tipo.descricao}" />
                 </div>
             </div>
             <div class="row">

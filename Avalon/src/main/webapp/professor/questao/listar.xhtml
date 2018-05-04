@@ -20,7 +20,7 @@ and open the template in the editor.
                 </div>
             </div>
             
-            <div class="row container-questao">
+            <div class="row container-minhas-questoes">
                 <div class="offset-md-2 col-md-8">
                     <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>
@@ -59,7 +59,7 @@ and open the template in the editor.
                 </div>
             </div>
             <div class="row">
-                <div class="offset-md-8 col-md-2 form-group">
+                <div class="offset-md-8 col-md-2 form-group button-adicionar">
                     <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="#{questaoBean.iniciarPaginaInclusao()}" class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>

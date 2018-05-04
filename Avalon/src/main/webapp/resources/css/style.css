@@ -20,7 +20,7 @@ body{
     color: white;
 }
 
-.container-answers{
+.container-minhas-questoes{
     min-height: 100px;
 }
 
@@ -228,6 +228,10 @@ label{
     text-align: center;
 }
 
+.button-adicionar{
+    margin-top: 20px;
+}
+
 .buttons-save button,
 .buttons-save a{
     display: inline-block !important;
@@ -335,17 +339,15 @@ h1 {
 /* Detalhes */
 .prova-alternativa{
     padding-left: 1.5em;
+    max-height: 30px;
 }
+
 
 .break-white-space{
     white-space: pre-line;
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.container-questao{
-    margin-top: -20px;
 }
 
 .btn-modal{
@@ -358,5 +360,10 @@ h1 {
 
 .modal-detahes{
     max-width: 850px;
-    max-height: 460px;
+    max-height: 530px;
+}
+
+.container-questao{
+    max-height: 120px;
+    overflow-x: auto;
 }
