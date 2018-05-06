@@ -5,15 +5,19 @@
  */
 package br.edu.ifpe.recife.avalon.bean;
 
+import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,12 +37,13 @@ public class ProvaBean implements Serializable {
 
     @EJB
     private QuestaoServico questaoServico;
+    
+    @EJB
+    private ComponenteCurricularServico componenteServico;
 
     private Usuario usuarioLogado;
     
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
-
-    private TipoQuestaoEnum tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
 
     private List<Questao> questoes = new ArrayList<>();
 
@@ -52,7 +57,7 @@ public class ProvaBean implements Serializable {
     
     private HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     
-    private Questao filtro = new Questao();
+    private FiltroQuestao filtro = new FiltroQuestao();
     
     /**
      * Método para iniciar a página de geração de prova.
@@ -62,6 +67,7 @@ public class ProvaBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         limparTela();
         buscarQuestoes();
+        carregarTiposQuestao();
         return "goGerarProva";
     }
     
@@ -76,28 +82,25 @@ public class ProvaBean implements Serializable {
     private void buscarQuestoes() {
         this.questoesSelecionadas = new HashSet<>();
         this.todosSelecionados = false;
-        this.filtro.setTipo(tipoSelecionado);
-        this.questoes = questaoServico.buscarQuestoesPorFiltro(filtro, this.usuarioLogado.getEmail());
+        this.filtro.setEmailUsuario(usuarioLogado.getEmail());
+        this.questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
     }
 
     /**
      * Método responsável por carregar os tipos de questão disponíveis.
      */
     private void carregarTiposQuestao() {
-        this.tipoQuestoes.add(TipoQuestaoEnum.DISCURSIVA);
-        this.tipoQuestoes.add(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
-        this.tipoQuestoes.add(TipoQuestaoEnum.VERDADEIRO_FALSO);
+        this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.values());        
     }
 
     /**
      * Método para limpar os campos da tela.
      */
     private void limparTela() {
-        tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
         todosSelecionados = false;
         exibirModalDetalhes = false;
         questoesSelecionadas = new HashSet<>();
-        this.filtro = new Questao();
+        this.filtro = new FiltroQuestao();
     }
     
     /**
@@ -116,7 +119,7 @@ public class ProvaBean implements Serializable {
     /**
      * Método para atualizar a lista de questões disponíveis para impressão.
      */
-    public void selecionarTipoQuestao(){
+    public void pesquisar(){
         buscarQuestoes();
     }
     
@@ -162,6 +165,14 @@ public class ProvaBean implements Serializable {
         exibirModalDetalhes = false;
     }
     
+    /**
+     * Método para buscar todos os componentes curricular cadastrados.
+     * @return lista de componentes curricular
+     */
+    public List<ComponenteCurricular> getTodosComponentesCurricular(){
+        return componenteServico.buscarTodosComponentes();
+    }
+    
     /*
         GETTERS AND SETTERS
     */
@@ -173,15 +184,7 @@ public class ProvaBean implements Serializable {
     public void setTipoQuestoes(List<TipoQuestaoEnum> tipoQuestoes) {
         this.tipoQuestoes = tipoQuestoes;
     }
-
-    public TipoQuestaoEnum getTipoSelecionado() {
-        return tipoSelecionado;
-    }
-
-    public void setTipoSelecionado(TipoQuestaoEnum tipoSelecionado) {
-        this.tipoSelecionado = tipoSelecionado;
-    }
-
+    
     public List<Questao> getQuestoes() {
         return questoes;
     }
@@ -220,6 +223,14 @@ public class ProvaBean implements Serializable {
 
     public void setExibirModalDetalhes(boolean exibirModalDetalhes) {
         this.exibirModalDetalhes = exibirModalDetalhes;
+    }
+
+    public FiltroQuestao getFiltro() {
+        return filtro;
+    }
+
+    public void setFiltro(FiltroQuestao filtro) {
+        this.filtro = filtro;
     }
     
 }

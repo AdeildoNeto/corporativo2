@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
+import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
@@ -38,6 +39,7 @@ public class QuestaoServico {
 
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     private static final String MSG_ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
+    private static final String PERCENT = "%";
 
     @Resource
     private SessionContext sessao;
@@ -163,19 +165,22 @@ public class QuestaoServico {
         }
     }
     
-    public List<Questao> buscarQuestoesPorFiltro(@NotNull Questao filtro, @NotNull String emailUsuario){
+    /**
+     * Método para pesquisar questões a partir de um filtro.
+     * 
+     * @param filtro - filtro para buscar questoes
+     * @return 
+     */
+    public List<Questao> buscarQuestoesPorFiltro(@NotNull FiltroQuestao filtro){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorFiltroCompartilhada", Questao.class);
-        String enunciado = filtro.getEnunciado() == null ? "" : filtro.getEnunciado();
-        Long idComponenteCurricular = filtro.getComponenteCurricular() == null ? null : filtro.getComponenteCurricular().getId();
-        String emailCriador = filtro.getCriador() == null ? null : filtro.getCriador().getEmail();
         
-        query.setParameter("emailUsuario", emailUsuario);
+        query.setParameter("emailUsuario", filtro.getEmailUsuario());
         query.setParameter("tipo", filtro.getTipo());
-        query.setParameter("enunciado", "%".concat(enunciado).concat("%"));
-        query.setParameter("idComponenteCurricular", idComponenteCurricular);
-        query.setParameter("emailCriador", emailCriador);
+        query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
+        query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
+        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
         
         return query.getResultList();
     }
-
+    
 }

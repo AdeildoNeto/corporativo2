@@ -73,7 +73,7 @@ import org.hibernate.validator.constraints.NotBlank;
                     query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipo "
                             + "AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
                             + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
-                            + "AND (:emailCriador is null OR :emailCriador = q.criador.email) "
+                            + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
                             + "AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
         })

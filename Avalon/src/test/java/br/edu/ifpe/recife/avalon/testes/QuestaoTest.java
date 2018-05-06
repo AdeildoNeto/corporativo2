@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.testes;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
@@ -393,7 +394,7 @@ public class QuestaoTest {
     @Test
     public void t16_buscarQuestaoCompartilhadaCriador() {
         logger.info("Executando t16: buscarQuestaoCompartilhadaCriador");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
@@ -408,9 +409,10 @@ public class QuestaoTest {
         questaoServico.salvar(questao);
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setCriador(criador);
+        filtro.setEmailUsuario(criador.getEmail());
+        filtro.setNomeCriador(criador.getNome());
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, criador.getEmail());
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(1, lista.size());
     }
@@ -418,14 +420,15 @@ public class QuestaoTest {
     @Test
     public void t17_buscarQuestaoCompartilhadaOutros() {
         logger.info("Executando t17: buscarQuestaoCompartilhadaOutros");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setCriador(criador);
+        filtro.setEmailUsuario("user2@gmail.com");
+        filtro.setNomeCriador(criador.getNome());
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, "user2@gmail.com");
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(1, lista.size());
 
@@ -434,7 +437,7 @@ public class QuestaoTest {
     @Test
     public void t18_buscarQuestaoNaoCompartilhadaCriador() {
         logger.info("Executando t18: buscarQuestaoNaoCompartilhadaCriador");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
@@ -450,9 +453,10 @@ public class QuestaoTest {
         questaoServico.salvar(questao);
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setCriador(criador);
+        filtro.setNomeCriador(criador.getNome());
+        filtro.setEmailUsuario(criador.getEmail());
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, criador.getEmail());
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(2, lista.size());
     }
@@ -460,14 +464,15 @@ public class QuestaoTest {
     @Test
     public void t19_buscarQuestaoNaoCompartilhadaOutros() {
         logger.info("Executando t19: buscarQuestaoNaoCompartilhadaOutros");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
-        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setCriador(criador);
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA); 
+        filtro.setEmailUsuario("user2@gmail.com");
+        filtro.setNomeCriador(criador.getNome());
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, "user2@gmail.com");
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(1, lista.size());
     }
@@ -476,13 +481,14 @@ public class QuestaoTest {
     @Test
     public void t20_buscarQuestaoPorFiltroEnunciado() {
         logger.info("Executando t20: buscarQuestaoPorFiltroEnunciado");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
         filtro.setEnunciado("questao");
+        filtro.setEmailUsuario("user2@gmail.com");
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, "user2@gmail.com");
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(3, lista.size());
     }
@@ -491,14 +497,15 @@ public class QuestaoTest {
     @Test
     public void t21_buscarQuestaoPorFiltroCriador() {
         logger.info("Executando t21: buscarQuestaoPorFiltroCriador");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setCriador(criador);
+        filtro.setEmailUsuario("user2@gmail.com");
+        filtro.setNomeCriador(criador.getNome());
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, "user2@gmail.com");
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(1, lista.size());
     }
@@ -507,14 +514,15 @@ public class QuestaoTest {
     @Test
     public void t22_buscarQuestaoPorFiltroComponenteCurricular() {
         logger.info("Executando t22: buscarQuestaoPorFiltroComponenteCurricular");
-        Questao filtro = new Questao();
+        FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setComponenteCurricular(componente);
+        filtro.setIdComponenteCurricular(componente.getId());
+        filtro.setEmailUsuario("user2@gmail.com");
 
-        lista = questaoServico.buscarQuestoesPorFiltro(filtro, "user2@gmail.com");
+        lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(3, lista.size());
     }

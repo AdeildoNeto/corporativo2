@@ -19,22 +19,15 @@ and open the template in the editor.
                     <p:messages id="msgs" />
                 </div>
             </div>
-            <div class="row margin-bottom-30">
-                <div class="offset-md-9">
-                    <label for="tipoQuestao">#{msg['label.filtrar.por.tipo']}:</label>
-                    <div>
-                        <p:selectOneMenu id="tipoQuestao" value="#{provaBean.tipoSelecionado}"
-                                         class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
-                            <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
-                            <f:ajax listener="#{provaBean.selecionarTipoQuestao()}" render="@form"/>
-                        </p:selectOneMenu>
-                    </div>
-                </div>
-            </div>
+            
+            <ui:include src="../comum/pesquisar-questao.xhtml">
+                <ui:param name="bean" value="#{provaBean}" />
+            </ui:include>
             
             <div class="row container-table-prova">
                 <div class="col-md-12">
-                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao" styleClass="table table-striped table-questoes-prova">
+                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
+                                 styleClass="table table-striped table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
