@@ -34,25 +34,30 @@ and open the template in the editor.
             </p:selectOneMenu>
         </div>
 
-        <div class="col-md-3 form-group">
-            <p:outputLabel for="filtroTipo" value="#{msg['label.selecione.tipo']}:" />
+        <div class="col-md-2 form-group">
+            <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
             <div>
                 <p:selectOneMenu id="filtroTipo" value="#{bean.filtro.tipo}"
-                                 class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
+                                 class="btn dropdown-toggle bg-select-menu ui-selectonemenu-185">
                     <f:selectItems value="#{bean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
                 </p:selectOneMenu>
             </div>
+        </div>
+        
+        <div class="col-md-1 form-group">
+            <p:commandLink id="addComponente" value="search"
+                           class="btn material-icons bg-default btn-search"
+                           onclick="PF('block').show()"
+                           oncomplete="PF('block').hide()"
+                           action="#{bean.pesquisar()}"
+                           update="table msgs btnImprimir" ajax="true"
+                           title="#{msg['adicionar.componente.curricular']}">
+            </p:commandLink>
         </div>
 
     </div>
 
     <div class="row">
-        <div class="col-md-12 text-right form-group">
-            <p:commandLink id="addComponente" value="Pesquisar" class="btn bg-default btn-add-componente"
-                           action="#{bean.pesquisar()}" update="table" ajax="true"
-                           title="#{msg['adicionar.componente.curricular']}">
-            </p:commandLink>
-        </div>
     </div>
 
 </ui:composition>

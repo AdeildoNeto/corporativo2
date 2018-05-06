@@ -80,7 +80,7 @@ public class ProvaBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoesSelecionadas = new HashSet<>();
+        this.questoesSelecionadas.clear();
         this.todosSelecionados = false;
         this.filtro.setEmailUsuario(usuarioLogado.getEmail());
         this.questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
@@ -99,7 +99,7 @@ public class ProvaBean implements Serializable {
     private void limparTela() {
         todosSelecionados = false;
         exibirModalDetalhes = false;
-        questoesSelecionadas = new HashSet<>();
+        questoesSelecionadas.clear();
         this.filtro = new FiltroQuestao();
     }
     
@@ -121,6 +121,14 @@ public class ProvaBean implements Serializable {
      */
     public void pesquisar(){
         buscarQuestoes();
+        if(questoes.isEmpty()){
+            exibirMensagemPesquisaSemDados();
+        }
+    }
+    
+    private void exibirMensagemPesquisaSemDados(){
+        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"), null);
+        FacesContext.getCurrentInstance().addMessage(null, mensagem);
     }
     
     /**

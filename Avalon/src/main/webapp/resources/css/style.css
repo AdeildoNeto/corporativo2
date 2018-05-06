@@ -331,6 +331,10 @@ label{
     white-space: nowrap;
 }
 
+.ui-selectonemenu-185{
+    min-width: 185px !important;
+}
+
 /* h1 */
 h1 {
     font-size: 2rem !important;
@@ -366,4 +370,11 @@ h1 {
 .container-questao{
     max-height: 120px;
     overflow-x: auto;
+}
+
+/* Search */
+.btn-search{
+    position: relative;
+    top: 36px;
+    color: white !important;
 }
