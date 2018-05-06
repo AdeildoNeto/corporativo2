@@ -13,21 +13,21 @@ and open the template in the editor.
                 template="/template/layout.xhtml">
 
     <ui:define name="conteudo">
-        <h:form id="form">
+        <h:form id="form" class="container">
             <div class="row">
-                <div class="offset-md-2 col-md-8">
+                <div class="col-md-12 form-group">
                     <h1>#{msg['titulo.minhas.questoes']}</h1>
                 </div>
             </div>
             
             <div class="row container-minhas-questoes">
-                <div class="offset-md-2 col-md-8">
+                <div class="col-md-12">
                     <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['questao.listar.header.tipo']}</span>
+                                <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
-                            <span>#{questao.tipo.descricao}</span>
+                            <h:outputText title="#{questao.enunciado}" value="#{questao.enunciado}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -38,9 +38,9 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['questao.listar.header.questao']}</span>
+                                <span>#{msg['questao.listar.header.tipo']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.enunciado}" value="#{questao.enunciado}" />
+                            <span>#{questao.tipo.descricao}</span>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -59,7 +59,7 @@ and open the template in the editor.
                 </div>
             </div>
             <div class="row">
-                <div class="offset-md-8 col-md-2 form-group button-adicionar">
+                <div class="offset-md-9 col-md-3 form-group">
                     <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="#{questaoBean.iniciarPaginaInclusao()}" class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>

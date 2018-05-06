@@ -106,6 +106,10 @@ label{
     background: rgba(0,0,0,0.5);
 }
 
+.ui-dialog-footer button{
+    margin-left: 8px !important;
+}
+
 /* Menu */
 .nav-link{
     color: white !important;
@@ -143,14 +147,14 @@ label{
     margin-top: 24px;
 }
 
-.table-questoes td:nth-child(2),
-.table-questoes td:nth-child(3){
+.table-questoes td:first-child,
+.table-questoes td:nth-child(2){
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.table-questoes th:first-child{
+.table-questoes th:nth-child(3){
     width: 172px;
 }
 
@@ -162,12 +166,12 @@ label{
     max-width: 250px;
 }
 
-.table-questoes th:nth-child(3){
-    width: 431px;
+.table-questoes th:first-child{
+    width: 631px;
 }
 
-.table-questoes td:nth-child(3){
-    max-width: 431px;
+.table-questoes td:first-child{
+    max-width: 631px;
 }
 
 .table-questoes th:last-child{
@@ -228,10 +232,6 @@ label{
     text-align: center;
 }
 
-.button-adicionar{
-    margin-top: 20px;
-}
-
 .buttons-save button,
 .buttons-save a{
     display: inline-block !important;
@@ -242,6 +242,10 @@ label{
 .btn-add-componente{
     margin-left: 5px;
     color: white !important;
+}
+
+.button-modal{
+    margin-left: 8px;
 }
 
 /* Background */

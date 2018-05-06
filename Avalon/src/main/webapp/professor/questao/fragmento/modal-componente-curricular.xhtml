@@ -33,9 +33,11 @@ and open the template in the editor.
                                  styleClass="btn btn-secondary"
                                  immediate="true" process="@this" update="formComponente form" />
 
-                    <p:commandButton value="#{msg['btn.salvar']}" action="#{questaoBean.salvarComponenteCurricular()}" validateClient="true"
+                    <p:commandButton value="#{msg['btn.salvar']}"
+                                     action="#{questaoBean.salvarComponenteCurricular()}"
                                      onclick="PF('block').show();" oncomplete="PF('block').hide()"
-                                     styleClass="btn btn-primary" update="formComponente form:componenteCurricular" />
+                                     styleClass="btn btn-primary button-modal"
+                                     update="formComponente form:componenteCurricular" />
                 </div>
             </div>
         </p:dialog>
