@@ -16,7 +16,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
@@ -161,6 +163,14 @@ public class LoginBean implements Serializable {
             contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }
