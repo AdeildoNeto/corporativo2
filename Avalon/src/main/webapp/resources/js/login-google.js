@@ -18,7 +18,7 @@ function startApp() {
             client_id: '131562098478-bvjjnubvmsauka865rsd8rrdol9flj9n.apps.googleusercontent.com',
             cookiepolicy: 'single_host_origin'
         });
-        attachSignin(document.getElementById('btnGoogleLogin'));
+        attachSignin(document.getElementsByClassName('btnGoogleLogin')[0]);
     });
 }
 ;

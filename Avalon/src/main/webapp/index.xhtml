@@ -22,14 +22,16 @@
                     <p:messages id="msgs" />
                 </div>
             </div>
-            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin}" update="loginForm"
-                             onstart="PF('block').show()" oncomplete="PF('block').hide()" />
+            
+            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin()}"
+                             onstart="PF('block').show()"
+                             oncomplete="PF('block').hide()"/>
         
             <div class="row" id="loginRow">
                 <div class="col-md-12 text-center">
-                    <div id="btnGoogleLogin" class="btn btn-primary">
-                        Login
-                    </div>
+                    <p:commandButton id="btnGoogleLogin" class="btn btn-primary btnGoogleLogin"
+                                     value="Acessar">
+                    </p:commandButton>
                 </div>
             </div>
             

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-    <TB_USUARIO TXT_EMAIL="teste@gmail.com"  TXT_NOME="Teste" TXT_SENHA="TESTE" TXT_SOBRENOME="Silva"></TB_USUARIO>
-    <TB_USUARIO TXT_EMAIL="blabla@gmail.com"  TXT_NOME="bla" TXT_SENHA="TESTE" TXT_SOBRENOME="blas"></TB_USUARIO>
-    <TB_USUARIO TXT_EMAIL="user1@gmail.com"  TXT_NOME="user1" TXT_SENHA="TESTE" TXT_SOBRENOME="user"></TB_USUARIO>
-    <TB_USUARIO TXT_EMAIL="user2@gmail.com"  TXT_NOME="user2" TXT_SENHA="TESTE" TXT_SOBRENOME="user"></TB_USUARIO>
+    <TB_USUARIO TXT_EMAIL="teste@gmail.com" TXT_NOME="Teste" TXT_SOBRENOME="Silva"></TB_USUARIO>
+    <TB_USUARIO TXT_EMAIL="blabla@gmail.com" TXT_NOME="bla" TXT_SOBRENOME="blas"></TB_USUARIO>
+    <TB_USUARIO TXT_EMAIL="user1@gmail.com" TXT_NOME="user1" TXT_SOBRENOME="user"></TB_USUARIO>
+    <TB_USUARIO TXT_EMAIL="user2@gmail.com" TXT_NOME="user2" TXT_SOBRENOME="user"></TB_USUARIO>
     <TB_COMPONENTE_CURRICULAR TXT_NOME="Teste"></TB_COMPONENTE_CURRICULAR>
 </dataset>

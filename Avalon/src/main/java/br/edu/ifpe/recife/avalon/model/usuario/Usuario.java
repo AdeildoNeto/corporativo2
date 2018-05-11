@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -30,10 +33,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "TB_USUARIO")
 @NamedQueries(
         {
-            @NamedQuery(
-                    name = "Usuario.PorLogin",
-                    query = "Select u from Usuario u where u.email = :email and u.senha = :senha")
-            ,
             @NamedQuery(
                     name = "Usuario.PorEmail",
                     query = "Select u from Usuario u where u.email = :email")
@@ -50,7 +49,7 @@ public class Usuario implements Serializable {
     @Email
     @Column(name = "TXT_EMAIL", unique = true)
     private String email;
-
+    
     @NotBlank
     @Column(name = "TXT_NOME")
     private String nome;
@@ -59,12 +58,14 @@ public class Usuario implements Serializable {
     @Column(name = "TXT_SOBRENOME")
     private String sobrenome;
 
-    @Column(name = "TXT_SENHA", columnDefinition = "varchar(2000)")
-    private String senha;
-
     @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Questao> questoes;
+    
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TXT_GRUPO")
+    private GrupoEnum grupo;
 
     public String getNomeCompleto(){
         StringBuilder builder = new StringBuilder();
@@ -107,14 +108,6 @@ public class Usuario implements Serializable {
         this.sobrenome = sobrenome;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public List<Questao> getQuestoes() {
         return questoes;
     }
@@ -123,4 +116,12 @@ public class Usuario implements Serializable {
         this.questoes = questoes;
     }
 
+    public GrupoEnum getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(GrupoEnum grupo) {
+        this.grupo = grupo;
+    }
+    
 }

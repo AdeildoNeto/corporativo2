@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.servico;
 
+import br.edu.ifpe.recife.avalon.model.usuario.GrupoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -43,9 +44,8 @@ public class UsuarioServico {
      * @param usuario
      */
     public void salvar(@Valid Usuario usuario) {
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorEmail", Usuario.class);
         query.setParameter("email", usuario.getEmail());
-        query.setParameter("senha", usuario.getSenha());
 
         if (query.getResultList().isEmpty()) {
             entityManager.persist(usuario);
@@ -77,25 +77,6 @@ public class UsuarioServico {
     }
 
     /**
-     * Método para consultar um usuário por Email e Senha.
-     * 
-     * @param email
-     * @param token
-     * @return usuario
-     */
-    public Usuario buscarUsuarioPorLogin(@NotNull String email, @NotNull String token) {
-        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.PorLogin", Usuario.class);
-        query.setParameter("email", email);
-        query.setParameter("senha", token);
-
-        if (!query.getResultList().isEmpty()) {
-            return query.getSingleResult();
-        }
-
-        return null;
-    }
-
-    /**
      * Método para consultar um usuário por Email.
      * 
      * @param email
@@ -110,5 +91,5 @@ public class UsuarioServico {
         }
         return null;
     }
-
+    
 }

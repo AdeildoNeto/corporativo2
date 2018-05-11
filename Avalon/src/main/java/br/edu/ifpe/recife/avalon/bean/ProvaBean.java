@@ -59,6 +59,8 @@ public class ProvaBean implements Serializable {
     
     private FiltroQuestao filtro = new FiltroQuestao();
     
+    private List<ComponenteCurricular> todosComponentesCurricular = new ArrayList<>();
+    
     /**
      * Método para iniciar a página de geração de prova.
      * @return rota para página de geração de prova
@@ -66,14 +68,14 @@ public class ProvaBean implements Serializable {
     public String iniciarPagina(){
         usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         limparTela();
-        buscarQuestoes();
         carregarTiposQuestao();
+        carregarTodosComponentesCurricular();
+        buscarQuestoes();
         return "goGerarProva";
     }
     
     public ProvaBean() {
         usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-        this.limparTela();
     }
     
     /**
@@ -92,15 +94,21 @@ public class ProvaBean implements Serializable {
     private void carregarTiposQuestao() {
         this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.values());        
     }
+    
+    private void carregarTodosComponentesCurricular(){
+        this.todosComponentesCurricular = componenteServico.buscarTodosComponentes();
+    }
 
     /**
      * Método para limpar os campos da tela.
      */
     private void limparTela() {
+        Long idComponenteSelecionado = getTodosComponentesCurricular().isEmpty() ? null : getTodosComponentesCurricular().get(0).getId();
         todosSelecionados = false;
         exibirModalDetalhes = false;
         questoesSelecionadas.clear();
         this.filtro = new FiltroQuestao();
+        this.filtro.setIdComponenteCurricular(idComponenteSelecionado);
     }
     
     /**
@@ -178,7 +186,7 @@ public class ProvaBean implements Serializable {
      * @return lista de componentes curricular
      */
     public List<ComponenteCurricular> getTodosComponentesCurricular(){
-        return componenteServico.buscarTodosComponentes();
+        return todosComponentesCurricular;
     }
     
     /*

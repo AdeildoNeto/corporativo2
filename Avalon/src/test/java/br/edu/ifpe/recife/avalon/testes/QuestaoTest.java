@@ -12,6 +12,7 @@ import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.GrupoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -90,8 +91,8 @@ public class QuestaoTest {
 
         usuario.setEmail("email2@email.com");
         usuario.setNome("TESTE2");
-        usuario.setSenha("TESTE2");
         usuario.setSobrenome("TESTE2");
+        usuario.setGrupo(GrupoEnum.PROFESSOR);
 
         usuarioServico.salvar(usuario);
 
