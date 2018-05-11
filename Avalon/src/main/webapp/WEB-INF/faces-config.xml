@@ -49,6 +49,18 @@
             <to-view-id>/professor/prova/impressao.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goHomeProfessor</from-outcome>
+            <to-view-id>/professor/home.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        
+        <!-- ALUNO -->
+        <navigation-case>
+            <from-outcome>goHomeAluno</from-outcome>
+            <to-view-id>/aluno/home.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

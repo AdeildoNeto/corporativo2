@@ -9,7 +9,7 @@
         </form-login-config>
     </login-config>
     <security-constraint>
-        <display-name>Páginas PROFESSOR</display-name>
+        <display-name>Páginas do </display-name>
         <web-resource-collection>
             <web-resource-name>Área Protegida</web-resource-name>
             <description>Área Protegida</description>
@@ -18,6 +18,21 @@
         <auth-constraint>
             <description/>
             <role-name>PROFESSOR</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Páginas do Aluno</display-name>
+        <web-resource-collection>
+            <web-resource-name>Área Protegida</web-resource-name>
+            <description>Área Protegida</description>
+            <url-pattern>/aluno/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>ALUNO</role-name>
         </auth-constraint>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>

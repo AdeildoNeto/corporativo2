@@ -42,9 +42,11 @@ import javax.validation.Valid;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    private static final String NAV_INICIAL = "goListarQuestao";
+    private static final String NAV_HOME_PROFESSOR = "goHomeProfessor";
+    private static final String NAV_HOME_ALUNO = "goHomeAluno";
     private static final String LOGIN_FALHA_GERAL = "login.falha.geral";
     private static final String LOGIN_FALHA_TOKEN = "login.falha.token";
+    private static final String IFPE_DOMINIO = "recife.ifpe.edu.br";
 
     @EJB
     private UsuarioServico usuarioServico;
@@ -120,14 +122,15 @@ public class LoginBean implements Serializable {
 
             usuario.setNome(payload.get("given_name").toString());
             usuario.setSobrenome(payload.get("family_name").toString());
-            usuario.setGrupo(GrupoEnum.PROFESSOR);
+            
+            if(payload.getHostedDomain() != null && payload.getHostedDomain().contains(IFPE_DOMINIO)){
+                usuario.setGrupo(GrupoEnum.PROFESSOR);
+            }else{
+                usuario.setGrupo(GrupoEnum.ALUNO);
+            }
                     
-            //if("recife.ifpe.edu.br".equalsIgnoreCase(payload.getHostedDomain())){
             usuarioServico.salvar(usuario);
-            //}else{
-            //SalvarAluno
-            //}
-
+            
         }
     }
 
@@ -137,8 +140,8 @@ public class LoginBean implements Serializable {
      * @return boolean
      */
     private boolean isNotUsuarioCadastrado() {
-        Usuario usuarioAplicao = usuarioServico.buscarUsuarioPorEmail(payload.getEmail());
-        return usuarioAplicao == null;
+        Usuario usuarioAplicacao = usuarioServico.buscarUsuarioPorEmail(payload.getEmail());
+        return usuarioAplicacao == null;
     }
 
     /**
@@ -148,17 +151,24 @@ public class LoginBean implements Serializable {
         usuario = usuarioServico.buscarUsuarioPorEmail(usuario.getEmail());
 
         if (usuario != null) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
+            contexto.getExternalContext().getSessionMap().put("usuario", usuario);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             
             try {
                 request.login(usuario.getEmail(), usuario.getEmail());
             } catch (ServletException ex) {
+                contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             NavigationHandler navigationHandler = contexto.getApplication().getNavigationHandler();
-            navigationHandler.handleNavigation(contexto, null, NAV_INICIAL);
+            
+            if(GrupoEnum.PROFESSOR.equals(usuario.getGrupo())){
+                navigationHandler.handleNavigation(contexto, null, NAV_HOME_PROFESSOR);
+            }else{
+                navigationHandler.handleNavigation(contexto, null, NAV_HOME_ALUNO);
+            }
+            
         } else {
             contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
