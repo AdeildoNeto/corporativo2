@@ -16,9 +16,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,10 +26,12 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -44,6 +44,7 @@ public class LoginBean implements Serializable {
 
     private static final String NAV_HOME_PROFESSOR = "goHomeProfessor";
     private static final String NAV_HOME_ALUNO = "goHomeAluno";
+    private static final String NAV_LOGIN = "goLogin";
     private static final String LOGIN_FALHA_GERAL = "login.falha.geral";
     private static final String LOGIN_FALHA_TOKEN = "login.falha.token";
     private static final String IFPE_DOMINIO = "recife.ifpe.edu.br";
@@ -173,6 +174,30 @@ public class LoginBean implements Serializable {
             contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
+    }
+    
+    /**
+     * Método para finalizar a sessão do usuário.
+     * @return retorna para a tela de Login.
+     */
+    public String logout(){
+        ExternalContext contextoExterno = contexto.getExternalContext();
+        HttpSession sessao = (HttpSession) contextoExterno.getSession(false);
+        
+        if(sessao != null){
+            sessao.invalidate();
+        }
+        
+        
+        HttpServletRequest request = (HttpServletRequest) contextoExterno.getRequest();
+        
+        try {
+            request.logout();
+        } catch (ServletException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return NAV_LOGIN;
     }
 
     public String getToken() {

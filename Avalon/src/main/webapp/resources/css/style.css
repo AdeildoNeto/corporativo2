@@ -382,3 +382,9 @@ h1 {
     top: 36px;
     color: white !important;
 }
+
+/* Menu Sair */
+.nav-logout{
+    position: absolute;
+    right: 15px;
+}

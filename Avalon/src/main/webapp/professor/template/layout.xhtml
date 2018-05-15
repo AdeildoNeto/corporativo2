@@ -37,6 +37,7 @@ and open the template in the editor.
                         <li class="nav-item">
                             <h:commandLink styleClass="nav-link" value="#{msg['menu.simulados']}" />
                         </li>
+                        <ui:include src="../../template/logout.xhtml" />
                     </ul>
                 </div>
             </nav>
@@ -47,9 +48,11 @@ and open the template in the editor.
             </ui:insert>
         </div>
 
-        <ui:insert name="rodape">
+        <div class="col-md-12">
+            <ui:insert name="rodape">
 
-        </ui:insert>
+            </ui:insert>
+        </div>
     </h:body>
 
 </html>
