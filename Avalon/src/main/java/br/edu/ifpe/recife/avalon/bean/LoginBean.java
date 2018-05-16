@@ -21,13 +21,14 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.SessionScoped;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,9 +40,12 @@ import javax.validation.Valid;
  * @author eduardo.f.amaral
  */
 @Named(value  = "loginBean")
-@SessionScoped
+@RequestScoped
 public class LoginBean implements Serializable {
 
+    @Inject
+    private HttpServletRequest httpServletRequest;
+    
     private static final String NAV_HOME_PROFESSOR = "goHomeProfessor";
     private static final String NAV_HOME_ALUNO = "goHomeAluno";
     private static final String NAV_LOGIN = "goLogin";
@@ -55,19 +59,18 @@ public class LoginBean implements Serializable {
     @Valid
     private Usuario usuario = new Usuario();
 
-    @ManagedProperty("#{param.token}")
     private String token;
-
-    private FacesContext contexto = FacesContext.getCurrentInstance();
-
+    
     private Payload payload;
+    
+    private final FacesContext facesContext = FacesContext.getCurrentInstance();
 
     /**
      * Método para realizar login via conta Google.
      */
     public void googleLogin() {
         
-        Map<String, String> param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String, String> param = facesContext.getExternalContext().getRequestParameterMap();
         token = param.get("token");
         
         if (token != null) {
@@ -81,7 +84,7 @@ public class LoginBean implements Serializable {
             realizarLogin();
 
         }else{
-            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
     }
@@ -105,12 +108,12 @@ public class LoginBean implements Serializable {
 
                 usuario.setEmail(payload.getEmail());
             } else {
-                contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_TOKEN)));
+                facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_TOKEN)));
             }
 
         } catch (IOException | GeneralSecurityException e) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, e);
-            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
     }
@@ -152,26 +155,26 @@ public class LoginBean implements Serializable {
         usuario = usuarioServico.buscarUsuarioPorEmail(usuario.getEmail());
 
         if (usuario != null) {
-            contexto.getExternalContext().getSessionMap().put("usuario", usuario);
+            facesContext.getExternalContext().getSessionMap().put("usuario", usuario);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             
             try {
                 request.login(usuario.getEmail(), usuario.getEmail());
             } catch (ServletException ex) {
-                contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+                facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            NavigationHandler navigationHandler = contexto.getApplication().getNavigationHandler();
+            NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
             
             if(GrupoEnum.PROFESSOR.equals(usuario.getGrupo())){
-                navigationHandler.handleNavigation(contexto, null, NAV_HOME_PROFESSOR);
+                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
             }else{
-                navigationHandler.handleNavigation(contexto, null, NAV_HOME_ALUNO);
+                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_ALUNO);
             }
             
         } else {
-            contexto.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
     }
@@ -179,23 +182,16 @@ public class LoginBean implements Serializable {
     /**
      * Método para finalizar a sessão do usuário.
      * @return retorna para a tela de Login.
+     * @throws javax.servlet.ServletException
      */
-    public String logout(){
-        ExternalContext contextoExterno = contexto.getExternalContext();
-        HttpSession sessao = (HttpSession) contextoExterno.getSession(false);
+    public String logout() throws ServletException{
+        HttpSession sessao = httpServletRequest.getSession(false);
         
         if(sessao != null){
             sessao.invalidate();
         }
         
-        
-        HttpServletRequest request = (HttpServletRequest) contextoExterno.getRequest();
-        
-        try {
-            request.logout();
-        } catch (ServletException ex) {
-            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        httpServletRequest.logout();
         
         return NAV_LOGIN;
     }
