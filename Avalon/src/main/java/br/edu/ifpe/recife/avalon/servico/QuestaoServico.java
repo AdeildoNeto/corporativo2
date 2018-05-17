@@ -114,10 +114,11 @@ public class QuestaoServico {
      * @throws ValidacaoException
      */
     public void validarEnunciadoPorTipoValido(@Valid Questao questao) throws ValidacaoException {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoCriador", Questao.class);
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorTipoValido", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
         query.setParameter("idCriador", questao.getCriador().getId());
+        query.setParameter("idComponenteCurricular", questao.getComponenteCurricular().getId());
 
         if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA));
