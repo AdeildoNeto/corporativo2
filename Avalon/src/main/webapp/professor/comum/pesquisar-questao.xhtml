@@ -14,21 +14,21 @@ and open the template in the editor.
     <div class="row">
         <div class="col-md-3 form-group">
             <p:outputLabel for="filtroEnunciado" value="#{msg['label.enunciado']}:" />
-            <h:inputText id="filtroEnunciado" class="form-control" value="#{bean.filtro.enunciado}" />
+            <h:inputText id="filtroEnunciado" class="form-control" value="#{bean.pesquisarViewHelper.filtro.enunciado}" />
         </div>
 
         <div class="col-md-3 form-group">
             <p:outputLabel for="filtroNomeCriador" value="#{msg['label.criador']}:" />
-            <h:inputText id="filtroNomeCriador" class="form-control" value="#{bean.filtro.nomeCriador}" />
+            <h:inputText id="filtroNomeCriador" class="form-control" value="#{bean.pesquisarViewHelper.filtro.nomeCriador}" />
         </div>
 
         <div class="col-md-3 form-group">
             <p:outputLabel for="filtroComponente" value="#{msg['label.componente.curricular']}:" />
             <p:selectOneMenu id="filtroComponente"
-                             value="#{bean.filtro.idComponenteCurricular}"
+                             value="#{bean.pesquisarViewHelper.filtro.idComponenteCurricular}"
                              class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                              filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="#{bean.getTodosComponentesCurricular()}"
+                <f:selectItems value="#{bean.componenteViewHelper.getTodosComponentesCurricular()}"
                                itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                 <p:ajax update="@form" event="change" />
             </p:selectOneMenu>
@@ -37,9 +37,9 @@ and open the template in the editor.
         <div class="col-md-2 form-group">
             <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
             <div>
-                <p:selectOneMenu id="filtroTipo" value="#{bean.filtro.tipo}"
+                <p:selectOneMenu id="filtroTipo" value="#{bean.pesquisarViewHelper.filtro.tipo}"
                                  class="btn dropdown-toggle bg-select-menu ui-selectonemenu-185">
-                    <f:selectItems value="#{bean.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
+                    <f:selectItems value="#{bean.pesquisarViewHelper.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
                 </p:selectOneMenu>
             </div>
         </div>

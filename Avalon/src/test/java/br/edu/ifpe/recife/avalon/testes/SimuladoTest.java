@@ -122,6 +122,8 @@ public class SimuladoTest {
         
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
         
+        logger.info("Nr. questões: "+ questoes.size());
+        
         simulado.setQuestoes(questoes);
         
         return simulado;

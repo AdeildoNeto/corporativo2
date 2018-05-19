@@ -13,20 +13,20 @@ and open the template in the editor.
 
     <h:form id="formDetalhes">
 
-        <p:dialog id="modalComponente" visible="#{provaBean.exibirModalDetalhes}"
+        <p:dialog id="modalComponente" visible="#{bean.detalhesViewHelper.exibirModalDetalhes}"
                   header="#{msg['label.detalhes']}" modal="true" resizable="false"
                   widgetVar="modalComponente" closeOnEscape="true" draggable="false"
-                  onHide="#{provaBean.fecharModalDetalhes()}" class="modal-detahes">
+                  onHide="#{bean.detalhesViewHelper.fecharModalDetalhes()}" class="modal-detahes">
 
             <div class="row">
                 <div class="col-md-12 form-group">
                     <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
                         <div class="container-enunciado break-white-space">
-                            <h:outputText id="detalhesEnunciado" value="#{provaBean.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
+                            <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
                         </div>
-                        <p:outputPanel styleClass="prova-alternativa" rendered="#{provaBean.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || provaBean.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
-                            <h:outputText value="#{provaBean.questaoDetalhes.formatarQuestao()}"></h:outputText>
+                        <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                            <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
                         </p:outputPanel>
                     </p:outputPanel>
                 </div>
@@ -34,19 +34,19 @@ and open the template in the editor.
             <div class="row">
                 <div class="col-md-12">
                     <label for="detalhesTipoQuestao">#{msg['label.tipo']}: </label>
-                    <h:outputText id="detalhesTipoQuestao" value="#{provaBean.questaoDetalhes.tipo.descricao}" />
+                    <h:outputText id="detalhesTipoQuestao" value="#{bean.detalhesViewHelper.questaoDetalhes.tipo.descricao}" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <label for="detalhesComponenteCurricular">#{msg['label.componente.curricular']}: </label>
-                    <h:outputText id="detalhesComponenteCurricular" value="#{provaBean.questaoDetalhes.componenteCurricular.nome}" />
+                    <h:outputText id="detalhesComponenteCurricular" value="#{bean.detalhesViewHelper.questaoDetalhes.componenteCurricular.nome}" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <label for="detalhesDataCriacao">#{msg['label.data.cadastro']}: </label>
-                    <h:outputText id="detalhesDataCriacao" value="#{provaBean.questaoDetalhes.dataCriacao}">
+                    <h:outputText id="detalhesDataCriacao" value="#{bean.detalhesViewHelper.questaoDetalhes.dataCriacao}">
                         <f:convertDateTime parent="dd/MM/yyyy" />
                     </h:outputText>
                 </div>
@@ -54,13 +54,13 @@ and open the template in the editor.
             <div class="row">
                 <div class="col-md-12">
                     <label for="detalhesCriadorNome">#{msg['label.criador']}: </label>
-                    <h:outputText id="detalhesCriadorNome" value="#{provaBean.questaoDetalhes.criador.nomeCompleto}" />
+                    <h:outputText id="detalhesCriadorNome" value="#{bean.detalhesViewHelper.questaoDetalhes.criador.nomeCompleto}" />
                 </div>
             </div>
 
             <div class="row btn-modal">
                 <div class="col text-right">
-                    <p:commandButton value="#{msg['btn.voltar']}" action="#{provaBean.fecharModalDetalhes()}"
+                    <p:commandButton value="#{msg['btn.voltar']}" action="#{bean.detalhesViewHelper.fecharModalDetalhes()}"
                                      styleClass="btn btn-secondary" update="modalComponente"
                                      immediate="true" process="@this" />
                 </div>

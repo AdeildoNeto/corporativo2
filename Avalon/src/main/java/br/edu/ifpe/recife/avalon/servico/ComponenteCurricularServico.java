@@ -39,11 +39,21 @@ public class ComponenteCurricularServico {
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
     
+    /**
+     * Método para salvar um novo componetne curricular.
+     * @param componenteCurricular - componente curricular a ser salvo.
+     * @throws ValidacaoException - ocorre quando o componente curricular já existe.
+     */
     public void salvar(@Valid ComponenteCurricular componenteCurricular) throws ValidacaoException{
         validarComponenteCurricular(componenteCurricular.getNome());
         entityManager.persist(componenteCurricular);
     }
 
+    /**
+     * Método para verificar se o componente curricular já foi cadastrado.
+     * @param nome - utilizado para a pesquisa.
+     * @throws ValidacaoException - ocorre quando o componente curricular já existe.
+     */
     private void validarComponenteCurricular(String nome) throws ValidacaoException {
         ComponenteCurricular componente = buscarComponentePorNome(nome);
         
@@ -53,6 +63,11 @@ public class ComponenteCurricularServico {
         
     }
     
+    /**
+     * Método para buscar um componente curricular por nome.
+     * @param nome - utilizado para filtro
+     * @return componente curricular
+     */
     public ComponenteCurricular buscarComponentePorNome(String nome){
         TypedQuery<ComponenteCurricular> query = entityManager.createNamedQuery("ComponenteCurricular.PorNome",
                 ComponenteCurricular.class);
@@ -67,6 +82,10 @@ public class ComponenteCurricularServico {
         
     }
     
+    /**
+     * Método para buscar todos os componentes curricular cadastrados.
+     * @return lista de componentes curricular
+     */
     public List<ComponenteCurricular> buscarTodosComponentes(){
         TypedQuery<ComponenteCurricular> query = entityManager.createNamedQuery("ComponenteCurricular.Todos",
                 ComponenteCurricular.class);

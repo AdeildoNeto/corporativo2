@@ -16,7 +16,7 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1>#{msg['titulo.gerar.prova']}</h1>
+                    <h1>#{msg['titulo.gerar.simulado']}</h1>
                 </div>
             </div>
             
@@ -27,21 +27,21 @@ and open the template in the editor.
             </div>
             
             <ui:include src="../comum/pesquisar-questao.xhtml">
-                <ui:param name="bean" value="#{provaBean}" />
+                <ui:param name="bean" value="#{simuladoBean}" />
             </ui:include>
             
             <div class="row container-table-prova">
                 <div class="col-md-12">
-                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
+                    <h:dataTable id="table" value="#{simuladoBean.questoes}" var="questao"
                                  styleClass="table table-striped table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
-                                <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
-                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="@form" />
+                                <h:selectBooleanCheckbox value="#{simuladoBean.todosSelecionados}">
+                                    <f:ajax listener="#{simuladoBean.selecionarTodos()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{questao.selecionada}">
-                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
+                                <f:ajax listener="#{simuladoBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
@@ -67,7 +67,7 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header"></f:facet>
-                            <p:commandLink action="#{provaBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
+                            <p:commandLink action="#{simuladoBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
                                 <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
                             </p:commandLink>
                         </h:column>
@@ -77,8 +77,8 @@ and open the template in the editor.
             <div id="button-container" class="row buttons-save">
                 <div class="offset-md-9 col-md-2 form-group">
                     <p:commandButton id="btnImprimir" value="#{msg['btn.imprimir.prova']}" update="@form"
-                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
+                                     action="#{simuladoBean.gerarSimulado()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSelecionadas.isEmpty()}"
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>
@@ -90,7 +90,7 @@ and open the template in the editor.
         </h:form>
         
         <ui:include src="../comum/modal-detalhes.xhtml">
-            <ui:param name="bean" value="#{provaBean}" />
+            <ui:param name="bean" value="#{simuladoBean}" />
         </ui:include>
         
     </ui:define>

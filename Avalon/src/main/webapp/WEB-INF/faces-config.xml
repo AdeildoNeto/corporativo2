@@ -56,6 +56,11 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goGerarSimulado</from-outcome>
+            <to-view-id>/professor/simulado/gerar</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goHomeProfessor</from-outcome>
             <to-view-id>/professor/home.xhtml</to-view-id>
             <redirect />
