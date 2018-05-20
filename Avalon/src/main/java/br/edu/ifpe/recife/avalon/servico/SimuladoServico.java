@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
@@ -40,11 +41,32 @@ public class SimuladoServico {
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
 
+    /**
+     * Método para salvar um simulado.
+     * @param simulado
+     * @throws ValidacaoException - quando o título já está em uso.
+     */
     public void salvar(@Valid Simulado simulado) throws ValidacaoException {
         validarTitulo(simulado);
         entityManager.persist(simulado);
     }
+    
+    /**
+     * Método para remover um Simulado.
+     * @param simulado
+     */
+    public void remover(@Valid Simulado simulado) {
+        if (!entityManager.contains(simulado)) {
+            simulado.setAtivo(false);
+            entityManager.merge(simulado);
+        }
+    }
 
+    /**
+     * Método para validar o título de um novo simulado.
+     * @param simulado
+     * @throws ValidacaoException - quando o título já está em uso.
+     */
     private void validarTitulo(@NotNull Simulado simulado) throws ValidacaoException {
         TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorTituloValido",
                 Simulado.class);
@@ -60,11 +82,30 @@ public class SimuladoServico {
 
     }
 
-    public List<Simulado> buscarPorComponenteCurricular(Long idComponenteCurricular) {
+    /**
+     * Método para buscar simulados por componente curricular.
+     * @param idComponenteCurricular
+     * @return lista de simulados.
+     */
+    public List<Simulado> buscarPorComponenteCurricular(@NotNull Long idComponenteCurricular) {
         TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorDisciplina",
                 Simulado.class);
 
         query.setParameter("idComponenteCurricular", idComponenteCurricular);
+
+        return query.getResultList();
+    }
+    
+    /**
+     * Método para buscar simulados por criador.
+     * @param emailCriador - email do criador.
+     * @return lista de simulados.
+     */
+    public List<Simulado> buscarSimuladosPorCriador(@NotNull String emailCriador) {
+        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorCriador",
+                Simulado.class);
+
+        query.setParameter("emailCriador", emailCriador);
 
         return query.getResultList();
     }

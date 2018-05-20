@@ -170,13 +170,30 @@ public class QuestaoServico {
      * Método para pesquisar questões a partir de um filtro.
      * 
      * @param filtro - filtro para buscar questoes
-     * @return 
+     * @return lista de questões.
      */
     public List<Questao> buscarQuestoesPorFiltro(@NotNull FiltroQuestao filtro){
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorFiltroCompartilhada", Questao.class);
         
         query.setParameter("emailUsuario", filtro.getEmailUsuario());
         query.setParameter("tipo", filtro.getTipo());
+        query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
+        query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
+        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+        
+        return query.getResultList();
+    }
+    
+    /**
+     * Método para pesquisar questões do tipo V/F e Múltipla Escolha a partir de um filtro.
+     * 
+     * @param filtro - filtro para buscar questoes
+     * @return lista de questões.
+     */
+    public List<Questao> buscarQuestoesParaSimulado(@NotNull FiltroQuestao filtro){
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.ParaSimulado", Questao.class);
+        
+        query.setParameter("emailUsuario", filtro.getEmailUsuario());
         query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
         query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));

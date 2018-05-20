@@ -293,7 +293,7 @@ public class QuestaoBean implements Serializable {
     }
 
     /**
-     * Método para excluir uma questão
+     * Método para excluir uma questão.
      */
     public void excluir() {
         questaoServico.remover(questao);

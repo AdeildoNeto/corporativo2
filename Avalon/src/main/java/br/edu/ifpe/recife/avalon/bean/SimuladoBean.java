@@ -9,6 +9,7 @@ import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -18,6 +19,7 @@ import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.HashSet;
@@ -38,6 +40,7 @@ public class SimuladoBean implements Serializable {
     
     public static final String NOME = "simuladoBean";
     private static final String GO_GERAR_SIMULADO = "goGerarSimulado";
+    private static final String GO_LISTAR_SIMULADO = "goLisarSimulado";
     private static final String USUARIO = "usuario";
     
     @EJB
@@ -53,12 +56,15 @@ public class SimuladoBean implements Serializable {
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    private final Usuario usuarioLogado;
     
-    private Usuario usuarioLogado;
     private Simulado novoSimulado;
+    private Simulado simuladoSelecionado;
     private List<Questao> questoes;
+    private List<Simulado> simulados;
     private Set<Questao> questoesSelecionadas;
     private boolean todosSelecionados;
+    private boolean exibirModalTitulo;
    
     public SimuladoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
@@ -75,13 +81,37 @@ public class SimuladoBean implements Serializable {
      * @return rota para página de geração de prova
      */
     public String iniciarPagina(){
-        usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
+        limparTela();
+        buscarSimulados();
+        
+        return GO_LISTAR_SIMULADO;
+    }
+    
+    public String iniciarPaginaGerarSimulado(){
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
         pesquisarViewHelper.inicializar(questaoServico, usuarioLogado);
-        limparTela();
+        pesquisarViewHelper.setExibirOpcaoTipo(false);
+        limparTelaGerarSimulado();
         
         return GO_GERAR_SIMULADO;
+    }
+    
+    /**
+     * Método para limpar os campos da tela listar simulados.
+     */
+    private void limparTela(){
+        novoSimulado = new Simulado();
+        simuladoSelecionado = new Simulado();
+        exibirModalTitulo = false;
+    }
+    
+    /**
+     * Método para limpar os campos da tela gerar simulado.
+     */
+    private void limparTelaGerarSimulado() {
+        todosSelecionados = false;
+        questoesSelecionadas.clear();
     }
     
     /**
@@ -90,17 +120,14 @@ public class SimuladoBean implements Serializable {
     private void buscarQuestoes() {
         this.questoesSelecionadas.clear();
         this.todosSelecionados = false;
-        
+        questoes = pesquisarViewHelper.pesquisar();
     }
     
     /**
-     * Método para limpar os campos da tela.
+     * Método para carregar as questões do usuário.
      */
-    private void limparTela() {
-        todosSelecionados = false;
-        questoesSelecionadas.clear();
-        novoSimulado = new Simulado();
-        questoes = pesquisarViewHelper.pesquisar();
+    private void buscarSimulados() {
+        simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
     }
     
     /**
@@ -156,6 +183,11 @@ public class SimuladoBean implements Serializable {
             exibirMensagemError(mensagem);
         }else{
             try {
+                novoSimulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarViewHelper.getFiltro().getIdComponenteCurricular()));
+                novoSimulado.setDataCriacao(Calendar.getInstance().getTime());
+                novoSimulado.setCriador(usuarioLogado);
+                novoSimulado.setQuestoes(new ArrayList<Questao>());
+                novoSimulado.getQuestoes().addAll(questoesSelecionadas);
                 simuladoServico.salvar(novoSimulado);
             } catch (ValidacaoException ex) {
                 exibirMensagemError(ex.getMessage());
@@ -163,9 +195,39 @@ public class SimuladoBean implements Serializable {
         }
     }
     
+    /**
+     * Método para exibir mensagem de erro.
+     * @param mensagem - mensagem a ser exibida.
+     */
     private void exibirMensagemError(String mensagem){
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+    }
+    
+    /**
+     * Método para selecionar um simulado.
+     * @param simulado 
+     */
+    public void selecionarSimulado(Simulado simulado){
+        simuladoSelecionado = simulado;
+    }
+    
+    /**
+     * Método para excluir um simulado.
+     */
+    public void excluir() {
+        simuladoServico.remover(simuladoSelecionado);
+        simulados.remove(simuladoSelecionado);
+        simuladoSelecionado = null;
+    }
+    
+    public void exibirModalTitulo(){
+        novoSimulado = new Simulado();
+        exibirModalTitulo = true;
+    }
+    
+    public void fecharModalTitulo(){
+        exibirModalTitulo = false;
     }
     
     public List<Questao> getQuestoes() {
@@ -198,6 +260,14 @@ public class SimuladoBean implements Serializable {
 
     public PesquisarQuestaoViewHelper getPesquisarViewHelper() {
         return pesquisarViewHelper;
+    }
+
+    public List<Simulado> getSimulados() {
+        return simulados;
+    }
+
+    public boolean isExibirModalTitulo() {
+        return exibirModalTitulo;
     }
     
 }

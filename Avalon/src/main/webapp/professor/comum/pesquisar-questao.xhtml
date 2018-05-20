@@ -17,12 +17,12 @@ and open the template in the editor.
             <h:inputText id="filtroEnunciado" class="form-control" value="#{bean.pesquisarViewHelper.filtro.enunciado}" />
         </div>
 
-        <div class="col-md-3 form-group">
+        <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroNomeCriador" value="#{msg['label.criador']}:" />
             <h:inputText id="filtroNomeCriador" class="form-control" value="#{bean.pesquisarViewHelper.filtro.nomeCriador}" />
-        </div>
+        </p:outputPanel>
 
-        <div class="col-md-3 form-group">
+        <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroComponente" value="#{msg['label.componente.curricular']}:" />
             <p:selectOneMenu id="filtroComponente"
                              value="#{bean.pesquisarViewHelper.filtro.idComponenteCurricular}"
@@ -32,9 +32,9 @@ and open the template in the editor.
                                itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                 <p:ajax update="@form" event="change" />
             </p:selectOneMenu>
-        </div>
+        </p:outputPanel>
 
-        <div class="col-md-2 form-group">
+        <p:outputPanel class="col-md-2 form-group" rendered="#{bean.pesquisarViewHelper.exibirOpcaoTipo}">
             <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
             <div>
                 <p:selectOneMenu id="filtroTipo" value="#{bean.pesquisarViewHelper.filtro.tipo}"
@@ -42,18 +42,18 @@ and open the template in the editor.
                     <f:selectItems value="#{bean.pesquisarViewHelper.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
                 </p:selectOneMenu>
             </div>
-        </div>
+        </p:outputPanel>
         
-        <div class="col-md-1 form-group">
+        <p:outputPanel class="col-md-1 form-group">
             <p:commandLink id="addComponente" value="search"
                            class="btn material-icons bg-default btn-search"
                            onclick="PF('block').show()"
                            oncomplete="PF('block').hide()"
                            action="#{bean.pesquisar()}"
-                           update="table msgs btnImprimir" ajax="true"
+                           update="table msgs btn" ajax="true"
                            title="#{msg['adicionar.componente.curricular']}">
             </p:commandLink>
-        </div>
+        </p:outputPanel>
 
     </div>
 

@@ -28,6 +28,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     private FiltroQuestao filtro = new FiltroQuestao();
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
     private Usuario usuarioLogado;
+    private boolean exibirOpcaoTipo = true;
     
     public void inicializar(QuestaoServico servico, Usuario usuario){
         this.filtro = new FiltroQuestao();
@@ -49,7 +50,12 @@ public class PesquisarQuestaoViewHelper implements Serializable {
      */
     public List<Questao> pesquisar() {
         this.filtro.setEmailUsuario(usuarioLogado.getEmail());
-        return questaoServico.buscarQuestoesPorFiltro(filtro);
+        
+        if(exibirOpcaoTipo){
+            return questaoServico.buscarQuestoesPorFiltro(filtro);
+        }else{
+            return questaoServico.buscarQuestoesParaSimulado(filtro);
+        }
     }
 
     public FiltroQuestao getFiltro() {
@@ -58,6 +64,14 @@ public class PesquisarQuestaoViewHelper implements Serializable {
 
     public List<TipoQuestaoEnum> getTipoQuestoes() {
         return tipoQuestoes;
+    }
+
+    public boolean isExibirOpcaoTipo() {
+        return exibirOpcaoTipo;
+    }
+
+    public void setExibirOpcaoTipo(boolean exibirOpcaoTipo) {
+        this.exibirOpcaoTipo = exibirOpcaoTipo;
     }
     
 }

@@ -10,7 +10,6 @@ import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.EJB;
 
 /**
  *
@@ -32,6 +31,21 @@ public class ComponenteCurricularViewHelper implements Serializable {
      */
     private void carregarTodosComponentesCurricular(){
         this.todosComponentesCurricular = componenteServico.buscarTodosComponentes();
+    }
+    
+    /**
+     * Método para recuperar um componente curricular por ID.
+     * @param idComponenteCurricular
+     * @return componente curricular
+     */
+    public ComponenteCurricular getComponenteCurricularPorId(Long idComponenteCurricular){
+        for (ComponenteCurricular componenteCurricular : todosComponentesCurricular) {
+            if(idComponenteCurricular.equals(componenteCurricular.getId())){
+                return componenteCurricular;
+            }
+        }
+        
+        return null;
     }
 
     /*

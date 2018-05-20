@@ -28,6 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -48,6 +49,10 @@ import javax.validation.constraints.NotNull;
                     + "s.componenteCurricular.id = :idComponenteCurricular AND "
                     + "s.criador.email = :emailCriador AND "
                     + "s.ativo = true"
+            ),@NamedQuery(
+                    name = "Simulado.PorCriador",
+                    query = "Select s from Simulado s where s.criador.email = :emailCriador AND "
+                    + "s.ativo = true"
             )
         }
 )
@@ -58,6 +63,8 @@ public class Simulado implements Serializable {
     @Column(name = "ID_SIMULADO")
     private Long id;
 
+    @NotNull(message = "{simulado.titulo.obrigatorio}")
+    @Size(max = 40, message = "{simulado.titulo.tamanho.maximo}")
     @Column(name = "TXT_TITULO")
     private String titulo;
 

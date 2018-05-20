@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formTitulo">
+
+        <p:dialog id="modalTitulo" visible="#{simuladoBean.exibirModalTitulo}"
+                  header="#{msg['novo.componente.header']}" modal="true" resizable="false"
+                  widgetVar="modalTitulo" closeOnEscape="true" draggable="false">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p:messages id="msgTitulo" />
+                    <div class="form-group">
+                        <p:outputLabel for="tituloSimulado" value="#{msg['label.nome']}:" />
+                        <h:inputText id="tituloSimulado" required="true" class="form-control" value="#{simuladoBean.novoSimulado.titulo}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-right">
+                    <p:commandButton id="btnCancelar"
+                                     value="#{msg['btn.cancelar']}" action="#{simuladoBean.fecharModalTitulo()}"
+                                     styleClass="btn btn-secondary"
+                                     immediate="true" process="@this" update="formTitulo form" />
+
+                    <p:commandButton id="btnGerar"
+                                     value="#{msg['btn.salvar']}"
+                                     action="#{simuladoBean.iniciarPaginaGerarSimulado()}"
+                                     onclick="PF('block').show();" oncomplete="PF('block').hide()"
+                                     styleClass="btn btn-primary button-modal"
+                                     update="formTitulo" />
+                </div>
+            </div>
+        </p:dialog>
+
+    </h:form>   
+
+</ui:composition>

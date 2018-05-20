@@ -93,6 +93,15 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
                     + "AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
+            ,@NamedQuery(
+                    name = "Questao.ParaSimulado",
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true "
+                    + "AND q.tipo <> br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum.DISCURSIVA "
+                    + "AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
+                    + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
+                    + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
+                    + "AND (:enunciado is null OR q.enunciado like :enunciado)"
+            )
         })
 public class Questao implements Serializable {
 
@@ -131,9 +140,9 @@ public class Questao implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
     private ComponenteCurricular componenteCurricular;
-    
+
     @ManyToMany(mappedBy = "questoes")
-    private List<Simulado> simulados; 
+    private List<Simulado> simulados;
 
     @Transient
     private boolean selecionada;
@@ -234,7 +243,7 @@ public class Questao implements Serializable {
     public void setSimulados(List<Simulado> simulados) {
         this.simulados = simulados;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 5;
