@@ -20,7 +20,7 @@ body{
     color: white;
 }
 
-.container-minhas-questoes{
+.container-listar{
     min-height: 100px;
 }
 
@@ -139,19 +139,18 @@ label{
     margin-bottom: 40px !important;
 }
 
-.table-questoes{
+.table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.container-listar table{
     display: block;
     overflow-x: scroll;
     overflow-y: hidden;
     max-height: 100%;
     margin-top: 24px;
-}
-
-.table-questoes td:first-child,
-.table-questoes td:nth-child(2){
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .table-questoes th:nth-child(3){
@@ -192,14 +191,6 @@ label{
 
 .table-questoes-prova th:first-child{
     width: 25px;
-}
-
-.table-questoes-prova td:nth-child(2),
-.table-questoes-prova td:nth-child(3),
-.table-questoes-prova td:nth-child(4){
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .table-questoes-prova td:nth-child(2){
@@ -387,4 +378,20 @@ h1 {
 .nav-logout{
     position: absolute;
     right: 15px;
+}
+
+/* Table simulados */
+.table-simulados td:first-child{
+    max-width: 710px !important;
+    width: 710px;
+}
+
+.table-simulados td:nth-child(2){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-simulados td:last-child{
+    width: 80px;
+    max-width: 80px;
 }

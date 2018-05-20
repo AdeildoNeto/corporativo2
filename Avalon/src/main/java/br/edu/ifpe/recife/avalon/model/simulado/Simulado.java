@@ -86,7 +86,7 @@ public class Simulado implements Serializable {
     @Column(name = "SN_ATIVO", nullable = false)
     private Boolean ativo = true;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_QUESTOES_SIMULADO", joinColumns = {
         @JoinColumn(name = "ID_SIMULADO")},
             inverseJoinColumns = {

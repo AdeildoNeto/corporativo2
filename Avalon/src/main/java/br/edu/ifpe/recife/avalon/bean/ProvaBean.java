@@ -82,6 +82,7 @@ public class ProvaBean implements Serializable {
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
+        this.questoes.clear();
         this.questoesSelecionadas.clear();
         this.todosSelecionados = false;
         this.questoes = pesquisarViewHelper.pesquisar();

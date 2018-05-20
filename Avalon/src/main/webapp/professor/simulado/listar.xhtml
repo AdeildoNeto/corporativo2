@@ -16,31 +16,31 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1>#{msg['titulo.meus.simulados']}</h1>
+                    <h1 id="headerSimulados">#{msg['titulo.meus.simulados']}</h1>
                 </div>
             </div>
             
-            <div class="row container-minhas-questoes">
+            <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-questoes">
+                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
                             </f:facet>
-                            <h:outputText value="#{simulado.titulo}" />
+                            <h:outputText class="simuladoTitulo" value="#{simulado.titulo}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.componente.curricular']}</span>
                             </f:facet>
-                            <h:outputText title="#{simulado.componenteCurricular.nome}"
+                            <h:outputText class="simuladoComponenteCurricular" title="#{simulado.componenteCurricular.nome}"
                                           value="#{simulado.componenteCurricular.nome}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 
                             </f:facet>
-                            <p:commandLink action="#{simuladoBean.selecionarSimulado(simulado)}" onclick="PF('block').show()"
+                            <p:commandLink class="btnExcluir" action="#{simuladoBean.selecionarSimulado(simulado)}" onclick="PF('block').show()"
                                              oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
@@ -60,7 +60,7 @@ and open the template in the editor.
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="form" widgetVar="block">
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 

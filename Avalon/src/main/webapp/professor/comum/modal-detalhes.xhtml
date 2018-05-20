@@ -22,12 +22,14 @@ and open the template in the editor.
                 <div class="col-md-12 form-group">
                     <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
-                        <div class="container-enunciado break-white-space">
+                        <div class="container-enunciado">
                             <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
                         </div>
-                        <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
-                            <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
-                        </p:outputPanel>
+                        <div class="break-white-space">
+                            <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                                <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
+                            </p:outputPanel>
+                        </div>
                     </p:outputPanel>
                 </div>
             </div>
@@ -60,7 +62,7 @@ and open the template in the editor.
 
             <div class="row btn-modal">
                 <div class="col text-right">
-                    <p:commandButton value="#{msg['btn.voltar']}" action="#{bean.detalhesViewHelper.fecharModalDetalhes()}"
+                    <p:commandButton id="btnVotarDetalhes" value="#{msg['btn.voltar']}" action="#{bean.detalhesViewHelper.fecharModalDetalhes()}"
                                      styleClass="btn btn-secondary" update="modalComponente"
                                      immediate="true" process="@this" />
                 </div>

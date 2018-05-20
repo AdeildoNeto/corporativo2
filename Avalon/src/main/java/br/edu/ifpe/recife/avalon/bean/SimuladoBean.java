@@ -112,22 +112,24 @@ public class SimuladoBean implements Serializable {
     private void limparTelaGerarSimulado() {
         todosSelecionados = false;
         questoesSelecionadas.clear();
+        questoes.clear();
     }
     
     /**
      * Método para carregar as questões do usuário.
      */
     private void buscarQuestoes() {
+        this.questoes.clear();
         this.questoesSelecionadas.clear();
         this.todosSelecionados = false;
-        questoes = pesquisarViewHelper.pesquisar();
+        this.questoes = pesquisarViewHelper.pesquisar();
     }
     
     /**
      * Método para carregar as questões do usuário.
      */
     private void buscarSimulados() {
-        simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
+        simulados = simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
     }
     
     /**
@@ -176,8 +178,11 @@ public class SimuladoBean implements Serializable {
     
     /**
      * Método para gerar uma prova a partir das questões selecionada.
+     * @return navegacao
      */
-    public void gerarSimulado(){
+    public String salvar(){
+        String navegacao = null;
+        
         if(questoesSelecionadas.isEmpty()){
             String mensagem = AvalonUtil.getInstance().getMensagemValidacao("selecione.uma.questao");
             exibirMensagemError(mensagem);
@@ -189,10 +194,13 @@ public class SimuladoBean implements Serializable {
                 novoSimulado.setQuestoes(new ArrayList<Questao>());
                 novoSimulado.getQuestoes().addAll(questoesSelecionadas);
                 simuladoServico.salvar(novoSimulado);
+                navegacao = iniciarPagina();
             } catch (ValidacaoException ex) {
                 exibirMensagemError(ex.getMessage());
             }
         }
+        
+        return navegacao;
     }
     
     /**

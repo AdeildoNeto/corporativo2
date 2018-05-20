@@ -33,7 +33,7 @@ and open the template in the editor.
             <div class="row container-table-prova">
                 <div class="col-md-12">
                     <h:dataTable id="table" value="#{simuladoBean.questoes}" var="questao"
-                                 styleClass="table table-striped table-questoes-prova">
+                                 styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox value="#{simuladoBean.todosSelecionados}">
@@ -77,13 +77,13 @@ and open the template in the editor.
             <div id="button-container" class="row buttons-save">
                 <div class="offset-md-9 col-md-2 form-group">
                     <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
-                                     action="#{simuladoBean.gerarSimulado()}" onclick="PF('block').show()"
+                                     action="#{simuladoBean.salvar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSelecionadas.isEmpty()}"
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="form" widgetVar="block">
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
