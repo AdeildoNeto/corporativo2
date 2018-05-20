@@ -12,6 +12,7 @@ import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.GrupoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
@@ -83,7 +84,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t01_inserirQuestaoDiscursiva() {
+    public void t01_inserirQuestaoDiscursiva() throws ValidacaoException {
 
         logger.info("Executando t01: InserirQuestaoDiscursiva");
 
@@ -123,7 +124,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t03_alterarQuestao() {
+    public void t03_alterarQuestao() throws ValidacaoException {
         logger.info("Executando t03: AlterarQuestão");
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
@@ -165,7 +166,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t06_inserirQuestaoMultiplaEscolha() {
+    public void t06_inserirQuestaoMultiplaEscolha() throws ValidacaoException {
 
         logger.info("Executando t05: InserirQuestaoMultiplaEscolha");
 
@@ -215,10 +216,10 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t07_salvarQuestaoVF() {
+    public void t07_salvarQuestaoVF() throws ValidacaoException {
         logger.info("Executando t07: salvarQuestaoVF");
 
-        Questao questao = new Questao();
+        VerdadeiroFalso questao = new VerdadeiroFalso();
 
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
 
@@ -229,6 +230,7 @@ public class QuestaoTest {
         questao.setEnunciado("Questao V/F teste");
         questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
         questao.setDataCriacao(Calendar.getInstance().getTime());
+        questao.setResposta(true);
 
         questaoServico.salvar(questao);
 
@@ -258,7 +260,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t10_editarQuestaoMultiplaEscolha() {
+    public void t10_editarQuestaoMultiplaEscolha() throws ValidacaoException {
         logger.info("Executando t10: editarQuestaoMultiplaEscolha");
         List<Questao> questoes = questaoServico.buscarQuestoesPorCriador(EMAIL_TESTE);
         MultiplaEscolha questaoMp = new MultiplaEscolha();
@@ -294,7 +296,7 @@ public class QuestaoTest {
     }
 
     @Test(expected = EJBException.class)
-    public void t11_criticarQuestaoSemCriador() {
+    public void t11_criticarQuestaoSemCriador() throws ValidacaoException {
         logger.info("Executando t11: criticarQuestaoSemCriador");
 
         Questao questao = new Questao();
@@ -308,7 +310,7 @@ public class QuestaoTest {
     }
 
     @Test(expected = EJBException.class)
-    public void t12_criticarQuestaoSemComponenteCurricular() {
+    public void t12_criticarQuestaoSemComponenteCurricular() throws ValidacaoException {
         logger.info("Executando t12: criticarQuestaoSemComponenteCurricular");
 
         Questao questao = new Questao();
@@ -346,7 +348,7 @@ public class QuestaoTest {
         questao2.setDataCriacao(Calendar.getInstance().getTime());
         questao2.setTipo(TipoQuestaoEnum.DISCURSIVA);
 
-        questaoServico.validarEnunciadoPorTipoValido(questao2);
+        questaoServico.salvar(questao2);
     }
 
     @Test(expected = ValidacaoException.class)
@@ -373,27 +375,38 @@ public class QuestaoTest {
 
         questao.setEnunciado(enunciado);
 
-        questaoServico.valirEnunciadoPorTipoValidoEdicao(questao);
+        questaoServico.salvar(questao);
     }
 
     @Test(expected = ValidacaoException.class)
     public void t15_criticarAlternativasRepetidas() throws ValidacaoException {
         logger.info("Executando t15: criticarAlternativasRepetidas");
 
+        MultiplaEscolha questao = new MultiplaEscolha();
+
+        questao.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("TESTE"));
+        questao.setEnunciado("Teste?");
+        questao.setCriador(usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE));
+        questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
         List<Alternativa> alternativas = new ArrayList<>();
 
         alternativas.add(new Alternativa());
         alternativas.get(0).setAlternativa("Teste");
+        alternativas.get(0).setQuestao(questao);
 
         alternativas.add(new Alternativa());
         alternativas.get(1).setAlternativa("Teste");
+        alternativas.get(1).setQuestao(questao);
 
-        questaoServico.validarAlternativasDiferentes(alternativas);
+        questao.setAlternativas(alternativas);
+        
+        questaoServico.salvar(questao);
 
     }
 
     @Test
-    public void t16_buscarQuestaoCompartilhadaCriador() {
+    public void t16_buscarQuestaoCompartilhadaCriador() throws ValidacaoException {
         logger.info("Executando t16: buscarQuestaoCompartilhadaCriador");
         FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();
@@ -436,7 +449,7 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t18_buscarQuestaoNaoCompartilhadaCriador() {
+    public void t18_buscarQuestaoNaoCompartilhadaCriador() throws ValidacaoException {
         logger.info("Executando t18: buscarQuestaoNaoCompartilhadaCriador");
         FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();

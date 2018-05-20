@@ -7,7 +7,6 @@ package br.edu.ifpe.recife.avalon.model.questao;
 
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "TB_QUESTAO")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorValue("Q")
 @Access(AccessType.FIELD)
 @NamedQueries(
@@ -154,13 +153,6 @@ public class Questao implements Serializable {
      */
     public String formatarQuestao() {
         StringBuilder sb = new StringBuilder();
-
-        if (TipoQuestaoEnum.VERDADEIRO_FALSO.equals(this.tipo)) {
-            sb.append("(  ) Verdadeiro");
-            sb.append(AvalonUtil.quebrarLinha());
-            sb.append("(  ) Falso");
-        }
-
         return sb.toString();
     }
 

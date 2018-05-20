@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.servico;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
@@ -51,9 +52,17 @@ public class QuestaoServico {
      * Método para salvar um Questão
      *
      * @param questao
+     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public void salvar(@Valid Questao questao) {
+    public void salvar(@Valid Questao questao) throws ValidacaoException {
         questao.setEnunciado(questao.getEnunciado().trim());
+        validarEnunciadoPorTipoValido(questao);
+        entityManager.persist(questao);
+    }
+    
+    public void salvar(@Valid MultiplaEscolha questao) throws ValidacaoException{
+        questao.setEnunciado(questao.getEnunciado().trim());
+        validarAlternativasDiferentes(questao.getAlternativas());
         entityManager.persist(questao);
     }
 
@@ -61,8 +70,10 @@ public class QuestaoServico {
      * Método para alterar uma Questão
      *
      * @param questao
+     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public void alterar(@Valid Questao questao) {
+    public void alterar(@Valid Questao questao) throws ValidacaoException {
+        validarEnunciadoPorTipoValidoEdicao(questao);
         entityManager.merge(questao);
     }
 
@@ -113,7 +124,7 @@ public class QuestaoServico {
      * @param questao
      * @throws ValidacaoException
      */
-    public void validarEnunciadoPorTipoValido(@Valid Questao questao) throws ValidacaoException {
+    private void validarEnunciadoPorTipoValido(@Valid Questao questao) throws ValidacaoException {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorTipoValido", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
@@ -132,7 +143,7 @@ public class QuestaoServico {
      * @param questao
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public void valirEnunciadoPorTipoValidoEdicao(@Valid Questao questao) throws ValidacaoException {
+    private void validarEnunciadoPorTipoValidoEdicao(@Valid Questao questao) throws ValidacaoException {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoId", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
@@ -149,7 +160,7 @@ public class QuestaoServico {
      * @param alternativas
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
-    public void validarAlternativasDiferentes(@NotNull List<Alternativa> alternativas) throws ValidacaoException {
+    private void validarAlternativasDiferentes(@NotNull List<Alternativa> alternativas) throws ValidacaoException {
         if (alternativas.isEmpty()) {
             throw new ValidacaoException();
         }

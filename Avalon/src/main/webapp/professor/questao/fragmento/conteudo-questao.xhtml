@@ -64,6 +64,14 @@ and open the template in the editor.
         </p:outputPanel>
     </div>
     
+    <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
+        <div class="col-md-4 display-flex">
+            <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
+            <p:inputSwitch id="resposta-vf" styleClass="switch" value="#{questaoBean.respostaVF}"
+                           offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}" required="true" />
+        </div>
+    </p:outputPanel>
+    
     <div class="row">
         <div class="col-md-4 display-flex">
             <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />

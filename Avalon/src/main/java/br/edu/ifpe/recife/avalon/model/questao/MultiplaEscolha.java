@@ -13,13 +13,17 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 /**
  *
  * @author aldenio
  */
 @Entity
+@Table(name = "TB_MULTIPLA_ESCOLHA")
 @DiscriminatorValue("M")
+@PrimaryKeyJoinColumn(name = "ID_MULTIPLA_ESCOLHA", referencedColumnName = "ID_QUESTAO")
 public class MultiplaEscolha extends Questao implements Serializable{
     
     @OneToMany(mappedBy = "questao", fetch = FetchType.LAZY,
