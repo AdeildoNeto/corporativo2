@@ -7,7 +7,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 public enum TipoQuestaoEnum {
     

@@ -13,35 +13,25 @@ and open the template in the editor.
 
     <div class="row">
         <div class="col-md-3 form-group">
-            <p:outputLabel for="filtroEnunciado" value="#{msg['label.enunciado']}:" />
-            <h:inputText id="filtroEnunciado" class="form-control" value="#{bean.pesquisarViewHelper.filtro.enunciado}" />
+            <p:outputLabel for="filtroTitulo" value="#{msg['label.titulo']}:" />
+            <h:inputText id="filtroTitulo" class="form-control" value="#{bean.pesquisarSimuladoViewHelper.filtro.titulo}" />
         </div>
 
         <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroNomeCriador" value="#{msg['label.criador']}:" />
-            <h:inputText id="filtroNomeCriador" class="form-control" value="#{bean.pesquisarViewHelper.filtro.nomeCriador}" />
+            <h:inputText id="filtroNomeCriador" class="form-control" value="#{bean.pesquisarSimuladoViewHelper.filtro.nomeCriador}" />
         </p:outputPanel>
 
         <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroComponente" value="#{msg['label.componente.curricular']}:" />
             <p:selectOneMenu id="filtroComponente"
-                             value="#{bean.pesquisarViewHelper.filtro.idComponenteCurricular}"
+                             value="#{bean.pesquisarSimuladoViewHelper.filtro.idComponenteCurricular}"
                              class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                              filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="#{bean.componenteViewHelper.getTodosComponentesCurricular()}"
+                <f:selectItems value="#{bean.pesquisarSimuladoViewHelper.getTodosComponentesCurricular()}"
                                itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                 <p:ajax update="@form" event="change" />
             </p:selectOneMenu>
-        </p:outputPanel>
-
-        <p:outputPanel class="col-md-2 form-group" rendered="#{bean.pesquisarViewHelper.exibirOpcaoTipo}">
-            <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
-            <div>
-                <p:selectOneMenu id="filtroTipo" value="#{bean.pesquisarViewHelper.filtro.tipo}"
-                                 class="btn dropdown-toggle bg-select-menu ui-selectonemenu-185">
-                    <f:selectItems value="#{bean.pesquisarViewHelper.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
-                </p:selectOneMenu>
-            </div>
         </p:outputPanel>
         
         <p:outputPanel class="col-md-1 form-group">
@@ -50,7 +40,7 @@ and open the template in the editor.
                            onclick="PF('block').show()"
                            oncomplete="PF('block').hide()"
                            action="#{bean.pesquisar()}"
-                           update="table msgs btn" ajax="true"
+                           update="table msgs" ajax="true"
                            title="#{msg['adicionar.componente.curricular']}">
             </p:commandLink>
         </p:outputPanel>

@@ -17,11 +17,9 @@ import java.util.List;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 public class PesquisarQuestaoViewHelper implements Serializable {
-    
-    public static final String NOME = "pesquisarQuestaoViewHelper";
     
     private QuestaoServico questaoServico;
     

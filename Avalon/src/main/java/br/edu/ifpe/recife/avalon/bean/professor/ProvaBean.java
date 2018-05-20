@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.bean;
+package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -28,7 +28,7 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Named(value = ProvaBean.NOME)
 @SessionScoped

@@ -39,7 +39,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Entity
 @Table(name = "TB_QUESTAO")

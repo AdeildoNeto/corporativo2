@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Stateless
 @LocalBean

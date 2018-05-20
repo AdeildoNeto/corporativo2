@@ -7,18 +7,12 @@ package br.edu.ifpe.recife.avalon.viewhelper;
 
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import java.io.Serializable;
-import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
-@Named(value = QuestaoDetalhesViewHelper.NOME)
-@SessionScoped
 public class QuestaoDetalhesViewHelper implements Serializable {
-    
-    public static final String NOME = "questaoDetalhesViewHelper";
     
     private Questao questaoDetalhes = new Questao();
     private boolean exibirModalDetalhes = false;

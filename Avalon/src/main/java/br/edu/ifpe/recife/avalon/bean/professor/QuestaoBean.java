@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.bean;
+package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
@@ -32,7 +32,7 @@ import javax.validation.Valid;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Named(value = "questaoBean")
 @SessionScoped

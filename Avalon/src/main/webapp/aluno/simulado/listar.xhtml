@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <h1 id="headerSimulados">#{msg['menu.simulados']}</h1>
+                </div>
+            </div>
+            
+            <ui:include src="comum/pesquisar-questao.xhtml">
+                <ui:param name="bean" value="#{simuladoBean}" />
+            </ui:include>
+            
+            <div class="row container-listar">
+                <div class="col-md-12">
+                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.titulo']}</span>
+                            </f:facet>
+                            <h:outputText class="simuladoTitulo" value="#{simulado.titulo}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText class="simuladoComponenteCurricular" title="#{simulado.componenteCurricular.nome}"
+                                          value="#{simulado.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                
+                            </f:facet>
+                            <p:commandLink class="btnExcluir" action="#{simuladoBean.selecionarSimulado(simulado)}" onclick="PF('block').show()"
+                                             oncomplete="PF('block').hide(); PF('modalExclusao').show();">
+                                <span class="material-icons">delete</span>
+                            </p:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </div>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

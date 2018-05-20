@@ -25,7 +25,7 @@ import javax.validation.Valid;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Stateless
 @LocalBean

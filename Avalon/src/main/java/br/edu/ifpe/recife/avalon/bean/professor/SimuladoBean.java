@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.bean;
+package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -32,7 +31,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Named(value = SimuladoBean.NOME)
 @SessionScoped

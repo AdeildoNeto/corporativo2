@@ -38,7 +38,7 @@ import org.junit.runners.MethodSorters;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class QuestaoTest {

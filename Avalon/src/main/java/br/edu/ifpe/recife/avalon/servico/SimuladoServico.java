@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Stateless
 @LocalBean
@@ -108,6 +109,10 @@ public class SimuladoServico {
         query.setParameter("emailCriador", emailCriador);
 
         return query.getResultList();
+    }
+
+    public List<Simulado> buscarSimuladoPorFiltro(FiltroSimulado filtro) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

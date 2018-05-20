@@ -37,7 +37,7 @@ import javax.validation.Valid;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 @Named(value  = "loginBean")
 @RequestScoped

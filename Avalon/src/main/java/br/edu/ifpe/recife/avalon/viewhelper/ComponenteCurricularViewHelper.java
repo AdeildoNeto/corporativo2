@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  *
- * @author eduardo.f.amaral
+ * @author eduardoamaral
  */
 public class ComponenteCurricularViewHelper implements Serializable {
     
