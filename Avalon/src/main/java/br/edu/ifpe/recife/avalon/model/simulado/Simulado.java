@@ -11,7 +11,6 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,20 +38,23 @@ import javax.validation.constraints.Size;
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "Simulado.PorDisciplina",
-                    query = "Select s from Simulado s where s.componenteCurricular.id = :idComponenteCurricular AND "
-                    + "s.ativo = true"
-            )
-            ,@NamedQuery(
                     name = "Simulado.PorTituloValido",
                     query = "Select s from Simulado s where s.titulo = :titulo AND "
                     + "s.componenteCurricular.id = :idComponenteCurricular AND "
                     + "s.criador.email = :emailCriador AND "
                     + "s.ativo = true"
-            ),@NamedQuery(
+            )
+            ,@NamedQuery(
                     name = "Simulado.PorCriador",
                     query = "Select s from Simulado s where s.criador.email = :emailCriador AND "
                     + "s.ativo = true"
+            )
+            ,@NamedQuery(
+                    name = "Simulado.PorFiltro",
+                    query = "Select s from Simulado s where s.ativo = true "
+                    + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = s.componenteCurricular.id) "
+                    + "AND (:nomeCriador is null OR (CONCAT(s.criador.nome, ' ', s.criador.sobrenome) like :nomeCriador)) "
+                    + "AND (:titulo is null OR s.titulo like :titulo)"
             )
         }
 )
@@ -149,5 +151,5 @@ public class Simulado implements Serializable {
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
     }
-    
+
 }

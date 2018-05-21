@@ -77,6 +77,16 @@
             <to-view-id>/aluno/home.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goProcurarSimulado</from-outcome>
+            <to-view-id>/aluno/simulado/listar.xhml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goIniciarSimulado</from-outcome>
+            <to-view-id>/aluno/simulado/simulado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

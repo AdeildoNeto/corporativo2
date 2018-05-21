@@ -20,13 +20,19 @@ and open the template in the editor.
                 </div>
             </div>
             
-            <ui:include src="comum/pesquisar-questao.xhtml">
-                <ui:param name="bean" value="#{simuladoBean}" />
+            <div class="row">
+                <div class="col-md-6">
+                    <p:messages id="msgs" />
+                </div>
+            </div>
+            
+            <ui:include src="fragmento/pesquisar-simulado.xhtml">
+                <ui:param name="bean" value="#{simuladoAlunoBean}" />
             </ui:include>
             
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
+                    <h:dataTable id="table" value="#{simuladoAlunoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados-aluno">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -42,12 +48,18 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                
+                                <span>#{msg['label.criador']}</span>
                             </f:facet>
-                            <p:commandLink class="btnExcluir" action="#{simuladoBean.selecionarSimulado(simulado)}" onclick="PF('block').show()"
-                                             oncomplete="PF('block').hide(); PF('modalExclusao').show();">
-                                <span class="material-icons">delete</span>
-                            </p:commandLink>
+                            <h:outputText class="simuladoCriador" title="#{simulado.criador.nomeCompleto}"
+                                          value="#{simulado.criador.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                            </f:facet>
+                            <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="@form"
+                                             action="#{simuladoAlunoBean.iniciarSimulado(simulado)}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
                         </h:column>
                     </h:dataTable>
                 </div>

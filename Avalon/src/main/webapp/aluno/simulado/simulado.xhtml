@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>#{simuladoAlunoBean.simuladoSelecionado.titulo}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ui:repeat value="#{simuladoAlunoBean.questoesSimulado}" var="questao" varStatus="i">
+                        <div class="form-group">
+                            <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
+                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.selecionada}">
+                                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
+                                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                            </p:selectOneRadio>
+
+                            <h:panelGrid class="margin-left-20">
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                                    <span>#{msg['btn.verdadeiro']}</span>
+                                </h:column>
+
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                                    <span>#{msg['btn.falso']}</span>
+                                </h:column>
+                            </h:panelGrid>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-md-8 col-md-4">
+                    <p:commandLink id="goListarQuestao" value="#{msg['btn.cancelar']}"
+                                   action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandLink>
+                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="@form"
+                                     action="#{simuladoAlunoBean.iniciarSimulado(null)}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" disabled="false"
+                                     class="btn btn-primary font-color-default">
+                    </p:commandButton>
+                </div>
+            </div>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

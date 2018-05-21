@@ -41,19 +41,23 @@ public class SimuladoServico {
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
+    private static final String PERCENT = "%";
 
     /**
      * Método para salvar um simulado.
+     *
      * @param simulado
      * @throws ValidacaoException - quando o título já está em uso.
      */
     public void salvar(@Valid Simulado simulado) throws ValidacaoException {
         validarTitulo(simulado);
+        validarQuestoesSelecionadas(simulado);
         entityManager.persist(simulado);
     }
-    
+
     /**
      * Método para remover um Simulado.
+     *
      * @param simulado
      */
     public void remover(@Valid Simulado simulado) {
@@ -65,6 +69,7 @@ public class SimuladoServico {
 
     /**
      * Método para validar o título de um novo simulado.
+     *
      * @param simulado
      * @throws ValidacaoException - quando o título já está em uso.
      */
@@ -78,27 +83,26 @@ public class SimuladoServico {
 
         if (!query.getResultList().isEmpty()) {
             throw new ValidacaoException(AvalonUtil.getInstance()
-                    .getMensagemValidacao("componente.curricular.nome.duplicado"));
+                    .getMensagemValidacao("simulado.titulo.duplicado"));
         }
 
     }
 
     /**
-     * Método para buscar simulados por componente curricular.
-     * @param idComponenteCurricular
-     * @return lista de simulados.
+     * Método para validar se ao menos uma questão foi selecionada para o simulado.
+     * @param simulado
+     * @throws ValidacaoException 
      */
-    public List<Simulado> buscarPorComponenteCurricular(@NotNull Long idComponenteCurricular) {
-        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorDisciplina",
-                Simulado.class);
-
-        query.setParameter("idComponenteCurricular", idComponenteCurricular);
-
-        return query.getResultList();
+    private void validarQuestoesSelecionadas(Simulado simulado) throws ValidacaoException {
+        if (simulado.getQuestoes() == null || simulado.getQuestoes().isEmpty()) {
+            throw new ValidacaoException(AvalonUtil.getInstance()
+                    .getMensagemValidacao("selecione.uma.questao"));
+        }
     }
-    
+
     /**
      * Método para buscar simulados por criador.
+     *
      * @param emailCriador - email do criador.
      * @return lista de simulados.
      */
@@ -111,8 +115,21 @@ public class SimuladoServico {
         return query.getResultList();
     }
 
+    /**
+     * Método para buscar questão por filtro.
+     *
+     * @param filtro
+     * @return lista de simulados
+     */
     public List<Simulado> buscarSimuladoPorFiltro(FiltroSimulado filtro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorFiltro",
+                Simulado.class);
+
+        query.setParameter("titulo", PERCENT.concat(filtro.getTitulo()).concat(PERCENT));
+        query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
+        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+
+        return query.getResultList();
     }
 
 }

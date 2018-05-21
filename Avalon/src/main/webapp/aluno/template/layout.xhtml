@@ -29,7 +29,7 @@ and open the template in the editor.
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['menu.simulados']}" />
+                            <h:commandLink styleClass="nav-link" value="#{msg['menu.simulados']}" action="#{simuladoAlunoBean.iniciarPagina()}" />
                         </li>
                         <ui:include src="../../template/logout.xhtml" />
                     </ul>

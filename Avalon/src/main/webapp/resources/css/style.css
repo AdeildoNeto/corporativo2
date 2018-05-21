@@ -395,3 +395,36 @@ h1 {
     width: 80px;
     max-width: 80px;
 }
+
+
+.table-simulados-aluno td:first-child{
+    max-width: 410px !important;
+    width: 410px;
+}
+
+.table-simulados-aluno td:nth-child(2){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-simulados-aluno td:nth-child(3){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-simulados td:last-child{
+    width: 80px;
+    max-width: 80px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.margin-left-20{
+    margin-left: 20px;
+}
+
+.radio-button input{
+    display: inherit;
+}

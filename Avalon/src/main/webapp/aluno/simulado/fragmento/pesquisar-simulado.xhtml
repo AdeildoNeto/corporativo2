@@ -28,14 +28,14 @@ and open the template in the editor.
                              value="#{bean.pesquisarSimuladoViewHelper.filtro.idComponenteCurricular}"
                              class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                              filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="#{bean.pesquisarSimuladoViewHelper.getTodosComponentesCurricular()}"
+                <f:selectItems value="#{bean.componenteViewHelper.getTodosComponentesCurricular()}"
                                itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                 <p:ajax update="@form" event="change" />
             </p:selectOneMenu>
         </p:outputPanel>
         
         <p:outputPanel class="col-md-1 form-group">
-            <p:commandLink id="addComponente" value="search"
+            <p:commandLink id="pesquisar" value="search"
                            class="btn material-icons bg-default btn-search"
                            onclick="PF('block').show()"
                            oncomplete="PF('block').hide()"

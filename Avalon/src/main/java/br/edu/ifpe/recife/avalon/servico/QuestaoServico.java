@@ -60,6 +60,11 @@ public class QuestaoServico {
         entityManager.persist(questao);
     }
     
+    /**
+     * Métoto para salvar uma questão de múltipla escolha.
+     * @param questao
+     * @throws ValidacaoException 
+     */
     public void salvar(@Valid MultiplaEscolha questao) throws ValidacaoException{
         questao.setEnunciado(questao.getEnunciado().trim());
         validarAlternativasDiferentes(questao.getAlternativas());
@@ -208,6 +213,19 @@ public class QuestaoServico {
         query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
         query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+        
+        return query.getResultList();
+    }
+
+    /**
+     * Método para buscar questões por simulado.
+     * @param idSimulado
+     * @return 
+     */
+    public List<Questao> buscarQuestoesPorSimulado(Long idSimulado) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorSimulado", Questao.class);
+        
+        query.setParameter(1, idSimulado);
         
         return query.getResultList();
     }

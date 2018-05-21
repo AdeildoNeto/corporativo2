@@ -5,11 +5,8 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
-import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
-import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
@@ -19,12 +16,9 @@ import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarSimuladoViewHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -60,6 +54,7 @@ public class SimuladoAlunoBean implements Serializable {
     
     private Simulado simuladoSelecionado;
     private List<Simulado> simulados;
+    private List<Questao> questoesSimulado;
     
     public SimuladoAlunoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
@@ -73,17 +68,22 @@ public class SimuladoAlunoBean implements Serializable {
      * @return rota para página de geração de prova
      */
     public String iniciarPagina(){
+        componenteViewHelper.inicializar(componenteCurricularServico);
+        pesquisarSimuladoViewHelper.inicializar(simuladoServico, usuarioLogado);
         limparTela();
         
         return GO_PROCURAR_SIMULADO;
     }
     
+    /**
+     * Método para iniciar um novo Simulado.
+     * @param simulado
+     * @return navegacao
+     */
     public String iniciarSimulado(Simulado simulado){
-        componenteViewHelper.inicializar(componenteCurricularServico);
-        pesquisarSimuladoViewHelper.inicializar(simuladoServico, usuarioLogado);
         limparTelaSimulado();
-        
         simuladoSelecionado = simulado;
+        questoesSimulado = questaoServico.buscarQuestoesPorSimulado(simulado.getId());
         
         return GO_INICIAR_SIMULADO;
     }
@@ -106,8 +106,11 @@ public class SimuladoAlunoBean implements Serializable {
     /**
      * Método para carregar as questões do usuário.
      */
-    private void pesquisar() {
+    public void pesquisar() {
         simulados = pesquisarSimuladoViewHelper.pesquisar();
+        if(simulados.isEmpty()){
+            exibirMensagemPesquisaSemDados();
+        }
     }
     
     /**
@@ -137,6 +140,14 @@ public class SimuladoAlunoBean implements Serializable {
 
     public List<Simulado> getSimulados() {
         return simulados;
+    }
+
+    public Simulado getSimuladoSelecionado() {
+        return simuladoSelecionado;
+    }
+
+    public List<Questao> getQuestoesSimulado() {
+        return questoesSimulado;
     }
     
 }

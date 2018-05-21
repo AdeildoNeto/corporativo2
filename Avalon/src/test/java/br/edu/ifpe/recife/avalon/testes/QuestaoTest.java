@@ -400,7 +400,7 @@ public class QuestaoTest {
         alternativas.get(1).setQuestao(questao);
 
         questao.setAlternativas(alternativas);
-        
+
         questaoServico.salvar(questao);
 
     }
@@ -463,7 +463,7 @@ public class QuestaoTest {
         questao.setDataCriacao(Calendar.getInstance().getTime());
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
         questao.setCompartilhada(Boolean.FALSE);
-        
+
         questaoServico.salvar(questao);
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
@@ -482,7 +482,7 @@ public class QuestaoTest {
         List<Questao> lista;
         Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
-        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA); 
+        filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
         filtro.setEmailUsuario("user2@gmail.com");
         filtro.setNomeCriador(criador.getNome());
 
@@ -490,8 +490,7 @@ public class QuestaoTest {
 
         assertEquals(1, lista.size());
     }
-    
-    
+
     @Test
     public void t20_buscarQuestaoPorFiltroEnunciado() {
         logger.info("Executando t20: buscarQuestaoPorFiltroEnunciado");
@@ -506,8 +505,7 @@ public class QuestaoTest {
 
         assertEquals(3, lista.size());
     }
-    
-    
+
     @Test
     public void t21_buscarQuestaoPorFiltroCriador() {
         logger.info("Executando t21: buscarQuestaoPorFiltroCriador");
@@ -523,8 +521,7 @@ public class QuestaoTest {
 
         assertEquals(1, lista.size());
     }
-    
-    
+
     @Test
     public void t22_buscarQuestaoPorFiltroComponenteCurricular() {
         logger.info("Executando t22: buscarQuestaoPorFiltroComponenteCurricular");
@@ -539,6 +536,24 @@ public class QuestaoTest {
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(3, lista.size());
+    }
+
+    @Test(expected = EJBException.class)
+    public void t23_criticarVFSemRespostaDefinida() throws ValidacaoException {
+        logger.info("Executando t23: criticarVFSemRespostaDefinida");
+        VerdadeiroFalso questao = new VerdadeiroFalso();
+
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
+
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+
+        questao.setCriador(usuario);
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("Questao V/F teste");
+        questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
+        questao.setDataCriacao(Calendar.getInstance().getTime());
+
+        questaoServico.salvar(questao);
     }
 
 }

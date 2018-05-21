@@ -128,7 +128,7 @@ public class QuestaoBean implements Serializable {
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
             this.alternativas = ((MultiplaEscolha) questao).getAlternativas();
         }else if(TipoQuestaoEnum.VERDADEIRO_FALSO.equals(questao.getTipo())){
-            this.respostaVF = ((VerdadeiroFalso) questao).isResposta();
+            this.respostaVF = ((VerdadeiroFalso) questao).getResposta();
         }
         
 
@@ -278,6 +278,7 @@ public class QuestaoBean implements Serializable {
         exibirModalComponente = false;
         questao = new Questao();
         componenteSelecionado = null;
+        respostaVF = false;
 
         alternativas = new ArrayList<>();
         alt1 = new Alternativa();

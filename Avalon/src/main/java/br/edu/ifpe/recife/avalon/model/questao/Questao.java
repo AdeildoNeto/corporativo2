@@ -27,6 +27,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -100,6 +102,16 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
                     + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
                     + "AND (:enunciado is null OR q.enunciado like :enunciado)"
+            )
+        })
+@NamedNativeQueries(
+        {
+            @NamedNativeQuery(
+                    name = "Questao.PorSimulado",
+                    query = "SELECT Q.*, VF.* FROM TB_QUESTAO Q LEFT OUTER JOIN TB_VERDADEIRO_FALSO VF "
+                    + "ON Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO, TB_QUESTOES_SIMULADO QS "
+                    + "WHERE QS.ID_QUESTAO = Q.ID_QUESTAO AND QS.ID_SIMULADO = ? AND Q.SN_ATIVA = TRUE",
+                    resultClass = Questao.class
             )
         })
 public class Questao implements Serializable {
