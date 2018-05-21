@@ -26,12 +26,18 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     private FiltroQuestao filtro = new FiltroQuestao();
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
     private Usuario usuarioLogado;
-    private boolean exibirOpcaoTipo = true;
+    private boolean filtroSimulado;
     
-    public void inicializar(QuestaoServico servico, Usuario usuario){
+    /**
+     * Método para inicializar a classe.
+     * @param servico - QuestaoServico
+     * @param usuario - Usuario
+     */
+    public void inicializar(QuestaoServico servico, Usuario usuario, boolean filtroSimulado){
         this.filtro = new FiltroQuestao();
         this.usuarioLogado = usuario;
         this.questaoServico = servico;
+        this.filtroSimulado = filtroSimulado;
         carregarTiposQuestao();
     }
     
@@ -39,7 +45,11 @@ public class PesquisarQuestaoViewHelper implements Serializable {
      * Método responsável por carregar os tipos de questão disponíveis.
      */
     private void carregarTiposQuestao() {
-        this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.values());        
+        if(filtroSimulado){
+            this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.MULTIPLA_ESCOLHA, TipoQuestaoEnum.VERDADEIRO_FALSO);
+        }else{
+            this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.values());
+        }
     }
     
     /**
@@ -49,11 +59,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     public List<Questao> pesquisar() {
         this.filtro.setEmailUsuario(usuarioLogado.getEmail());
         
-        if(exibirOpcaoTipo){
-            return questaoServico.buscarQuestoesPorFiltro(filtro);
-        }else{
-            return questaoServico.buscarQuestoesParaSimulado(filtro);
-        }
+        return questaoServico.buscarQuestoesPorFiltro(filtro);
     }
 
     public FiltroQuestao getFiltro() {
@@ -64,12 +70,12 @@ public class PesquisarQuestaoViewHelper implements Serializable {
         return tipoQuestoes;
     }
 
-    public boolean isExibirOpcaoTipo() {
-        return exibirOpcaoTipo;
+    public boolean isFiltroSimulado() {
+        return filtroSimulado;
     }
 
-    public void setExibirOpcaoTipo(boolean exibirOpcaoTipo) {
-        this.exibirOpcaoTipo = exibirOpcaoTipo;
+    public void setFiltroSimulado(boolean filtroSimulado) {
+        this.filtroSimulado = filtroSimulado;
     }
     
 }

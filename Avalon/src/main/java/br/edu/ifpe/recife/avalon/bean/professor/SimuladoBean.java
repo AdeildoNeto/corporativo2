@@ -90,8 +90,7 @@ public class SimuladoBean implements Serializable {
     public String iniciarPaginaGerarSimulado() {
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
-        pesquisarViewHelper.inicializar(questaoServico, usuarioLogado);
-        pesquisarViewHelper.setExibirOpcaoTipo(false);
+        pesquisarViewHelper.inicializar(questaoServico, usuarioLogado, true);
         limparTelaGerarSimulado();
 
         return GO_GERAR_SIMULADO;

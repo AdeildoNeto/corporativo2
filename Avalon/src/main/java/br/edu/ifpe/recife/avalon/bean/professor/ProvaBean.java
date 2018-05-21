@@ -63,7 +63,7 @@ public class ProvaBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
-        pesquisarViewHelper.inicializar(questaoServico, usuarioLogado);
+        pesquisarViewHelper.inicializar(questaoServico, usuarioLogado, false);
         limparTela();
 
         return GO_GERAR_PROVA;

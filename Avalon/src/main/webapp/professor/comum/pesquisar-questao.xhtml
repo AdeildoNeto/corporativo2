@@ -34,7 +34,7 @@ and open the template in the editor.
             </p:selectOneMenu>
         </p:outputPanel>
 
-        <p:outputPanel class="col-md-2 form-group" rendered="#{bean.pesquisarViewHelper.exibirOpcaoTipo}">
+        <p:outputPanel class="col-md-2 form-group">
             <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
             <div>
                 <p:selectOneMenu id="filtroTipo" value="#{bean.pesquisarViewHelper.filtro.tipo}"

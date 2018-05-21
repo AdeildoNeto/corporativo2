@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formModalResultado">
+
+        <p:dialog id="modalResultado" visible="#{simuladoAlunoBean.exibirModalResultado}"
+                  header="#{msg['label.resultado']}" modal="true" resizable="false"
+                  widgetVar="modalResultado" closeOnEscape="false" draggable="false"
+                  onHide="#{simuladoAlunoBean.fecharModalResultado()}" class="modal-resultado">
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <span>#{msg['resultado.obteve']} <h:outputText value="#{simuladoAlunoBean.resultado}">
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>% #{msg['resultado.acerto']}.
+                    </span>
+                </div>
+            </div>
+
+            <div class="row btn-modal">
+                <div class="col text-right">
+                    <p:commandButton id="btnFecharModalResultado" value="#{msg['btn.fechar']}"
+                                     action="#{simuladoAlunoBean.fecharModalResultado()}"
+                                     styleClass="btn btn-secondary" update="modalResultado"
+                                     immediate="true" process="@this" />
+                </div>
+            </div>
+
+        </p:dialog>
+
+    </h:form>   
+
+</ui:composition>

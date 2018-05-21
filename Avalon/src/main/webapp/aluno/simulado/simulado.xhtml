@@ -31,12 +31,13 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:repeat value="#{simuladoAlunoBean.questoesSimulado}" var="questao" varStatus="i">
+                    <ui:repeat value="#{simuladoAlunoBean.questoesVFSimulado}" var="questao" varStatus="i">
                         <div class="form-group">
                             <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
-                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.selecionada}">
+                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                                <p:ajax update="form:btnFinalizar" />
                             </p:selectOneRadio>
 
                             <h:panelGrid class="margin-left-20">
@@ -57,13 +58,13 @@ and open the template in the editor.
 
             <div class="row">
                 <div class="offset-md-8 col-md-4">
-                    <p:commandLink id="goListarQuestao" value="#{msg['btn.cancelar']}"
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
                                    action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
-                    </p:commandLink>
-                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="@form"
-                                     action="#{simuladoAlunoBean.iniciarSimulado(null)}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="false"
+                    </p:commandButton>
+                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado"
+                                     action="#{simuladoAlunoBean.finalizar()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default">
                     </p:commandButton>
                 </div>
@@ -74,6 +75,8 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
+        
+        <ui:include src="fragmento/modal-resultado.xhtml" />
     </ui:define>
 
 </ui:composition>
