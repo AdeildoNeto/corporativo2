@@ -113,7 +113,7 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "LEFT OUTER JOIN TB_MULTIPLA_ESCOLHA MS "
                     + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
                     + "TB_QUESTOES_SIMULADO QS "
-                    + "WHERE QS.ID_SIMULADO = 1"
+                    + "WHERE QS.ID_SIMULADO = ?"
                     + " AND Q.SN_ATIVA = TRUE"
                     + " AND QS.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",

@@ -5,6 +5,8 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
+import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -54,7 +58,8 @@ public class SimuladoAlunoBean implements Serializable {
 
     private Simulado simuladoSelecionado;
     private List<Simulado> simulados;
-    private List<VerdadeiroFalso> questoesVFSimulado;
+    private List<VerdadeiroFalso> questoesVerdadeiroFalso;
+    private List<MultiplaEscolha> questoesMultiplaEscolha;
     private boolean exibirModalResultado;
     private double resultado;
 
@@ -62,6 +67,8 @@ public class SimuladoAlunoBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();
         pesquisarSimuladoViewHelper = new PesquisarSimuladoViewHelper();
+        questoesVerdadeiroFalso = new ArrayList<>();
+        questoesMultiplaEscolha = new ArrayList<>();
         simulados = new ArrayList<>();
     }
 
@@ -90,7 +97,14 @@ public class SimuladoAlunoBean implements Serializable {
 
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVFSimulado = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId());
+                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId());
+            } else {
+                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId());
+            }
+
+            if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
+                exibirMensagemError(AvalonUtil.getInstance().getMensagem("simulado.vazio"));
+                return null;
             }
         }
 
@@ -101,18 +115,20 @@ public class SimuladoAlunoBean implements Serializable {
      * Método para limpar os campos da tela listar simulados.
      */
     private void limparTela() {
+        pesquisarSimuladoViewHelper.limparFiltro();
         simuladoSelecionado = new Simulado();
     }
 
     /**
-     * Método para limpar os campos da tela do simulado.
+     * Método para limpar a tela do simulado.
      */
     private void limparTelaSimulado() {
-
+        questoesVerdadeiroFalso.clear();
+        questoesMultiplaEscolha.clear();
     }
 
     /**
-     * Método para carregar as questões do usuário.
+     * Método para pesquisar os simulados disponíveis.
      */
     public void pesquisar() {
         simulados = pesquisarSimuladoViewHelper.pesquisar();
@@ -121,42 +137,107 @@ public class SimuladoAlunoBean implements Serializable {
         }
     }
 
+    /**
+     * Método para finalizar o simulado.
+     */
     public void finalizar() {
-        calcularResultado();
-        exibirModalResultado = true;
+        try {
+            if (!questoesVerdadeiroFalso.isEmpty()) {
+                verificarTodasQuestoesPreenchidasVF();
+            } else {
+                verificarTodasQuestoesPreenchidasMS();
+            }
+
+            calcularResultado();
+            exibirModalResultado = true;
+        } catch (Exception ex) {
+            exibirMensagemError(ex.getMessage());
+        }
     }
 
-    public boolean todasQuestoesPreenchidas() {
-        for (VerdadeiroFalso questao : questoesVFSimulado) {
+    /**
+     * Método para verificar se todas as questões V/F foram preenchidas.
+     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
+     */
+    public void verificarTodasQuestoesPreenchidasVF() throws ValidacaoException {
+        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
             if (questao.getRespostaUsuario() == null) {
-                return false;
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("simulado.questoes.obrigatorias"));
             }
         }
-
-        return true;
     }
 
+    /**
+     * Método para verificar se todas as questões de múltipla escolha foram preenchidas.
+     * @throws ValidacaoException 
+     */
+    public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
+        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+            if (questao.getRespostaUsuario() == null) {
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("simulado.questoes.obrigatorias"));
+            }
+        }
+    }
+
+    /**
+     * Método para calcular a porcentagem de acerto do aluno no simulado.
+     */
     private void calcularResultado() {
-        int quantidadeQuestoes = questoesVFSimulado.size();
-        int respostasCertas = 0;
-        
-        respostasCertas = verificarRespostasVF();
-        
+        int quantidadeQuestoes;
+        int respostasCertas;
+
+        if (!questoesVerdadeiroFalso.isEmpty()) {
+            quantidadeQuestoes = questoesVerdadeiroFalso.size();
+            respostasCertas = verificarRespostasVF();
+        } else {
+            quantidadeQuestoes = questoesMultiplaEscolha.size();
+            respostasCertas = verificarRespostasMS();
+        }
+
         resultado = ((double) respostasCertas / quantidadeQuestoes) * 100.0;
     }
-    
-    private int verificarRespostasVF(){
-        int respostasCertas = 0;
-        
-        for (VerdadeiroFalso questao : questoesVFSimulado) {
-            if(questao.getResposta().equals(questao.getRespostaUsuario())){
-                respostasCertas++;
+
+    /**
+     * Método para verificar a quantidade de acertos do usúario em questões de
+     * V/F.
+     *
+     * @return quantidade de acertos
+     */
+    private int verificarRespostasVF() {
+        int quantidadeAcertos = 0;
+
+        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
+            if (questao.getResposta().equals(questao.getRespostaUsuario())) {
+                quantidadeAcertos++;
             }
         }
-        
-        return respostasCertas;
+
+        return quantidadeAcertos;
     }
 
+    /**
+     * Método para verificar a quantidade de acertos do usuário em questões de
+     * múltipla escolha.
+     *
+     * @return quantidade de acertos
+     */
+    private int verificarRespostasMS() {
+        int quantidadeAcertos = 0;
+
+        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+            if (questao.getOpcaoCorreta().equals(questao.getRespostaUsuario())) {
+                quantidadeAcertos++;
+            }
+        }
+
+        return quantidadeAcertos;
+    }
+
+    /**
+     * Método para fechar o modal de resultado.
+     *
+     * @return navegacao
+     */
     public String fecharModalResultado() {
         exibirModalResultado = false;
         return iniciarPagina();
@@ -196,8 +277,12 @@ public class SimuladoAlunoBean implements Serializable {
         return simuladoSelecionado;
     }
 
-    public List<VerdadeiroFalso> getQuestoesVFSimulado() {
-        return questoesVFSimulado;
+    public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {
+        return questoesMultiplaEscolha;
+    }
+
+    public List<VerdadeiroFalso> getQuestoesVerdadeiroFalso() {
+        return questoesVerdadeiroFalso;
     }
 
     public boolean isExibirModalResultado() {
@@ -207,5 +292,5 @@ public class SimuladoAlunoBean implements Serializable {
     public double getResultado() {
         return resultado;
     }
-    
+
 }

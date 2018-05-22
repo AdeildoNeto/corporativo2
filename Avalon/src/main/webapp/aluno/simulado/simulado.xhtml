@@ -31,28 +31,13 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:repeat value="#{simuladoAlunoBean.questoesVFSimulado}" var="questao" varStatus="i">
-                        <div class="form-group">
-                            <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
-                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
-                                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
-                                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
-                                <p:ajax update="form:btnFinalizar" />
-                            </p:selectOneRadio>
-
-                            <h:panelGrid class="margin-left-20">
-                                <h:column>
-                                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
-                                    <span>#{msg['btn.verdadeiro']}</span>
-                                </h:column>
-
-                                <h:column>
-                                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
-                                    <span>#{msg['btn.falso']}</span>
-                                </h:column>
-                            </h:panelGrid>
-                        </div>
-                    </ui:repeat>
+                    <p:messages id="msgs" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ui:include src="fragmento/conteudo-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}" />
+                    <ui:include src="fragmento/conteudo-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}" />
                 </div>
             </div>
 
@@ -62,7 +47,7 @@ and open the template in the editor.
                                    action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
                     </p:commandButton>
-                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado"
+                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado msgs"
                                      action="#{simuladoAlunoBean.finalizar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default">

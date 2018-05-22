@@ -5,8 +5,6 @@
  */
 package br.edu.ifpe.recife.avalon.viewhelper;
 
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -29,6 +27,10 @@ public class PesquisarSimuladoViewHelper implements Serializable {
         this.filtro = new FiltroSimulado();
         this.usuarioLogado = usuario;
         this.simuladoServico = servico;
+    }
+    
+    public void limparFiltro(){
+        this.filtro = new FiltroSimulado();
     }
     
     /**

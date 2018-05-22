@@ -19,17 +19,17 @@ and open the template in the editor.
                     <h1>#{simuladoBean.novoSimulado.titulo}</h1>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
-            
+
             <ui:include src="../comum/pesquisar-questao.xhtml">
                 <ui:param name="bean" value="#{simuladoBean}" />
             </ui:include>
-            
+
             <div class="row container-table-prova">
                 <div class="col-md-12">
                     <h:dataTable id="table" value="#{simuladoBean.questoes}" var="questao"
@@ -75,11 +75,15 @@ and open the template in the editor.
                 </div>
             </div>
             <div id="button-container" class="row buttons-save">
-                <div class="offset-md-9 col-md-2 form-group">
+                <div class="offset-md-7 col-md-5 form-group">
+                    <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
+                                     action="#{simuladoBean.iniciarPagina()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" immediate="true"
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
                                      action="#{simuladoBean.salvar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSelecionadas.isEmpty()}"
-                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                                     class="btn btn-primary font-color-default"></p:commandButton>
                 </div>
             </div>
 
@@ -88,11 +92,11 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <ui:include src="../comum/modal-detalhes.xhtml">
             <ui:param name="bean" value="#{simuladoBean}" />
         </ui:include>
-        
+
     </ui:define>
 
 </ui:composition>

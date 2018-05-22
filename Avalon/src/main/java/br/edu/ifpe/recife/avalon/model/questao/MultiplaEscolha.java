@@ -38,7 +38,7 @@ public class MultiplaEscolha extends Questao implements Serializable{
     private Integer opcaoCorreta;
             
     @Transient
-    private Boolean respostaUsuario;
+    private Integer respostaUsuario;
 
     @Override
     public String formatarQuestao(){
@@ -69,11 +69,11 @@ public class MultiplaEscolha extends Questao implements Serializable{
         this.opcaoCorreta = opcaoCorreta;
     }
 
-    public Boolean getRespostaUsuario() {
+    public Integer getRespostaUsuario() {
         return respostaUsuario;
     }
 
-    public void setRespostaUsuario(Boolean respostaUsuario) {
+    public void setRespostaUsuario(Integer respostaUsuario) {
         this.respostaUsuario = respostaUsuario;
     }
     
