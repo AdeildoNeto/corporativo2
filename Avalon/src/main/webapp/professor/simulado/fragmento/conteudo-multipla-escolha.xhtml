@@ -13,7 +13,7 @@ and open the template in the editor.
 
     <ui:repeat value="#{simuladoBean.visualizarViewHelper.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
         <div class="form-group">
-            <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
+            <div class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</div>
             <p:selectOneRadio id="radioMS" value="#{questao.opcaoCorreta}" layout="custom" plain="true" disabled="true" >
                 <f:selectItem itemValue="0" />
                 <f:selectItem itemValue="1" />

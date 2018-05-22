@@ -58,6 +58,11 @@ public class Usuario implements Serializable {
     @Column(name = "TXT_GRUPO")
     private GrupoEnum grupo;
 
+    /**
+     * Retorna o nome e sobrenome do usuário.
+     * 
+     * @return 
+     */
     public String getNomeCompleto(){
         StringBuilder builder = new StringBuilder();
         builder.append(nome);

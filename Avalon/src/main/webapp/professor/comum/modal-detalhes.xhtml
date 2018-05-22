@@ -22,10 +22,8 @@ and open the template in the editor.
                 <div class="col-md-12 form-group">
                     <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
-                        <div class="container-enunciado">
+                        <div class="container-enunciado break-white-space">
                             <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
-                        </div>
-                        <div class="break-white-space">
                             <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
                                 <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
                             </p:outputPanel>

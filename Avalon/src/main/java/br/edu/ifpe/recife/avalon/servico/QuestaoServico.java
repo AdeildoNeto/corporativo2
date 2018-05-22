@@ -52,7 +52,7 @@ public class QuestaoServico implements Serializable{
     private EntityManager entityManager;
 
     /**
-     * Método para salvar um Questão
+     * Salva uma questão.
      *
      * @param questao
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
@@ -64,7 +64,8 @@ public class QuestaoServico implements Serializable{
     }
     
     /**
-     * Métoto para salvar uma questão de múltipla escolha.
+     * Salva uma questão de múltipla escolha.
+     * 
      * @param questao
      * @throws ValidacaoException 
      */
@@ -75,7 +76,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para alterar uma Questão
+     * Efetiva as alterações de uma questão.
      *
      * @param questao
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
@@ -86,7 +87,8 @@ public class QuestaoServico implements Serializable{
     }
     
     /**
-     * Método para alterar uma questão de múltipla escolha.
+     * Efetiva as alterações de uma questão de múltipla escolha.
+     * 
      * @param questao
      * @throws ValidacaoException 
      */
@@ -96,7 +98,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para remover uma Questão
+     * Remove uma questão.
      *
      * @param questao
      */
@@ -108,7 +110,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para consultar Questões por Tipo e Criador
+     * Consulta questões por tipo e criador
      *
      * @param emailCriador
      * @param tipo
@@ -123,7 +125,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para consultar Questões por Criador
+     * Consulta questões por criador.
      *
      * @param emailCriador
      * @return lista de questões
@@ -136,8 +138,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para validar se o enunciado de uma nova Questão é válido para um
-     * determinado Tipo
+     * Valida se o enunciado de uma nova questão é válido.
      *
      * @param questao
      * @throws ValidacaoException
@@ -155,8 +156,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para validar se o enunciado de uma Questão a ser alterada é válido
-     * a depender do seu Tipo.
+     * Valida se o enunciado de uma questão a ser alterada é válido.
      *
      * @param questao
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
@@ -173,7 +173,7 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para verificar se todas as alternativas são diferentes entre si.
+     * Verifica se todas as alternativas são diferentes entre si.
      *
      * @param alternativas
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
@@ -196,7 +196,7 @@ public class QuestaoServico implements Serializable{
     }
     
     /**
-     * Método para pesquisar questões a partir de um filtro.
+     * Consulta questões a partir de um filtro.
      * 
      * @param filtro - filtro para buscar questoes
      * @return lista de questões.
@@ -214,7 +214,7 @@ public class QuestaoServico implements Serializable{
     }
     
     /**
-     * Método para pesquisar questões do tipo V/F e Múltipla Escolha a partir de um filtro.
+     * Consulta questões do tipo V/F e Múltipla Escolha a partir de um filtro.
      * 
      * @param filtro - filtro para buscar questoes
      * @return lista de questões.
@@ -231,7 +231,8 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Método para buscar questões por simulado.
+     * Consulta questões por simulado.
+     * 
      * @param idSimulado
      * @return 
      */

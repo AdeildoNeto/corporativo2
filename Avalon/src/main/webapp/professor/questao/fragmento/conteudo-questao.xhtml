@@ -66,7 +66,7 @@ and open the template in the editor.
             </p:selectOneRadio>
 
             <ui:repeat value="#{questaoBean.alternativas}" var="alternativa" varStatus="index">
-                <h:panelGrid columns="2" width="100%">
+                <h:panelGrid columns="2" width="100%" class="table-alternativa">
                     <p:radioButton for="form:radio" itemIndex="#{index.index}" />
                     <h:inputText value="#{alternativa.descricao}" required="true" class="form-control" />
                 </h:panelGrid>

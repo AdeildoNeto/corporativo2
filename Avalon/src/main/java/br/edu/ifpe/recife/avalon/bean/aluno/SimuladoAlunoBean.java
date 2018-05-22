@@ -60,6 +60,9 @@ public class SimuladoAlunoBean implements Serializable {
     private boolean exibirModalResultado;
     private double resultado;
 
+    /**
+     * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
+     */
     public SimuladoAlunoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();

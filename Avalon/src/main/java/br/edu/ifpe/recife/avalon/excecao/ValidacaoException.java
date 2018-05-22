@@ -12,17 +12,16 @@ package br.edu.ifpe.recife.avalon.excecao;
 public class ValidacaoException extends Exception {
 
     /**
-     * Creates a new instance of <code>NegocioException</code> without detail
-     * message.
+     * Cria uma nova instância de <code>ValidacaoException</code> sem mensagem de detalhes.
      */
     public ValidacaoException() {
     }
 
     /**
-     * Constructs an instance of <code>NegocioException</code> with the
-     * specified detail message.
-     *
-     * @param msg the detail message.
+     * Cria uma nova instância de <code>ValidacaoException</code> com mensagem de detalhes
+     * específica.
+     * 
+     * @param msg a mensagem de detalhe.
      */
     public ValidacaoException(String msg) {
         super(msg);

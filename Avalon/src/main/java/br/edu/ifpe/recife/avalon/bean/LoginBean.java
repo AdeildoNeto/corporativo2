@@ -64,7 +64,7 @@ public class LoginBean implements Serializable {
     private final FacesContext facesContext = FacesContext.getCurrentInstance();
 
     /**
-     * Método para realizar login via conta Google.
+     * Realiza login utilizando uma conta Google.
      */
     public void googleLogin() {
         
@@ -88,7 +88,7 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Método para verificar o token enviado.
+     * Verifica a validade do token recebido.
      */
     private void verificarToken() {
         GoogleIdTokenVerifier verificador = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
@@ -117,7 +117,7 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Método para salvar um novo usuário.
+     * Salva um novo usário.
      */
     private void salvarNovoUsuario() {
         if (payload != null) {
@@ -137,9 +137,8 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Método para verificar se o usuário já existe.
-     *
-     * @return boolean
+     * Verifica se o usuário não existe.
+     * @return true - quando o usuário não existe.
      */
     private boolean isNotUsuarioCadastrado() {
         Usuario usuarioAplicacao = usuarioServico.buscarUsuarioPorEmail(payload.getEmail());
@@ -147,7 +146,7 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Método para realizar Login.
+     * Realiza o login do usuário.
      */
     private void realizarLogin() {
         usuario = usuarioServico.buscarUsuarioPorEmail(usuario.getEmail());
@@ -178,7 +177,7 @@ public class LoginBean implements Serializable {
     }
     
     /**
-     * Método para finalizar a sessão do usuário.
+     * Finaliza a sessão do usuário.
      * @return retorna para a tela de Login.
      * @throws javax.servlet.ServletException
      */

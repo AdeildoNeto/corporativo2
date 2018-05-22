@@ -43,6 +43,12 @@ public class Alternativa implements Serializable {
     @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
     private MultiplaEscolha questao;
 
+    /**
+     * Formata as alternativas de uma questão de Múltipla Escolha.
+     * 
+     * @param opcao
+     * @return alternativa formatada.
+     */
     public String formatarAlternativa(char opcao){
         StringBuilder sb = new StringBuilder();
         

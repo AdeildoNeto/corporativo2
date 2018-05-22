@@ -68,6 +68,9 @@ public class SimuladoBean implements Serializable {
     private boolean todosSelecionados;
     private boolean exibirModalTitulo;
 
+    /**
+     * Cria uma nova instância de <code>SimuladoBean</code>.
+     */
     public SimuladoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();
@@ -80,7 +83,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para iniciar a página de geração de prova.
+     * Inicializa os dados necessários para a página de geração de prova.
      *
      * @return rota para página de geração de prova
      */
@@ -91,6 +94,11 @@ public class SimuladoBean implements Serializable {
         return GO_LISTAR_SIMULADO;
     }
 
+    /**
+     * Inicializa os dados necessários para p[agina gerar novo simulado.
+     * 
+     * @return navegação.
+     */
     public String iniciarPaginaGerarSimulado() {
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
@@ -100,6 +108,12 @@ public class SimuladoBean implements Serializable {
         return GO_GERAR_SIMULADO;
     }
 
+    /**
+     * Inicializa os dados necessários para a página visualizar simulado.
+     * 
+     * @param simulado - simulado selecionado.
+     * @return navegacao
+     */
     public String iniciarPaginaVisualizarSimulado(Simulado simulado) {
         visualizarViewHelper.inicializar(questaoServico);
         simuladoSelecionado = simulado;
@@ -108,7 +122,7 @@ public class SimuladoBean implements Serializable {
             try {
                 visualizarViewHelper.carregarQuestoes(simuladoSelecionado);
             } catch (ValidacaoException ex) {
-                exibirMensagemError(ex.getMessage());
+                exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
             }
         }
 
@@ -116,7 +130,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para limpar os campos da tela listar simulados.
+     * Limpa os campos da tela listar simulados.
      */
     private void limparTela() {
         novoSimulado = new Simulado();
@@ -125,7 +139,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para limpar os campos da tela gerar simulado.
+     * Limpa os campos da tela gerar simulado.
      */
     private void limparTelaGerarSimulado() {
         todosSelecionados = false;
@@ -134,7 +148,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para carregar as questões do usuário.
+     * Carrega as questões disponíveis para simulado.
      */
     private void buscarQuestoes() {
         this.questoes.clear();
@@ -144,14 +158,14 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para carregar as questões do usuário.
+     * Carrega os simulados do usuário.
      */
     private void buscarSimulados() {
         simulados = simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
     }
 
     /**
-     * Método para selecionar uma questão da lista de questões.
+     * Seleciona uma questão da lista de questões.
      *
      * @param questao
      */
@@ -165,25 +179,25 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para atualizar a lista de questões disponíveis para impressão.
+     * Pesquisa questões disponíveis para simulado.
      */
     public void pesquisar() {
         buscarQuestoes();
         if (questoes.isEmpty()) {
-            exibirMensagemPesquisaSemDados();
+            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
         }
     }
 
     /**
-     * Método para exibição de mensagem "Pesquisa sem dados".
+     * Exibe uma mensagem em tela.
      */
-    private void exibirMensagemPesquisaSemDados() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"), null);
-        FacesContext.getCurrentInstance().addMessage(null, mensagem);
+    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
+        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     /**
-     * Método para selecionar todas as questões disponíveis.
+     * Marca ou desmarca todas as questões disponíveis.
      */
     public void selecionarTodos() {
         questoesSelecionadas = new HashSet<>();
@@ -196,7 +210,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para gerar uma prova a partir das questões selecionada.
+     * Salva um novo simulado.
      *
      * @return navegacao
      */
@@ -212,24 +226,14 @@ public class SimuladoBean implements Serializable {
             simuladoServico.salvar(novoSimulado);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
-            exibirMensagemError(ex.getMessage());
+            exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
 
         return navegacao;
     }
 
     /**
-     * Método para exibir mensagem de erro.
-     *
-     * @param mensagem - mensagem a ser exibida.
-     */
-    private void exibirMensagemError(String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-    }
-
-    /**
-     * Método para selecionar um simulado.
+     * Seleciona um simulado.
      *
      * @param simulado
      */
@@ -238,7 +242,7 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Método para excluir um simulado.
+     * Excluí um simulado selecionado.
      */
     public void excluir() {
         simuladoServico.remover(simuladoSelecionado);
@@ -246,11 +250,17 @@ public class SimuladoBean implements Serializable {
         simuladoSelecionado = null;
     }
 
+    /**
+     * Exibi o modal Título.
+     */
     public void exibirModalTitulo() {
         novoSimulado = new Simulado();
         exibirModalTitulo = true;
     }
-
+    
+    /**
+     * Fecha o modal Título.
+     */
     public void fecharModalTitulo() {
         exibirModalTitulo = false;
     }

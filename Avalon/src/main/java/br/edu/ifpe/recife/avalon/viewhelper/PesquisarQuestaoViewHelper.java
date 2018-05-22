@@ -29,7 +29,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     private boolean filtroSimulado;
     
     /**
-     * Método para inicializar a classe.
+     * Inicializa a instância de <code>PesquisarQuestaoViewHelper</code>.
      * @param servico - QuestaoServico
      * @param usuario - Usuario
      */
@@ -42,7 +42,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     }
     
     /**
-     * Método responsável por carregar os tipos de questão disponíveis.
+     * Carrega os tipos de questão disponíveis.
      */
     private void carregarTiposQuestao() {
         if(filtroSimulado){
@@ -53,7 +53,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     }
     
     /**
-     * Método para carregar as questões do usuário.
+     * Carrega as questões a partir do filtro informado.
      * @return lista de questoes.
      */
     public List<Questao> pesquisar() {

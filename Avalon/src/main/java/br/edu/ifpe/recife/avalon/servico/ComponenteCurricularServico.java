@@ -40,7 +40,8 @@ public class ComponenteCurricularServico {
     private EntityManager entityManager;
     
     /**
-     * Método para salvar um novo componetne curricular.
+     * Salva um novo componetne curricular.
+     * 
      * @param componenteCurricular - componente curricular a ser salvo.
      * @throws ValidacaoException - ocorre quando o componente curricular já existe.
      */
@@ -50,7 +51,8 @@ public class ComponenteCurricularServico {
     }
 
     /**
-     * Método para verificar se o componente curricular já foi cadastrado.
+     * Verifica se o componente curricular já foi cadastrado.
+     * 
      * @param nome - utilizado para a pesquisa.
      * @throws ValidacaoException - ocorre quando o componente curricular já existe.
      */
@@ -64,7 +66,8 @@ public class ComponenteCurricularServico {
     }
     
     /**
-     * Método para buscar um componente curricular por nome.
+     * Consulta um componente curricular por nome.
+     * 
      * @param nome - utilizado para filtro
      * @return componente curricular
      */
@@ -83,7 +86,8 @@ public class ComponenteCurricularServico {
     }
     
     /**
-     * Método para buscar todos os componentes curricular cadastrados.
+     * Retorna todos os componentes curricular cadastrados.
+     * 
      * @return lista de componentes curricular
      */
     public List<ComponenteCurricular> buscarTodosComponentes(){

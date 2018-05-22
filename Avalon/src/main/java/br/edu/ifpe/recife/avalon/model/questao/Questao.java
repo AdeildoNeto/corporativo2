@@ -165,7 +165,7 @@ public class Questao implements Serializable {
     private boolean selecionada;
 
     /**
-     * Método para formatar apresentação da questão de acordo com o tipo.
+     * Formatar a apresentação da questão de acordo com seu tipo.
      *
      * @return questao formatada.
      */

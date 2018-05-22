@@ -55,8 +55,20 @@ public class ProvaBean implements Serializable {
     private boolean todosSelecionados;
 
     /**
-     * Método para iniciar a página de geração de prova.
-     *
+     * Cria uma nova instância de <code>ProvaBean</code>.
+     */
+    public ProvaBean() {
+        usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
+        componenteViewHelper = new ComponenteCurricularViewHelper();
+        detalhesViewHelper = new QuestaoDetalhesViewHelper();
+        pesquisarViewHelper = new PesquisarQuestaoViewHelper();
+        questoes = new ArrayList<>();
+        questoesSelecionadas = new HashSet<>();
+    }
+    
+    /**
+     * Inicializa a página de geração de prova.
+     * 
      * @return rota para página de geração de prova
      */
     public String iniciarPagina() {
@@ -69,17 +81,8 @@ public class ProvaBean implements Serializable {
         return GO_GERAR_PROVA;
     }
 
-    public ProvaBean() {
-        usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
-        componenteViewHelper = new ComponenteCurricularViewHelper();
-        detalhesViewHelper = new QuestaoDetalhesViewHelper();
-        pesquisarViewHelper = new PesquisarQuestaoViewHelper();
-        questoes = new ArrayList<>();
-        questoesSelecionadas = new HashSet<>();
-    }
-
     /**
-     * Método para carregar as questões do usuário.
+     * Carrega as as questões do a partir do filtro informado.
      */
     private void buscarQuestoes() {
         this.questoes.clear();
@@ -89,17 +92,18 @@ public class ProvaBean implements Serializable {
     }
 
     /**
-     * Método para limpar os campos da tela.
+     * Limpa os campos da tela de geração de provas.
      */
     private void limparTela() {
         todosSelecionados = false;
         questoesSelecionadas.clear();
+        questoes.clear();
     }
 
     /**
-     * Método para selecionar uma questão da lista de questões.
-     *
-     * @param questao
+     * Seleciona uma questão da lista de questões.
+     * 
+     * @param questao - questão selecionada.
      */
     public void selecionarQuestao(Questao questao) {
         if (questao.isSelecionada()) {
@@ -111,22 +115,25 @@ public class ProvaBean implements Serializable {
     }
 
     /**
-     * Método para atualizar a lista de questões disponíveis para impressão.
+     * Pesquisa as questões disponíveis para impressão.
      */
     public void pesquisar() {
         buscarQuestoes();
         if (questoes.isEmpty()) {
-            exibirMensagemPesquisaSemDados();
+            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
         }
     }
 
-    private void exibirMensagemPesquisaSemDados() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"), null);
-        FacesContext.getCurrentInstance().addMessage(null, mensagem);
+    /**
+     * Exibe mensagem na tela.
+     */
+     private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
+        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     /**
-     * Método para selecionar todas as questões disponíveis.
+     * Marca ou desmarca todas as questões disponíveis para impressão.
      */
     public void selecionarTodos() {
         questoesSelecionadas = new HashSet<>();
@@ -139,17 +146,21 @@ public class ProvaBean implements Serializable {
     }
 
     /**
-     * Método para gerar uma prova a partir das questões selecionada.
+     * Gera uma prova a partir das questões selecionada.
      */
     public void imprimirProva() {
         if (questoesSelecionadas.isEmpty()) {
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("selecione.uma.questao"), null);
-            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+            exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("selecione.uma.questao"));
         } else {
             RequestContext.getCurrentInstance().execute(montarUrlProva());
         }
     }
 
+    /**
+     * Monta a URL da página de impressão da prova.
+     * 
+     * @return url da prova.
+     */
     private String montarUrlProva() {
         String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         StringBuilder builder = new StringBuilder();

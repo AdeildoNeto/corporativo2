@@ -43,7 +43,7 @@ public class SimuladoServico {
     private static final String PERCENT = "%";
 
     /**
-     * Método para salvar um simulado.
+     * Salva um simulado.
      *
      * @param simulado
      * @throws ValidacaoException - quando o título já está em uso.
@@ -55,7 +55,7 @@ public class SimuladoServico {
     }
 
     /**
-     * Método para remover um Simulado.
+     * Remove um Simulado.
      *
      * @param simulado
      */
@@ -67,7 +67,7 @@ public class SimuladoServico {
     }
 
     /**
-     * Método para validar o título de um novo simulado.
+     * Valida o título de um novo simulado.
      *
      * @param simulado
      * @throws ValidacaoException - quando o título já está em uso.
@@ -88,7 +88,8 @@ public class SimuladoServico {
     }
 
     /**
-     * Método para validar se ao menos uma questão foi selecionada para o simulado.
+     * Valida se ao menos uma questão foi selecionada para o simulado.
+     * 
      * @param simulado
      * @throws ValidacaoException 
      */
@@ -100,7 +101,7 @@ public class SimuladoServico {
     }
 
     /**
-     * Método para buscar simulados por criador.
+     * Consulta simulados por criador.
      *
      * @param emailCriador - email do criador.
      * @return lista de simulados.
@@ -115,7 +116,7 @@ public class SimuladoServico {
     }
 
     /**
-     * Método para buscar questão por filtro.
+     * Consulta simulados por filtro.
      *
      * @param filtro
      * @return lista de simulados
