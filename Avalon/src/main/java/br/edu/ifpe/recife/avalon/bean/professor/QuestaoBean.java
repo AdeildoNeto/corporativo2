@@ -19,9 +19,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.enterprise.context.SessionScoped;
@@ -77,6 +74,7 @@ public class QuestaoBean implements Serializable {
     private Long componenteSelecionado = null;
     private boolean exibirModalComponente;
     private boolean respostaVF;
+    private Integer opcaoCorreta;
 
     public QuestaoBean() {
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
@@ -108,7 +106,6 @@ public class QuestaoBean implements Serializable {
      * @return goAddQuestao
      */
     public String iniciarPaginaInclusao() {
-        this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
         this.limparTelaInclusao();
         return GO_ADD_QUESTAO;
     }
@@ -126,13 +123,40 @@ public class QuestaoBean implements Serializable {
         this.tipoSelecionado = questao.getTipo();
 
         if (TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo())) {
-            this.alternativas = ((MultiplaEscolha) questao).getAlternativas();
+            MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
+            this.alternativas = multiplaEscolha.getAlternativas();
+            this.opcaoCorreta = multiplaEscolha.getOpcaoCorreta();
         }else if(TipoQuestaoEnum.VERDADEIRO_FALSO.equals(questao.getTipo())){
             this.respostaVF = ((VerdadeiroFalso) questao).getResposta();
         }
         
-
         return GO_ALTERAR_QUESTAO;
+    }
+    
+    
+    /**
+     * Método para limpar os campos da tela.
+     */
+    private void limparTelaInclusao() {
+        tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
+        exibirModalComponente = false;
+        questao = new Questao();
+        componenteSelecionado = null;
+        respostaVF = false;
+        opcaoCorreta = null;
+
+        alternativas = new ArrayList<>();
+        alt1 = new Alternativa();
+        alt2 = new Alternativa();
+        alt3 = new Alternativa();
+        alt4 = new Alternativa();
+        alt5 = new Alternativa();
+
+        alternativas.add(alt1);
+        alternativas.add(alt2);
+        alternativas.add(alt3);
+        alternativas.add(alt4);
+        alternativas.add(alt5);
     }
 
     /**
@@ -204,6 +228,7 @@ public class QuestaoBean implements Serializable {
         alternativas.get(4).setQuestao(multiplaEscolha);
 
         multiplaEscolha.setAlternativas(alternativas);
+        multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
         questaoServico.salvar(multiplaEscolha);
 
         return navegacao;
@@ -248,7 +273,13 @@ public class QuestaoBean implements Serializable {
 
         try {
             questao.setComponenteCurricular(buscarComponenteSelecionado());
-            questaoServico.alterar(questao);
+            if(questao instanceof MultiplaEscolha){
+                MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
+                multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
+                questaoServico.alterar(multiplaEscolha);
+            }else{
+                questaoServico.alterar(questao);
+            }
             limparTelaInclusao();
             buscarQuestoes();
         } catch (ValidacaoException ex) {
@@ -268,30 +299,6 @@ public class QuestaoBean implements Serializable {
     private void exibirMensagem(String mensagem, String clientId) {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(clientId, facesMessage);
-    }
-
-    /**
-     * Método para limpar os campos da tela.
-     */
-    private void limparTelaInclusao() {
-        tipoSelecionado = TipoQuestaoEnum.DISCURSIVA;
-        exibirModalComponente = false;
-        questao = new Questao();
-        componenteSelecionado = null;
-        respostaVF = false;
-
-        alternativas = new ArrayList<>();
-        alt1 = new Alternativa();
-        alt2 = new Alternativa();
-        alt3 = new Alternativa();
-        alt4 = new Alternativa();
-        alt5 = new Alternativa();
-
-        alternativas.add(alt1);
-        alternativas.add(alt2);
-        alternativas.add(alt3);
-        alternativas.add(alt4);
-        alternativas.add(alt5);
     }
 
     /**
@@ -392,16 +399,8 @@ public class QuestaoBean implements Serializable {
         return tipoQuestoes;
     }
 
-    public void setTipoQuestoes(List<TipoQuestaoEnum> tipoQuestoes) {
-        this.tipoQuestoes = tipoQuestoes;
-    }
-
     public Questao getQuestao() {
         return questao;
-    }
-
-    public void setQuestao(Questao questao) {
-        this.questao = questao;
     }
 
     public TipoQuestaoEnum getTipoSelecionado() {
@@ -416,24 +415,12 @@ public class QuestaoBean implements Serializable {
         return questoes;
     }
 
-    public void setQuestoes(List<Questao> questoes) {
-        this.questoes = questoes;
-    }
-
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }
 
-    public void setAlternativas(List<Alternativa> alternativas) {
-        this.alternativas = alternativas;
-    }
-
     public ComponenteCurricular getNovoComponenteCurricular() {
         return novoComponenteCurricular;
-    }
-
-    public void setNovoComponenteCurricular(ComponenteCurricular novoComponenteCurricular) {
-        this.novoComponenteCurricular = novoComponenteCurricular;
     }
 
     public Long getComponenteSelecionado() {
@@ -443,7 +430,7 @@ public class QuestaoBean implements Serializable {
     public void setComponenteSelecionado(Long componenteSelecionado) {
         this.componenteSelecionado = componenteSelecionado;
     }
-
+    
     public boolean isExibirModalComponente() {
         return exibirModalComponente;
     }
@@ -458,6 +445,14 @@ public class QuestaoBean implements Serializable {
 
     public void setRespostaVF(boolean respostaVF) {
         this.respostaVF = respostaVF;
+    }
+
+    public Integer getOpcaoCorreta() {
+        return opcaoCorreta;
+    }
+
+    public void setOpcaoCorreta(Integer opcaoCorreta) {
+        this.opcaoCorreta = opcaoCorreta;
     }
 
 }

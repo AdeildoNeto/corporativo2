@@ -12,6 +12,7 @@ import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -36,8 +37,10 @@ import javax.validation.constraints.NotNull;
 @LocalBean
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class QuestaoServico {
+public class QuestaoServico implements Serializable{
 
+    private static final long serialVersionUID = 2L;
+    
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     private static final String MSG_ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
     private static final String PERCENT = "%";
@@ -79,6 +82,16 @@ public class QuestaoServico {
      */
     public void alterar(@Valid Questao questao) throws ValidacaoException {
         validarEnunciadoPorTipoValidoEdicao(questao);
+        entityManager.merge(questao);
+    }
+    
+    /**
+     * Método para alterar uma questão de múltipla escolha.
+     * @param questao
+     * @throws ValidacaoException 
+     */
+    public void alterar(@Valid MultiplaEscolha questao) throws ValidacaoException {
+        validarAlternativasDiferentes(questao.getAlternativas());
         entityManager.merge(questao);
     }
 
@@ -174,8 +187,8 @@ public class QuestaoServico {
 
         for (int i = 0; i < qtdeAlternativas - 1; i++) {
             for (int j = i + 1; j < qtdeAlternativas; j++) {
-                if (alternativas.get(i).getAlternativa()
-                        .equals(alternativas.get(j).getAlternativa())) {
+                if (alternativas.get(i).getDescricao()
+                        .equals(alternativas.get(j).getDescricao())) {
                     throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_ALTERNATIVAS_IGUAIS));
                 }
             }

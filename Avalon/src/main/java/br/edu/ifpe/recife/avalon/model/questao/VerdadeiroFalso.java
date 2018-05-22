@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -25,6 +26,7 @@ import javax.validation.constraints.NotNull;
 public class VerdadeiroFalso extends Questao implements Serializable{
     
     @NotNull(message = "{questao.reposta.obrigatoria}")
+    @Column(name = "VF_RESPOSTA")
     private Boolean resposta;
     
     @Transient

@@ -184,30 +184,31 @@ public class QuestaoTest {
         List alternativas = new ArrayList();
 
         Alternativa alternativaA = new Alternativa();
-        alternativaA.setAlternativa("alternativa a");
+        alternativaA.setDescricao("alternativa a");
         alternativaA.setQuestao(questao);
         alternativas.add(alternativaA);
 
         Alternativa alternativaB = new Alternativa();
-        alternativaB.setAlternativa("alternativa b");
+        alternativaB.setDescricao("alternativa b");
         alternativaB.setQuestao(questao);
         alternativas.add(alternativaB);
 
         Alternativa alternativaC = new Alternativa();
-        alternativaC.setAlternativa("alternativa c");
+        alternativaC.setDescricao("alternativa c");
         alternativaC.setQuestao(questao);
         alternativas.add(alternativaC);
 
         Alternativa alternativaD = new Alternativa();
-        alternativaD.setAlternativa("alternativa d");
+        alternativaD.setDescricao("alternativa d");
         alternativaD.setQuestao(questao);
         alternativas.add(alternativaD);
 
         Alternativa alternativaE = new Alternativa();
-        alternativaE.setAlternativa("alternativa e");
+        alternativaE.setDescricao("alternativa e");
         alternativaE.setQuestao(questao);
         alternativas.add(alternativaE);
-
+        
+        questao.setOpcaoCorreta(1);
         questao.setAlternativas(alternativas);
         questaoServico.salvar(questao);
 
@@ -275,7 +276,7 @@ public class QuestaoTest {
 
         Alternativa alternativa = alternativas.get(1);
 
-        alternativa.setAlternativa("Alternativa alterada");
+        alternativa.setDescricao("Alternativa alterada");
 
         alternativas.set(1, alternativa);
 
@@ -292,7 +293,7 @@ public class QuestaoTest {
         alternativas = questaoMp.getAlternativas();
         alternativa = alternativas.get(1);
 
-        assertEquals("Alternativa alterada", alternativa.getAlternativa());
+        assertEquals("Alternativa alterada", alternativa.getDescricao());
     }
 
     @Test(expected = EJBException.class)
@@ -392,15 +393,16 @@ public class QuestaoTest {
         List<Alternativa> alternativas = new ArrayList<>();
 
         alternativas.add(new Alternativa());
-        alternativas.get(0).setAlternativa("Teste");
+        alternativas.get(0).setDescricao("Teste");
         alternativas.get(0).setQuestao(questao);
 
         alternativas.add(new Alternativa());
-        alternativas.get(1).setAlternativa("Teste");
+        alternativas.get(1).setDescricao("Teste");
         alternativas.get(1).setQuestao(questao);
 
         questao.setAlternativas(alternativas);
-
+        questao.setOpcaoCorreta(1);
+        
         questaoServico.salvar(questao);
 
     }

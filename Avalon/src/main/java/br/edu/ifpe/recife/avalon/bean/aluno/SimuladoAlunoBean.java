@@ -140,13 +140,21 @@ public class SimuladoAlunoBean implements Serializable {
         int quantidadeQuestoes = questoesVFSimulado.size();
         int respostasCertas = 0;
         
+        respostasCertas = verificarRespostasVF();
+        
+        resultado = ((double) respostasCertas / quantidadeQuestoes) * 100.0;
+    }
+    
+    private int verificarRespostasVF(){
+        int respostasCertas = 0;
+        
         for (VerdadeiroFalso questao : questoesVFSimulado) {
             if(questao.getResposta().equals(questao.getRespostaUsuario())){
                 respostasCertas++;
             }
         }
         
-        resultado = (respostasCertas / quantidadeQuestoes) * 100.0;
+        return respostasCertas;
     }
 
     public String fecharModalResultado() {

@@ -57,13 +57,23 @@ and open the template in the editor.
     <div>
         <p:outputPanel id="panelAlt" rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
                        styleClass="col-md-6 form-group">
-            <p:outputLabel value="#{msg['label.alternativas']}: *" />
-            <ui:repeat id="alt" value="#{questaoBean.alternativas}" var="alternativa" varStatus="posicao">    
-                <h:inputText class="form-control" value="#{alternativa.alternativa}" required="true" /><br />
+            <p:selectOneRadio id="radio" value="#{questaoBean.opcaoCorreta}" layout="custom" plain="true" >
+                <f:selectItem itemValue="0" />
+                <f:selectItem itemValue="1" />
+                <f:selectItem itemValue="2" />
+                <f:selectItem itemValue="3" />
+                <f:selectItem itemValue="4" />
+            </p:selectOneRadio>
+
+            <ui:repeat value="#{questaoBean.alternativas}" var="alternativa" varStatus="index">
+                <h:panelGrid columns="2" width="100%">
+                    <p:radioButton for="form:radio" itemIndex="#{index.index}" />
+                    <h:inputText value="#{alternativa.descricao}" required="true" class="form-control" />
+                </h:panelGrid>
             </ui:repeat>
         </p:outputPanel>
     </div>
-    
+
     <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
         <div class="col-md-4 display-flex">
             <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
@@ -71,7 +81,7 @@ and open the template in the editor.
                            offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}" required="true" />
         </div>
     </p:outputPanel>
-    
+
     <div class="row">
         <div class="col-md-4 display-flex">
             <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />
@@ -79,5 +89,5 @@ and open the template in the editor.
                            offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" required="true" />
         </div>
     </div>
-    
+
 </ui:composition>

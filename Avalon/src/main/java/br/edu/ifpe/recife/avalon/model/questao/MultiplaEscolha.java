@@ -9,12 +9,15 @@ import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,6 +32,13 @@ public class MultiplaEscolha extends Questao implements Serializable{
     @OneToMany(mappedBy = "questao", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alternativa> alternativas;
+    
+    @NotNull(message = "{questao.reposta.obrigatoria}")
+    @Column(name = "OP_CORRETA")
+    private Integer opcaoCorreta;
+            
+    @Transient
+    private Boolean respostaUsuario;
 
     @Override
     public String formatarQuestao(){
@@ -49,6 +59,22 @@ public class MultiplaEscolha extends Questao implements Serializable{
 
     public void setAlternativas(List<Alternativa> alternativas) {
         this.alternativas = alternativas;
+    }
+
+    public Integer getOpcaoCorreta() {
+        return opcaoCorreta;
+    }
+
+    public void setOpcaoCorreta(Integer opcaoCorreta) {
+        this.opcaoCorreta = opcaoCorreta;
+    }
+
+    public Boolean getRespostaUsuario() {
+        return respostaUsuario;
+    }
+
+    public void setRespostaUsuario(Boolean respostaUsuario) {
+        this.respostaUsuario = respostaUsuario;
     }
     
 }

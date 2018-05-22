@@ -28,6 +28,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "TB_ALTERNATIVAS")
 public class Alternativa implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ALTERNATIVA")
@@ -35,8 +37,8 @@ public class Alternativa implements Serializable {
 
     @NotBlank(message = "{questao.alternativa.obrigatorio}")
     @Size(max = 255, message = "{alternativa.tamanho.maximo}")
-    @Column(name = "TXT_ALTERNATIVA")
-    private String alternativa;
+    @Column(name = "TXT_DESCRICAO")
+    private String descricao;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
@@ -47,7 +49,7 @@ public class Alternativa implements Serializable {
         StringBuilder sb = new StringBuilder();
         
         sb.append(opcao).append(")").append(" ");
-        sb.append(this.alternativa);
+        sb.append(this.descricao);
         
         return sb.toString();
     }
@@ -60,12 +62,12 @@ public class Alternativa implements Serializable {
         this.id = id;
     }
 
-    public String getAlternativa() {
-        return alternativa;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setAlternativa(String alternativa) {
-        this.alternativa = alternativa;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public MultiplaEscolha getQuestao() {
