@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -116,7 +114,6 @@ public class SimuladoAlunoBean implements Serializable {
      */
     private void limparTela() {
         pesquisarSimuladoViewHelper.limparFiltro();
-        simuladoSelecionado = new Simulado();
     }
 
     /**
@@ -150,7 +147,7 @@ public class SimuladoAlunoBean implements Serializable {
 
             calcularResultado();
             exibirModalResultado = true;
-        } catch (Exception ex) {
+        } catch (ValidacaoException ex) {
             exibirMensagemError(ex.getMessage());
         }
     }
@@ -277,6 +274,10 @@ public class SimuladoAlunoBean implements Serializable {
         return simuladoSelecionado;
     }
 
+    public void setSimuladoSelecionado(Simulado simuladoSelecionado) {
+        this.simuladoSelecionado = simuladoSelecionado;
+    }
+    
     public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {
         return questoesMultiplaEscolha;
     }

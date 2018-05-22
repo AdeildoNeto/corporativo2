@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
