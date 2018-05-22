@@ -36,7 +36,6 @@ public class SimuladoAlunoBean implements Serializable {
 
     public static final String NOME = "simuladoAlunoBean";
     private static final String GO_INICIAR_SIMULADO = "goIniciarSimulado";
-    private static final String GO_RESULTADO_SIMULADO = "goResultadoSimulado";
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
     private static final String USUARIO = "usuario";
 
@@ -95,9 +94,9 @@ public class SimuladoAlunoBean implements Serializable {
 
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId());
+                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simuladoSelecionado.getId());
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId());
+                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simuladoSelecionado.getId());
             }
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {

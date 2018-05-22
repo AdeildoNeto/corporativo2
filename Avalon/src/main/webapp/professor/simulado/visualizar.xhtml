@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>#{simuladoBean.simuladoSelecionado.titulo}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ui:include src="fragmento/conteudo-vf.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}" />
+                    <ui:include src="fragmento/conteudo-multipla-escolha.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-md-8 col-md-2">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                   action="#{simuladoBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

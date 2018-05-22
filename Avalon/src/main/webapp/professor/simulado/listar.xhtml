@@ -19,7 +19,7 @@ and open the template in the editor.
                     <h1 id="headerSimulados">#{msg['titulo.meus.simulados']}</h1>
                 </div>
             </div>
-            
+
             <div class="row container-listar">
                 <div class="col-md-12">
                     <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
@@ -38,10 +38,18 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                
+
                             </f:facet>
-                            <p:commandLink class="btnExcluir" action="#{simuladoBean.selecionarSimulado(simulado)}" onclick="PF('block').show()"
-                                             oncomplete="PF('block').hide(); PF('modalExclusao').show();">
+                            <p:commandLink class="btnExcluir"
+                                           action="#{simuladoBean.iniciarPaginaVisualizarSimulado(simulado)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();">
+                                <span class="material-icons">pageview</span>
+                            </p:commandLink>
+                            <p:commandLink class="btnExcluir"
+                                           action="#{simuladoBean.selecionarSimulado(simulado)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
                         </h:column>
@@ -65,7 +73,7 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <ui:include src="fragmento/modal-titulo.xhtml" />
 
         <h:form id="formModalExcluir">
