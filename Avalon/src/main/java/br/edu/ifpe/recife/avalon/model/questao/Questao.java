@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.model.questao;
 
+import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
@@ -52,47 +53,49 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.criador.email = :emailCriador AND "
-                    + "q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.criador.email = :emailCriador"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND "
-                    + "q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo"
             )
             ,@NamedQuery(
                     name = "Questao.PorCriadorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND "
-                    + "q.criador.email = :emailCriador AND "
-                    + "q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo"
+                    + " AND q.criador.email = :emailCriador"
             )
             ,@NamedQuery(
                     name = "Questao.PorEnunciadoTipo",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND "
-                    + "q.enunciado = :enunciado AND "
-                    + "q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo"
+                    + " AND q.enunciado = :enunciado"
             )
             ,@NamedQuery(
                     name = "Questao.PorEnunciadoTipoId",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND "
-                    + "q.enunciado = :enunciado AND "
-                    + "q.id <> :id AND q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo"
+                    + " AND q.enunciado = :enunciado"
+                    + " AND q.id <> :id"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipoValido",
-                    query = "SELECT q FROM Questao q WHERE q.tipo = :tipo AND "
-                    + "q.enunciado = :enunciado AND "
-                    + "q.criador.id = :idCriador AND "
-                    + "q.componenteCurricular.id = :idComponenteCurricular AND "
-                    + "q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo"
+                    + " AND q.enunciado = :enunciado"
+                    + " AND q.criador.id = :idCriador"
+                    + " AND q.componenteCurricular.id = :idComponenteCurricular"
             )
             ,@NamedQuery(
                     name = "Questao.PorFiltroCompartilhada",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true AND q.tipo = :tipo "
-                    + "AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
-                    + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
-                    + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
-                    + "AND (:enunciado is null OR q.enunciado like :enunciado)"
+                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    + " AND q.tipo = :tipo "
+                    + " AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
+                    + " AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
+                    + " AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
+                    + " AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
             ,@NamedQuery(
                     name = "Questao.ParaSimulado",
@@ -160,6 +163,9 @@ public class Questao implements Serializable {
 
     @ManyToMany(mappedBy = "questoes")
     private List<Simulado> simulados;
+    
+    @ManyToMany(mappedBy = "questoes")
+    private List<Prova> provas;
 
     @Transient
     private boolean selecionada;
@@ -254,6 +260,14 @@ public class Questao implements Serializable {
         this.simulados = simulados;
     }
 
+    public List<Prova> getProvas() {
+        return provas;
+    }
+
+    public void setProvas(List<Prova> provas) {
+        this.provas = provas;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

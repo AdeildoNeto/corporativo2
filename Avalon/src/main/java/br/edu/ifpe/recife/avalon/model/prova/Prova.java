@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.simulado;
+package br.edu.ifpe.recife.avalon.model.prova;
 
 import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
@@ -34,38 +34,24 @@ import javax.validation.constraints.Size;
  * @author eduardoamaral
  */
 @Entity
-@Table(name = "TB_SIMULADO")
+@Table(name = "TB_PROVA")
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "Simulado.PorTituloValido",
-                    query = "Select s from Simulado s where s.ativo = true"
-                    + " AND s.titulo = :titulo"
-                    + " AND s.componenteCurricular.id = :idComponenteCurricular"
-                    + " AND s.criador.email = :emailCriador"
-            )
-            ,@NamedQuery(
-                    name = "Simulado.PorCriador",
-                    query = "Select s from Simulado s where s.ativo = true"
-                    + " AND s.criador.email = :emailCriador"
-            )
-            ,@NamedQuery(
-                    name = "Simulado.PorFiltro",
-                    query = "Select s from Simulado s where s.ativo = true "
-                    + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = s.componenteCurricular.id) "
-                    + "AND (:nomeCriador is null OR (CONCAT(s.criador.nome, ' ', s.criador.sobrenome) like :nomeCriador)) "
-                    + "AND (:titulo is null OR s.titulo like :titulo)"
+                    name = "Prova.PorDisponibilidade",
+                    query = "Select p from Prova p where p.ativa = true "
+                            + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim"
             )
         }
 )
-public class Simulado implements Serializable {
+public class Prova implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SIMULADO")
+    @Column(name = "ID_PROVA")
     private Long id;
 
-    @NotNull(message = "{simulado.titulo.obrigatorio}")
+    @NotNull(message = "{titulo.obrigatorio}")
     @Size(max = 40, message = "{titulo.tamanho.maximo}")
     @Column(name = "TXT_TITULO")
     private String titulo;
@@ -73,7 +59,7 @@ public class Simulado implements Serializable {
     @NotNull(message = "{criador.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario criador;
+    private Usuario professor;
 
     @NotNull(message = "{componente.curricular.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -84,13 +70,26 @@ public class Simulado implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
+    
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DH_INICIO")
+    private Date dataHoraInicio;
+    
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DH_FIM")
+    private Date dataHoraFim;
+    
+    @Column(name = "NUM_TEMPO_MAXIMO")
+    private Long tempoMaximo;
 
-    @Column(name = "SN_ATIVO", nullable = false)
-    private Boolean ativo = true;
+    @Column(name = "SN_ATIVA", nullable = false)
+    private Boolean ativa = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_QUESTOES_SIMULADO", joinColumns = {
-        @JoinColumn(name = "ID_SIMULADO")},
+    @JoinTable(name = "TB_QUESTOES_PROVA", joinColumns = {
+        @JoinColumn(name = "ID_PROVA")},
             inverseJoinColumns = {
                 @JoinColumn(name = "ID_QUESTAO")
             })
@@ -112,12 +111,12 @@ public class Simulado implements Serializable {
         this.titulo = titulo;
     }
 
-    public Usuario getCriador() {
-        return criador;
+    public Usuario getProfessor() {
+        return professor;
     }
 
-    public void setCriador(Usuario criador) {
-        this.criador = criador;
+    public void setProfessor(Usuario professor) {
+        this.professor = professor;
     }
 
     public ComponenteCurricular getComponenteCurricular() {
@@ -136,12 +135,28 @@ public class Simulado implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Date getDataHoraInicio() {
+        return dataHoraInicio;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setDataHoraInicio(Date dataHoraInicio) {
+        this.dataHoraInicio = dataHoraInicio;
+    }
+
+    public Date getDataHoraFim() {
+        return dataHoraFim;
+    }
+
+    public void setDataHoraFim(Date dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
+    }
+
+    public Boolean getAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(Boolean ativa) {
+        this.ativa = ativa;
     }
 
     public List<Questao> getQuestoes() {
@@ -152,4 +167,12 @@ public class Simulado implements Serializable {
         this.questoes = questoes;
     }
 
+    public Long getTempoMaximo() {
+        return tempoMaximo;
+    }
+
+    public void setTempoMaximo(Long tempoMaximo) {
+        this.tempoMaximo = tempoMaximo;
+    }
+    
 }
