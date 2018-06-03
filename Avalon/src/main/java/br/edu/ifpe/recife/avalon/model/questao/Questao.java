@@ -121,6 +121,19 @@ import org.hibernate.validator.constraints.NotBlank;
                     + " AND QS.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
                     resultClass = Questao.class
+            ),
+            @NamedNativeQuery(
+                    name = "Questao.PorProva",
+                    query = "SELECT Q.*, VF.*, MS.* FROM TB_QUESTAO Q LEFT OUTER JOIN TB_VERDADEIRO_FALSO VF "
+                    + "ON (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO) "
+                    + "LEFT OUTER JOIN TB_MULTIPLA_ESCOLHA MS "
+                    + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
+                    + "TB_QUESTOES_PROVA QP "
+                    + "WHERE QP.ID_PROVA = ?"
+                    + " AND Q.SN_ATIVA = TRUE"
+                    + " AND QP.ID_QUESTAO = Q.ID_QUESTAO"
+                    + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
+                    resultClass = Questao.class
             )
         })
 public class Questao implements Serializable {

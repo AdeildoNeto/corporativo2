@@ -85,8 +85,7 @@ public class ProvaServico {
         if (prova.getQuestoes() == null
                 || prova.getQuestoes().isEmpty()
                 || prova.getQuestoes().size() < QTDE_MIN_QUESTOES) {
-            throw new ValidacaoException(AvalonUtil.getInstance()
-                    .getMensagemValidacao(QUESTOES_MINIMAS));
+            throw new ValidacaoException(getMensagemValidacao(QUESTOES_MINIMAS));
         }
     }
 
@@ -95,7 +94,7 @@ public class ProvaServico {
         Calendar calendarFim = Calendar.getInstance();
 
         if (prova.getDataHoraInicio().after(prova.getDataHoraFim())) {
-            throw new ValidacaoException(DATA_INICIO_MAIOR_DATA_FIM);
+            throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_MAIOR_DATA_FIM));
         }
 
         calendarInicio.setTime(prova.getDataHoraInicio());
@@ -103,12 +102,16 @@ public class ProvaServico {
         calendarInicio.add(Calendar.MINUTE, 30);
 
         if (calendarInicio.after(calendarFim)) {
-            throw new ValidacaoException(DISPONIBILIDADE_MINIMA);
+            throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MINIMA));
         }
 
         if (prova.getDuracao() < 30) {
-            throw new ValidacaoException(DURACAO_MINIMA);
+            throw new ValidacaoException(getMensagemValidacao(DURACAO_MINIMA));
         }
+    }
+    
+    private String getMensagemValidacao(String key){
+        return AvalonUtil.getInstance().getMensagemValidacao(key);
     }
 
     /**

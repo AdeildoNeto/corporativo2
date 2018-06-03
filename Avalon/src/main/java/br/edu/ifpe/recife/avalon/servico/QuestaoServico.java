@@ -244,4 +244,18 @@ public class QuestaoServico implements Serializable{
         return query.getResultList();
     }
     
+    /**
+     * Consulta questões por simulado.
+     * 
+     * @param idProva
+     * @return 
+     */
+    public List<Questao> buscarQuestoesPorProva(Long idProva) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorProva", Questao.class);
+        
+        query.setParameter(1, idProva);
+        
+        return query.getResultList();
+    }
+    
 }
