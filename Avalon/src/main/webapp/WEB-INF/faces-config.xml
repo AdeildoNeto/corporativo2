@@ -46,13 +46,23 @@
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>goGerarProva</from-outcome>
-            <to-view-id>/professor/prova/gerar.xhtml</to-view-id>
+            <from-outcome>goListarProva</from-outcome>
+            <to-view-id>/professor/prova/listar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goDetalharProva</from-outcome>
+            <to-view-id>/professor/prova/detalhar</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>goImprimirProva</from-outcome>
-            <to-view-id>/professor/prova/impressao.xhtml</to-view-id>
+            <to-view-id>/professor/prova/imprimir.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goGerarProva</from-outcome>
+            <to-view-id>/professor/prova/gerar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>

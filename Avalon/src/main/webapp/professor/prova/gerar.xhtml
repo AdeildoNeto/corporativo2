@@ -16,20 +16,43 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1>#{msg['titulo.gerar.prova']}</h1>
+                    <h1>#{provaBean.prova.titulo}</h1>
                 </div>
             </div>
             
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <p:messages id="msgs" />
                 </div>
             </div>
-            
+
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <p:outputLabel for="dataHoraInicio" value="#{msg['prova.data.inicio']}:" />
+                    <p:calendar id="dataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
+                                showHour="true" showMinute="true" required="true"
+                                showButtonPanel="true"
+                                mask="99/99/9999 99:99" maskAutoClear="true"
+                                pattern="dd/MM/yyyy HH:mm" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <p:outputLabel for="dataHoraFim" value="#{msg['prova.data.fim']}:" />
+                    <p:calendar id="dataHoraFim" value="#{provaBean.prova.dataHoraFim}"
+                                showHour="true" showMinute="true" required="true"
+                                showButtonPanel="true"
+                                mask="99/99/9999 99:99" maskAutoClear="true"
+                                pattern="dd/MM/yyyy HH:mm" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <p:outputLabel for="provaDuracao" value="#{msg['prova.duracao']}:" />
+                    <h:inputText id="provaDuracao" class="form-control" value="#{provaBean.prova.duracao}" required="true" />
+                </div>
+            </div>
+
             <ui:include src="../comum/pesquisar-questao.xhtml">
                 <ui:param name="bean" value="#{provaBean}" />
             </ui:include>
-            
+
             <div class="row container-table-prova">
                 <div class="col-md-12">
                     <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
@@ -75,24 +98,28 @@ and open the template in the editor.
                 </div>
             </div>
             <div id="button-container" class="row buttons-save">
-                <div class="offset-md-9 col-md-2 form-group">
-                    <p:commandButton id="btn" value="#{msg['btn.imprimir.prova']}" update="@form"
-                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
+                <div class="offset-md-7 col-md-5 form-group">
+                    <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
+                                     action="#{provaBean.iniciarPagina()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" immediate="true"
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
+                    <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
+                                     action="#{provaBean.adicionarProva()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
-                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                                     class="btn btn-primary font-color-default"></p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI animate="true" block="form" widgetVar="block">
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
         </h:form>
-        
+
         <ui:include src="../comum/modal-detalhes.xhtml">
             <ui:param name="bean" value="#{provaBean}" />
         </ui:include>
-        
+
     </ui:define>
 
 </ui:composition>

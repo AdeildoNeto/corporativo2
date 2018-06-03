@@ -16,32 +16,32 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1>#{simuladoBean.simulado.titulo}</h1>
+                    <h1>#{msg['titulo.gerar.prova']}</h1>
                 </div>
             </div>
-
+            
             <div class="row">
                 <div class="col-md-6">
                     <p:messages id="msgs" />
                 </div>
             </div>
-
+            
             <ui:include src="../comum/pesquisar-questao.xhtml">
-                <ui:param name="bean" value="#{simuladoBean}" />
+                <ui:param name="bean" value="#{provaBean}" />
             </ui:include>
-
+            
             <div class="row container-table-prova">
                 <div class="col-md-12">
-                    <h:dataTable id="table" value="#{simuladoBean.questoes}" var="questao"
+                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
-                                <h:selectBooleanCheckbox value="#{simuladoBean.todosSelecionados}">
-                                    <f:ajax listener="#{simuladoBean.selecionarTodos()}" render="@form" />
+                                <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
+                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{questao.selecionada}">
-                                <f:ajax listener="#{simuladoBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
+                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
@@ -67,7 +67,7 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header"></f:facet>
-                            <p:commandLink action="#{simuladoBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
+                            <p:commandLink action="#{provaBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
                                 <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
                             </p:commandLink>
                         </h:column>
@@ -75,28 +75,24 @@ and open the template in the editor.
                 </div>
             </div>
             <div id="button-container" class="row buttons-save">
-                <div class="offset-md-7 col-md-5 form-group">
-                    <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
-                                     action="#{simuladoBean.iniciarPagina()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" immediate="true"
-                                     class="btn btn-secondary font-color-default"></p:commandButton>
-                    <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
-                                     action="#{simuladoBean.salvar()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSelecionadas.isEmpty()}"
-                                     class="btn btn-primary font-color-default"></p:commandButton>
+                <div class="offset-md-9 col-md-2 form-group">
+                    <p:commandButton id="btn" value="#{msg['btn.imprimir.prova']}" update="@form"
+                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
+                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
                 </div>
             </div>
 
-            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+            <p:blockUI animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
         </h:form>
-
+        
         <ui:include src="../comum/modal-detalhes.xhtml">
-            <ui:param name="bean" value="#{simuladoBean}" />
+            <ui:param name="bean" value="#{provaBean}" />
         </ui:include>
-
+        
     </ui:define>
 
 </ui:composition>

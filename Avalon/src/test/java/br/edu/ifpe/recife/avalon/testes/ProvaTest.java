@@ -11,7 +11,6 @@ import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -98,10 +97,6 @@ public class ProvaTest {
     @Test
     public void t02_buscarPorDisponibilidade(){
         logger.info("Executando t02: buscarPorDisponibilidade");
-        FiltroSimulado filtro = new FiltroSimulado();
-        
-        filtro.setIdComponenteCurricular(1l);
-        
         List<Prova> lista = provaServico.buscarProvasDisponiveis();
         
         assertTrue(!lista.isEmpty());
@@ -168,6 +163,58 @@ public class ProvaTest {
         provaServico.salvar(prova);
     }
     
+    @Test
+    public void t09_buscarPorProfessor(){
+        logger.info("Executando t09: buscarPorProfessor");
+        List<Prova> lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+        
+        assertTrue(!lista.isEmpty());
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t10_criticarProvaDataInicioMaiorDataFim() throws ValidacaoException{
+        logger.info("Executando t10: criticarProvaDataInicioMaiorDataFim");
+        Prova prova = new Prova();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 1);
+        prova = preencherNovaProva(prova);
+        prova.setDataHoraInicio(calendar.getTime());
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t11_criticarProvaPeriodoDisponibilidade() throws ValidacaoException{
+        logger.info("Executando t11: criticarProvaPeriodoDisponibilidade");
+        Prova prova = new Prova();
+        prova = preencherNovaProva(prova);
+        prova.setDataHoraFim(Calendar.getInstance().getTime());
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t12_criticarProvaDuracaoMinima() throws ValidacaoException{
+        logger.info("Executando t12: criticarProvaDuracaoMinima");
+        Prova prova = new Prova();
+        prova = preencherNovaProva(prova);
+        prova.setDuracao(1l);
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test
+    public void t13_excluirProva(){
+        logger.info("Executando t13: excluirProva");
+        List<Prova> lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+        int size = lista.size();
+        
+        provaServico.excluir(lista.get(0));
+        lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+        
+        assertTrue(size - 1 == lista.size());
+    }
+    
     private Prova preencherNovaProva(Prova prova){
         Calendar calendar = Calendar.getInstance();
         
@@ -178,7 +225,7 @@ public class ProvaTest {
         prova.setDataHoraInicio(calendar.getTime());
         calendar.add(Calendar.HOUR, 1);
         prova.setDataHoraFim(calendar.getTime());
-        prova.setTempoMaximo(60l);
+        prova.setDuracao(60l);
         
         FiltroQuestao filtro = new FiltroQuestao();
         

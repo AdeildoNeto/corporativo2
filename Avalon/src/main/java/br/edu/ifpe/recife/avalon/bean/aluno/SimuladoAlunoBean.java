@@ -8,15 +8,16 @@ package br.edu.ifpe.recife.avalon.bean.aluno;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
-import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
+import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarSimuladoViewHelper;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -38,6 +39,10 @@ public class SimuladoAlunoBean implements Serializable {
     private static final String GO_INICIAR_SIMULADO = "goIniciarSimulado";
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
     private static final String USUARIO = "usuario";
+    private static final String RESULTADO_ACERTOS = "resultado.acertos";
+    private static final String SIMULADO_VAZIO = "simulado.vazio";
+    private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
+    private static final String PESQUISA_SEM_DADOS = "pesquisa.sem.dados";
 
     @EJB
     private QuestaoServico questaoServico;
@@ -58,7 +63,7 @@ public class SimuladoAlunoBean implements Serializable {
     private List<VerdadeiroFalso> questoesVerdadeiroFalso;
     private List<MultiplaEscolha> questoesMultiplaEscolha;
     private boolean exibirModalResultado;
-    private double resultado;
+    private String resultado;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -103,7 +108,7 @@ public class SimuladoAlunoBean implements Serializable {
             }
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
-                exibirMensagemError(AvalonUtil.getInstance().getMensagem("simulado.vazio"));
+                exibirMensagemError(AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
                 return null;
             }
         }
@@ -161,7 +166,7 @@ public class SimuladoAlunoBean implements Serializable {
     public void verificarTodasQuestoesPreenchidasVF() throws ValidacaoException {
         for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
             if (questao.getRespostaUsuario() == null) {
-                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("simulado.questoes.obrigatorias"));
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(SIMULADO_QUESTOES_OBRIGATORIAS));
             }
         }
     }
@@ -173,7 +178,7 @@ public class SimuladoAlunoBean implements Serializable {
     public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
             if (questao.getRespostaUsuario() == null) {
-                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("simulado.questoes.obrigatorias"));
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(SIMULADO_QUESTOES_OBRIGATORIAS));
             }
         }
     }
@@ -193,7 +198,7 @@ public class SimuladoAlunoBean implements Serializable {
             respostasCertas = verificarRespostasMS();
         }
 
-        resultado = ((double) respostasCertas / quantidadeQuestoes) * 100.0;
+        resultado = MessageFormat.format(AvalonUtil.getInstance().getMensagem(RESULTADO_ACERTOS), respostasCertas, quantidadeQuestoes);
     }
 
     /**
@@ -246,7 +251,7 @@ public class SimuladoAlunoBean implements Serializable {
      * Método para exibição de mensagem "Pesquisa sem dados".
      */
     private void exibirMensagemPesquisaSemDados() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"), null);
+        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem(PESQUISA_SEM_DADOS), null);
         FacesContext.getCurrentInstance().addMessage(null, mensagem);
     }
 
@@ -292,7 +297,7 @@ public class SimuladoAlunoBean implements Serializable {
         return exibirModalResultado;
     }
 
-    public double getResultado() {
+    public String getResultado() {
         return resultado;
     }
 

@@ -13,16 +13,16 @@ and open the template in the editor.
 
     <h:form id="formTitulo">
 
-        <p:dialog id="modalTitulo" visible="#{simuladoBean.exibirModalTitulo}"
-                  header="#{msg['simulado.novo']}" modal="true" resizable="false"
+        <p:dialog id="modalTitulo" visible="#{bean.exibirModalTitulo}"
+                  header="#{bean.headerModalTitulo}" modal="true" resizable="false"
                   widgetVar="modalTitulo" closeOnEscape="true" draggable="false">
 
             <div class="row">
                 <div class="col-md-12">
                     <p:messages id="msgTitulo" />
                     <div class="form-group">
-                        <p:outputLabel for="tituloSimulado" value="#{msg['label.titulo']}:" />
-                        <h:inputText id="tituloSimulado" required="true" class="form-control" value="#{simuladoBean.novoSimulado.titulo}" />
+                        <p:outputLabel for="titulo" value="#{msg['label.titulo']}:" />
+                        <h:inputText id="titulo" required="true" class="form-control" value="#{bean.titulo}" />
                     </div>
                 </div>
             </div>
@@ -30,13 +30,13 @@ and open the template in the editor.
             <div class="row">
                 <div class="col text-right">
                     <p:commandButton id="btnCancelar"
-                                     value="#{msg['btn.cancelar']}" action="#{simuladoBean.fecharModalTitulo()}"
+                                     value="#{msg['btn.cancelar']}" action="#{bean.fecharModalTitulo()}"
                                      styleClass="btn btn-secondary"
                                      immediate="true" process="@this" update="formTitulo form" />
 
                     <p:commandButton id="btnSalvar"
                                      value="#{msg['btn.salvar']}"
-                                     action="#{simuladoBean.iniciarPaginaGerarSimulado()}"
+                                     action="#{bean.iniciarPaginaGerar()}"
                                      onclick="PF('block').show();" oncomplete="PF('block').hide()"
                                      styleClass="btn btn-primary button-modal"
                                      update="formTitulo" />

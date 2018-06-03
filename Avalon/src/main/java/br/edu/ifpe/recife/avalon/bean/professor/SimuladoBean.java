@@ -5,18 +5,20 @@
  */
 package br.edu.ifpe.recife.avalon.bean.professor;
 
-import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
-import br.edu.ifpe.recife.avalon.viewhelper.VisualizarSimuladoViewHelper;
+import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
+import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
+import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
+import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,18 +57,20 @@ public class SimuladoBean implements Serializable {
 
     private final ComponenteCurricularViewHelper componenteViewHelper;
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
-    private final PesquisarQuestaoViewHelper pesquisarViewHelper;
-    private final VisualizarSimuladoViewHelper visualizarViewHelper;
+    private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
+    private final VisualizarAvaliacaoViewHelper visualizarViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private final Usuario usuarioLogado;
 
-    private Simulado novoSimulado;
-    private Simulado simuladoSelecionado;
+    private Simulado simulado;
     private List<Questao> questoes;
     private List<Simulado> simulados;
     private Set<Questao> questoesSelecionadas;
     private boolean todosSelecionados;
     private boolean exibirModalTitulo;
+    private boolean exibirModalExclusao;
+    private String titulo;
+    private String headerModalTitulo;
 
     /**
      * Cria uma nova instância de <code>SimuladoBean</code>.
@@ -75,11 +79,12 @@ public class SimuladoBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();
         detalhesViewHelper = new QuestaoDetalhesViewHelper();
-        pesquisarViewHelper = new PesquisarQuestaoViewHelper();
-        visualizarViewHelper = new VisualizarSimuladoViewHelper();
+        pesquisarQuestoesViewHelper = new PesquisarQuestaoViewHelper();
+        visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
         questoes = new ArrayList<>();
         questoesSelecionadas = new HashSet<>();
-        novoSimulado = new Simulado();
+        simulado = new Simulado();
+        headerModalTitulo = AvalonUtil.getInstance().getMensagem("simulado.novo");
     }
 
     /**
@@ -88,7 +93,7 @@ public class SimuladoBean implements Serializable {
      * @return rota para página de geração de prova
      */
     public String iniciarPagina() {
-        limparTela();
+        limparPagina();
         buscarSimulados();
 
         return GO_LISTAR_SIMULADO;
@@ -96,31 +101,42 @@ public class SimuladoBean implements Serializable {
 
     /**
      * Inicializa os dados necessários para p[agina gerar novo simulado.
-     * 
+     *
      * @return navegação.
      */
-    public String iniciarPaginaGerarSimulado() {
+    public String iniciarPaginaGerar() {
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
-        pesquisarViewHelper.inicializar(questaoServico, usuarioLogado, true);
+        pesquisarQuestoesViewHelper.inicializar(questaoServico, usuarioLogado, true);
         limparTelaGerarSimulado();
+        simulado.setTitulo(titulo);
 
         return GO_GERAR_SIMULADO;
     }
 
     /**
      * Inicializa os dados necessários para a página visualizar simulado.
-     * 
-     * @param simulado - simulado selecionado.
+     *
+     * @param simuladoSelecionado - simulado selecionado.
      * @return navegacao
      */
-    public String iniciarPaginaVisualizarSimulado(Simulado simulado) {
+    public String iniciarPaginaVisualizarSimulado(Simulado simuladoSelecionado) {
         visualizarViewHelper.inicializar(questaoServico);
-        simuladoSelecionado = simulado;
+        simulado = simuladoSelecionado;
 
-        if (!simuladoSelecionado.getQuestoes().isEmpty()) {
+        if (!simulado.getQuestoes().isEmpty()) {
             try {
-                visualizarViewHelper.carregarQuestoes(simuladoSelecionado);
+
+                if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
+                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId()));
+                } else {
+                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId()));
+                }
+
+                if (visualizarViewHelper.getQuestoesMultiplaEscolha().isEmpty() && visualizarViewHelper.getQuestoesVerdadeiroFalso().isEmpty()) {
+                    throw new ValidacaoException(AvalonUtil.getInstance().getMensagem("simulado.vazio"));
+                }
+
             } catch (ValidacaoException ex) {
                 exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
             }
@@ -132,10 +148,11 @@ public class SimuladoBean implements Serializable {
     /**
      * Limpa os campos da tela listar simulados.
      */
-    private void limparTela() {
-        novoSimulado = new Simulado();
-        simuladoSelecionado = new Simulado();
-        exibirModalTitulo = false;
+    private void limparPagina() {
+        simulado = new Simulado();
+        titulo = null;
+        fecharModalTitulo();
+        fecharModalExclusao();
     }
 
     /**
@@ -154,7 +171,7 @@ public class SimuladoBean implements Serializable {
         this.questoes.clear();
         this.questoesSelecionadas.clear();
         this.todosSelecionados = false;
-        this.questoes = pesquisarViewHelper.pesquisar();
+        this.questoes = pesquisarQuestoesViewHelper.pesquisar();
     }
 
     /**
@@ -218,12 +235,12 @@ public class SimuladoBean implements Serializable {
         String navegacao = null;
 
         try {
-            novoSimulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarViewHelper.getFiltro().getIdComponenteCurricular()));
-            novoSimulado.setDataCriacao(Calendar.getInstance().getTime());
-            novoSimulado.setCriador(usuarioLogado);
-            novoSimulado.setQuestoes(new ArrayList<Questao>());
-            novoSimulado.getQuestoes().addAll(questoesSelecionadas);
-            simuladoServico.salvar(novoSimulado);
+            simulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
+            simulado.setDataCriacao(Calendar.getInstance().getTime());
+            simulado.setCriador(usuarioLogado);
+            simulado.setQuestoes(new ArrayList<Questao>());
+            simulado.getQuestoes().addAll(questoesSelecionadas);
+            simuladoServico.salvar(simulado);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
@@ -233,36 +250,51 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Seleciona um simulado.
+     * Seleciona um simulado para exclusão.
      *
-     * @param simulado
+     * @param simuladoSelecionado
      */
-    public void selecionarSimulado(Simulado simulado) {
-        simuladoSelecionado = simulado;
+    public void selecionarSimuladoExclusao(Simulado simuladoSelecionado) {
+        simulado = simuladoSelecionado;
+        exibirModalExclusao();
     }
 
     /**
      * Excluí um simulado selecionado.
      */
     public void excluir() {
-        simuladoServico.remover(simuladoSelecionado);
-        simulados.remove(simuladoSelecionado);
-        simuladoSelecionado = null;
+        simuladoServico.remover(simulado);
+        simulados.remove(simulado);
+        simulado = null;
     }
 
     /**
      * Exibi o modal Título.
      */
     public void exibirModalTitulo() {
-        novoSimulado = new Simulado();
+        titulo = null;
         exibirModalTitulo = true;
     }
-    
+
     /**
      * Fecha o modal Título.
      */
     public void fecharModalTitulo() {
         exibirModalTitulo = false;
+    }
+
+    /**
+     * Exibi o modal de exclusão.
+     */
+    private void exibirModalExclusao() {
+        exibirModalExclusao = true;
+    }
+
+    /**
+     * Fecha o modal de exclusão.
+     */
+    public void fecharModalExclusao() {
+        exibirModalExclusao = false;
     }
 
     public List<Questao> getQuestoes() {
@@ -281,8 +313,8 @@ public class SimuladoBean implements Serializable {
         return questoesSelecionadas;
     }
 
-    public Simulado getNovoSimulado() {
-        return novoSimulado;
+    public Simulado getSimulado() {
+        return simulado;
     }
 
     public ComponenteCurricularViewHelper getComponenteViewHelper() {
@@ -293,8 +325,8 @@ public class SimuladoBean implements Serializable {
         return detalhesViewHelper;
     }
 
-    public PesquisarQuestaoViewHelper getPesquisarViewHelper() {
-        return pesquisarViewHelper;
+    public PesquisarQuestaoViewHelper getPesquisarQuestoesViewHelper() {
+        return pesquisarQuestoesViewHelper;
     }
 
     public List<Simulado> getSimulados() {
@@ -305,12 +337,24 @@ public class SimuladoBean implements Serializable {
         return exibirModalTitulo;
     }
 
-    public VisualizarSimuladoViewHelper getVisualizarViewHelper() {
+    public VisualizarAvaliacaoViewHelper getVisualizarViewHelper() {
         return visualizarViewHelper;
     }
 
-    public Simulado getSimuladoSelecionado() {
-        return simuladoSelecionado;
+    public boolean isExibirModalExclusao() {
+        return exibirModalExclusao;
     }
-    
+
+    public String getHeaderModalTitulo() {
+        return headerModalTitulo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
 }

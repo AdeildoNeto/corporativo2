@@ -16,23 +16,27 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>#{simuladoBean.simuladoSelecionado.titulo}</h1>
+                    <h1>#{simuladoBean.simulado.titulo}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoBean.simulado.componenteCurricular.nome}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoBean.simulado.criador.nomeCompleto}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:include src="fragmento/conteudo-vf.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}" />
-                    <ui:include src="fragmento/conteudo-multipla-escolha.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}" />
+                    <ui:include src="../comum/avaliacao/conteudo-vf.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}">
+                        <ui:param name="bean" value="#{simuladoBean}" />
+                    </ui:include>
+                    <ui:include src="../comum/avaliacao/conteudo-multipla-escolha.xhtml" rendered="#{simuladoBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}">
+                        <ui:param name="bean" value="#{simuladoBean}" />
+                    </ui:include>
                 </div>
             </div>
 

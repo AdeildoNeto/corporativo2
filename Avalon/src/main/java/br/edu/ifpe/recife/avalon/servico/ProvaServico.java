@@ -42,8 +42,13 @@ public class ProvaServico {
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
+
     private static final String PERCENT = "%";
     private static final int QTDE_MIN_QUESTOES = 2;
+    private static final String QUESTOES_MINIMAS = "prova.questoes.minimas";
+    private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
+    private static final String DURACAO_MINIMA = "prova.duracao.minima";
+    private static final String DISPONIBILIDADE_MINIMA = "prova.disponibilidade.minima";
 
     /**
      * Salva uma prova.
@@ -52,6 +57,7 @@ public class ProvaServico {
      * @throws ValidacaoException - quando o título já está em uso.
      */
     public void salvar(@Valid Prova prova) throws ValidacaoException {
+        validarPeriodoDuracao(prova);
         validarQtdeQuestoesSelecionadas(prova);
         entityManager.persist(prova);
     }
@@ -61,7 +67,7 @@ public class ProvaServico {
      *
      * @param prova
      */
-    public void remover(@Valid Prova prova) {
+    public void excluir(@Valid Prova prova) {
         if (!entityManager.contains(prova)) {
             prova.setAtiva(false);
             entityManager.merge(prova);
@@ -70,25 +76,47 @@ public class ProvaServico {
 
     /**
      * Valida se ao menos duas questões adicionadas a prova.
-     * 
+     *
      * @param prova
-     * @throws ValidacaoException - lançada caso o número de questões selecionadas sejam menor que 2.
+     * @throws ValidacaoException - lançada caso o número de questões
+     * selecionadas sejam menor que 2.
      */
-    private void validarQtdeQuestoesSelecionadas(Prova prova) throws ValidacaoException {
-        if (prova.getQuestoes() == null ||
-                prova.getQuestoes().isEmpty() ||
-                prova.getQuestoes().size() < QTDE_MIN_QUESTOES) {
+    private void validarQtdeQuestoesSelecionadas(@Valid Prova prova) throws ValidacaoException {
+        if (prova.getQuestoes() == null
+                || prova.getQuestoes().isEmpty()
+                || prova.getQuestoes().size() < QTDE_MIN_QUESTOES) {
             throw new ValidacaoException(AvalonUtil.getInstance()
-                    .getMensagemValidacao("selecione.uma.questao"));
+                    .getMensagemValidacao(QUESTOES_MINIMAS));
+        }
+    }
+
+    private void validarPeriodoDuracao(@Valid Prova prova) throws ValidacaoException {
+        Calendar calendarInicio = Calendar.getInstance();
+        Calendar calendarFim = Calendar.getInstance();
+
+        if (prova.getDataHoraInicio().after(prova.getDataHoraFim())) {
+            throw new ValidacaoException(DATA_INICIO_MAIOR_DATA_FIM);
+        }
+
+        calendarInicio.setTime(prova.getDataHoraInicio());
+        calendarFim.setTime(prova.getDataHoraFim());
+        calendarInicio.add(Calendar.MINUTE, 30);
+
+        if (calendarInicio.after(calendarFim)) {
+            throw new ValidacaoException(DISPONIBILIDADE_MINIMA);
+        }
+
+        if (prova.getDuracao() < 30) {
+            throw new ValidacaoException(DURACAO_MINIMA);
         }
     }
 
     /**
      * Consulta todas as provas disponíveis.
      *
-     * São provas disponíveis todas as provas que tenham data/hora início maior ou 
-     * igual a data/hora atual e data/hora fim menor que a data/hora atual.
-     * 
+     * São provas disponíveis todas as provas que tenham data/hora início maior
+     * ou igual a data/hora atual e data/hora fim menor que a data/hora atual.
+     *
      * @return provas
      */
     public List<Prova> buscarProvasDisponiveis() {
@@ -96,6 +124,21 @@ public class ProvaServico {
                 Prova.class);
 
         query.setParameter("dataHoraAtual", Calendar.getInstance().getTime());
+
+        return query.getResultList();
+    }
+
+    /**
+     * Consulta todas as provas criadas por um Professor.
+     *
+     * @param email - email do criador.
+     * @return provas
+     */
+    public List<Prova> buscarProvasPorProfessor(@NotNull String email) {
+        TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorProfessor",
+                Prova.class);
+
+        query.setParameter("emailProfessor", email);
 
         return query.getResultList();
     }

@@ -41,6 +41,11 @@ import javax.validation.constraints.Size;
                     name = "Prova.PorDisponibilidade",
                     query = "Select p from Prova p where p.ativa = true "
                             + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim"
+            ),
+            @NamedQuery(
+                    name = "Prova.PorProfessor",
+                    query = "Select p from Prova p where p.ativa = true "
+                            + "AND p.professor.email = :emailProfessor"
             )
         }
 )
@@ -66,23 +71,24 @@ public class Prova implements Serializable {
     @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
     private ComponenteCurricular componenteCurricular;
 
-    @NotNull
+    @NotNull(message = "{prova.data.criacao.obrigatoria}")
     @Temporal(TemporalType.DATE)
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
     
-    @NotNull
+    @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_INICIO")
     private Date dataHoraInicio;
     
-    @NotNull
+    @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
     
-    @Column(name = "NUM_TEMPO_MAXIMO")
-    private Long tempoMaximo;
+    @NotNull(message = "{prova.duracao.obrigatoria}")
+    @Column(name = "NUM_DURACAO")
+    private Long duracao;
 
     @Column(name = "SN_ATIVA", nullable = false)
     private Boolean ativa = true;
@@ -167,12 +173,12 @@ public class Prova implements Serializable {
         this.questoes = questoes;
     }
 
-    public Long getTempoMaximo() {
-        return tempoMaximo;
+    public Long getDuracao() {
+        return duracao;
     }
 
-    public void setTempoMaximo(Long tempoMaximo) {
-        this.tempoMaximo = tempoMaximo;
+    public void setDuracao(Long duracao) {
+        this.duracao = duracao;
     }
     
 }

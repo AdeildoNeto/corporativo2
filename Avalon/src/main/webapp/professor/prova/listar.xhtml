@@ -16,38 +16,38 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1 id="headerSimulados">#{msg['titulo.meus.simulados']}</h1>
+                    <h1 id="headerProvas">#{msg['titulo.provas.online']}</h1>
                 </div>
             </div>
 
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
+                    <h:dataTable id="tableProvas" value="#{provaBean.provas}" var="prova" styleClass="table table-striped table-fixed table-simulados">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
                             </f:facet>
-                            <h:outputText class="simuladoTitulo" value="#{simulado.titulo}" />
+                            <h:outputText class="provaTitulo" value="#{prova.titulo}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.componente.curricular']}</span>
                             </f:facet>
-                            <h:outputText class="simuladoComponenteCurricular" title="#{simulado.componenteCurricular.nome}"
-                                          value="#{simulado.componenteCurricular.nome}" />
+                            <h:outputText class="provaComponenteCurricular" title="#{prova.componenteCurricular.nome}"
+                                          value="#{prova.componenteCurricular.nome}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
 
                             </f:facet>
                             <p:commandLink class="btnExcluir"
-                                           action="#{simuladoBean.iniciarPaginaVisualizarSimulado(simulado)}"
+                                           action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();">
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
                             <p:commandLink class="btnExcluir"
-                                           action="#{simuladoBean.selecionarSimuladoExclusao(simulado)}"
+                                           action="#{provaBean.selecionarProvaExclusao(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();">
                                 <span class="material-icons">delete</span>
@@ -58,11 +58,11 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="offset-md-9 col-md-3 form-group">
-                    <p:commandButton id="btnAdd" value="#{msg['btn.gerar.simulado']}"
-                                     action="#{simuladoBean.exibirModalTitulo()}"
+                    <p:commandButton id="btnAdd" value="#{msg['btn.gerar.prova']}"
+                                     action="#{provaBean.exibirModalTitulo()}"
                                      onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()"
                                      update="formTitulo"
+                                     oncomplete="PF('block').hide()"
                                      class="btn bg-default btn-block font-color-default">
                     </p:commandButton>
                 </div>
@@ -73,18 +73,18 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-
+        
         <ui:include src="../comum/modal-titulo.xhtml">
-            <ui:param name="bean" value="#{simuladoBean}" />
+            <ui:param name="bean" value="#{provaBean}" />
         </ui:include>
 
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
-                             rendered="#{simuladoBean.exibirModalExclusao}"
+                             rendered="#{provaBean.exibirModalExclusao}"
                              header="#{msg['modal.header.excluir']}" severity="alert"
                              widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" action="#{simuladoBean.fecharModalExclusao()}" type="button" styleClass="btn btn-secondary" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{simuladoBean.excluir()}" update="form formModalExcluir" styleClass="btn btn-primary" />
+                <p:commandButton value="#{msg['btn.nao']}" action="#{provaBean.fecharModalExclusao()}" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{provaBean.excluirProva()}" update="form" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>
     </ui:define>

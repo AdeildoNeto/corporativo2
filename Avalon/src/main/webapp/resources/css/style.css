@@ -428,10 +428,76 @@ h1 {
     margin-left: 20px;
 }
 
+.margin-left-10{
+    margin-left: 10px;
+}
+
 .radio-button input{
     display: inherit;
 }
 
 .table-alternativa{
     margin-bottom: 10px;
+}
+
+input[type="text"]{
+    display: block;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Datapicker */
+.ui-datepicker{
+    border-radius: .25rem;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+    background: #FFF;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    background: #BEBEBE;
+    border-radius: 50px;
+}
+
+.ui-slider-horizontal .ui-slider-handle:focus {
+    outline: none !important;
+}
+
+.ui-slider-horizontal {
+    height: .6em !important;
+    background: #19882c;
+    border-radius: .25rem;
+    margin-top: 17px;
+}
+
+.ui-datepicker .ui-datepicker-prev{
+    border: solid black;
+    border-width: 0 .15rem .15rem 0;
+    padding: 0;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    height: 15px !important;
+    width: 15px !important;
+    top: 10px !important;
+    left: 10px !important;
+    cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-next{
+    border: solid black;
+    border-width: 0 .15rem .15rem 0;
+    padding: 0;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    height: 15px !important;
+    width: 15px !important;
+    top: 10px !important;
+    right: 10px !important;
+    cursor: pointer;
 }
