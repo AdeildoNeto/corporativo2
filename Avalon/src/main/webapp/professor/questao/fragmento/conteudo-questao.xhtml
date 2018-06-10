@@ -26,7 +26,7 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        <div class="col-md-6 form-group">
+        <div class="col-md-4 form-group">
             <div>
                 <p:outputLabel for="componenteCurricular" value="#{msg['label.componente.curricular']}:" />
                 <div>
@@ -42,6 +42,19 @@ and open the template in the editor.
                                    action="#{questaoBean.carregarModalComponente()}" update="formComponente:modalComponente"
                                    immediate="true" process="@this" title="#{msg['adicionar.componente.curricular']}">
                     </p:commandLink>
+                </div>
+            </div>
+        </div>
+         <div class="col-md-4 form-group">
+<!--            <p:fileUpload fileUploadListener="" 
+                          label="Procurar..." auto="true" />-->
+            <div>
+                <h:outputLabel for="arquivo" value="Imagem: " />
+                <div>
+                    <p:fileUpload id="arquivo" label="Arquivo" mode="advanced" fileLimit="1" fileLimitMessage="selecione uma única imagem"
+                                  allowTypes="/(\.|\/)(png|jpg|jpeg)$/" invalidFileMessage="apenas arquivos png, jpg ou jpeg"
+                                  sizeLimit="3145728" invalidSizeMessage="É permitida imagem de no máximo 3 MB"
+                                  fileUploadListener="#{questaoBean.upload}" />
                 </div>
             </div>
         </div>

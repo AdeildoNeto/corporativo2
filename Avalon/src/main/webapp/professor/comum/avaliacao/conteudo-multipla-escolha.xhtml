@@ -14,6 +14,13 @@ and open the template in the editor.
     <ui:repeat value="#{bean.visualizarViewHelper.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
         <div class="form-group">
             <div class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</div>
+            <div class="img">
+                <ui:fragment rendered="#{questao.imagem != null}">
+                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                        <f:param name="questaoId" value="#{questao.id}"/>
+                    </p:graphicImage>
+                </ui:fragment>
+            </div>
             <p:selectOneRadio id="radioMS" value="#{questao.opcaoCorreta}" layout="custom" plain="true" disabled="true" >
                 <f:selectItem itemValue="0" />
                 <f:selectItem itemValue="1" />
@@ -21,7 +28,7 @@ and open the template in the editor.
                 <f:selectItem itemValue="3" />
                 <f:selectItem itemValue="4" />
             </p:selectOneRadio>
-            
+
             <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
                 <div>
                     <p:radioButton for="form:repeat:0:radioMS" itemIndex="#{j.index}" />

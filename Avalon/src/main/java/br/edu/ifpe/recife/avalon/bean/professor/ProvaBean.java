@@ -19,6 +19,8 @@ import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -30,8 +32,11 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -320,6 +325,21 @@ public class ProvaBean implements Serializable {
             } catch (ValidacaoException ex) {
                 exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
             }
+        }
+    }
+    
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
+            Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
+            return new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
         }
     }
 
