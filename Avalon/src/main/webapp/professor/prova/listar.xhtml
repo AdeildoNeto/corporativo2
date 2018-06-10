@@ -57,13 +57,20 @@ and open the template in the editor.
                 </div>
             </div>
             <div class="row">
-                <div class="offset-md-9 col-md-3 form-group">
+                <div class="offset-md-8 col-md-4 form-group">
+                    <p:commandButton id="btnImprimir" value="#{msg['btn.imprimir.prova']}"
+                                     action="#{provaBean.iniciarPaginaImprimir()}"
+                                     onclick="PF('block').show()"
+                                     update="formTitulo"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn bg-default font-color-default">
+                    </p:commandButton>
                     <p:commandButton id="btnAdd" value="#{msg['btn.gerar.prova']}"
                                      action="#{provaBean.exibirModalTitulo()}"
                                      onclick="PF('block').show()"
                                      update="formTitulo"
                                      oncomplete="PF('block').hide()"
-                                     class="btn bg-default btn-block font-color-default">
+                                     class="btn bg-default font-color-default">
                     </p:commandButton>
                 </div>
             </div>

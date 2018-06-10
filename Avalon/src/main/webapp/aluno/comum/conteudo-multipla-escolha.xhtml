@@ -11,7 +11,7 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:repeat value="#{simuladoAlunoBean.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
+    <ui:repeat value="#{bean.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
         <div class="form-group">
             <span class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</span>
             <p:selectOneRadio id="radioMS" value="#{questao.respostaUsuario}" layout="custom" plain="true" >

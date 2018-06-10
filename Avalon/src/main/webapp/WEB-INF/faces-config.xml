@@ -102,6 +102,16 @@
             <to-view-id>/aluno/simulado/simulado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goListarProvas</from-outcome>
+            <to-view-id>/aluno/prova/listar.xhml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goIniciarProva</from-outcome>
+            <to-view-id>/aluno/prova/prova.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

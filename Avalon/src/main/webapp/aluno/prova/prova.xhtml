@@ -16,17 +16,17 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>#{simuladoAlunoBean.simuladoSelecionado.titulo}</h1>
+                    <h1>#{provaAlunoBean.simuladoSelecionado.titulo}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{provaAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
                 </div>
             </div>
             <div class="row">
@@ -36,11 +36,11 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:include src="../comum/conteudo-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
-                        <ui:param name="bean" value="#{simuladoAlunoBean}" />
+                    <ui:include src="../comum/conteudo-vf.xhtml" rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}">
+                        <ui:param name="bean" value="#{provaAlunoBean}" />
                     </ui:include>
-                    <ui:include src="../comum/conteudo-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}">
-                        <ui:param name="bean" value="#{simuladoAlunoBean}" />
+                    <ui:include src="../comum/conteudo-multipla-escolha.xhtml" rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}">
+                        <ui:param name="bean" value="#{provaAlunoBean}" />
                     </ui:include>
                 </div>
             </div>
@@ -48,11 +48,11 @@ and open the template in the editor.
             <div class="row">
                 <div class="offset-md-8 col-md-4">
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
-                                   action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
+                                   action="#{provaAlunoBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
                     </p:commandButton>
                     <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado msgs"
-                                     action="#{simuladoAlunoBean.finalizar()}" onclick="PF('block').show()"
+                                     action="#{provaAlunoBean.finalizar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default">
                     </p:commandButton>
@@ -66,7 +66,7 @@ and open the template in the editor.
         </h:form>
         
         <ui:include src="../comum/modal-resultado.xhtml">
-            <ui:param name="bean" value="#{simuladoAlunoBean}" />
+            <ui:param name="bean" value="#{provaAlunoBean}" />
         </ui:include>
     </ui:define>
 

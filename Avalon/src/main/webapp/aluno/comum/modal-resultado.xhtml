@@ -13,14 +13,14 @@ and open the template in the editor.
 
     <h:form id="formModalResultado">
 
-        <p:dialog id="modalResultado" visible="#{simuladoAlunoBean.exibirModalResultado}"
+        <p:dialog id="modalResultado" visible="#{bean.exibirModalResultado}"
                   header="#{msg['label.resultado']}" modal="true" resizable="false"
                   widgetVar="modalResultado" closeOnEscape="false" draggable="false"
-                  onHide="#{simuladoAlunoBean.fecharModalResultado()}" class="modal-resultado">
+                  onHide="#{bean.fecharModalResultado()}" class="modal-resultado">
 
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <span>#{msg['resultado.obtido']}: #{simuladoAlunoBean.resultado}.
+                    <span>#{msg['resultado.obtido']}: #{bean.resultado}.
                     </span>
                 </div>
             </div>
@@ -28,7 +28,7 @@ and open the template in the editor.
             <div class="row btn-modal">
                 <div class="col text-right">
                     <p:commandButton id="btnFecharModalResultado" value="#{msg['btn.fechar']}"
-                                     action="#{simuladoAlunoBean.fecharModalResultado()}"
+                                     action="#{bean.fecharModalResultado()}"
                                      styleClass="btn btn-secondary" update="modalResultado"
                                      immediate="true" process="@this" />
                 </div>
