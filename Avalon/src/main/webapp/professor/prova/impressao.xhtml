@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <title>Avalon</title>
@@ -23,6 +24,13 @@ and open the template in the editor.
                 <p:outputPanel styleClass="container-questao #{questao.tipo}">
                     <div class="enunciado">
                         <p:outputLabel>#{posicao.index+1}) #{questao.enunciado}</p:outputLabel>
+                    </div>
+                     <div class="img">
+                        <ui:fragment rendered="#{questao.imagem != null}">
+                            <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                                <f:param name="questaoId" value="#{questao.id}"/>
+                            </p:graphicImage>
+                        </ui:fragment>
                     </div>
                     <p:outputPanel styleClass="prova-alternativa" rendered="#{questao.tipo == 'VERDADEIRO_FALSO' || questao.tipo == 'MULTIPLA_ESCOLHA'}">
                         <h:outputText value="#{questao.formatarQuestao()}"></h:outputText>
