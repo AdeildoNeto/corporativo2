@@ -214,6 +214,22 @@ public class QuestaoServico implements Serializable{
     }
     
     /**
+     * Método para consultar um usuário por Id.
+     *
+     * @param id
+     * @return usuario.
+     */
+    public Questao buscarQuestaoPorId(@NotNull Long id) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorId", Questao.class);
+        query.setParameter("id", id);
+
+        if (!query.getResultList().isEmpty()) {
+            return query.getSingleResult();
+        }
+        return null;
+    }
+    
+    /**
      * Consulta questões do tipo V/F e Múltipla Escolha a partir de um filtro.
      * 
      * @param filtro - filtro para buscar questoes

@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.bean.professor;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.Imagem;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
@@ -28,6 +29,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -77,6 +80,7 @@ public class QuestaoBean implements Serializable {
     private boolean exibirModalComponente;
     private boolean respostaVF;
     private Integer opcaoCorreta;
+    private Imagem imagem;
 
     /**
      * Cria uma nova instância de <code>QuestaoBean</code>.
@@ -230,6 +234,7 @@ public class QuestaoBean implements Serializable {
         alternativas.get(3).setQuestao(multiplaEscolha);
         alternativas.get(4).setQuestao(multiplaEscolha);
 
+        
         multiplaEscolha.setAlternativas(alternativas);
         multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
         questaoServico.salvar(multiplaEscolha);
@@ -279,6 +284,7 @@ public class QuestaoBean implements Serializable {
         questao.setDataCriacao(this.questao.getDataCriacao());
         questao.setComponenteCurricular(this.questao.getComponenteCurricular());
         questao.setCompartilhada(this.questao.getCompartilhada());
+        questao.setImagem(this.questao.getImagem());
     }
 
     /**
@@ -425,6 +431,22 @@ public class QuestaoBean implements Serializable {
      */
     public void fecharModalComponente() {
         exibirModalComponente = false;
+    }
+    
+    public void upload(FileUploadEvent event) {
+        setFile(event.getFile());
+    }
+
+    private void setFile(UploadedFile file) {
+        
+       // String fileNameUploaded = file.getFileName();
+       // long fileSizeUploaded = file.getSize();
+        imagem = new Imagem();//questao.criarImagem();
+        imagem.setArquivo(file.getContents());
+        imagem.setExtensao(file.getContentType());
+        imagem.setNome(file.getFileName());
+        questao.setImagem(imagem);       
+        //questao.setImagem(file.getContents());
     }
 
     /*

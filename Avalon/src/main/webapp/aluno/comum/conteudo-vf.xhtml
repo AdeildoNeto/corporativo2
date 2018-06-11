@@ -18,7 +18,13 @@ and open the template in the editor.
                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
             </p:selectOneRadio>
-
+            <div class="img">
+                <ui:fragment rendered="#{questao.imagem != null}">
+                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                        <f:param name="questaoId" value="#{questao.id}"/>
+                    </p:graphicImage>
+                </ui:fragment>
+            </div>
             <h:panelGrid class="margin-left-20">
                 <h:column>
                     <p:radioButton for="radio" itemIndex="0" class="radio-button" />
@@ -32,5 +38,5 @@ and open the template in the editor.
             </h:panelGrid>
         </div>
     </ui:repeat>
-    
+
 </ui:composition>

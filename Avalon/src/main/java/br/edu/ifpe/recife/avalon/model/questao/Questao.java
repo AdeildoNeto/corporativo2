@@ -16,6 +16,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,6 +37,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
@@ -105,7 +107,9 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
                     + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
                     + "AND (:enunciado is null OR q.enunciado like :enunciado)"
-            )
+            ),@NamedQuery(
+                    name = "Questao.PorId",
+                    query = "Select u from Questao u where u.id = :id")
         })
 @NamedNativeQueries(
         {
@@ -182,6 +186,10 @@ public class Questao implements Serializable {
 
     @Transient
     private boolean selecionada;
+    
+    @Valid
+    @Embedded
+    private Imagem imagem;  
 
     /**
      * Formatar a apresentação da questão de acordo com seu tipo.
@@ -279,6 +287,14 @@ public class Questao implements Serializable {
 
     public void setProvas(List<Prova> provas) {
         this.provas = provas;
+    }
+    
+    public Imagem getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(Imagem imagem) {
+        this.imagem = imagem;
     }
     
     @Override
