@@ -14,6 +14,7 @@ import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -36,6 +37,7 @@ public class ProvaAlunoBean implements Serializable {
     private static final String GO_LISTAR_PROVAS = "goListarProvas";
     private static final String USUARIO = "usuario";
     private static final String PROVA_QUESTOES_OBRIGATORIAS = "";
+    private static final String OBSERVACAO_TEMPO = "prova.observacao.tempo";
     
     @EJB
     private QuestaoServico questaoServico;
@@ -51,7 +53,9 @@ public class ProvaAlunoBean implements Serializable {
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
     private boolean exibirModalResultado;
+    private boolean exibirModalIniciar;
     private String resultado;
+    private String observacaoDuracao;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -77,7 +81,7 @@ public class ProvaAlunoBean implements Serializable {
      * @param provaSelecionada
      * @return rota
      */
-    public String iniciarSimulado(Prova provaSelecionada) {
+    public void selecionarProva(Prova provaSelecionada) {
         limparTelaSimulado();
         prova = provaSelecionada;
 
@@ -90,11 +94,11 @@ public class ProvaAlunoBean implements Serializable {
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
                 exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
-                return null;
+            }else{
+                carregarObservacoes();
+                abrirModalIniciar();
             }
         }
-
-        return GO_INICIAR_PROVA;
     }
 
     /**
@@ -102,6 +106,7 @@ public class ProvaAlunoBean implements Serializable {
      */
     private void limparTela() {
         prova = new Prova();
+        fecharModalIniciar();
     }
 
     /**
@@ -115,7 +120,23 @@ public class ProvaAlunoBean implements Serializable {
     private void bucarProvasDisponiveis(){
         provasDisponiveis = provaServico.buscarProvasDisponiveis();
     }
-
+    
+    public String iniciarProva(){
+        return GO_INICIAR_PROVA;
+    }
+    
+    private void abrirModalIniciar(){
+        exibirModalIniciar = true;
+    }
+    
+    public void fecharModalIniciar(){
+        exibirModalIniciar = false;
+    }
+    
+    private void carregarObservacoes(){
+        observacaoDuracao = MessageFormat.format(AvalonUtil.getInstance().getMensagem(OBSERVACAO_TEMPO), prova.getDuracao());
+    }
+    
     /**
      * Método para finalizar o simulado.
      */
@@ -258,4 +279,12 @@ public class ProvaAlunoBean implements Serializable {
         return provasDisponiveis;
     }
 
+    public boolean isExibirModalIniciar() {
+        return exibirModalIniciar;
+    }
+
+    public String getObservacaoDuracao() {
+        return observacaoDuracao;
+    }
+    
 }

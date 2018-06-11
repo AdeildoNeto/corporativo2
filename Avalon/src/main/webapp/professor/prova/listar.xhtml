@@ -49,6 +49,7 @@ and open the template in the editor.
                             <p:commandLink class="btnExcluir"
                                            action="#{provaBean.selecionarProvaExclusao(prova)}"
                                            onclick="PF('block').show()"
+                                           update="formModalExcluir"
                                            oncomplete="PF('block').hide();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>

@@ -501,3 +501,34 @@ input[type="text"]{
     right: 10px !important;
     cursor: pointer;
 }
+
+/* Prova Aluno */
+
+.table-provas-aluno td:first-child{
+    max-width: 420px !important;
+    width: 420px;
+}
+
+.table-provas-aluno td:nth-child(2){
+    width: 250px;
+    max-width: 250px;
+}
+
+.table-provas-aluno td:nth-child(3){
+    width: 200px;
+    max-width: 200px;
+}
+
+.table-provas-aluno td:nth-child(4){
+    width: 180px;
+    max-width: 180px;
+}
+
+.table-provas-aluno td:last-child{
+    width: 100px;
+    max-width: 100px;
+}
+
+.table-provas-aluno .ui-button-text-only .ui-button-text{
+    padding: 0;
+}

@@ -16,17 +16,17 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>#{provaAlunoBean.simuladoSelecionado.titulo}</h1>
+                    <h1>#{provaAlunoBean.prova.titulo}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.prova.componenteCurricular.nome}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{provaAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                 </div>
             </div>
             <div class="row">
@@ -46,11 +46,7 @@ and open the template in the editor.
             </div>
 
             <div class="row">
-                <div class="offset-md-8 col-md-4">
-                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
-                                   action="#{provaAlunoBean.iniciarPagina()}" immediate="true"
-                                   class="btn btn-secondary font-color-default">
-                    </p:commandButton>
+                <div class="offset-md-9 col-md-2">
                     <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado msgs"
                                      action="#{provaAlunoBean.finalizar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"

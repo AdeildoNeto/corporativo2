@@ -16,7 +16,7 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <h1 id="headerSimulados">#{msg['menu.simulados']}</h1>
+                    <h1 id="headerSimulados">#{msg['provas.disponiveis']}</h1>
                 </div>
             </div>
             
@@ -28,32 +28,41 @@ and open the template in the editor.
             
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="table" value="#{provaAlunoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados-aluno">
+                    <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}" var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
                             </f:facet>
-                            <h:outputText class="simuladoTitulo" value="#{simulado.titulo}" />
+                            <h:outputText class="provaTitulo" value="#{prova.titulo}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.componente.curricular']}</span>
                             </f:facet>
-                            <h:outputText class="simuladoComponenteCurricular" title="#{simulado.componenteCurricular.nome}"
-                                          value="#{simulado.componenteCurricular.nome}" />
+                            <h:outputText class="provaComponenteCurricular" title="#{prova.componenteCurricular.nome}"
+                                          value="#{prova.componenteCurricular.nome}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['label.criador']}</span>
+                                <span>#{msg['cabecalho.professor']}</span>
                             </f:facet>
-                            <h:outputText class="simuladoCriador" title="#{simulado.criador.nomeCompleto}"
-                                          value="#{simulado.criador.nome}" />
+                            <h:outputText class="provaProfessor" title="#{prova.professor.nomeCompleto}"
+                                          value="#{prova.professor.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['prova.disponivel.ate']}</span>
+                            </f:facet>
+                            <h:outputText class="provaDisponibilidade"
+                                          value="#{prova.dataHoraFim}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                             </f:facet>
-                            <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="@form"
-                                             action="#{provaAlunoBean.iniciarSimulado(simulado)}" onclick="PF('block').show()"
+                            <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="formModalIniciar"
+                                             action="#{provaAlunoBean.selecionarProva(prova)}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
                         </h:column>
@@ -65,6 +74,34 @@ and open the template in the editor.
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
             </p:blockUI>
 
+        </h:form>
+        
+        <h:form id="formModalIniciar">
+            <p:dialog id="modalIniciar" visible="#{provaAlunoBean.exibirModalIniciar}"
+                  header="#{msg['prova.iniciar.observacoes']}" modal="true" resizable="false"
+                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+
+            <div class="row">
+                <div class="col-md-12 margin-bottom-30">
+                    <div>#{provaAlunoBean.observacaoDuracao}</div>
+                    <div>#{msg['prova.observacao.realizar']}</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-right">
+                    <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
+                                 styleClass="btn btn-secondary"
+                                 immediate="true" process="@this" update="formModalIniciar form" />
+
+                    <p:commandButton value="#{msg['btn.iniciar']}"
+                                     action="#{provaAlunoBean.iniciarProva()}"
+                                     onclick="PF('block').show();" oncomplete="PF('block').hide()"
+                                     styleClass="btn btn-primary button-modal"
+                                     update="formModalIniciar form" />
+                </div>
+            </div>
+        </p:dialog>
         </h:form>
     </ui:define>
 
