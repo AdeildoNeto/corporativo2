@@ -49,7 +49,7 @@ and open the template in the editor.
                             <p:commandLink class="btnExcluir"
                                            action="#{simuladoBean.selecionarSimuladoExclusao(simulado)}"
                                            onclick="PF('block').show()"
-                                           oncomplete="PF('block').hide();">
+                                           oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
                         </h:column>
@@ -80,10 +80,9 @@ and open the template in the editor.
 
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
-                             rendered="#{simuladoBean.exibirModalExclusao}"
                              header="#{msg['modal.header.excluir']}" severity="alert"
                              widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" action="#{simuladoBean.fecharModalExclusao()}" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide()" type="button" styleClass="btn btn-secondary" />
                 <p:commandButton value="#{msg['btn.sim']}" action="#{simuladoBean.excluir()}" update="form formModalExcluir" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>

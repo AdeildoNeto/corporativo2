@@ -26,7 +26,7 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
+                    <label for="criador">#{msg['cabecalho.professor']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                 </div>
             </div>
             <div class="row">
@@ -36,9 +36,34 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:include src="../comum/conteudo-vf.xhtml" rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}">
-                        <ui:param name="bean" value="#{provaAlunoBean}" />
-                    </ui:include>
+                    <p:carousel value="#{provaAlunoBean.questoesVerdadeiroFalso}" var="questao"
+                                numVisible="1">
+                        <div class="form-group">
+                            <span class="bold">#{questao.enunciado}</span>
+                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
+                                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
+                                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                            </p:selectOneRadio>
+                            <div class="img">
+                                <ui:fragment rendered="#{questao.imagem != null}">
+                                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                                        <f:param name="questaoId" value="#{questao.id}"/>
+                                    </p:graphicImage>
+                                </ui:fragment>
+                            </div>
+                            <h:panelGrid class="margin-left-20">
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                                    <span>#{msg['btn.verdadeiro']}</span>
+                                </h:column>
+
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                                    <span>#{msg['btn.falso']}</span>
+                                </h:column>
+                            </h:panelGrid>
+                        </div>
+                    </p:carousel>
                     <ui:include src="../comum/conteudo-multipla-escolha.xhtml" rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}">
                         <ui:param name="bean" value="#{provaAlunoBean}" />
                     </ui:include>
@@ -60,7 +85,7 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <ui:include src="../comum/modal-resultado.xhtml">
             <ui:param name="bean" value="#{provaAlunoBean}" />
         </ui:include>

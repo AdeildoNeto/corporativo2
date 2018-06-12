@@ -40,7 +40,7 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
-                            <p:commandLink class="btnExcluir"
+                            <p:commandLink class="btnDetalhar"
                                            action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();">
@@ -48,9 +48,8 @@ and open the template in the editor.
                             </p:commandLink>
                             <p:commandLink class="btnExcluir"
                                            action="#{provaBean.selecionarProvaExclusao(prova)}"
-                                           onclick="PF('block').show()"
-                                           update="formModalExcluir"
-                                           oncomplete="PF('block').hide();">
+                                           onclick="PF('block').show();"
+                                           oncomplete="PF('block').hide(); PF('modalExclusao').show();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
                         </h:column>
@@ -88,10 +87,9 @@ and open the template in the editor.
 
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
-                             rendered="#{provaBean.exibirModalExclusao}"
                              header="#{msg['modal.header.excluir']}" severity="alert"
                              widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" action="#{provaBean.fecharModalExclusao()}" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide()" type="button" styleClass="btn btn-secondary" />
                 <p:commandButton value="#{msg['btn.sim']}" action="#{provaBean.excluirProva()}" update="form" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>

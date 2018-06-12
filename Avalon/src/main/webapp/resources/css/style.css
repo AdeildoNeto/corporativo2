@@ -133,6 +133,10 @@ label{
     color: black !important;
 }
 
+a:focus{
+    outline: none !important;
+}
+
 /* List Table */
 .container-table{
     max-height: 540px;
@@ -539,4 +543,27 @@ div.img img{
     max-height: 100px;
     width: auto;
     height: auto;
+}
+
+/* Carousel */
+.ui-carousel .ui-carousel-page-link, .ui-carousel .ui-carousel-button {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    background-image: url("/Avalon/resources/img/ui-icons.png");
+    background-color: #BEBEBE;
+    border-radius: 5px;
+}
+
+.ui-carousel-button.ui-state-disabled{
+    background-color: #DFDFDF;
+}
+
+.ui-carousel-prev-button{
+    transform: rotate(-90deg);
+}
+
+.ui-carousel-next-button{
+    transform: rotate(90deg);
 }

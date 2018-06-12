@@ -111,7 +111,6 @@ public class ProvaAlunoBean implements Serializable {
      * Método para limpar os campos da tela listar simulados.
      */
     private void limparTela() {
-        prova = new Prova();
         fecharModalIniciar();
     }
 
