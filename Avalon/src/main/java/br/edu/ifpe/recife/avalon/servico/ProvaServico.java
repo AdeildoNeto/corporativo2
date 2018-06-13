@@ -7,8 +7,7 @@ package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -146,4 +145,7 @@ public class ProvaServico {
         return query.getResultList();
     }
 
+    public void salvarProvaAluno(@Valid ProvaAluno provaAluno){
+        entityManager.persist(provaAluno);
+    }
 }

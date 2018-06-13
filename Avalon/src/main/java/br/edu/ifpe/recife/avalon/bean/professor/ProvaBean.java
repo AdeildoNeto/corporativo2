@@ -154,6 +154,7 @@ public class ProvaBean implements Serializable {
     }
 
     private void limparPaginaGerar(){
+        prova = new Prova();
         inicializarQuestoes();
     }
     
