@@ -91,7 +91,6 @@ public class ProvaAlunoBean implements Serializable {
      * Método para iniciar uma nova Prova.
      *
      * @param provaSelecionada
-     * @return rota
      */
     public void selecionarProva(Prova provaSelecionada) {
         limparTelaSimulado();
@@ -165,6 +164,7 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Método para finalizar o simulado.
+     * @return 
      */
     public String finalizar() {
         double nota;
@@ -177,7 +177,7 @@ public class ProvaAlunoBean implements Serializable {
         
         //salvar resultado da prova
 
-        return GO_LISTAR_PROVAS;
+        return iniciarPagina();
     }
     
     public void preencherRespostas(){
