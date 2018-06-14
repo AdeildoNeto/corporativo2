@@ -10,7 +10,6 @@ import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -91,7 +90,7 @@ public class ProvaTest {
         
         provaServico.salvar(prova);
         
-        assertNotNull(prova.getId());
+        assertTrue(prova.getId() > 0);
     }
     
     @Test
@@ -188,6 +187,7 @@ public class ProvaTest {
         logger.info("Executando t11: criticarProvaPeriodoDisponibilidade");
         Prova prova = new Prova();
         prova = preencherNovaProva(prova);
+        prova.setDataHoraInicio(Calendar.getInstance().getTime());
         prova.setDataHoraFim(Calendar.getInstance().getTime());
         
         provaServico.salvar(prova);

@@ -58,7 +58,7 @@ public class Prova implements Serializable {
     @Column(name = "ID_PROVA")
     private Long id;
 
-    @NotNull(message = "{titulo.obrigatorio}")
+    @NotNull(message = "{prova.titulo.obrigatorio}")
     @Size(max = 40, message = "{titulo.tamanho.maximo}")
     @Column(name = "TXT_TITULO")
     private String titulo;
