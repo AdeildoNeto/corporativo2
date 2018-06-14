@@ -48,8 +48,7 @@ and open the template in the editor.
                 </div>
                 <div class="col-md-4 form-group">
                     <label for="duracao">#{msg['prova.duracao']}: </label>
-                    <h:outputText id="duracaoProva" value="#{provaBean.duracaoMinutos}:#{provaBean.duracaoSegundos}"/>
-                    <p:poll interval="1" listener="#{provaBean.iniciarContadorProva()}" update="duracaoProva" />
+                    <h:outputText id="duracaoProva" value="#{provaBean.prova.duracao}"/>
                 </div>
             </div>
             <div class="row">
