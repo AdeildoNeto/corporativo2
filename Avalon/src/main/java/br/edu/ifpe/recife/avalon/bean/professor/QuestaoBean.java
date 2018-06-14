@@ -17,6 +17,8 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +28,13 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -153,6 +158,7 @@ public class QuestaoBean implements Serializable {
         componenteSelecionado = null;
         respostaVF = false;
         opcaoCorreta = null;
+        imagem = null;
 
         alternativas = new ArrayList<>();
         alt1 = new Alternativa();
@@ -433,20 +439,42 @@ public class QuestaoBean implements Serializable {
         exibirModalComponente = false;
     }
     
-    public void upload(FileUploadEvent event) {
-        setFile(event.getFile());
+    /**
+     * Inicializa o carregamento da imagem
+     * @param evento
+     */
+    public void upload(FileUploadEvent evento) {
+        setFile(evento.getFile());
     }
 
-    private void setFile(UploadedFile file) {
+    /**
+     * Insere os dados da imagem na questao
+     * @param img
+     */
+    private void setFile(UploadedFile img) {
         
-       // String fileNameUploaded = file.getFileName();
-       // long fileSizeUploaded = file.getSize();
-        imagem = new Imagem();//questao.criarImagem();
-        imagem.setArquivo(file.getContents());
-        imagem.setExtensao(file.getContentType());
-        imagem.setNome(file.getFileName());
+        imagem = new Imagem();
+        imagem.setArquivo(img.getContents());
+        imagem.setExtensao(img.getContentType());
+        imagem.setNome(img.getFileName());
         questao.setImagem(imagem);       
-        //questao.setImagem(file.getContents());
+    }
+    
+    /**
+     * Recupera a imagem para ser exibida
+     * @return arquivo
+     * @throws IOException
+     */
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        }
+        else {           
+           DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
+            return arquivo;
+        }
     }
 
     /*

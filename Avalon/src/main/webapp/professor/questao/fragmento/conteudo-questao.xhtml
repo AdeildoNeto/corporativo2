@@ -13,7 +13,7 @@ and open the template in the editor.
 
 
     <div class="row">
-        <div class="col-md-4 form-group">
+        <div class="col-md-3 form-group">
             <div>
                 <p:outputLabel for="tipoQuestao" value="#{msg['label.tipo']}:" />
                 <div>
@@ -45,17 +45,21 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-         <div class="col-md-4 form-group">
-<!--            <p:fileUpload fileUploadListener="" 
-                          label="Procurar..." auto="true" />-->
+        <div class="col-md-5 form-group">
+            <!--            <p:fileUpload fileUploadListener="" 
+                                      label="Procurar..." auto="true" />-->
             <div>
                 <h:outputLabel for="arquivo" value="Imagem: " />
                 <div>
-                    <p:fileUpload id="arquivo" label="Arquivo" mode="advanced" fileLimit="1" fileLimitMessage="selecione uma única imagem"
+                    <p:fileUpload id="arquivo" label="Buscar..." mode="advanced" uploadLabel="Carregar" cancelLabel="Cancelar" fileLimit="1" fileLimitMessage="selecione uma única imagem"
                                   allowTypes="/(\.|\/)(png|jpg|jpeg)$/" invalidFileMessage="apenas arquivos png, jpg ou jpeg"
                                   sizeLimit="3145728" invalidSizeMessage="É permitida imagem de no máximo 3 MB"
-                                  fileUploadListener="#{questaoBean.upload}" />
+                                  fileUploadListener="#{questaoBean.upload}" update="@(.img)"/>
                 </div>
+            </div>
+            <div  id="exibirImg">
+                    <p:graphicImage class="img" value="#{questaoBean.image}" width="90px" height="90px">
+                    </p:graphicImage>              
             </div>
         </div>
     </div>
@@ -100,7 +104,9 @@ and open the template in the editor.
             <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />
             <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questao.compartilhada}"
                            offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" required="true" />
-        </div>
+        </div>        
     </div>
+    <div class="row">
 
+    </div>
 </ui:composition>

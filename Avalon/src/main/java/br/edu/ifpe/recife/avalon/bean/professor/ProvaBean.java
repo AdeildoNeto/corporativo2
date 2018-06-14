@@ -329,18 +329,22 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    /**
+     * Recupera arquivo para exibicao
+     * @return arquivo
+     * @throws IOException
+     */
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
         }
         else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
             Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
-            return new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
+            DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
+            return arquivo;
         }
     }
 
