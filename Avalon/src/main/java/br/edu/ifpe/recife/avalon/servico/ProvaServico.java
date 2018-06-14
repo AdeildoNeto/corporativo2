@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.servico;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -119,13 +120,15 @@ public class ProvaServico {
      * São provas disponíveis todas as provas que tenham data/hora início maior
      * ou igual a data/hora atual e data/hora fim menor que a data/hora atual.
      *
+     * @param aluno
      * @return provas
      */
-    public List<Prova> buscarProvasDisponiveis() {
+    public List<Prova> buscarProvasDisponiveis(@NotNull Usuario aluno) {
         TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorDisponibilidade",
                 Prova.class);
 
         query.setParameter("dataHoraAtual", Calendar.getInstance().getTime());
+        query.setParameter("idAluno", aluno.getId());
 
         return query.getResultList();
     }

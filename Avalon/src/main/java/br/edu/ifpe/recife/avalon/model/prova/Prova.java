@@ -40,7 +40,9 @@ import javax.validation.constraints.Size;
             @NamedQuery(
                     name = "Prova.PorDisponibilidade",
                     query = "Select p from Prova p where p.ativa = true "
-                            + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim"
+                            + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim "
+                            + "AND (SELECT pa.id FROM ProvaAluno pa WHERE p.id = pa.prova.id "
+                            + "AND pa.aluno.id = :idAluno) IS NULL"
             ),
             @NamedQuery(
                     name = "Prova.PorProfessor",
