@@ -15,6 +15,7 @@ import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
+import br.edu.ifpe.recife.avalon.util.Duracao;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
@@ -66,6 +67,8 @@ public class ProvaBean implements Serializable {
     private final ComponenteCurricularViewHelper componenteViewHelper;
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
+    private long duracaoMinutos;
+    private long duracaoSegundos;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     private Usuario usuarioLogado;
@@ -78,7 +81,7 @@ public class ProvaBean implements Serializable {
     private Prova prova;
     private String titulo;
     private String headerModalTitulo;
-
+   
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
      */
@@ -114,6 +117,7 @@ public class ProvaBean implements Serializable {
     public String iniciarPaginaDetalhar(Prova provaSelecionada){
         prova = provaSelecionada;
         carregarQuestoesDetalhar();
+        prepararContador();
         return GO_DETALHAR_PROVA;
     }
     
@@ -328,6 +332,27 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    public void prepararContador(){
+        
+        duracaoMinutos = prova.getDuracao() -1;
+        duracaoSegundos = 59;
+        
+    }
+    
+    public void iniciarContadorProva(){
+     
+       if(duracaoSegundos == 0)
+       {
+           duracaoSegundos = 60;
+           duracaoMinutos--;
+       }else
+       {
+           duracaoSegundos--;
+       }
+        
+       
+    }
+    
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -405,6 +430,37 @@ public class ProvaBean implements Serializable {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
+    /**
+     * @return the duracaoMinutos
+     */
+    public long getDuracaoMinutos() {
+        return duracaoMinutos;
+    }
+
+    /**
+     * @param duracaoMinutos the duracaoMinutos to set
+     */
+    public void setDuracaoMinutos(long duracaoMinutos) {
+        this.duracaoMinutos = duracaoMinutos;
+    }
+
+    /**
+     * @return the duracaoSegundos
+     */
+    public long getDuracaoSegundos() {
+        return duracaoSegundos;
+    }
+
+    /**
+     * @param duracaoSegundos the duracaoSegundos to set
+     */
+    public void setDuracaoSegundos(long duracaoSegundos) {
+        this.duracaoSegundos = duracaoSegundos;
+    }
+   
+
+   
     
     
 }
