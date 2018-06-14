@@ -129,7 +129,7 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     private void bucarProvasDisponiveis() {
-        provasDisponiveis = provaServico.buscarProvasDisponiveis();
+        provasDisponiveis = provaServico.buscarProvasDisponiveis(usuarioLogado);
     }
 
     public String iniciarProva() {
