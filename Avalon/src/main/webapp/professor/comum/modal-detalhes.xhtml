@@ -23,12 +23,22 @@ and open the template in the editor.
                     <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
                         <div class="container-enunciado break-white-space">
-                            <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />
+                            <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />                          
                             <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
                                 <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
                             </p:outputPanel>
                         </div>
                     </p:outputPanel>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">                  
+                    <ui:fragment rendered="#{bean.detalhesViewHelper.questaoDetalhes.imagem != null}">
+                        <label for="detalhesAnexoQuestao">#{msg['label.imagem']}: </label>
+                        <p:graphicImage value="#{provaBean.image}" width="25px" height="25px">
+                            <f:param name="questaoId" value="#{bean.detalhesViewHelper.questaoDetalhes.id}"/>
+                        </p:graphicImage>
+                    </ui:fragment>
                 </div>
             </div>
             <div class="row">
