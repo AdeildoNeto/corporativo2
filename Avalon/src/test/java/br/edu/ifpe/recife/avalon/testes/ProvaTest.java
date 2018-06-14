@@ -10,7 +10,6 @@ import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -91,13 +90,13 @@ public class ProvaTest {
         
         provaServico.salvar(prova);
         
-        assertNotNull(prova.getId());
+        assertTrue(prova.getId() > 0);
     }
     
     @Test
     public void t02_buscarPorDisponibilidade(){
         logger.info("Executando t02: buscarPorDisponibilidade");
-        List<Prova> lista = provaServico.buscarProvasDisponiveis();
+        List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         
         assertTrue(!lista.isEmpty());
     }
@@ -188,6 +187,7 @@ public class ProvaTest {
         logger.info("Executando t11: criticarProvaPeriodoDisponibilidade");
         Prova prova = new Prova();
         prova = preencherNovaProva(prova);
+        prova.setDataHoraInicio(Calendar.getInstance().getTime());
         prova.setDataHoraFim(Calendar.getInstance().getTime());
         
         provaServico.salvar(prova);
@@ -222,8 +222,9 @@ public class ProvaTest {
         prova.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         prova.setTitulo("Teste Simulado.");
         prova.setDataCriacao(calendar.getTime());
+        calendar.add(Calendar.HOUR, -30);
         prova.setDataHoraInicio(calendar.getTime());
-        calendar.add(Calendar.HOUR, 1);
+        calendar.add(Calendar.HOUR, 60);
         prova.setDataHoraFim(calendar.getTime());
         prova.setDuracao(60l);
         

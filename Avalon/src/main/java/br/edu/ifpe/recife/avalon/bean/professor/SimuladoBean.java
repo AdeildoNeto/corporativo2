@@ -159,6 +159,7 @@ public class SimuladoBean implements Serializable {
      * Limpa os campos da tela gerar simulado.
      */
     private void limparTelaGerarSimulado() {
+        simulado = new Simulado();
         todosSelecionados = false;
         questoesSelecionadas.clear();
         questoes.clear();

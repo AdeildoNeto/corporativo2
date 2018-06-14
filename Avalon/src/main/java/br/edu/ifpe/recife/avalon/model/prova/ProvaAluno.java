@@ -9,6 +9,7 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,11 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,7 +44,7 @@ public class ProvaAluno implements Serializable {
 
     @NotNull(message = "{prova.obrigatoria}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_PROVA", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_PROVA", referencedColumnName = "ID_PROVA")
     private Prova prova;
     
     @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
@@ -59,13 +57,12 @@ public class ProvaAluno implements Serializable {
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_PROVA_ALUNO_QUESTOES", joinColumns = {
-        @JoinColumn(name = "ID_PROVA")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "ID_QUESTAO")
-            })
+    @OneToMany(mappedBy = "provaAluno", fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ProvaAlunoQuestao> questoesAluno;
+    
+    @Column(name = "VL_NOTA")
+    private double nota;
 
     public Long getId() {
         return id;
@@ -113,6 +110,14 @@ public class ProvaAluno implements Serializable {
 
     public void setQuestoesAluno(List<ProvaAlunoQuestao> questoesAluno) {
         this.questoesAluno = questoesAluno;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
     }
     
 }

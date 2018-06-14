@@ -48,8 +48,9 @@ and open the template in the editor.
                             </p:commandLink>
                             <p:commandLink class="btnExcluir"
                                            action="#{provaBean.selecionarProvaExclusao(prova)}"
+                                           update="formModalExcluir"
                                            onclick="PF('block').show();"
-                                           oncomplete="PF('block').hide(); PF('modalExclusao').show();">
+                                           oncomplete="PF('block').hide();">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
                         </h:column>
@@ -87,10 +88,13 @@ and open the template in the editor.
 
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
+                             visible="#{provaBean.exibirModalExclusao}" 
                              header="#{msg['modal.header.excluir']}" severity="alert"
-                             widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide()" type="button" styleClass="btn btn-secondary" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{provaBean.excluirProva()}" update="form" styleClass="btn btn-primary" />
+                             closeOnEscape="true">
+                <p:commandButton value="#{msg['btn.nao']}" action="#{provaBean.fecharModalExclusao()}"
+                                 styleClass="btn btn-secondary" update="formModalExcluir form" process="@this" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{provaBean.excluirProva()}"
+                                 update="form formModalExcluir" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>
     </ui:define>

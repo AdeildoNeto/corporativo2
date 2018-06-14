@@ -5,8 +5,9 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
-import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAlunoQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
@@ -42,9 +44,10 @@ public class ProvaAlunoBean implements Serializable {
     private static final String GO_INICIAR_PROVA = "goIniciarProva";
     private static final String GO_LISTAR_PROVAS = "goListarProvas";
     private static final String USUARIO = "usuario";
-    private static final String PROVA_QUESTOES_OBRIGATORIAS = "";
+    private static final String PROVA_QUESTOES_EM_BRANCO = "prova.mensagem.questoes.em.branco";
+    private static final String PROVA_FINALIZAR = "prova.mensagem.finalizar";
     private static final String OBSERVACAO_TEMPO = "prova.observacao.tempo";
-    
+
     @EJB
     private QuestaoServico questaoServico;
 
@@ -55,13 +58,16 @@ public class ProvaAlunoBean implements Serializable {
     private final Usuario usuarioLogado;
 
     private Prova prova;
+    private ProvaAluno provaAluno = new ProvaAluno();
     private List<Prova> provasDisponiveis = new ArrayList<>();
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
     private boolean exibirModalResultado;
     private boolean exibirModalIniciar;
+    private boolean exibirModalFinalizar;
     private String resultado;
     private String observacaoDuracao;
+    private String msgConfirmarFinalizacao;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -100,7 +106,7 @@ public class ProvaAlunoBean implements Serializable {
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
                 exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
-            }else{
+            } else {
                 carregarObservacoes();
                 abrirModalIniciar();
             }
@@ -121,75 +127,118 @@ public class ProvaAlunoBean implements Serializable {
         questoesVerdadeiroFalso.clear();
         questoesMultiplaEscolha.clear();
     }
-    
-    private void bucarProvasDisponiveis(){
-        provasDisponiveis = provaServico.buscarProvasDisponiveis();
+
+    private void bucarProvasDisponiveis() {
+        provasDisponiveis = provaServico.buscarProvasDisponiveis(usuarioLogado);
     }
-    
-    public String iniciarProva(){
+
+    public String iniciarProva() {
+        provaAluno.setAluno(usuarioLogado);
+        provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+        provaAluno.setProva(prova);
+        fecharModalFinalizar();
         return GO_INICIAR_PROVA;
     }
-    
-    private void abrirModalIniciar(){
+
+    private void abrirModalIniciar() {
         exibirModalIniciar = true;
     }
-    
-    public void fecharModalIniciar(){
+
+    public void fecharModalIniciar() {
         exibirModalIniciar = false;
     }
-    
-    private void carregarObservacoes(){
+
+    private void carregarObservacoes() {
         observacaoDuracao = MessageFormat.format(AvalonUtil.getInstance().getMensagem(OBSERVACAO_TEMPO), prova.getDuracao());
     }
-    
+
+    public void verificarQuestoesEmBranco() {
+        exibirModalFinalizar = true;
+        
+        if (!questoesVerdadeiroFalso.isEmpty() && verificarTodasQuestoesPreenchidasVF()
+                || !questoesMultiplaEscolha.isEmpty() && verificarTodasQuestoesPreenchidasMS()){
+            msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_QUESTOES_EM_BRANCO);
+        }else{
+            msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_FINALIZAR);
+        }
+    }
+
     /**
      * Método para finalizar o simulado.
      */
-    public void finalizar() {
+    public String finalizar() {
         double nota;
-        
-        try {
-            if (!questoesVerdadeiroFalso.isEmpty()) {
-                verificarTodasQuestoesPreenchidasVF();
-            } else {
-                verificarTodasQuestoesPreenchidasMS();
-            }
+        preencherRespostas();
 
-            nota = calcularResultado();
-            //salvar resultado da prova
-        } catch (ValidacaoException ex) {
-            exibirMensagemError(ex.getMessage());
+        nota = calcularNota();
+        provaAluno.setNota(nota);
+        provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
+        provaServico.salvarProvaAluno(provaAluno);
+        
+        //salvar resultado da prova
+
+        return GO_LISTAR_PROVAS;
+    }
+    
+    public void preencherRespostas(){
+        List<ProvaAlunoQuestao> questoes = new ArrayList<>();
+        
+        if(!questoesMultiplaEscolha.isEmpty()){
+            for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+                ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+                questaoAluno.setProvaAluno(provaAluno);
+                questaoAluno.setQuestao(questao);
+                questaoAluno.setRespostaMultiplaEscolha(questao.getRespostaUsuario());
+                questoes.add(questaoAluno);
+            }
+        }else if(!questoesVerdadeiroFalso.isEmpty()){
+            for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
+                ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+                questaoAluno.setProvaAluno(provaAluno);
+                questaoAluno.setQuestao(questao);
+                questaoAluno.setRespostaVF(questao.getRespostaUsuario());
+                questoes.add(questaoAluno);
+            }
         }
+        
+        provaAluno.setQuestoesAluno(questoes);
     }
 
     /**
      * Método para verificar se todas as questões V/F foram preenchidas.
-     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
+     *
+     * @return
      */
-    public void verificarTodasQuestoesPreenchidasVF() throws ValidacaoException {
+    public boolean verificarTodasQuestoesPreenchidasVF(){
         for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
             if (questao.getRespostaUsuario() == null) {
-                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(PROVA_QUESTOES_OBRIGATORIAS));
+                return true;
             }
         }
+        
+        return false;
     }
 
     /**
-     * Método para verificar se todas as questões de múltipla escolha foram preenchidas.
-     * @throws ValidacaoException 
+     * Método para verificar se todas as questões de múltipla escolha foram
+     * preenchidas.
+     *
+     * @return 
      */
-    public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
+    public boolean verificarTodasQuestoesPreenchidasMS() {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
             if (questao.getRespostaUsuario() == null) {
-                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(PROVA_QUESTOES_OBRIGATORIAS));
+                return true;
             }
         }
+        
+        return false;
     }
 
     /**
      * Método para calcular a porcentagem de acerto do aluno no simulado.
      */
-    private double calcularResultado() {
+    private double calcularNota() {
         double quantidadeQuestoes;
         double respostasCertas;
 
@@ -200,8 +249,8 @@ public class ProvaAlunoBean implements Serializable {
             quantidadeQuestoes = questoesMultiplaEscolha.size();
             respostasCertas = verificarRespostasMS();
         }
-        
-        return (respostasCertas / quantidadeQuestoes);
+
+        return (respostasCertas / quantidadeQuestoes) * 10.0;
     }
 
     /**
@@ -249,6 +298,10 @@ public class ProvaAlunoBean implements Serializable {
         exibirModalResultado = false;
         return iniciarPagina();
     }
+    
+    public void fecharModalFinalizar(){
+        exibirModalFinalizar = false;
+    }
 
     /**
      * Método para exibir mensagem de erro.
@@ -259,22 +312,21 @@ public class ProvaAlunoBean implements Serializable {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
-    
+
     public StreamedContent getImagem() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
-        }
-        else {
+        } else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
             Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
             return new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
         }
     }
-    
+
     public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {
         return questoesMultiplaEscolha;
     }
@@ -305,6 +357,14 @@ public class ProvaAlunoBean implements Serializable {
 
     public String getObservacaoDuracao() {
         return observacaoDuracao;
+    }
+
+    public boolean isExibirModalFinalizar() {
+        return exibirModalFinalizar;
+    }
+
+    public String getMsgConfirmarFinalizacao() {
+        return msgConfirmarFinalizacao;
     }
     
 }
