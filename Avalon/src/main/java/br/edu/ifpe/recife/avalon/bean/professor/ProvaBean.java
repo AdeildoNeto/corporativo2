@@ -297,6 +297,7 @@ public class ProvaBean implements Serializable {
         String navegacao = null;
 
         try {
+            prova.setTitulo(titulo);
             prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
             prova.setDataCriacao(Calendar.getInstance().getTime());
             prova.setProfessor(usuarioLogado);
