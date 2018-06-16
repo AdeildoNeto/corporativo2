@@ -568,24 +568,31 @@ div.img img{
     transform: rotate(90deg);
 }
 
-.ui-fileupload-buttonbar button {       
-        border-color: #007bff;/*Only an example*/
-        border: 4px;
-        border-style: solid;
-        border-width: 1px;
+.ui-fileupload-buttonbar span {       
         border-radius: .25rem;
         color: #fff;
         cursor: pointer;
-        width: 150px !important;
         font-weight: 400 !important;
         padding: .375rem .75rem;
         
 }
 
-.ui-fileupload-buttonbar .ui-fileupload-upload {
+.ui-fileupload-buttonbar .ui-fileupload-choose {
     background-color: #19882c;
 }
 
 .ui-fileupload-buttonbar .ui-fileupload-cancel {
     background-color: #6c757d !important;
+}
+
+.ui-fileupload-content .ui-fileupload-files{
+    display: none;
+}
+
+#btnCancelarImg commandButton{
+    background-color: white !important;
+    
+}
+.ui-fileupload-content .ui-messages-error-detail{
+    display: none;
 }

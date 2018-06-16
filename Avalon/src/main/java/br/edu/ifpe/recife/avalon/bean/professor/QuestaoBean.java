@@ -460,6 +460,10 @@ public class QuestaoBean implements Serializable {
         questao.setImagem(imagem);       
     }
     
+    public Imagem getArquivo() {
+        return imagem;    
+    }
+    
     /**
      * Recupera a imagem para ser exibida
      * @return arquivo
@@ -473,8 +477,18 @@ public class QuestaoBean implements Serializable {
         }
         else {           
            DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
-            return arquivo;
+           return arquivo;
         }
+    }
+    
+    /**
+     * cancela a insercao da imagem
+     *
+     * 
+     */
+    public void limparImagem() {
+        imagem=null;
+        questao.setImagem(imagem);
     }
 
     /*
