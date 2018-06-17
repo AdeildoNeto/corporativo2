@@ -84,9 +84,9 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para iniciar a página de geração de prova.
+     * Inicia a página listar simulados disponíveis.
      *
-     * @return rota para página de geração de prova
+     * @return rota
      */
     public String iniciarPagina() {
         componenteViewHelper.inicializar(componenteCurricularServico);
@@ -97,7 +97,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para iniciar um novo Simulado.
+     * Inicia um novo Simulado.
      *
      * @param simulado
      * @return navegacao
@@ -114,7 +114,7 @@ public class SimuladoAlunoBean implements Serializable {
             }
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
-                exibirMensagemError(AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
+                exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
                 return null;
             }
         }
@@ -123,14 +123,14 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para limpar os campos da tela listar simulados.
+     * Limpa os campos da tela listar simulados.
      */
     private void limparTela() {
         pesquisarSimuladoViewHelper.limparFiltro();
     }
 
     /**
-     * Método para limpar a tela do simulado.
+     * Limpa os campos da tela do simulado.
      */
     private void limparTelaSimulado() {
         questoesVerdadeiroFalso.clear();
@@ -138,17 +138,17 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para pesquisar os simulados disponíveis.
+     * Pesquisa os simulados disponíveis.
      */
     public void pesquisar() {
         simulados = pesquisarSimuladoViewHelper.pesquisar();
         if (simulados.isEmpty()) {
-            exibirMensagemPesquisaSemDados();
+            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem(PESQUISA_SEM_DADOS));
         }
     }
 
     /**
-     * Método para finalizar o simulado.
+     * Finaliza o simulado.
      */
     public void finalizar() {
         try {
@@ -161,12 +161,13 @@ public class SimuladoAlunoBean implements Serializable {
             calcularResultado();
             exibirModalResultado = true;
         } catch (ValidacaoException ex) {
-            exibirMensagemError(ex.getMessage());
+            exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
 
     /**
-     * Método para verificar se todas as questões V/F foram preenchidas.
+     * Verificar se todas as questões V/F foram preenchidas.
+     * 
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
     public void verificarTodasQuestoesPreenchidasVF() throws ValidacaoException {
@@ -178,7 +179,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para verificar se todas as questões de múltipla escolha foram preenchidas.
+     * Verifica se todas as questões de múltipla escolha foram preenchidas.
      * @throws ValidacaoException 
      */
     public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
@@ -190,7 +191,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para calcular a porcentagem de acerto do aluno no simulado.
+     * Calcula a proporção de acerto de questões do aluno no simulado.
      */
     private void calcularResultado() {
         int quantidadeQuestoes;
@@ -208,7 +209,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para verificar a quantidade de acertos do usúario em questões de
+     * Verifica a quantidade de acertos do usúario em questões de
      * V/F.
      *
      * @return quantidade de acertos
@@ -226,7 +227,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para verificar a quantidade de acertos do usuário em questões de
+     * Verifica a quantidade de acertos do usuário em questões de
      * múltipla escolha.
      *
      * @return quantidade de acertos
@@ -244,7 +245,7 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para fechar o modal de resultado.
+     * Fecha o modal de resultado.
      *
      * @return navegacao
      */
@@ -254,23 +255,21 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Método para exibição de mensagem "Pesquisa sem dados".
-     */
-    private void exibirMensagemPesquisaSemDados() {
-        FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem(PESQUISA_SEM_DADOS), null);
-        FacesContext.getCurrentInstance().addMessage(null, mensagem);
-    }
-
-    /**
-     * Método para exibir mensagem de erro.
+     * Exibi uma mensagem.
      *
      * @param mensagem - mensagem a ser exibida.
      */
-    private void exibirMensagemError(String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
+    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
+        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
     
+    /**
+     * Recupera a imagem de uma questão.
+     * 
+     * @return
+     * @throws IOException 
+     */
     public StreamedContent getImagem() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 

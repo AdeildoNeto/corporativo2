@@ -7,13 +7,17 @@ package br.edu.ifpe.recife.avalon.testes;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAlunoQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +41,8 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProvaTest {
+    
+    private static final String EMAIL_PROFESSOR = "teste@gmail.com";
     
     private static EJBContainer container;
     
@@ -96,7 +102,7 @@ public class ProvaTest {
     @Test
     public void t02_buscarPorDisponibilidade(){
         logger.info("Executando t02: buscarPorDisponibilidade");
-        List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
         
         assertTrue(!lista.isEmpty());
     }
@@ -116,7 +122,7 @@ public class ProvaTest {
         logger.info("Executando t04: criticarProvaSemTitulo");
         Prova prova = new Prova();
         
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setTitulo(null);
         
         provaServico.salvar(prova);
@@ -126,7 +132,7 @@ public class ProvaTest {
     public void t05_criticarProvaSemProfessor() throws ValidacaoException{
         logger.info("Executando t05: criticarProvaSemProfessor");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setProfessor(null);
         
         provaServico.salvar(prova);
@@ -136,7 +142,7 @@ public class ProvaTest {
     public void t06_criticarProvaSemComponenteCurricular() throws ValidacaoException{
         logger.info("Executando t06: criticarProvaSemComponenteCurricular");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setComponenteCurricular(null);
         
         provaServico.salvar(prova);
@@ -146,7 +152,7 @@ public class ProvaTest {
     public void t07_criticarProvaSemDataInicio() throws ValidacaoException{
         logger.info("Executando t07: criticarProvaSemDataInicio");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setDataHoraInicio(null);
         
         provaServico.salvar(prova);
@@ -156,7 +162,7 @@ public class ProvaTest {
     public void t08_criticarProvaSemDataFim() throws ValidacaoException{
         logger.info("Executando t08: criticarProvaSemDataFim");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setDataHoraFim(null);
         
         provaServico.salvar(prova);
@@ -165,7 +171,7 @@ public class ProvaTest {
     @Test
     public void t09_buscarPorProfessor(){
         logger.info("Executando t09: buscarPorProfessor");
-        List<Prova> lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+        List<Prova> lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
         
         assertTrue(!lista.isEmpty());
     }
@@ -176,17 +182,17 @@ public class ProvaTest {
         Prova prova = new Prova();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setDataHoraInicio(calendar.getTime());
         
         provaServico.salvar(prova);
     }
     
     @Test(expected = ValidacaoException.class)
-    public void t11_criticarProvaPeriodoDisponibilidade() throws ValidacaoException{
-        logger.info("Executando t11: criticarProvaPeriodoDisponibilidade");
+    public void t11_criticarProvaPeriodoDisponibilidadeMinima() throws ValidacaoException{
+        logger.info("Executando t11: criticarProvaPeriodoDisponibilidadeMinima");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        preencherNovaProva(prova);
         prova.setDataHoraInicio(Calendar.getInstance().getTime());
         prova.setDataHoraFim(Calendar.getInstance().getTime());
         
@@ -194,37 +200,116 @@ public class ProvaTest {
     }
     
     @Test(expected = ValidacaoException.class)
-    public void t12_criticarProvaDuracaoMinima() throws ValidacaoException{
-        logger.info("Executando t12: criticarProvaDuracaoMinima");
+    public void t12_criticarProvaPeriodoDisponibilidade() throws ValidacaoException{
+        logger.info("Executando t12: criticarProvaPeriodoDisponibilidade");
         Prova prova = new Prova();
-        prova = preencherNovaProva(prova);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, 7);
+        preencherNovaProva(prova);
+        prova.setDataHoraInicio(Calendar.getInstance().getTime());
+        prova.setDataHoraFim(calendar.getTime());
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t13_criticarProvaDuracaoMinima() throws ValidacaoException{
+        logger.info("Executando t13: criticarProvaDuracaoMinima");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
         prova.setDuracao(1l);
         
         provaServico.salvar(prova);
     }
     
+    @Test(expected = ValidacaoException.class)
+    public void t14_criticarProvaDuracaoMaxima() throws ValidacaoException{
+        logger.info("Executando t14: criticarProvaDuracaoMinima");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
+        prova.setDuracao(301l);
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = EJBException.class)
+    public void t15_salvarProvaAlunoSemProva() throws ValidacaoException{
+        logger.info("Executando t15: salvarProvaAlunoSemProva");
+        ProvaAluno provaAluno = new ProvaAluno();
+        preencherProvaAluno(provaAluno);
+        provaAluno.setProva(null);
+        
+        provaServico.salvarProvaAluno(provaAluno);
+    }
+    
+    @Test(expected = EJBException.class)
+    public void t16_salvarProvaAlunoSemAluno() throws ValidacaoException{
+        logger.info("Executando t16: salvarProvaAlunoSemAluno");
+        ProvaAluno provaAluno = new ProvaAluno();
+        preencherProvaAluno(provaAluno);
+        provaAluno.setAluno(null);
+        
+        provaServico.salvarProvaAluno(provaAluno);
+    }
+    
+    @Test(expected = EJBException.class)
+    public void t17_salvarProvaAlunoSemDHInicio() throws ValidacaoException{
+        logger.info("Executando t17: salvarProvaAlunoSemDHInicio");
+        ProvaAluno provaAluno = new ProvaAluno();
+        preencherProvaAluno(provaAluno);
+        provaAluno.setDataHoraInicio(null);
+        
+        provaServico.salvarProvaAluno(provaAluno);
+    }
+    
+    @Test(expected = EJBException.class)
+    public void t18_salvarProvaAlunoSemDHFim() throws ValidacaoException{
+        logger.info("Executando t18: salvarProvaAlunoSemDHFim");
+        ProvaAluno provaAluno = new ProvaAluno();
+        preencherProvaAluno(provaAluno);
+        provaAluno.setDataHoraFim(null);
+        
+        provaServico.salvarProvaAluno(provaAluno);
+    }
+    
     @Test
-    public void t13_excluirProva(){
-        logger.info("Executando t13: excluirProva");
-        List<Prova> lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+    public void t19_salvarProvaAluno() throws ValidacaoException{
+        logger.info("Executando t19: salvarProvaAluno");
+        ProvaAluno provaAluno = new ProvaAluno();
+        preencherProvaAluno(provaAluno);
+        
+        provaServico.salvarProvaAluno(provaAluno);
+    }
+    
+    @Test
+    public void t20_validarProvaNaoRepeticao() throws ValidacaoException{
+        logger.info("Executando t20: validarProvaNaoRepeticao");
+        List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
+        
+        assertTrue(lista.isEmpty());
+    }
+    
+    @Test
+    public void t99_excluirProva(){
+        logger.info("Executando t99: excluirProva");
+        List<Prova> lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
         int size = lista.size();
         
         provaServico.excluir(lista.get(0));
-        lista = provaServico.buscarProvasPorProfessor("teste@gmail.com");
+        lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
         
         assertTrue(size - 1 == lista.size());
     }
     
-    private Prova preencherNovaProva(Prova prova){
+    private void preencherNovaProva(Prova prova){
         Calendar calendar = Calendar.getInstance();
         
         prova.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        prova.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        prova.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
         prova.setTitulo("Teste Simulado.");
         prova.setDataCriacao(calendar.getTime());
-        calendar.add(Calendar.HOUR, -30);
         prova.setDataHoraInicio(calendar.getTime());
-        calendar.add(Calendar.HOUR, 60);
+        calendar.add(Calendar.HOUR, 4);
         prova.setDataHoraFim(calendar.getTime());
         prova.setDuracao(60l);
         
@@ -236,8 +321,27 @@ public class ProvaTest {
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
         
         prova.setQuestoes(questoes);
+    }
+    
+    private void preencherProvaAluno(ProvaAluno provaAluno){
+        Usuario aluno = usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR);
+        Prova prova = provaServico.buscarProvasDisponiveis(aluno).get(0);
+        provaAluno.setAluno(aluno);
+        provaAluno.setProva(prova);
+        provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+        provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
+        provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
         
-        return prova;
+        for (Questao questao : prova.getQuestoes()) {
+            ProvaAlunoQuestao provaAlunoQuestao = new ProvaAlunoQuestao();
+            provaAlunoQuestao.setProvaAluno(provaAluno);
+            provaAlunoQuestao.setQuestao(questao);
+            provaAlunoQuestao.setRespostaVF(Boolean.TRUE);
+            provaAluno.getQuestoesAluno().add(provaAlunoQuestao);
+        }
+        
+        provaAluno.setNota(0.0);
+        
     }
     
 }

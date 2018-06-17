@@ -47,7 +47,7 @@ public class ProvaAluno implements Serializable {
     @JoinColumn(name = "ID_PROVA", referencedColumnName = "ID_PROVA")
     private Prova prova;
     
-    @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
+    @NotNull(message = "{prova.data.hora.inico.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_INICIO")
     private Date dataHoraInicio;
@@ -61,8 +61,9 @@ public class ProvaAluno implements Serializable {
             cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ProvaAlunoQuestao> questoesAluno;
     
+    @NotNull(message = "{prova.nota.obrigatoria}")
     @Column(name = "VL_NOTA")
-    private double nota;
+    private Double nota;
 
     public Long getId() {
         return id;
@@ -112,11 +113,11 @@ public class ProvaAluno implements Serializable {
         this.questoesAluno = questoesAluno;
     }
 
-    public double getNota() {
+    public Double getNota() {
         return nota;
     }
 
-    public void setNota(double nota) {
+    public void setNota(Double nota) {
         this.nota = nota;
     }
     

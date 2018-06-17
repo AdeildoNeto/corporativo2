@@ -8,6 +8,8 @@ package br.edu.ifpe.recife.avalon.servico;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
+import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
@@ -48,7 +50,13 @@ public class ProvaServico {
     private static final String QUESTOES_MINIMAS = "prova.questoes.minimas";
     private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
     private static final String DURACAO_MINIMA = "prova.duracao.minima";
+    private static final String DURACAO_MAXIMA = "prova.duracao.maxima";
     private static final String DISPONIBILIDADE_MINIMA = "prova.disponibilidade.minima";
+    private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";
+    private static final int PARAM_MIN_DISPONIBILIDADE_MINUTOS = 30;
+    private static final int PARAM_MAX_DISPONIBILIDADE_HORAS = 5;
+    private static final int PARAM_MIN_DURACAO = 30;
+    private static final int PARAM_MAX_DURACAO = 300;
 
     /**
      * Salva uma prova.
@@ -57,7 +65,8 @@ public class ProvaServico {
      * @throws ValidacaoException - quando o título já está em uso.
      */
     public void salvar(@Valid Prova prova) throws ValidacaoException {
-        validarPeriodoDuracao(prova);
+        validarDisponibilidade(prova);
+        validarDuracao(prova);
         validarQtdeQuestoesSelecionadas(prova);
         entityManager.persist(prova);
     }
@@ -75,7 +84,7 @@ public class ProvaServico {
     }
 
     /**
-     * Valida se ao menos duas questões adicionadas a prova.
+     * Valida se ao menos duas questões foram associadas à prova.
      *
      * @param prova
      * @throws ValidacaoException - lançada caso o número de questões
@@ -89,7 +98,16 @@ public class ProvaServico {
         }
     }
 
-    private void validarPeriodoDuracao(@Valid Prova prova) throws ValidacaoException {
+    /**
+     * Valida se o período de disponibilidade da prova.
+     * 
+     * @param prova
+     * @throws ValidacaoException - Lançada quando:
+     * A data de início da disponibilidade for maior que a data de fim.
+     * A disponiblidade for menor que 30 minutos.
+     * A dispobilidade for maior que 5 horas.
+     */
+    private void validarDisponibilidade(@Valid Prova prova) throws ValidacaoException {
         Calendar calendarInicio = Calendar.getInstance();
         Calendar calendarFim = Calendar.getInstance();
 
@@ -99,17 +117,45 @@ public class ProvaServico {
 
         calendarInicio.setTime(prova.getDataHoraInicio());
         calendarFim.setTime(prova.getDataHoraFim());
-        calendarInicio.add(Calendar.MINUTE, 30);
+        calendarInicio.add(Calendar.MINUTE, PARAM_MIN_DISPONIBILIDADE_MINUTOS);
 
         if (calendarInicio.after(calendarFim)) {
             throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MINIMA));
         }
-
-        if (prova.getDuracao() < 30) {
-            throw new ValidacaoException(getMensagemValidacao(DURACAO_MINIMA));
+        
+        calendarFim.setTime(prova.getDataHoraFim());
+        calendarInicio.setTime(prova.getDataHoraInicio());
+        calendarInicio.add(Calendar.HOUR, PARAM_MAX_DISPONIBILIDADE_HORAS);
+        
+        if(calendarInicio.before(calendarFim)){
+            throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MAXIMA));
         }
     }
     
+    /**
+     * Valida a duração da prova.
+     * 
+     * @param prova
+     * @throws ValidacaoException - Lançada quando:
+     * A duração definida for menor que 30 minutos.
+     * A duração definida for maior que 300 minutos.
+     */
+    private void validarDuracao(@Valid Prova prova) throws ValidacaoException {
+        if (prova.getDuracao() < PARAM_MIN_DURACAO) {
+            throw new ValidacaoException(getMensagemValidacao(DURACAO_MINIMA));
+        }
+        
+        if(prova.getDuracao() > PARAM_MAX_DURACAO){
+            throw new ValidacaoException(getMensagemValidacao(DURACAO_MAXIMA));
+        }
+    }
+    
+    /**
+     * Recupera uma mensagem de validação.
+     * 
+     * @param key - chave definida para a mensagem.
+     * @return mensagem.
+     */
     private String getMensagemValidacao(String key){
         return AvalonUtil.getInstance().getMensagemValidacao(key);
     }
@@ -148,7 +194,76 @@ public class ProvaServico {
         return query.getResultList();
     }
 
+    /**
+     * Registra a prova realizada pelo aluno.
+     * 
+     * @param provaAluno 
+     */
     public void salvarProvaAluno(@Valid ProvaAluno provaAluno){
         entityManager.persist(provaAluno);
+    }
+    
+    /**
+     * Calcula a nota obtida pelo aluno de acordo com a quantidade
+     * de questões de verdadeiro ou falso corretas.
+     * 
+     * @param questoesVerdadeiroFalso
+     * @return nota obtida pelo aluno.
+     */
+    public double calcularNotaVF(List<VerdadeiroFalso> questoesVerdadeiroFalso){
+        double quantidadeQuestoes = questoesVerdadeiroFalso.size();
+        double respostasCertas = verificarRespostasVF(questoesVerdadeiroFalso);
+        
+        return (respostasCertas / quantidadeQuestoes) * 10;
+    }
+    
+    /**
+     * Calcula a nota obtida pelo aluno de acordo com a quantidade
+     * de questões de múltipla escolha corretas.
+     * 
+     * @param questoesMultiplaEscolha
+     * @return nota obtida pelo aluno.
+     */
+    public double calcularNotaMS(List<MultiplaEscolha> questoesMultiplaEscolha){
+        double quantidadeQuestoes = questoesMultiplaEscolha.size();
+        double respostasCertas = verificarRespostasMS(questoesMultiplaEscolha);
+        
+        return (respostasCertas / quantidadeQuestoes) * 10;
+    }
+    
+    /**
+     * Verificar a quantidade de acertos do aluno em questões de
+     * V/F.
+     *
+     * @return quantidade de acertos
+     */
+    private double verificarRespostasVF(List<VerdadeiroFalso> questoesVerdadeiroFalso) {
+        double quantidadeAcertos = 0;
+
+        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
+            if (questao.getResposta().equals(questao.getRespostaUsuario())) {
+                quantidadeAcertos++;
+            }
+        }
+
+        return quantidadeAcertos;
+    }
+
+    /**
+     * Verifica a quantidade de acertos do aluno em questões de
+     * múltipla escolha.
+     *
+     * @return quantidade de acertos
+     */
+    private double verificarRespostasMS(List<MultiplaEscolha> questoesMultiplaEscolha) {
+        double quantidadeAcertos = 0;
+
+        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+            if (questao.getOpcaoCorreta().equals(questao.getRespostaUsuario())) {
+                quantidadeAcertos++;
+            }
+        }
+
+        return quantidadeAcertos;
     }
 }

@@ -62,7 +62,6 @@ public class ProvaAlunoBean implements Serializable {
     private List<Prova> provasDisponiveis = new ArrayList<>();
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
-    private boolean exibirModalResultado;
     private boolean exibirModalIniciar;
     private boolean exibirModalFinalizar;
     private String resultado;
@@ -95,7 +94,7 @@ public class ProvaAlunoBean implements Serializable {
      * @param provaSelecionada
      */
     public void selecionarProva(Prova provaSelecionada) {
-        limparTelaSimulado();
+        limparTelaProva();
         prova = provaSelecionada;
 
         if (!prova.getQuestoes().isEmpty()) {
@@ -115,24 +114,33 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para limpar os campos da tela listar simulados.
+     * Limpa os campos da tela listar provas disponíveis.
      */
     private void limparTela() {
         fecharModalIniciar();
     }
 
     /**
-     * Método para limpar a tela do simulado.
+     * Inicializa os objetos necessários para a realização da prova.
      */
-    private void limparTelaSimulado() {
+    private void limparTelaProva() {
+        provaAluno = new ProvaAluno();
         questoesVerdadeiroFalso.clear();
         questoesMultiplaEscolha.clear();
     }
 
+    /**
+     * Consulta todas as provas disponíveis.
+     */
     private void bucarProvasDisponiveis() {
         provasDisponiveis = provaServico.buscarProvasDisponiveis(usuarioLogado);
     }
 
+    /**
+     * Inicializa os componentes necessários para realização da prova.
+     * 
+     * @return 
+     */
     public String iniciarProva() {
         prepararContador();
 
@@ -143,18 +151,30 @@ public class ProvaAlunoBean implements Serializable {
         return GO_INICIAR_PROVA;
     }
 
+    /**
+     * Abri o modal para iniciar prova.
+     */
     private void abrirModalIniciar() {
         exibirModalIniciar = true;
     }
 
+    /**
+     * Fecha o modal de iniciar prova.
+     */
     public void fecharModalIniciar() {
         exibirModalIniciar = false;
     }
 
+    /**
+     * Carrega as observações sobre a prova.
+     */
     private void carregarObservacoes() {
         observacaoDuracao = MessageFormat.format(AvalonUtil.getInstance().getMensagem(OBSERVACAO_TEMPO), prova.getDuracao());
     }
 
+    /**
+     * Verifica se há questões que ainda não foram respondidas.
+     */
     public void verificarQuestoesEmBranco() {
         exibirModalFinalizar = true;
 
@@ -167,8 +187,8 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para finalizar o simulado.
-     * @return 
+     * Finaliza a prova.
+     * @return rota para listar provas disponíveis.
      */
     public String finalizar() {
         double nota;
@@ -182,6 +202,9 @@ public class ProvaAlunoBean implements Serializable {
         return iniciarPagina();
     }
 
+    /**
+     * Carrega as repostas do usuário no histórico da prova.
+     */
     public void preencherRespostas() {
         List<ProvaAlunoQuestao> questoes = new ArrayList<>();
 
@@ -207,7 +230,7 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para verificar se todas as questões V/F foram preenchidas.
+     * Verifica se todas as questões V/F foram respondidas.
      *
      * @return
      */
@@ -222,8 +245,8 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para verificar se todas as questões de múltipla escolha foram
-     * preenchidas.
+     * Verifica se todas as questões de múltipla escolha foram
+     * respondidas.
      *
      * @return
      */
@@ -238,75 +261,29 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para calcular a porcentagem de acerto do aluno no simulado.
+     * Calcula a nota do aluno na prova.
      */
     private double calcularNota() {
-        double quantidadeQuestoes;
-        double respostasCertas;
+        double nota;
 
-        if (!questoesVerdadeiroFalso.isEmpty()) {
-            quantidadeQuestoes = questoesVerdadeiroFalso.size();
-            respostasCertas = verificarRespostasVF();
+        if (!questoesMultiplaEscolha.isEmpty()) {
+            nota = provaServico.calcularNotaMS(questoesMultiplaEscolha);
         } else {
-            quantidadeQuestoes = questoesMultiplaEscolha.size();
-            respostasCertas = verificarRespostasMS();
+            nota = provaServico.calcularNotaVF(questoesVerdadeiroFalso);
         }
 
-        return (respostasCertas / quantidadeQuestoes) * 10.0;
+        return nota;
     }
 
     /**
-     * Método para verificar a quantidade de acertos do usúario em questões de
-     * V/F.
-     *
-     * @return quantidade de acertos
+     * Fecha o modal de finalizar prova.
      */
-    private double verificarRespostasVF() {
-        double quantidadeAcertos = 0;
-
-        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-            if (questao.getResposta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
-    }
-
-    /**
-     * Método para verificar a quantidade de acertos do usuário em questões de
-     * múltipla escolha.
-     *
-     * @return quantidade de acertos
-     */
-    private double verificarRespostasMS() {
-        double quantidadeAcertos = 0;
-
-        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-            if (questao.getOpcaoCorreta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
-    }
-
-    /**
-     * Método para fechar o modal de resultado.
-     *
-     * @return navegacao
-     */
-    public String fecharModalResultado() {
-        exibirModalResultado = false;
-        return iniciarPagina();
-    }
-
     public void fecharModalFinalizar() {
         exibirModalFinalizar = false;
     }
 
     /**
-     * Método para exibir mensagem de erro.
+     * Exibi uma mensagem de erro.
      *
      * @param mensagem - mensagem a ser exibida.
      */
@@ -314,25 +291,35 @@ public class ProvaAlunoBean implements Serializable {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
-
+    
+    /**
+     * Prepara o contador da duração da prova.
+     */
     public void prepararContador() {
-
-        setDuracaoMinutos(prova.getDuracao() - 1);
-        setDuracaoSegundos(59);
+        duracaoMinutos = prova.getDuracao() - 1;
+        duracaoSegundos = 59;
 
     }
 
+    /**
+     * Inicia a contagem da duração da prova.
+     */
     public void iniciarContadorProva() {
-
         if (getDuracaoSegundos() == 0) {
-            setDuracaoSegundos(59);
-            setDuracaoMinutos(getDuracaoMinutos() - 1);
+            duracaoSegundos = 59;
+            --duracaoMinutos;
         } else {
-            setDuracaoSegundos(getDuracaoSegundos() - 1);
+            --duracaoSegundos;
         }
 
     }
 
+    /**
+     * Recupera a imagem de uma questão.
+     * 
+     * @return
+     * @throws IOException
+     */
     public StreamedContent getImagem() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -353,10 +340,6 @@ public class ProvaAlunoBean implements Serializable {
 
     public List<VerdadeiroFalso> getQuestoesVerdadeiroFalso() {
         return questoesVerdadeiroFalso;
-    }
-
-    public boolean isExibirModalResultado() {
-        return exibirModalResultado;
     }
 
     public String getResultado() {
@@ -386,33 +369,13 @@ public class ProvaAlunoBean implements Serializable {
     public String getMsgConfirmarFinalizacao() {
         return msgConfirmarFinalizacao;
     }
-
-    /**
-     * @return the duracaoMinutos
-     */
+    
     public long getDuracaoMinutos() {
         return duracaoMinutos;
     }
-
-    /**
-     * @param duracaoMinutos the duracaoMinutos to set
-     */
-    public void setDuracaoMinutos(long duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
-    }
-
-    /**
-     * @return the duracaoSegundos
-     */
+    
     public long getDuracaoSegundos() {
         return duracaoSegundos;
     }
-
-    /**
-     * @param duracaoSegundos the duracaoSegundos to set
-     */
-    public void setDuracaoSegundos(long duracaoSegundos) {
-        this.duracaoSegundos = duracaoSegundos;
-    }
-
+    
 }
