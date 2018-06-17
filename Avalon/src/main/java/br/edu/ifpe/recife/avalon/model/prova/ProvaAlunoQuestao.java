@@ -5,7 +5,9 @@
  */
 package br.edu.ifpe.recife.avalon.model.prova;
 
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +49,14 @@ public class ProvaAlunoQuestao implements Serializable {
     @JoinColumn(name = "ID_PROVA_ALUNO", referencedColumnName = "ID_PROVA_ALUNO")
     private ProvaAluno provaAluno;
 
+    public boolean getRespostaCorreta(){
+        return ((VerdadeiroFalso) questao).getResposta();
+    }
+    
+    public Integer getAlternativaCorreta(){
+        return ((MultiplaEscolha) questao).getOpcaoCorreta();
+    }
+    
     public Long getId() {
         return id;
     }

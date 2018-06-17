@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
-import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -39,7 +38,7 @@ public class ResultadoAlunoBean implements Serializable {
     private static final String USUARIO = "usuario";
     private static final String GO_LISTAR_RESULTADO = "goListarResultados";
     private static final String GO_DETALHAR_RESULTADO = "goDetalharResultado";
-    
+
     @EJB
     private QuestaoServico questaoServico;
 
@@ -51,8 +50,7 @@ public class ResultadoAlunoBean implements Serializable {
 
     private List<ProvaAluno> provasResultados = new ArrayList<>();
     private ProvaAluno provaAlunoDetalhe = new ProvaAluno();
-    private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
-    private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
+    private boolean quetoesVF;
 
     /**
      * Cria uma nova instância de <code>ResultadoAlunoBean</code>.
@@ -62,8 +60,8 @@ public class ResultadoAlunoBean implements Serializable {
     }
 
     /**
-     * Inicia a página contendo todas as provas realizadas pelo aluno
-     * e seus respectivos resultados.
+     * Inicia a página contendo todas as provas realizadas pelo aluno e seus
+     * respectivos resultados.
      *
      * @return rota
      */
@@ -71,12 +69,12 @@ public class ResultadoAlunoBean implements Serializable {
         buscarProvasResultados();
         return GO_LISTAR_RESULTADO;
     }
-    
+
     /**
-     * Busca por todos as provas realizadas pelo aluon e seus
-     * respectivos resultados.
+     * Busca por todos as provas realizadas pelo aluon e seus respectivos
+     * resultados.
      */
-    private void buscarProvasResultados(){
+    private void buscarProvasResultados() {
         provasResultados = provaServico.buscarProvasResultados(usuarioLogado);
     }
 
@@ -87,32 +85,22 @@ public class ResultadoAlunoBean implements Serializable {
      * @return rota
      */
     public String iniciarPaginaDetalhar(ProvaAluno provaSelecionada) {
-        limparTelaDetalhe();
         provaAlunoDetalhe = provaSelecionada;
 
         if (!provaAlunoDetalhe.getProva().getQuestoes().isEmpty()) {
             if (provaAlunoDetalhe.getProva().getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorProva(provaAlunoDetalhe.getProva().getId());
+                quetoesVF = true;
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorProva(provaAlunoDetalhe.getProva().getId());
+                quetoesVF = false;
             }
 
-            if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
-                exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
-            } else {
-                return GO_DETALHAR_RESULTADO;
-            }
+            return GO_DETALHAR_RESULTADO;
+
+        } else {
+            exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
         }
-        
-        return null;
-    }
 
-    /**
-     * Limpa as listas de questões.
-     */
-    private void limparTelaDetalhe() {
-        questoesVerdadeiroFalso.clear();
-        questoesMultiplaEscolha.clear();
+        return null;
     }
 
     /**
@@ -124,10 +112,10 @@ public class ResultadoAlunoBean implements Serializable {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
-    
+
     /**
      * Recupera a imagem de uma questão.
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -145,20 +133,16 @@ public class ResultadoAlunoBean implements Serializable {
         }
     }
 
-    public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {
-        return questoesMultiplaEscolha;
-    }
-
-    public List<VerdadeiroFalso> getQuestoesVerdadeiroFalso() {
-        return questoesVerdadeiroFalso;
+    public boolean isQuetoesVF() {
+        return quetoesVF;
     }
 
     public List<ProvaAluno> getProvasResultados() {
         return provasResultados;
     }
-    
+
     public ProvaAluno getProvaAlunoDetalhe() {
         return provaAlunoDetalhe;
     }
-    
+
 }

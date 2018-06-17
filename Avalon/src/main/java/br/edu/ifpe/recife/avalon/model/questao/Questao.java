@@ -192,7 +192,7 @@ public class Questao implements Serializable {
     private Imagem imagem;  
 
     /**
-     * Formatar a apresentação da questão de acordo com seu tipo.
+     * Formata a apresentação da questão de acordo com seu tipo.
      *
      * @return questao formatada.
      */

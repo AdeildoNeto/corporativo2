@@ -47,28 +47,58 @@ and open the template in the editor.
                     </h:outputText>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label for="duracao">#{msg['cabecalho.nota']}: </label>
-                    <h:outputText id="duracaoProva" value="#{resultadoAlunoBean.provaAlunoDetalhe.nota}">
+                    <label for="nota">#{msg['cabecalho.nota']}: </label>
+                    <h:outputText id="nota" value="#{resultadoAlunoBean.provaAlunoDetalhe.nota}"
+                                  class="margin-left-10">
                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                     </h:outputText>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:include src="../comum/conteudo-vf.xhtml" rendered="#{resultadoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
-                        <ui:param name="bean" value="#{resultadoAlunoBean}" />
-                    </ui:include>
-                    <ui:include src="../comum/conteudo-multipla-escolha.xhtml" rendered="#{resultadoAlunoBean.questoesMultiplaEscolha.size() > 0}">
-                        <ui:param name="bean" value="#{resultadoAlunoBean}" />
-                    </ui:include>
+                    <ui:repeat rendered="#{resultadoAlunoBean.quetoesVF}"
+                               value="#{resultadoAlunoBean.provaAlunoDetalhe.questoesAluno}" var="questaoAluno" varStatus="i">
+                        <div class="form-group">
+                            <span class="bold">#{i.index + 1}) #{questaoAluno.questao.enunciado}</span>
+                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questaoAluno.respostaVF}">
+                                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
+                                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                            </p:selectOneRadio>
+                            <div class="img">
+                                <ui:fragment rendered="#{questaoAluno.questao.imagem != null}">
+                                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                                        <f:param name="questaoId" value="#{questaoAluno.questao.id}"/>
+                                    </p:graphicImage>
+                                </ui:fragment>
+                            </div>
+                            <h:panelGrid class="margin-left-20">
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                                    <span>#{msg['btn.verdadeiro']}</span>
+                                </h:column>
+
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                                    <span>#{msg['btn.falso']}</span>
+                                </h:column>
+                            </h:panelGrid>
+                        </div>
+                        <div class="form-group">
+                            <label for="respostaCorreta">#{msg['label.resposta.correta']}: </label>
+                            <h:outputText id="respostaCorretaV" rendered="#{questaoAluno.respostaCorreta}"
+                                          value="#{msg['btn.verdadeiro']}" class="margin-left-10" />
+                            <h:outputText id="respostaCorretaF" rendered="#{!questaoAluno.respostaCorreta}"
+                                          value="#{msg['btn.falso']}" class="margin-left-10" />
+                        </div>
+                    </ui:repeat>
                 </div>
             </div>
 
             <div class="row">
                 <div class="offset-md-8 col-md-2">
                     <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
-                                   action="#{resultadoAlunoBean.iniciarPagina()}" immediate="true"
-                                   class="btn btn-secondary font-color-default">
+                                     action="#{resultadoAlunoBean.iniciarPagina()}" immediate="true"
+                                     class="btn btn-secondary font-color-default">
                     </p:commandButton>
                 </div>
             </div>
