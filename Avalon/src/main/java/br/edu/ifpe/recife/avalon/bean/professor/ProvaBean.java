@@ -67,8 +67,6 @@ public class ProvaBean implements Serializable {
     private final ComponenteCurricularViewHelper componenteViewHelper;
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
-    private long duracaoMinutos;
-    private long duracaoSegundos;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     private Usuario usuarioLogado;
@@ -107,9 +105,9 @@ public class ProvaBean implements Serializable {
     }
     
     public String iniciarPaginaGerar(){
-        prova.setTitulo(titulo);
         inicializarHelpers(true);
         limparPaginaGerar();
+        prova.setTitulo(titulo);
         
         return GO_GERAR_PROVA;
     }
@@ -117,7 +115,6 @@ public class ProvaBean implements Serializable {
     public String iniciarPaginaDetalhar(Prova provaSelecionada){
         prova = provaSelecionada;
         carregarQuestoesDetalhar();
-        prepararContador();
         return GO_DETALHAR_PROVA;
     }
     
@@ -297,7 +294,6 @@ public class ProvaBean implements Serializable {
         String navegacao = null;
 
         try {
-            prova.setTitulo(titulo);
             prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
             prova.setDataCriacao(Calendar.getInstance().getTime());
             prova.setProfessor(usuarioLogado);
@@ -334,27 +330,7 @@ public class ProvaBean implements Serializable {
         }
     }
     
-    public void prepararContador(){
-        
-        duracaoMinutos = prova.getDuracao() -1;
-        duracaoSegundos = 59;
-        
-    }
-    
-    public void iniciarContadorProva(){
-     
-       if(duracaoSegundos == 0)
-       {
-           duracaoSegundos = 60;
-           duracaoMinutos--;
-       }else
-       {
-           duracaoSegundos--;
-       }
-        
-       
-    }
-    
+  
     /**
      * Recupera arquivo para exibicao
      * @return arquivo
@@ -438,37 +414,5 @@ public class ProvaBean implements Serializable {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
-    /**
-     * @return the duracaoMinutos
-     */
-    public long getDuracaoMinutos() {
-        return duracaoMinutos;
-    }
-
-    /**
-     * @param duracaoMinutos the duracaoMinutos to set
-     */
-    public void setDuracaoMinutos(long duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
-    }
-
-    /**
-     * @return the duracaoSegundos
-     */
-    public long getDuracaoSegundos() {
-        return duracaoSegundos;
-    }
-
-    /**
-     * @param duracaoSegundos the duracaoSegundos to set
-     */
-    public void setDuracaoSegundos(long duracaoSegundos) {
-        this.duracaoSegundos = duracaoSegundos;
-    }
-   
-
-   
-    
-    
+        
 }

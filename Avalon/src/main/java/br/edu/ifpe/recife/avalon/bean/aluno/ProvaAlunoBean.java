@@ -68,6 +68,8 @@ public class ProvaAlunoBean implements Serializable {
     private String resultado;
     private String observacaoDuracao;
     private String msgConfirmarFinalizacao;
+    private long duracaoMinutos;
+    private long duracaoSegundos;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -132,6 +134,8 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     public String iniciarProva() {
+        prepararContador();
+
         provaAluno.setAluno(usuarioLogado);
         provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
         provaAluno.setProva(prova);
@@ -153,11 +157,11 @@ public class ProvaAlunoBean implements Serializable {
 
     public void verificarQuestoesEmBranco() {
         exibirModalFinalizar = true;
-        
+
         if (!questoesVerdadeiroFalso.isEmpty() && verificarTodasQuestoesPreenchidasVF()
-                || !questoesMultiplaEscolha.isEmpty() && verificarTodasQuestoesPreenchidasMS()){
+                || !questoesMultiplaEscolha.isEmpty() && verificarTodasQuestoesPreenchidasMS()) {
             msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_QUESTOES_EM_BRANCO);
-        }else{
+        } else {
             msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_FINALIZAR);
         }
     }
@@ -174,16 +178,14 @@ public class ProvaAlunoBean implements Serializable {
         provaAluno.setNota(nota);
         provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
         provaServico.salvarProvaAluno(provaAluno);
-        
-        //salvar resultado da prova
 
         return iniciarPagina();
     }
-    
-    public void preencherRespostas(){
+
+    public void preencherRespostas() {
         List<ProvaAlunoQuestao> questoes = new ArrayList<>();
-        
-        if(!questoesMultiplaEscolha.isEmpty()){
+
+        if (!questoesMultiplaEscolha.isEmpty()) {
             for (MultiplaEscolha questao : questoesMultiplaEscolha) {
                 ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
                 questaoAluno.setProvaAluno(provaAluno);
@@ -191,7 +193,7 @@ public class ProvaAlunoBean implements Serializable {
                 questaoAluno.setRespostaMultiplaEscolha(questao.getRespostaUsuario());
                 questoes.add(questaoAluno);
             }
-        }else if(!questoesVerdadeiroFalso.isEmpty()){
+        } else if (!questoesVerdadeiroFalso.isEmpty()) {
             for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
                 ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
                 questaoAluno.setProvaAluno(provaAluno);
@@ -200,7 +202,7 @@ public class ProvaAlunoBean implements Serializable {
                 questoes.add(questaoAluno);
             }
         }
-        
+
         provaAluno.setQuestoesAluno(questoes);
     }
 
@@ -209,13 +211,13 @@ public class ProvaAlunoBean implements Serializable {
      *
      * @return
      */
-    public boolean verificarTodasQuestoesPreenchidasVF(){
+    public boolean verificarTodasQuestoesPreenchidasVF() {
         for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
             if (questao.getRespostaUsuario() == null) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -223,7 +225,7 @@ public class ProvaAlunoBean implements Serializable {
      * Método para verificar se todas as questões de múltipla escolha foram
      * preenchidas.
      *
-     * @return 
+     * @return
      */
     public boolean verificarTodasQuestoesPreenchidasMS() {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
@@ -231,7 +233,7 @@ public class ProvaAlunoBean implements Serializable {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -298,8 +300,8 @@ public class ProvaAlunoBean implements Serializable {
         exibirModalResultado = false;
         return iniciarPagina();
     }
-    
-    public void fecharModalFinalizar(){
+
+    public void fecharModalFinalizar() {
         exibirModalFinalizar = false;
     }
 
@@ -311,6 +313,24 @@ public class ProvaAlunoBean implements Serializable {
     private void exibirMensagemError(String mensagem) {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+    }
+
+    public void prepararContador() {
+
+        setDuracaoMinutos(prova.getDuracao() - 1);
+        setDuracaoSegundos(59);
+
+    }
+
+    public void iniciarContadorProva() {
+
+        if (getDuracaoSegundos() == 0) {
+            setDuracaoSegundos(59);
+            setDuracaoMinutos(getDuracaoMinutos() - 1);
+        } else {
+            setDuracaoSegundos(getDuracaoSegundos() - 1);
+        }
+
     }
 
     public StreamedContent getImagem() throws IOException {
@@ -366,5 +386,33 @@ public class ProvaAlunoBean implements Serializable {
     public String getMsgConfirmarFinalizacao() {
         return msgConfirmarFinalizacao;
     }
-    
+
+    /**
+     * @return the duracaoMinutos
+     */
+    public long getDuracaoMinutos() {
+        return duracaoMinutos;
+    }
+
+    /**
+     * @param duracaoMinutos the duracaoMinutos to set
+     */
+    public void setDuracaoMinutos(long duracaoMinutos) {
+        this.duracaoMinutos = duracaoMinutos;
+    }
+
+    /**
+     * @return the duracaoSegundos
+     */
+    public long getDuracaoSegundos() {
+        return duracaoSegundos;
+    }
+
+    /**
+     * @param duracaoSegundos the duracaoSegundos to set
+     */
+    public void setDuracaoSegundos(long duracaoSegundos) {
+        this.duracaoSegundos = duracaoSegundos;
+    }
+
 }
