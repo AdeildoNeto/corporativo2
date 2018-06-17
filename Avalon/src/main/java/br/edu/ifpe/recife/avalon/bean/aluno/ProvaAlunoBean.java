@@ -71,14 +71,14 @@ public class ProvaAlunoBean implements Serializable {
     private long duracaoSegundos;
 
     /**
-     * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
+     * Cria uma nova instância de <code>ProvaAlunoBean</code>.
      */
     public ProvaAlunoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
     }
 
     /**
-     * Método para iniciar a página contendo todas as provas disponíveis.
+     * Inicia a página contendo todas as provas disponíveis.
      *
      * @return rota
      */
@@ -89,7 +89,7 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Método para iniciar uma nova Prova.
+     * Inicia uma nova Prova.
      *
      * @param provaSelecionada
      */

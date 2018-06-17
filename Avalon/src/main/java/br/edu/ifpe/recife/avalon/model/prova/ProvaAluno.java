@@ -18,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,6 +32,15 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "TB_PROVA_ALUNO")
+@NamedQueries(
+        {
+            @NamedQuery(
+                    name = "ProvaAluno.Todas",
+                    query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
+                            + " AND :dhAtual > pa.prova.dataHoraInicio"
+            )
+        }
+)
 public class ProvaAluno implements Serializable {
 
     @Id
@@ -46,12 +57,12 @@ public class ProvaAluno implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_PROVA", referencedColumnName = "ID_PROVA")
     private Prova prova;
-    
+
     @NotNull(message = "{prova.data.hora.inico.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_INICIO")
     private Date dataHoraInicio;
-    
+
     @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_FIM")
@@ -60,7 +71,7 @@ public class ProvaAluno implements Serializable {
     @OneToMany(mappedBy = "provaAluno", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ProvaAlunoQuestao> questoesAluno;
-    
+
     @NotNull(message = "{prova.nota.obrigatoria}")
     @Column(name = "VL_NOTA")
     private Double nota;
@@ -120,5 +131,5 @@ public class ProvaAluno implements Serializable {
     public void setNota(Double nota) {
         this.nota = nota;
     }
-    
+
 }

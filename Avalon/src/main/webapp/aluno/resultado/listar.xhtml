@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <h1 id="headerSimulados">#{msg['label.resultados']}</h1>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <p:messages id="msgs" />
+                </div>
+            </div>
+            
+            <div class="row container-listar">
+                <div class="col-md-12">
+                    <h:dataTable id="table" value="#{resultadoAlunoBean.provasResultados}" var="provaAluno" styleClass="table table-striped table-fixed table-provas-aluno">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.titulo']}</span>
+                            </f:facet>
+                            <h:outputText class="provaTitulo" value="#{provaAluno.prova.titulo}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText class="provaComponenteCurricular" title="#{provaAluno.prova.componenteCurricular.nome}"
+                                          value="#{provaAluno.prova.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.professor']}</span>
+                            </f:facet>
+                            <h:outputText class="provaProfessor" title="#{provaAluno.prova.professor.nomeCompleto}"
+                                          value="#{provaAluno.prova.professor.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.data']}</span>
+                            </f:facet>
+                            <h:outputText class="provaRealizacao"
+                                          value="#{provaAluno.dataHoraFim}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.nota']}</span>
+                            </f:facet>
+                            <h:outputText class="provaNota"
+                                          value="#{provaAluno.nota}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                            </f:facet>
+                            <p:commandLink class="btnDetalhar"
+                                           action="#{resultadoAlunoBean.iniciarPaginaDetalhar(provaAluno)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();">
+                                <span class="material-icons">pageview</span>
+                            </p:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </div>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

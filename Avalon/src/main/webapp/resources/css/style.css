@@ -551,7 +551,6 @@ div.img img{
     width: 15px;
     height: 15px;
     margin: 5px;
-    background-image: url("/Avalon/resources/img/ui-icons.png");
     background-color: #BEBEBE;
     border-radius: 5px;
 }
@@ -561,20 +560,22 @@ div.img img{
 }
 
 .ui-carousel-prev-button{
+    background-image: url("/Avalon/resources/img/ui-icons.png");
     transform: rotate(-90deg);
 }
 
 .ui-carousel-next-button{
+    background-image: url("/Avalon/resources/img/ui-icons.png");
     transform: rotate(90deg);
 }
 
+/* UPLOAD IMAGE */
 .ui-fileupload-buttonbar span {       
-        border-radius: .25rem;
-        color: #fff;
-        cursor: pointer;
-        font-weight: 400 !important;
-        padding: .375rem .75rem;
-        
+    border-radius: .25rem;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 400 !important;
+    padding: .375rem .75rem;
 }
 
 .ui-fileupload-buttonbar .ui-fileupload-choose {
@@ -591,7 +592,7 @@ div.img img{
 
 #btnCancelarImg commandButton{
     background-color: white !important;
-    
+
 }
 .ui-fileupload-content .ui-messages-error-detail{
     display: none;

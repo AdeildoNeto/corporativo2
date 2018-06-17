@@ -112,6 +112,16 @@
             <to-view-id>/aluno/prova/prova.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goListarResultados</from-outcome>
+            <to-view-id>/aluno/resultado/listar.xhml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goDetalharResultado</from-outcome>
+            <to-view-id>/aluno/resultado/detalhar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

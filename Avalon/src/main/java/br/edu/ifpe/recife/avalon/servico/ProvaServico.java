@@ -266,4 +266,22 @@ public class ProvaServico {
 
         return quantidadeAcertos;
     }
+
+    /**
+     * Consulta todos as provas realizadas por um aluno.
+     * 
+     * @param usuario 
+     * @return lista de provas realizada pelo aluno.
+     */
+    public List<ProvaAluno> buscarProvasResultados(Usuario usuario) {
+        TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.Todas",
+                ProvaAluno.class);
+        Calendar calendar = Calendar.getInstance();
+        //calendar.add(Calendar.DAY_OF_MONTH, -1);
+
+        query.setParameter("idAluno", usuario.getId());
+        query.setParameter("dhAtual", calendar.getTime());
+
+        return query.getResultList();
+    }
 }

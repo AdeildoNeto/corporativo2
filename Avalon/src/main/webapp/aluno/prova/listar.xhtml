@@ -19,13 +19,13 @@ and open the template in the editor.
                     <h1 id="headerSimulados">#{msg['provas.disponiveis']}</h1>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <p:messages id="msgs" />
                 </div>
             </div>
-            
+
             <div class="row container-listar">
                 <div class="col-md-12">
                     <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}" var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
@@ -63,8 +63,8 @@ and open the template in the editor.
                             </f:facet>
                             <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="formModalIniciar"
                                              action="#{provaAlunoBean.selecionarProva(prova)}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()"
-                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                                             oncomplete="PF('block').hide()"
+                                             class="btn bg-default btn-block font-color-default"></p:commandButton>
                         </h:column>
                     </h:dataTable>
                 </div>
@@ -75,33 +75,33 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <h:form id="formModalIniciar">
             <p:dialog id="modalIniciar" visible="#{provaAlunoBean.exibirModalIniciar}"
-                  header="#{msg['prova.iniciar.observacoes']}" modal="true" resizable="false"
-                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+                      header="#{msg['prova.iniciar.observacoes']}" modal="true" resizable="false"
+                      widgetVar="modalComponente" closeOnEscape="true" draggable="false">
 
-            <div class="row">
-                <div class="col-md-12 margin-bottom-30">
-                    <div>#{provaAlunoBean.observacaoDuracao}</div>
-                    <div>#{msg['prova.observacao.realizar']}</div>
+                <div class="row">
+                    <div class="col-md-12 margin-bottom-30">
+                        <div>#{provaAlunoBean.observacaoDuracao}</div>
+                        <div>#{msg['prova.observacao.realizar']}</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col text-right">
-                    <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
-                                 styleClass="btn btn-secondary"
-                                 immediate="true" process="@this" update="formModalIniciar form" />
+                <div class="row">
+                    <div class="col text-right">
+                        <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
+                                         styleClass="btn btn-secondary"
+                                         immediate="true" process="@this" update="formModalIniciar form" />
 
-                    <p:commandButton value="#{msg['btn.iniciar']}"
-                                     action="#{provaAlunoBean.iniciarProva()}"
-                                     onclick="PF('block').show();" oncomplete="PF('block').hide()"
-                                     styleClass="btn btn-primary button-modal"
-                                     update="formModalIniciar form" />
+                        <p:commandButton value="#{msg['btn.iniciar']}"
+                                         action="#{provaAlunoBean.iniciarProva()}"
+                                         onclick="PF('block').show();" oncomplete="PF('block').hide()"
+                                         styleClass="btn btn-primary button-modal"
+                                         update="formModalIniciar form" />
+                    </div>
                 </div>
-            </div>
-        </p:dialog>
+            </p:dialog>
         </h:form>
     </ui:define>
 
