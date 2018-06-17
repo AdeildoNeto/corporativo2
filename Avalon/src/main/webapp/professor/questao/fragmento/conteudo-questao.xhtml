@@ -45,22 +45,31 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        <div class="col-md-5 form-group">
-            <!--            <p:fileUpload fileUploadListener="" 
-                                      label="Procurar..." auto="true" />-->
+        <div class="col-md-3 form-group" id="cargaImagem">
             <div>
                 <h:outputLabel for="arquivo" value="Imagem: " />
                 <div>
-                    <p:fileUpload id="arquivo" label="Buscar..." mode="advanced" uploadLabel="Carregar" cancelLabel="Cancelar" fileLimit="1" fileLimitMessage="selecione uma única imagem"
+                    <p:fileUpload id="arquivo" label="Buscar..." mode="advanced" fileLimit="1" fileLimitMessage="selecione uma única imagem"
                                   allowTypes="/(\.|\/)(png|jpg|jpeg)$/" invalidFileMessage="apenas arquivos png, jpg ou jpeg"
                                   sizeLimit="3145728" invalidSizeMessage="É permitida imagem de no máximo 3 MB"
-                                  fileUploadListener="#{questaoBean.upload}" update="@(.img)"/>
+                                  fileUploadListener="#{questaoBean.upload}" update="@(#form)" auto="true"/>
                 </div>
             </div>
-            <div  id="exibirImg">
-                    <p:graphicImage class="img" value="#{questaoBean.image}" width="90px" height="90px">
-                    </p:graphicImage>              
-            </div>
+        </div>
+        <div class="col-md-1 form-group">
+            <ui:fragment rendered="#{questaoBean.arquivo != null}" class="img">
+                <div id="exibirImg" style='position:relative; top:0px; left:0px;'>
+                    <div id="btnCancelarImg" style='position:relative; top:35px; left:5px;'>
+                        <p:commandLink
+                            action="#{questaoBean.limparImagem()}" immediate="true"  
+                            update="@(#form)">
+                            <h:graphicImage name="img/Delete-icon2.png" width="35px" height="35px" />
+                        </p:commandLink>
+                    </div>
+                    <p:graphicImage value="#{questaoBean.image}" width="90px" height="90px">
+                    </p:graphicImage>                
+                </div>
+            </ui:fragment>
         </div>
     </div>
 

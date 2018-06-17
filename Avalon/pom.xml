@@ -12,15 +12,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <glassfish.embedded-static-shell.jar>/home/aneto/glassfish-4.1.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-<!--        <glassfish.embedded-static-shell.jar>/home/aldenio/GlassFish_Server/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-        <glassfish.embedded-static-shell.jar>C://Program Files//glassfish-4.1.1//glassfish//lib//embeddedglassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-        <glassfish.embedded-static-shell.jar>/home/danilop/GlassFish_Server/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
         <glassfish.embedded-static-shell.jar>/Applications/NetBeans/glassfish4/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-
-        <glassfish.embedded-static-shell.jar>/Applications/NetBeans/glassfish4/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-        <glassfish.embedded-static-shell.jar>/home/danilop/Documentos/glassfish4/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
--->
     </properties>
     
     <dependencies>
