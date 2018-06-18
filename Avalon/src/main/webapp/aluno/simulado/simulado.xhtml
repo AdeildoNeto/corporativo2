@@ -36,10 +36,10 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <ui:include src="../comum/conteudo-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
+                    <ui:include src="fragmento/simulado-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
                         <ui:param name="bean" value="#{simuladoAlunoBean}" />
                     </ui:include>
-                    <ui:include src="../comum/conteudo-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}">
+                    <ui:include src="fragmento/simulado-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}">
                         <ui:param name="bean" value="#{simuladoAlunoBean}" />
                     </ui:include>
                 </div>
@@ -65,7 +65,7 @@ and open the template in the editor.
 
         </h:form>
         
-        <ui:include src="../comum/modal-resultado.xhtml">
+        <ui:include src="fragmento/modal-resultado.xhtml">
             <ui:param name="bean" value="#{simuladoAlunoBean}" />
         </ui:include>
     </ui:define>

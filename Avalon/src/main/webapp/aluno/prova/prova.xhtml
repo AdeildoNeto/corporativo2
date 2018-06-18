@@ -29,11 +29,13 @@ and open the template in the editor.
                     <label for="criador">#{msg['cabecalho.professor']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                 </div>
             </div>
-              <div class="col-md-4 form-group">
+            <div class="row">
+                <div class="col-md-12 form-group">
                     <label for="duracao">#{msg['prova.duracao']}: </label>
-                    <h:outputText id="duracaoProva" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}"/>
+                    <span id="duracaoProva"> #{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}</span>
                     <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="duracaoProva" />
                 </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <p:messages id="msgs" />

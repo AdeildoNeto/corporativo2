@@ -5,10 +5,12 @@
  */
 package br.edu.ifpe.recife.avalon.model.prova;
 
+import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,8 +55,12 @@ public class ProvaAlunoQuestao implements Serializable {
         return ((VerdadeiroFalso) questao).getResposta();
     }
     
-    public Integer getAlternativaCorreta(){
-        return ((MultiplaEscolha) questao).getOpcaoCorreta();
+    public char getAlternativaCorreta(){
+        return (char) (65 + ((MultiplaEscolha) questao).getOpcaoCorreta());
+    }
+    
+    public List<Alternativa> getAlternativas(){
+        return ((MultiplaEscolha) questao).getAlternativas();
     }
     
     public Long getId() {
