@@ -15,7 +15,6 @@ import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
-import br.edu.ifpe.recife.avalon.util.Duracao;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;

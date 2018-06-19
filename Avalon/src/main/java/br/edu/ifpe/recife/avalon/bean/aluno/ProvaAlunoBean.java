@@ -292,6 +292,13 @@ public class ProvaAlunoBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
     
+    private void finalizarPorTempo() throws IOException{
+        finalizar();
+        iniciarPagina();
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(path.concat("/aluno/prova/listar.xhtml"));
+    }
+    
     /**
      * Prepara o contador da duração da prova.
      */
@@ -303,8 +310,14 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Inicia a contagem da duração da prova.
+     * 
+     * @throws java.io.IOException
      */
-    public void iniciarContadorProva() {
+    public void iniciarContadorProva() throws IOException {
+        if(duracaoMinutos == 0 && duracaoSegundos == 0){
+            finalizarPorTempo();
+        }
+        
         if (getDuracaoSegundos() == 0) {
             duracaoSegundos = 59;
             --duracaoMinutos;

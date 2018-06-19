@@ -25,14 +25,14 @@ and open the template in the editor.
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 form-group">
+                <div class="col-md-12">
                     <label for="criador">#{msg['cabecalho.professor']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
                     <label for="duracao">#{msg['prova.duracao']}: </label>
-                    <span id="duracaoProva"> #{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}</span>
+                    <h:outputText id="duracaoProva" class="margin-left-10" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}" />
                     <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="duracaoProva" />
                 </div>
             </div>
