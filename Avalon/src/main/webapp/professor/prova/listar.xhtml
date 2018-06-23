@@ -22,7 +22,7 @@ and open the template in the editor.
 
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="tableProvas" value="#{provaBean.provas}" var="prova" styleClass="table table-striped table-fixed table-simulados">
+                    <h:dataTable id="tableProvas" value="#{provaBean.provas}" var="prova" styleClass="table table-striped table-fixed table-provas">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -40,6 +40,12 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
+                            <p:commandLink class="btnResultados"
+                                           action="#{resultadoBean.iniciarPaginaResultados(prova)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide()">
+                                <span class="material-icons">assignment</span>
+                            </p:commandLink>               
                             <p:commandLink class="btnDetalhar"
                                            action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
@@ -81,7 +87,7 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <ui:include src="../comum/modal-titulo.xhtml">
             <ui:param name="bean" value="#{provaBean}" />
         </ui:include>

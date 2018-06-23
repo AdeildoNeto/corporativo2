@@ -36,14 +36,14 @@ and open the template in the editor.
                     <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
                     <h:outputText id="dataHoraInicio" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraInicio}">
-                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-3" />
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </div>
                 <div class="col-md-4 form-group">
                     <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
                     <h:outputText id="dataHoraFim" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraFim}">
-                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-3" />
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </div>
                 <div class="col-md-4 form-group">

@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
@@ -67,6 +68,7 @@ public class ProvaBean implements Serializable {
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+    private final String headerModalTitulo;
 
     private Usuario usuarioLogado;
     private List<Questao> questoes;
@@ -77,7 +79,7 @@ public class ProvaBean implements Serializable {
     private boolean exibirModalTitulo;
     private Prova prova;
     private String titulo;
-    private String headerModalTitulo;
+    
    
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.

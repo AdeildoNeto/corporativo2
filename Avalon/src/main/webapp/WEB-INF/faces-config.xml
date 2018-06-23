@@ -66,6 +66,11 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goProvaResultados</from-outcome>
+            <to-view-id>/professor/prova/resultado/listar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goGerarSimulado</from-outcome>
             <to-view-id>/professor/simulado/gerar.xhtml</to-view-id>
             <redirect />

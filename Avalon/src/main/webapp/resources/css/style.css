@@ -400,6 +400,24 @@ h1 {
 }
 
 
+/* Table Provas */
+.table-provas td:first-child{
+    max-width: 680px !important;
+    width: 680px;
+}
+
+.table-provas td:nth-child(2){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-provas td:last-child{
+    width: 120px;
+    max-width: 120px;
+}
+
+/* Simulado Aluno */
+
 .table-simulados-aluno td:first-child{
     max-width: 410px !important;
     width: 410px;
@@ -596,4 +614,9 @@ div.img img{
 }
 .ui-fileupload-content .ui-messages-error-detail{
     display: none;
+}
+
+/* Table Resultados */
+.table-resultados td:first-child{
+    width: 1024px;
 }

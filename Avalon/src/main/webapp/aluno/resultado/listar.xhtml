@@ -55,7 +55,7 @@ and open the template in the editor.
                             </f:facet>
                             <h:outputText class="provaRealizacao"
                                           value="#{provaAluno.dataHoraFim}">
-                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{baseBean.gmt}" />
                             </h:outputText>
                         </h:column>
                         <h:column>

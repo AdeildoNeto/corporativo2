@@ -191,11 +191,8 @@ public class ProvaAlunoBean implements Serializable {
      * @return rota para listar provas disponíveis.
      */
     public String finalizar() {
-        double nota;
         preencherRespostas();
 
-        nota = calcularNota();
-        provaAluno.setNota(nota);
         provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
         provaServico.salvarProvaAluno(provaAluno);
 
@@ -258,21 +255,6 @@ public class ProvaAlunoBean implements Serializable {
         }
 
         return false;
-    }
-
-    /**
-     * Calcula a nota do aluno na prova.
-     */
-    private double calcularNota() {
-        double nota;
-
-        if (!questoesMultiplaEscolha.isEmpty()) {
-            nota = provaServico.calcularNotaMS(questoesMultiplaEscolha);
-        } else {
-            nota = provaServico.calcularNotaVF(questoesVerdadeiroFalso);
-        }
-
-        return nota;
     }
 
     /**

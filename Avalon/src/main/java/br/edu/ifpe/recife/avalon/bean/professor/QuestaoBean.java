@@ -41,10 +41,11 @@ import org.primefaces.model.UploadedFile;
  *
  * @author eduardoamaral
  */
-@Named(value = "questaoBean")
+@Named(value = QuestaoBean.QUESTAO_BEAN)
 @SessionScoped
 public class QuestaoBean implements Serializable {
 
+    public static final String QUESTAO_BEAN = "questaoBean";
     private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
     private static final String GO_ADD_QUESTAO = "goAddQuestao";
     private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";

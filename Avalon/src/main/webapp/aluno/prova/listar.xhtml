@@ -28,7 +28,8 @@ and open the template in the editor.
 
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}" var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
+                    <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}"
+                                 var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -55,7 +56,7 @@ and open the template in the editor.
                             </f:facet>
                             <h:outputText class="provaDisponibilidade"
                                           value="#{prova.dataHoraFim}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-3" />
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                             </h:outputText>
                         </h:column>
                         <h:column>

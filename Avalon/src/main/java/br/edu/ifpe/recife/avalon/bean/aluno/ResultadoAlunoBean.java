@@ -75,7 +75,7 @@ public class ResultadoAlunoBean implements Serializable {
      * resultados.
      */
     private void buscarProvasResultados() {
-        provasResultados = provaServico.buscarProvasResultados(usuarioLogado);
+        provasResultados = provaServico.buscarResultadosProvasAluno(usuarioLogado);
     }
 
     /**

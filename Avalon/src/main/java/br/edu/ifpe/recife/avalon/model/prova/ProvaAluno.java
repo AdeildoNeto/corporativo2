@@ -5,6 +5,8 @@
  */
 package br.edu.ifpe.recife.avalon.model.prova;
 
+import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
+import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
@@ -24,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -35,9 +38,15 @@ import javax.validation.constraints.NotNull;
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "ProvaAluno.Todas",
+                    name = "ProvaAluno.PorResultadoAluno",
                     query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
-                            + " AND :dhAtual > pa.prova.dataHoraInicio"
+                    + " AND :dhAtual > pa.prova.dataHoraInicio"
+            )
+            ,
+            @NamedQuery(
+                    name = "ProvaAluno.PorProva",
+                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
+                    + "ORDER BY pa.aluno.nome, pa.aluno.sobrenome"
             )
         }
 )
@@ -72,9 +81,33 @@ public class ProvaAluno implements Serializable {
             cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ProvaAlunoQuestao> questoesAluno;
 
-    @NotNull(message = "{prova.nota.obrigatoria}")
-    @Column(name = "VL_NOTA")
+    @Transient
     private Double nota;
+
+    private void calcularNota() {
+        nota = 0.0;
+        double respostasCertas = 0.0;
+
+        if (questoesAluno != null && !questoesAluno.isEmpty()) {
+            for (ProvaAlunoQuestao provaAlunoQuestao : questoesAluno) {
+                if (provaAlunoQuestao.getQuestao() instanceof VerdadeiroFalso) {
+                    VerdadeiroFalso questaoVF = (VerdadeiroFalso) provaAlunoQuestao.getQuestao();
+                    if (questaoVF.isAnulada()
+                            || questaoVF.getResposta().equals(provaAlunoQuestao.getRespostaVF())) {
+                        respostasCertas++;
+                    }
+                } else {
+                    MultiplaEscolha questaoMS = (MultiplaEscolha) provaAlunoQuestao.getQuestao();
+                    if (questaoMS.isAnulada()
+                            || questaoMS.getOpcaoCorreta().equals(provaAlunoQuestao.getRespostaMultiplaEscolha())) {
+                        respostasCertas++;
+                    }
+                }
+            }
+            
+            nota = (respostasCertas / questoesAluno.size()) * 10.0;
+        }
+    }
 
     public Long getId() {
         return id;
@@ -125,6 +158,7 @@ public class ProvaAluno implements Serializable {
     }
 
     public Double getNota() {
+        calcularNota();
         return nota;
     }
 

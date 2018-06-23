@@ -202,85 +202,36 @@ public class ProvaServico {
     public void salvarProvaAluno(@Valid ProvaAluno provaAluno){
         entityManager.persist(provaAluno);
     }
-    
-    /**
-     * Calcula a nota obtida pelo aluno de acordo com a quantidade
-     * de questões de verdadeiro ou falso corretas.
-     * 
-     * @param questoesVerdadeiroFalso
-     * @return nota obtida pelo aluno.
-     */
-    public double calcularNotaVF(List<VerdadeiroFalso> questoesVerdadeiroFalso){
-        double quantidadeQuestoes = questoesVerdadeiroFalso.size();
-        double respostasCertas = verificarRespostasVF(questoesVerdadeiroFalso);
-        
-        return (respostasCertas / quantidadeQuestoes) * 10;
-    }
-    
-    /**
-     * Calcula a nota obtida pelo aluno de acordo com a quantidade
-     * de questões de múltipla escolha corretas.
-     * 
-     * @param questoesMultiplaEscolha
-     * @return nota obtida pelo aluno.
-     */
-    public double calcularNotaMS(List<MultiplaEscolha> questoesMultiplaEscolha){
-        double quantidadeQuestoes = questoesMultiplaEscolha.size();
-        double respostasCertas = verificarRespostasMS(questoesMultiplaEscolha);
-        
-        return (respostasCertas / quantidadeQuestoes) * 10;
-    }
-    
-    /**
-     * Verificar a quantidade de acertos do aluno em questões de
-     * V/F.
-     *
-     * @return quantidade de acertos
-     */
-    private double verificarRespostasVF(List<VerdadeiroFalso> questoesVerdadeiroFalso) {
-        double quantidadeAcertos = 0;
-
-        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-            if (questao.getResposta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
-    }
-
-    /**
-     * Verifica a quantidade de acertos do aluno em questões de
-     * múltipla escolha.
-     *
-     * @return quantidade de acertos
-     */
-    private double verificarRespostasMS(List<MultiplaEscolha> questoesMultiplaEscolha) {
-        double quantidadeAcertos = 0;
-
-        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-            if (questao.getOpcaoCorreta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
-    }
 
     /**
      * Consulta todos as provas realizadas por um aluno.
      * 
-     * @param usuario 
+     * @param aluno 
      * @return lista de provas realizada pelo aluno.
      */
-    public List<ProvaAluno> buscarProvasResultados(Usuario usuario) {
-        TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.Todas",
+    public List<ProvaAluno> buscarResultadosProvasAluno(Usuario aluno) {
+        TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorResultadoAluno",
                 ProvaAluno.class);
         Calendar calendar = Calendar.getInstance();
-        //calendar.add(Calendar.DAY_OF_MONTH, -1);
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
 
-        query.setParameter("idAluno", usuario.getId());
+        query.setParameter("idAluno", aluno.getId());
         query.setParameter("dhAtual", calendar.getTime());
+
+        return query.getResultList();
+    }
+    
+    /**
+     * Consulta todos os resultados de uma prova.
+     * 
+     * @param prova 
+     * @return provas.
+     */
+    public List<ProvaAluno> buscarResultadosProva(Prova prova) {
+        TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorProva",
+                ProvaAluno.class);
+
+        query.setParameter("idProva", prova.getId());
 
         return query.getResultList();
     }

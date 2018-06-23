@@ -172,6 +172,9 @@ public class Questao implements Serializable {
 
     @Column(name = "SN_COMPARTILHADA", nullable = false)
     private Boolean compartilhada = true;
+    
+    @Column(name = "SN_ANULADA", nullable = false)
+    private boolean anulada = false;
 
     @NotNull(message = "{componente.curricular.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -295,6 +298,14 @@ public class Questao implements Serializable {
 
     public void setImagem(Imagem imagem) {
         this.imagem = imagem;
+    }
+
+    public boolean isAnulada() {
+        return anulada;
+    }
+
+    public void setAnulada(boolean anulada) {
+        this.anulada = anulada;
     }
     
     @Override

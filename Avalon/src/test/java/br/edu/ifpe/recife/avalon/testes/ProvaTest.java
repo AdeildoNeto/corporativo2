@@ -340,8 +340,6 @@ public class ProvaTest {
             provaAluno.getQuestoesAluno().add(provaAlunoQuestao);
         }
         
-        provaAluno.setNota(0.0);
-        
     }
     
 }
