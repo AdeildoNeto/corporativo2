@@ -55,44 +55,26 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.criador.email = :emailCriador"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo"
-            )
-            ,@NamedQuery(
-                    name = "Questao.PorCriadorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
-                    + " AND q.tipo = :tipo"
-                    + " AND q.criador.email = :emailCriador"
-            )
-            ,@NamedQuery(
-                    name = "Questao.PorEnunciadoTipo",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
-                    + " AND q.tipo = :tipo"
-                    + " AND q.enunciado = :enunciado"
-            )
-            ,@NamedQuery(
-                    name = "Questao.PorEnunciadoTipoId",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
-                    + " AND q.tipo = :tipo"
-                    + " AND q.enunciado = :enunciado"
-                    + " AND q.id <> :id"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipoValido",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo"
                     + " AND q.enunciado = :enunciado"
                     + " AND q.criador.id = :idCriador"
                     + " AND q.componenteCurricular.id = :idComponenteCurricular"
+                    + " AND :idQuestao IS NULL OR q.id <> :idQuestao"
             )
             ,@NamedQuery(
                     name = "Questao.PorFiltroCompartilhada",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true"
+                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo "
                     + " AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
                     + " AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
@@ -100,14 +82,6 @@ import org.hibernate.validator.constraints.NotBlank;
                     + " AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
             ,@NamedQuery(
-                    name = "Questao.ParaSimulado",
-                    query = "SELECT q FROM Questao q WHERE q.ativa = true "
-                    + "AND q.tipo <> br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum.DISCURSIVA "
-                    + "AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
-                    + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
-                    + "AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
-                    + "AND (:enunciado is null OR q.enunciado like :enunciado)"
-            ),@NamedQuery(
                     name = "Questao.PorId",
                     query = "Select u from Questao u where u.id = :id")
         })
@@ -121,11 +95,12 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
                     + "TB_QUESTOES_SIMULADO QS "
                     + "WHERE QS.ID_SIMULADO = ?"
-                    + " AND Q.SN_ATIVA = TRUE"
+                    + " AND Q.SN_ANULADA = FALSE"
                     + " AND QS.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
                     resultClass = Questao.class
-            ),
+            )
+            ,
             @NamedNativeQuery(
                     name = "Questao.PorProva",
                     query = "SELECT Q.*, VF.*, MS.* FROM TB_QUESTAO Q LEFT OUTER JOIN TB_VERDADEIRO_FALSO VF "
@@ -134,7 +109,7 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
                     + "TB_QUESTOES_PROVA QP "
                     + "WHERE QP.ID_PROVA = ?"
-                    + " AND Q.SN_ATIVA = TRUE"
+                    + " AND Q.SN_ANULADA = FALSE"
                     + " AND QP.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
                     resultClass = Questao.class
@@ -167,12 +142,9 @@ public class Questao implements Serializable {
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
 
-    @Column(name = "SN_ATIVA", nullable = false)
-    private Boolean ativa = true;
-
     @Column(name = "SN_COMPARTILHADA", nullable = false)
     private Boolean compartilhada = true;
-    
+
     @Column(name = "SN_ANULADA", nullable = false)
     private boolean anulada = false;
 
@@ -183,16 +155,16 @@ public class Questao implements Serializable {
 
     @ManyToMany(mappedBy = "questoes")
     private List<Simulado> simulados;
-    
+
     @ManyToMany(mappedBy = "questoes")
     private List<Prova> provas;
 
     @Transient
     private boolean selecionada;
-    
+
     @Valid
     @Embedded
-    private Imagem imagem;  
+    private Imagem imagem;
 
     /**
      * Formata a apresentação da questão de acordo com seu tipo.
@@ -244,14 +216,6 @@ public class Questao implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
-    public Boolean getAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(Boolean ativa) {
-        this.ativa = ativa;
-    }
-
     public boolean isSelecionada() {
         return selecionada;
     }
@@ -291,7 +255,7 @@ public class Questao implements Serializable {
     public void setProvas(List<Prova> provas) {
         this.provas = provas;
     }
-    
+
     public Imagem getImagem() {
         return imagem;
     }
@@ -307,7 +271,7 @@ public class Questao implements Serializable {
     public void setAnulada(boolean anulada) {
         this.anulada = anulada;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 5;

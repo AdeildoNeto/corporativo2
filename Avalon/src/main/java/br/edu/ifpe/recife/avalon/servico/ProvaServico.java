@@ -8,8 +8,6 @@ package br.edu.ifpe.recife.avalon.servico;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
-import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
@@ -48,6 +46,7 @@ public class ProvaServico {
     private static final String PERCENT = "%";
     private static final int QTDE_MIN_QUESTOES = 2;
     private static final String QUESTOES_MINIMAS = "prova.questoes.minimas";
+    private static final String DATA_INICIO_ANTERIOR_DATA_ATUAL = "prova.data.inicia.anterior.data.atual";
     private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
     private static final String DURACAO_MINIMA = "prova.duracao.minima";
     private static final String DURACAO_MAXIMA = "prova.duracao.maxima";
@@ -110,6 +109,10 @@ public class ProvaServico {
     private void validarDisponibilidade(@Valid Prova prova) throws ValidacaoException {
         Calendar calendarInicio = Calendar.getInstance();
         Calendar calendarFim = Calendar.getInstance();
+        
+        if(prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
+            throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_ANTERIOR_DATA_ATUAL));
+        }
 
         if (prova.getDataHoraInicio().after(prova.getDataHoraFim())) {
             throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_MAIOR_DATA_FIM));

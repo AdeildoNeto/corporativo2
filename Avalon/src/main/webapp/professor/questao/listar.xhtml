@@ -19,7 +19,7 @@ and open the template in the editor.
                     <h1>#{msg['titulo.minhas.questoes']}</h1>
                 </div>
             </div>
-            
+
             <div class="row container-listar">
                 <div class="col-md-12">
                     <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
@@ -44,15 +44,18 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                
+
                             </f:facet>
-                            <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}" onclick="PF('block').show()"
-                                             oncomplete="PF('block').hide();">
+                            <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();">
                                 <span class="material-icons">mode_edit</span>
                             </p:commandLink>
-                            <p:commandLink action="#{questaoBean.selecionarQuestao(questao)}" onclick="PF('block').show()"
-                                             oncomplete="PF('block').hide(); PF('modalExclusao').show();">
-                                <span class="material-icons">delete</span>
+                            <p:commandLink action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"
+                                           onclick="PF('block').show()"
+                                           title="#{msg['questao.anular']}"
+                                           oncomplete="PF('block').hide();">
+                                <span class="material-icons">cancel</span>
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>

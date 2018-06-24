@@ -93,7 +93,7 @@ public class Prova implements Serializable {
     private Long duracao;
 
     @Column(name = "SN_ATIVA", nullable = false)
-    private Boolean ativa = true;
+    private boolean ativa = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_QUESTOES_PROVA", joinColumns = {
@@ -159,11 +159,11 @@ public class Prova implements Serializable {
         this.dataHoraFim = dataHoraFim;
     }
 
-    public Boolean getAtiva() {
+    public boolean isAtiva() {
         return ativa;
     }
 
-    public void setAtiva(Boolean ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 

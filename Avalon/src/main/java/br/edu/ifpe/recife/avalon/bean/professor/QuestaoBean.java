@@ -350,24 +350,6 @@ public class QuestaoBean implements Serializable {
     }
 
     /**
-     * Seleciona uma questão da lista de questões.
-     *
-     * @param questaoSelecionada
-     */
-    public void selecionarQuestao(Questao questaoSelecionada) {
-        this.questao = questaoSelecionada;
-    }
-
-    /**
-     * Exclui uma questão selecionada.
-     */
-    public void excluir() {
-        questaoServico.remover(questao);
-        questoes.remove(questao);
-        questao = null;
-    }
-
-    /**
      * Retorna para a página "Minhas Questões"
      *
      * @return iniciarPagina()
@@ -483,13 +465,27 @@ public class QuestaoBean implements Serializable {
     }
     
     /**
-     * cancela a insercao da imagem
+     * Cancela a inserção da imagem
      *
-     * 
      */
     public void limparImagem() {
-        imagem=null;
+        imagem = null;
         questao.setImagem(imagem);
+    }
+    
+    /**
+     * Selecina uma questão para anulação.
+     * 
+     * @param questaoSelecionada 
+     */
+    public void selecionarQuestaoAnulacao(Questao questaoSelecionada){
+        questao = questaoSelecionada;
+    }
+    
+    public void anularQuestao(){
+        questaoServico.anular(questao);
+        questoes.remove(questao);
+        questao = null;
     }
 
     /*

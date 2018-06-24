@@ -82,7 +82,7 @@ public class QuestaoServico implements Serializable{
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
     public void alterar(@Valid Questao questao) throws ValidacaoException {
-        validarEnunciadoPorTipoValidoEdicao(questao);
+        validarEnunciadoPorTipoValido(questao);
         entityManager.merge(questao);
     }
     
@@ -102,26 +102,11 @@ public class QuestaoServico implements Serializable{
      *
      * @param questao
      */
-    public void remover(@Valid Questao questao) {
+    public void anular(@Valid Questao questao) {
         if (!entityManager.contains(questao)) {
-            questao.setAtiva(false);
+            questao.setAnulada(true);
             entityManager.merge(questao);
         }
-    }
-
-    /**
-     * Consulta questões por tipo e criador
-     *
-     * @param emailCriador
-     * @param tipo
-     * @return lista de questões
-     */
-    public List<Questao> buscarQuestoesPorCriadorTipo(@NotNull String emailCriador, TipoQuestaoEnum tipo) {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriadorTipo", Questao.class);
-        query.setParameter("emailCriador", emailCriador);
-        query.setParameter("tipo", tipo);
-
-        return query.getResultList();
     }
 
     /**
@@ -149,23 +134,7 @@ public class QuestaoServico implements Serializable{
         query.setParameter("tipo", questao.getTipo());
         query.setParameter("idCriador", questao.getCriador().getId());
         query.setParameter("idComponenteCurricular", questao.getComponenteCurricular().getId());
-
-        if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {
-            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA));
-        }
-    }
-
-    /**
-     * Valida se o enunciado de uma questão a ser alterada é válido.
-     *
-     * @param questao
-     * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
-     */
-    private void validarEnunciadoPorTipoValidoEdicao(@Valid Questao questao) throws ValidacaoException {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorEnunciadoTipoId", Questao.class);
-        query.setParameter("enunciado", questao.getEnunciado().trim());
-        query.setParameter("tipo", questao.getTipo());
-        query.setParameter("id", questao.getId());
+        query.setParameter("idQuestao", questao.getId());
 
         if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(MSG_QUESTAO_UNICA));
@@ -227,23 +196,6 @@ public class QuestaoServico implements Serializable{
             return query.getSingleResult();
         }
         return null;
-    }
-    
-    /**
-     * Consulta questões do tipo V/F e Múltipla Escolha a partir de um filtro.
-     * 
-     * @param filtro - filtro para buscar questoes
-     * @return lista de questões.
-     */
-    public List<Questao> buscarQuestoesParaSimulado(@NotNull FiltroQuestao filtro){
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.ParaSimulado", Questao.class);
-        
-        query.setParameter("emailUsuario", filtro.getEmailUsuario());
-        query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
-        query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
-        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
-        
-        return query.getResultList();
     }
 
     /**

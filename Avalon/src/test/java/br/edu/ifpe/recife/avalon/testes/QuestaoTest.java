@@ -147,7 +147,7 @@ public class QuestaoTest {
 
         List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
-        questaoServico.remover(questaoBuscada.get(0));
+        questaoServico.anular(questaoBuscada.get(0));
 
         List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorCriador("email2@email.com");
 
@@ -241,7 +241,10 @@ public class QuestaoTest {
     @Test
     public void t08_selecionarQuestaoVF() {
         logger.info("Executando t08: selecionarQuestaoVF");
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
+        FiltroQuestao filtro = new FiltroQuestao();
+        filtro.setEmailUsuario(EMAIL_TESTE);
+        filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
+        List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(1, questoes.size());
     }
@@ -249,13 +252,16 @@ public class QuestaoTest {
     @Test
     public void t09_excluirQuestaoVF() {
         logger.info("Executando t09: excluirQuestaoVF");
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
-
+        FiltroQuestao filtro = new FiltroQuestao();
+        filtro.setEmailUsuario(EMAIL_TESTE);
+        filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
+        List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
+        
         Questao questao = questoes.get(0);
 
-        questaoServico.remover(questao);
+        questaoServico.anular(questao);
 
-        questoes = questaoServico.buscarQuestoesPorCriadorTipo(EMAIL_TESTE, TipoQuestaoEnum.VERDADEIRO_FALSO);
+        questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(0, questoes.size());
     }
