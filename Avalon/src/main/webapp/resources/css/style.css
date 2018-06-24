@@ -587,6 +587,12 @@ div.img img{
     transform: rotate(90deg);
 }
 
+.ui-carousel-header{
+     width: 50%;
+    position: absolute;
+    bottom: -30px;
+}
+
 /* UPLOAD IMAGE */
 .ui-fileupload-buttonbar span {       
     border-radius: .25rem;

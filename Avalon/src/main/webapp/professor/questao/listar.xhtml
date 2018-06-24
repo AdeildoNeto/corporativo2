@@ -54,7 +54,7 @@ and open the template in the editor.
                             <p:commandLink action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"
                                            onclick="PF('block').show()"
                                            title="#{msg['questao.anular']}"
-                                           oncomplete="PF('block').hide();">
+                                           oncomplete="PF('block').hide(); PF('modalAnular').show()">
                                 <span class="material-icons">cancel</span>
                             </p:commandLink>
                         </h:column>
@@ -74,11 +74,12 @@ and open the template in the editor.
         </h:form>
 
         <h:form id="formModalExcluir">
-            <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
-                             header="#{msg['modal.header.excluir']}" severity="alert"
-                             widgetVar="modalExclusao" closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalExclusao').hide();" type="button" styleClass="btn btn-secondary" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.excluir()}" oncomplete="PF('modalExclusao').hide()" update="form" styleClass="btn btn-primary" />
+            <p:confirmDialog header="#{msg['header.anular.questao']}"
+                             message="#{msg['questao.anular']}"
+                             severity="alert"
+                             widgetVar="modalAnular" closeOnEscape="true">
+                <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalAnular').hide();" type="button" styleClass="btn btn-secondary" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.anularQuestao()}" oncomplete="PF('modalAnular').hide()" update="form" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>
     </ui:define>

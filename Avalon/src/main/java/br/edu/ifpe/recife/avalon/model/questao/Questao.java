@@ -70,7 +70,7 @@ import org.hibernate.validator.constraints.NotBlank;
                     + " AND q.enunciado = :enunciado"
                     + " AND q.criador.id = :idCriador"
                     + " AND q.componenteCurricular.id = :idComponenteCurricular"
-                    + " AND :idQuestao IS NULL OR q.id <> :idQuestao"
+                    + " AND (:idQuestao IS NULL OR q.id <> :idQuestao)"
             )
             ,@NamedQuery(
                     name = "Questao.PorFiltroCompartilhada",

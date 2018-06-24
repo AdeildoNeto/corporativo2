@@ -14,6 +14,7 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
+            <p:poll interval="60" listener="#{provaAlunoBean.iniciarPagina()}" update="form" />
             <div class="row">
                 <div class="col-md-12 form-group">
                     <h1 id="headerSimulados">#{msg['provas.disponiveis']}</h1>

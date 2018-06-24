@@ -242,28 +242,29 @@ public class QuestaoTest {
     public void t08_selecionarQuestaoVF() {
         logger.info("Executando t08: selecionarQuestaoVF");
         FiltroQuestao filtro = new FiltroQuestao();
-        filtro.setEmailUsuario(EMAIL_TESTE);
         filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
 
-        assertEquals(1, questoes.size());
+        assertTrue(questoes.size() > 1);
     }
 
     @Test
     public void t09_excluirQuestaoVF() {
         logger.info("Executando t09: excluirQuestaoVF");
         FiltroQuestao filtro = new FiltroQuestao();
-        filtro.setEmailUsuario(EMAIL_TESTE);
         filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
         
         Questao questao = questoes.get(0);
-
+        int sizeAnterior = questoes.size();
+        System.out.println(sizeAnterior);
+        
         questaoServico.anular(questao);
 
         questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
 
-        assertEquals(0, questoes.size());
+        System.out.println(questoes.size());
+        assertTrue(sizeAnterior - 1 == questoes.size());
     }
 
     @Test
