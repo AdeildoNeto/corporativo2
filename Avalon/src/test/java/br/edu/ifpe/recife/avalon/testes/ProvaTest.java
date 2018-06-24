@@ -103,7 +103,7 @@ public class ProvaTest {
     @Test
     public void t02_buscarPorDisponibilidade() throws InterruptedException {
         logger.info("Executando t02: buscarPorDisponibilidade");
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(15);
         List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
 
         assertTrue(!lista.isEmpty());
@@ -275,25 +275,29 @@ public class ProvaTest {
     }
     
     @Test(expected = ValidacaoException.class)
-    public void t19_salvarProvaAlunoDHInicioInvalida() throws ValidacaoException {
-        logger.info("Executando t19: salvarProvaAlunoDHInicioInvalida");
-        ProvaAluno provaAluno = new ProvaAluno();
-        preencherProvaAluno(provaAluno);
-        provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+    public void t19_salvarProvaDHInicioInvalida() throws ValidacaoException, InterruptedException {
+        logger.info("Executando t19: salvarProvaDHInicioInvalida");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
+        prova.setDuracao(301l);
+        Calendar dataHora = Calendar.getInstance();
+        dataHora.add(Calendar.HOUR, -10);
+        prova.setDataHoraInicio(dataHora.getTime());
 
-        provaServico.salvarProvaAluno(provaAluno);
+        provaServico.salvar(prova);
     }
 
     @Test
-    public void t20_salvarProvaAluno() throws ValidacaoException {
+    public void t20_salvarProvaAluno() throws ValidacaoException, InterruptedException {
         logger.info("Executando t20: salvarProvaAluno");
         ProvaAluno provaAluno = new ProvaAluno();
+        TimeUnit.SECONDS.sleep(15);
         preencherProvaAluno(provaAluno);
 
         provaServico.salvarProvaAluno(provaAluno);
+        
+        assertTrue(provaAluno.getId() > 0);
     }
-
-    
 
     @Test
     public void t21_validarProvaNaoRepeticao() throws ValidacaoException {
@@ -304,8 +308,9 @@ public class ProvaTest {
     }
 
     @Test
-    public void t99_excluirProva() {
+    public void t99_excluirProva() throws InterruptedException {
         logger.info("Executando t99: excluirProva");
+        TimeUnit.SECONDS.sleep(20);
         List<Prova> lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
         int size = lista.size();
 
@@ -322,7 +327,7 @@ public class ProvaTest {
         prova.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
         prova.setTitulo("Teste Simulado.");
         prova.setDataCriacao(calendar.getTime());
-        calendar.add(Calendar.SECOND, 30);
+        calendar.add(Calendar.SECOND, 10);
         prova.setDataHoraInicio(calendar.getTime());
         calendar.add(Calendar.HOUR, 4);
         prova.setDataHoraFim(calendar.getTime());
