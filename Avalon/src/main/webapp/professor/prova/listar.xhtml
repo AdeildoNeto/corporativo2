@@ -97,10 +97,17 @@ and open the template in the editor.
                              visible="#{provaBean.exibirModalExclusao}" 
                              header="#{msg['modal.header.excluir']}" severity="alert"
                              closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" action="#{provaBean.fecharModalExclusao()}"
-                                 styleClass="btn btn-secondary" update="formModalExcluir form" process="@this" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{provaBean.excluirProva()}"
-                                 update="form formModalExcluir" styleClass="btn btn-primary" />
+                <div class="row">
+                    <div class="col text-right button-footer">
+                        <p:commandButton value="#{msg['btn.sim']}" id="btnSimExcluirProva"
+                                         action="#{provaBean.excluirProva()}"
+                                         update="form formModalExcluir" styleClass="btn btn-primary" />
+                        <p:commandButton value="#{msg['btn.nao']}" id="btnNaoExcluirProva"
+                                         action="#{provaBean.fecharModalExclusao()}"
+                                         styleClass="btn btn-secondary" update="formModalExcluir form"
+                                         process="@this" />
+                    </div>
+                </div>
             </p:confirmDialog>
         </h:form>
     </ui:define>
