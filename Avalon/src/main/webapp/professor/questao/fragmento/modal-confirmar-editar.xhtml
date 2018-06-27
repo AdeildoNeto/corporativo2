@@ -14,14 +14,19 @@ and open the template in the editor.
     <p:confirmDialog message="#{msg['questao.mensagem.editar']}" id="modalSalvar"
                      header="#{msg['questao.header.salvar']}" severity="alert"
                      widgetVar="modalSalvar" closeOnEscape="true">
+        <div class="row">
+            <div class="col text-right button-footer">
+                <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvarEdicao()}"
+                                 validateClient="true" id="btnSimEditar"
+                                 onclick="PF('block').show(); PF('modalSalvar').hide()"
+                                 oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
+                                 styleClass="btn btn-primary" update="form" />
 
-        <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalSalvar').hide();"
-                         type="button" styleClass="btn btn-secondary" />
-
-        <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvarEdicao()}" validateClient="true"
-                         onclick="PF('block').show(); PF('modalSalvar').hide()"
-                         oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
-                         styleClass="btn btn-primary" update="form" />
+                <p:commandButton value="#{msg['btn.nao']}" id="btnNaoEditar"
+                                 onclick="PF('modalSalvar').hide();"
+                                 type="button" styleClass="btn btn-secondary" />
+            </div>
+        </div>
     </p:confirmDialog>
 
 </ui:composition>

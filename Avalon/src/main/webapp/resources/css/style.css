@@ -110,6 +110,14 @@ label{
     margin-left: 8px !important;
 }
 
+.button-footer button:first-of-type{
+    float: right;
+}
+
+.float-right{
+    float: right;
+}
+
 /* Menu */
 .nav-link{
     color: white !important;

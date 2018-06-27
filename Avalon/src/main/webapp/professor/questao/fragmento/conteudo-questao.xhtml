@@ -19,6 +19,7 @@ and open the template in the editor.
                 <div>
                     <p:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}"
                                      disabled="#{questaoBean.edicaoQuestao()}" required="true"
+                                     requiredMessage="#{msg['questao.tipo.obrigatorio']}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
                         <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
                         <p:ajax update="@form" event="change"/>
@@ -31,6 +32,7 @@ and open the template in the editor.
                 <p:outputLabel for="componenteCurricular" value="#{msg['label.componente.curricular']}:" />
                 <div>
                     <p:selectOneMenu id="componenteCurricular" required="true"
+                                     requiredMessage="#{msg['componente.curricular.obrigatorio']}"
                                      value="#{questaoBean.componenteSelecionado}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                                      filter="true" filterMatchMode="startsWith">
@@ -76,7 +78,11 @@ and open the template in the editor.
     <div class="row">
         <div class="col-md-12 form-group">
             <p:outputLabel for="questao-enunciado" value="#{msg['label.enunciado']}:" />
-            <h:inputTextarea required="true" class="form-control" id="questao-enunciado" rows="4" value="#{questaoBean.questao.enunciado}">
+            <h:inputTextarea required="true"
+                             requiredMessage="#{msg['questao.enunciado.obrigatorio']}"
+                             class="form-control"
+                             id="questao-enunciado" rows="4"
+                             value="#{questaoBean.questao.enunciado}">
             </h:inputTextarea>
         </div>
     </div>
@@ -103,16 +109,20 @@ and open the template in the editor.
     <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
         <div class="col-md-4 display-flex">
             <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
-            <p:inputSwitch id="resposta-vf" styleClass="switch" value="#{questaoBean.respostaVF}"
-                           offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}" required="true" />
+            <p:inputSwitch id="resposta-vf" styleClass="switch"
+                           value="#{questaoBean.respostaVF}"
+                           offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}"
+                           required="true" requiredMessage="#{msg['questao.resposta.obrigatoria']}" />
         </div>
     </p:outputPanel>
 
     <div class="row">
         <div class="col-md-4 display-flex">
             <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />
-            <p:inputSwitch id="questao-compartilhada" styleClass="switch" value="#{questaoBean.questao.compartilhada}"
-                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}" required="true" />
+            <p:inputSwitch id="questao-compartilhada" styleClass="switch"
+                           value="#{questaoBean.questao.compartilhada}"
+                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}"
+                           required="true" />
         </div>        
     </div>
     <div class="row">

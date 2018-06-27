@@ -95,7 +95,6 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
                     + "TB_QUESTOES_SIMULADO QS "
                     + "WHERE QS.ID_SIMULADO = ?"
-                    + " AND Q.SN_ANULADA = FALSE"
                     + " AND QS.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
                     resultClass = Questao.class
@@ -109,7 +108,6 @@ import org.hibernate.validator.constraints.NotBlank;
                     + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
                     + "TB_QUESTOES_PROVA QP "
                     + "WHERE QP.ID_PROVA = ?"
-                    + " AND Q.SN_ANULADA = FALSE"
                     + " AND QP.ID_QUESTAO = Q.ID_QUESTAO"
                     + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
                     resultClass = Questao.class
