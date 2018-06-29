@@ -52,6 +52,7 @@ public class ProvaBean implements Serializable {
     private static final String GO_LISTAR_PROVA = "goListarProva";
     private static final String GO_IMPRIMIR_PROVA = "goImprimirProva";
     private static final String GO_DETALHAR_PROVA = "goDetalharProva";
+    private static final String GO_PROVA_RESULTADOS = "goProvaResultados";
     private static final String USUARIO = "usuario";
 
     @EJB
@@ -80,6 +81,9 @@ public class ProvaBean implements Serializable {
     private Prova prova;
     private String titulo;
     
+    private List<ProvaAluno> resultados;
+    private ProvaAluno provaAlunoDetalhe;
+    private Prova provaResultadoSelecionada;
    
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
@@ -97,6 +101,11 @@ public class ProvaBean implements Serializable {
         headerModalTitulo = AvalonUtil.getInstance().getMensagem("prova.nova");
     }
     
+    /**
+     * Inicializa a página de listar provas.
+     * 
+     * @return 
+     */
     public String iniciarPagina(){
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         limparPagina();
@@ -105,6 +114,11 @@ public class ProvaBean implements Serializable {
         return GO_LISTAR_PROVA;
     }
     
+    /**
+     * Inicializa a página de gerar nova prova.
+     * 
+     * @return 
+     */
     public String iniciarPaginaGerar(){
         inicializarHelpers(true);
         limparPaginaGerar();
@@ -113,6 +127,12 @@ public class ProvaBean implements Serializable {
         return GO_GERAR_PROVA;
     }
     
+    /**
+     * Inicializa a página de detalhar prova.
+     * 
+     * @param provaSelecionada
+     * @return 
+     */
     public String iniciarPaginaDetalhar(Prova provaSelecionada){
         prova = provaSelecionada;
         carregarQuestoesDetalhar();
@@ -129,6 +149,19 @@ public class ProvaBean implements Serializable {
         limparPaginaImprimir();
 
         return GO_IMPRIMIR_PROVA;
+    }
+    
+    /**
+     * Inicializa a página de resultados de uma prova.
+     * 
+     * @param prova
+     * @return 
+     */
+    public String iniciarPaginaResultados(Prova prova){
+        provaResultadoSelecionada = prova;
+        buscarResultados(prova);
+        
+        return GO_PROVA_RESULTADOS;
     }
     
     /**
@@ -149,12 +182,27 @@ public class ProvaBean implements Serializable {
         this.questoes = pesquisarQuestoesViewHelper.pesquisar();
     }
     
+    /**
+     * Recupera todos os resultados dos alunos em uma prova.
+     * 
+     * @param prova 
+     */
+    private void buscarResultados(Prova prova){
+        resultados = provaServico.buscarResultadosProva(prova);
+    }
+    
+    /**
+     * Limpa a página Listar Provas.
+     */
     private void limparPagina(){
         prova = new Prova();
         fecharModalExclusao();
         fecharModalTitulo();
     }
 
+    /**
+     * Limpra a página de geração de provas.
+     */
     private void limparPaginaGerar(){
         prova = new Prova();
         inicializarQuestoes();
@@ -167,12 +215,20 @@ public class ProvaBean implements Serializable {
         inicializarQuestoes();
     }
     
+    /**
+     * Inicializa os componentes de questão.
+     */
     private void inicializarQuestoes(){
         todosSelecionados = false;
         questoesSelecionadas.clear();
         questoes.clear();
     }
     
+    /**
+     * Inicializa os ViewHelpers.
+     * 
+     * @param apenasQuestoesObjetivas 
+     */
     private void inicializarHelpers(boolean apenasQuestoesObjetivas){
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
@@ -282,15 +338,26 @@ public class ProvaBean implements Serializable {
         exibirModalExclusao = false;
     }
     
+    /**
+     * Exibi o modal de título da prova.
+     */
     public void exibirModalTitulo(){
         titulo = null;
         exibirModalTitulo = true;
     }
     
+    /**
+     * Fecha o modal de título da prova.
+     */
     public void fecharModalTitulo(){
         exibirModalTitulo = false;
     }
     
+    /**
+     * Salva uma nova prova.
+     * 
+     * @return 
+     */
     public String adicionarProva(){
         String navegacao = null;
 
@@ -309,6 +376,9 @@ public class ProvaBean implements Serializable {
         return navegacao;
     }
     
+    /**
+     * Inicializa a lista de questões a detalhar.
+     */
     private void carregarQuestoesDetalhar(){
         visualizarViewHelper.inicializar(questaoServico);
         
@@ -414,6 +484,18 @@ public class ProvaBean implements Serializable {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public List<ProvaAluno> getResultados() {
+        return resultados;
+    }
+
+    public Prova getProvaResultadoSelecionada() {
+        return provaResultadoSelecionada;
+    }
+
+    public ProvaAluno getProvaAlunoDetalhe() {
+        return provaAlunoDetalhe;
     }
         
 }

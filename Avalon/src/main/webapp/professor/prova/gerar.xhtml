@@ -31,6 +31,7 @@ and open the template in the editor.
                     <p:outputLabel for="dataHoraInicio" value="#{msg['prova.data.inicio']}:" />
                     <p:calendar id="dataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
                                 showHour="true" showMinute="true" required="true"
+                                requiredMessage="#{msg['prova.data.hora.inicio.obrigatoria']}"
                                 showButtonPanel="true"
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
@@ -39,13 +40,17 @@ and open the template in the editor.
                     <p:outputLabel for="dataHoraFim" value="#{msg['prova.data.fim']}:" />
                     <p:calendar id="dataHoraFim" value="#{provaBean.prova.dataHoraFim}"
                                 showHour="true" showMinute="true" required="true"
+                                requiredMessage="#{msg['prova.data.hora.fim.obrigatoria']}"
                                 showButtonPanel="true"
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
                 </div>
                 <div class="col-md-3 form-group">
                     <p:outputLabel for="provaDuracao" value="#{msg['prova.duracao']}:" />
-                    <h:inputText id="provaDuracao" class="form-control" value="#{provaBean.prova.duracao}" required="true" />
+                    <h:inputText id="provaDuracao" class="form-control"
+                                 value="#{provaBean.prova.duracao}"
+                                 required="true"
+                                 requiredMessage="#{msg['prova.duracao.obrigatoria']}" />
                 </div>
             </div>
             

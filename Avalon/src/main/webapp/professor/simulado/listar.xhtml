@@ -22,7 +22,7 @@ and open the template in the editor.
 
             <div class="row container-listar">
                 <div class="col-md-12">
-                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados">
+                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-exames">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -40,6 +40,11 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
+                            <p:commandLink class="btnResultados"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide()">
+                                <span class="material-icons">assignment</span>
+                            </p:commandLink>
                             <p:commandLink class="btnDetalhar"
                                            action="#{simuladoBean.iniciarPaginaVisualizarSimulado(simulado)}"
                                            onclick="PF('block').show()"

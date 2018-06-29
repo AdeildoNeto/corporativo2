@@ -391,35 +391,18 @@ h1 {
     right: 15px;
 }
 
-/* Table simulados */
-.table-simulados td:first-child{
-    max-width: 710px !important;
-    width: 710px;
-}
-
-.table-simulados td:nth-child(2){
-    width: 320px;
-    max-width: 320px;
-}
-
-.table-simulados td:last-child{
-    width: 80px;
-    max-width: 80px;
-}
-
-
-/* Table Provas */
-.table-provas td:first-child{
+/* Table Exames */
+.table-exames td:first-child{
     max-width: 680px !important;
     width: 680px;
 }
 
-.table-provas td:nth-child(2){
+.table-exames td:nth-child(2){
     width: 320px;
     max-width: 320px;
 }
 
-.table-provas td:last-child{
+.table-exames td:last-child{
     width: 120px;
     max-width: 120px;
 }
