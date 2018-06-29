@@ -66,7 +66,7 @@
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>goProvaResultados</from-outcome>
+            <from-outcome>goResultadosProva</from-outcome>
             <to-view-id>/professor/prova/resultado/listar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -83,6 +83,11 @@
         <navigation-case>
             <from-outcome>goVisualizarSimulado</from-outcome>
             <to-view-id>/professor/simulado/visualizar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goResultadosSimulado</from-outcome>
+            <to-view-id>/professor/simulado/resultado/listar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>

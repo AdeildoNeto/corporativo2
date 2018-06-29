@@ -41,6 +41,7 @@ and open the template in the editor.
 
                             </f:facet>
                             <p:commandLink class="btnResultados"
+                                           action="#{simuladoBean.iniciarPaginaResultados(simulado)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide()">
                                 <span class="material-icons">assignment</span>

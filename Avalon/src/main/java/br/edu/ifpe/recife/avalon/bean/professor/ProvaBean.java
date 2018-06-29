@@ -52,7 +52,7 @@ public class ProvaBean implements Serializable {
     private static final String GO_LISTAR_PROVA = "goListarProva";
     private static final String GO_IMPRIMIR_PROVA = "goImprimirProva";
     private static final String GO_DETALHAR_PROVA = "goDetalharProva";
-    private static final String GO_PROVA_RESULTADOS = "goProvaResultados";
+    private static final String GO_RESULTADOS_PROVA = "goResultadosProva";
     private static final String USUARIO = "usuario";
 
     @EJB
@@ -161,7 +161,7 @@ public class ProvaBean implements Serializable {
         provaResultadoSelecionada = prova;
         buscarResultados(prova);
         
-        return GO_PROVA_RESULTADOS;
+        return GO_RESULTADOS_PROVA;
     }
     
     /**

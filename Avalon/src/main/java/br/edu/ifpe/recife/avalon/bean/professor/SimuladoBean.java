@@ -6,10 +6,12 @@
 package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -44,6 +46,7 @@ public class SimuladoBean implements Serializable {
     private static final String GO_GERAR_SIMULADO = "goGerarSimulado";
     private static final String GO_LISTAR_SIMULADO = "goLisarSimulado";
     private static final String GO_VISUALIZAR_SIMULADO = "goVisualizarSimulado";
+    private static final String GO_SIMULADO_RESULTADOS = "goResultadosSimulado";
     private static final String USUARIO = "usuario";
 
     @EJB
@@ -70,7 +73,11 @@ public class SimuladoBean implements Serializable {
     private boolean exibirModalTitulo;
     private boolean exibirModalExclusao;
     private String titulo;
-    private String headerModalTitulo;
+    private final String headerModalTitulo;
+    
+    private List<SimuladoAluno> resultados;
+    private SimuladoAluno simuladoAlunoDetalhe;
+    private Simulado simuladoResultadoSelecionada;
 
     /**
      * Cria uma nova instância de <code>SimuladoBean</code>.
@@ -112,6 +119,20 @@ public class SimuladoBean implements Serializable {
         simulado.setTitulo(titulo);
 
         return GO_GERAR_SIMULADO;
+        
+    }
+    
+    /**
+     * Inicializa a página de resultados de um simulado.
+     * 
+     * @param simulado
+     * @return 
+     */
+    public String iniciarPaginaResultados(Simulado simulado){
+        simuladoResultadoSelecionada = simulado;
+        buscarResultados(simulado);
+        
+        return GO_SIMULADO_RESULTADOS;
     }
 
     /**
@@ -182,6 +203,15 @@ public class SimuladoBean implements Serializable {
         simulados = simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
     }
 
+    /**
+     * Carrega todos os resultados dos alunos em um simulado.
+     * 
+     * @param simulado 
+     */
+    private void buscarResultados(Simulado simulado){
+        resultados = simuladoServico.buscarResultadosSimulado(simulado);
+    }
+    
     /**
      * Seleciona uma questão da lista de questões.
      *
@@ -356,6 +386,18 @@ public class SimuladoBean implements Serializable {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Simulado getSimuladoResultadoSelecionada() {
+        return simuladoResultadoSelecionada;
+    }
+
+    public List<SimuladoAluno> getResultados() {
+        return resultados;
+    }
+
+    public SimuladoAluno getSimuladoAlunoDetalhe() {
+        return simuladoAlunoDetalhe;
     }
 
 }

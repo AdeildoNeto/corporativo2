@@ -8,6 +8,7 @@ package br.edu.ifpe.recife.avalon.servico;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
 import javax.annotation.Resource;
@@ -89,9 +90,9 @@ public class SimuladoServico {
 
     /**
      * Valida se ao menos uma questão foi selecionada para o simulado.
-     * 
+     *
      * @param simulado
-     * @throws ValidacaoException 
+     * @throws ValidacaoException
      */
     private void validarQuestoesSelecionadas(Simulado simulado) throws ValidacaoException {
         if (simulado.getQuestoes() == null || simulado.getQuestoes().isEmpty()) {
@@ -128,6 +129,21 @@ public class SimuladoServico {
         query.setParameter("titulo", PERCENT.concat(filtro.getTitulo()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
         query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+
+        return query.getResultList();
+    }
+
+    /**
+     * Consulta todos os resultados de um simulado.
+     *
+     * @param simulado
+     * @return simulados.
+     */
+    public List<SimuladoAluno> buscarResultadosSimulado(Simulado simulado) {
+        TypedQuery<SimuladoAluno> query = entityManager.createNamedQuery("SimuladoAluno.PorSimulado",
+                SimuladoAluno.class);
+
+        query.setParameter("idSimulado", simulado.getId());
 
         return query.getResultList();
     }
