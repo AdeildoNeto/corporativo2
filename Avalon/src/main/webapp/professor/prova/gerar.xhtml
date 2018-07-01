@@ -14,20 +14,20 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1>#{provaBean.prova.titulo}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgs" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row margin-bottom-30">
-                <div class="col-md-3 form-group">
+            <p:outputPanel class="row margin-bottom-30">
+                <p:outputPanel class="col-md-3 form-group">
                     <p:outputLabel for="dataHoraInicio" value="#{msg['prova.data.inicio']}:" />
                     <p:calendar id="dataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
                                 showHour="true" showMinute="true" required="true"
@@ -35,8 +35,8 @@ and open the template in the editor.
                                 showButtonPanel="true"
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
-                </div>
-                <div class="col-md-3 form-group">
+                </p:outputPanel>
+                <p:outputPanel class="col-md-3 form-group">
                     <p:outputLabel for="dataHoraFim" value="#{msg['prova.data.fim']}:" />
                     <p:calendar id="dataHoraFim" value="#{provaBean.prova.dataHoraFim}"
                                 showHour="true" showMinute="true" required="true"
@@ -44,28 +44,28 @@ and open the template in the editor.
                                 showButtonPanel="true"
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
-                </div>
-                <div class="col-md-3 form-group">
+                </p:outputPanel>
+                <p:outputPanel class="col-md-3 form-group">
                     <p:outputLabel for="provaDuracao" value="#{msg['prova.duracao']}:" />
                     <h:inputText id="provaDuracao" class="form-control"
                                  value="#{provaBean.prova.duracao}"
                                  required="true"
                                  requiredMessage="#{msg['prova.duracao.obrigatoria']}" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
             
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h3>#{msg['selecionar.questoes']}:</h3>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <ui:include src="../comum/pesquisar-questao.xhtml">
                 <ui:param name="bean" value="#{provaBean}" />
             </ui:include>
 
-            <div class="row container-table-prova">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-table-prova">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
@@ -106,10 +106,10 @@ and open the template in the editor.
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
-            <div id="button-container" class="row buttons-save">
-                <div class="offset-md-7 col-md-5 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel id="button-container" class="row buttons-save">
+                <p:outputPanel class="offset-md-7 col-md-5 form-group">
                     <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
                                      action="#{provaBean.iniciarPagina()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" immediate="true"
@@ -118,8 +118,8 @@ and open the template in the editor.
                                      action="#{provaBean.adicionarProva()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
                                      class="btn btn-primary font-color-default"></p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

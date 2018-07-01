@@ -14,15 +14,15 @@ and open the template in the editor.
     <ui:repeat rendered="#{!resultadoAlunoBean.quetoesVF}"
                value="#{resultadoAlunoBean.provaAlunoDetalhe.questoesAluno}"
                var="questaoAluno" varStatus="i" id="repeat">
-        <div class="form-group">
+        <p:outputPanel class="form-group">
             <span class="bold break-white-space">#{i.index + 1}) #{questaoAluno.questao.enunciado}</span>
-            <div class="img">
+            <p:outputPanel class="img">
                 <ui:fragment rendered="#{questaoAluno.questao.imagem != null}">
                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questaoAluno.questao.id}"/>
                     </p:graphicImage>
                 </ui:fragment>
-            </div>
+            </p:outputPanel>
             <p:selectOneRadio id="radioMS" value="#{questaoAluno.respostaMultiplaEscolha}"
                               layout="custom" plain="true" disabled="true">
                 <f:selectItem itemValue="0" />
@@ -33,17 +33,17 @@ and open the template in the editor.
             </p:selectOneRadio>
             
             <ui:repeat value="#{questaoAluno.alternativas}" var="alternativa" varStatus="j">
-                <div>
+                <p:outputPanel>
                     <p:radioButton for="form:repeat:0:radioMS" itemIndex="#{j.index}" />
                     <span>#{alternativa.descricao}</span>
-                </div>
+                </p:outputPanel>
             </ui:repeat>
-        </div>
-        <div class="form-group">
+        </p:outputPanel>
+        <p:outputPanel class="form-group">
             <label for="alternativaCorreta">#{msg['label.alternativa.correta']}: </label>
             <h:outputText id="alternativaCorreta" class="margin-left-10"
                           value="#{questaoAluno.alternativaCorreta}" />
-        </div>
+        </p:outputPanel>
     </ui:repeat>
 
 </ui:composition>

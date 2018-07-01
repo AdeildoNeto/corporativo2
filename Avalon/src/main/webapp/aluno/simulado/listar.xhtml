@@ -14,24 +14,24 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1 id="headerSimulados">#{msg['menu.simulados']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
             
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgs" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
             
             <ui:include src="fragmento/pesquisar-simulado.xhtml">
                 <ui:param name="bean" value="#{simuladoAlunoBean}" />
             </ui:include>
             
-            <div class="row container-listar">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{simuladoAlunoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados-aluno">
                         <h:column>
                             <f:facet name="header">
@@ -62,8 +62,8 @@ and open the template in the editor.
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

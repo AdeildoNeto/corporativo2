@@ -26,7 +26,7 @@ and open the template in the editor.
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <p:outputPanel class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <h:commandLink styleClass="nav-link" value="#{msg['menu.questoes']}" action="#{questaoBean.iniciarPagina()}" />
@@ -39,20 +39,20 @@ and open the template in the editor.
                         </li>
                         <ui:include src="../../template/logout.xhtml" />
                     </ul>
-                </div>
+                </p:outputPanel>
             </nav>
         </h:form>
 
-        <div class="container-principal col-md-12">
+        <p:outputPanel class="container-principal col-md-12">
             <ui:insert name="conteudo">
             </ui:insert>
-        </div>
+        </p:outputPanel>
 
-        <div class="col-md-12">
+        <p:outputPanel class="col-md-12">
             <ui:insert name="rodape">
 
             </ui:insert>
-        </div>
+        </p:outputPanel>
     </h:body>
 
 </html>

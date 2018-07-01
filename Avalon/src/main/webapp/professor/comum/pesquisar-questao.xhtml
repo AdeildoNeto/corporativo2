@@ -11,11 +11,11 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <div class="row">
-        <div class="col-md-3 form-group">
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroEnunciado" value="#{msg['label.enunciado']}:" />
             <h:inputText id="filtroEnunciado" class="form-control" value="#{bean.pesquisarQuestoesViewHelper.filtro.enunciado}" />
-        </div>
+        </p:outputPanel>
 
         <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroNomeCriador" value="#{msg['label.criador']}:" />
@@ -36,12 +36,12 @@ and open the template in the editor.
 
         <p:outputPanel class="col-md-2 form-group">
             <p:outputLabel for="filtroTipo" value="#{msg['label.tipo']}:" />
-            <div>
+            <p:outputPanel>
                 <p:selectOneMenu id="filtroTipo" value="#{bean.pesquisarQuestoesViewHelper.filtro.tipo}"
                                  class="btn dropdown-toggle bg-select-menu ui-selectonemenu-185">
                     <f:selectItems value="#{bean.pesquisarQuestoesViewHelper.tipoQuestoes}" itemLabel="#{tipoQuestao.descricao}" itemValue="#{tipoQuestao}" var="tipoQuestao" />
                 </p:selectOneMenu>
-            </div>
+            </p:outputPanel>
         </p:outputPanel>
         
         <p:outputPanel class="col-md-1 form-group">
@@ -55,6 +55,6 @@ and open the template in the editor.
             </p:commandLink>
         </p:outputPanel>
 
-    </div>
+    </p:outputPanel>
 
 </ui:composition>

@@ -18,21 +18,20 @@ and open the template in the editor.
                   widgetVar="modalResultado" closeOnEscape="false" draggable="false"
                   onHide="#{bean.fecharModalResultado()}" class="modal-resultado">
 
-            <div class="row">
-                <div class="col-md-12 form-group">
-                    <span>#{msg['resultado.obtido']}: #{bean.resultado}.
-                    </span>
-                </div>
-            </div>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <span>#{bean.resultado}</span>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row btn-modal">
-                <div class="col text-right">
+            <p:outputPanel class="row btn-modal">
+                <p:outputPanel class="col text-right">
                     <p:commandButton id="btnFecharModalResultado" value="#{msg['btn.fechar']}"
                                      action="#{bean.fecharModalResultado()}"
                                      styleClass="btn btn-secondary" update="modalResultado"
                                      immediate="true" process="@this" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
         </p:dialog>
 

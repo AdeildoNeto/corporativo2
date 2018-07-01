@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
@@ -142,16 +141,15 @@ public class SimuladoBean implements Serializable {
      * @return navegacao
      */
     public String iniciarPaginaVisualizarSimulado(Simulado simuladoSelecionado) {
-        visualizarViewHelper.inicializar(questaoServico);
         simulado = simuladoSelecionado;
 
         if (!simulado.getQuestoes().isEmpty()) {
             try {
 
                 if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId()));
+                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) simulado.getQuestoes());
                 } else {
-                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simulado.getId()));
+                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) simulado.getQuestoes());
                 }
 
                 if (visualizarViewHelper.getQuestoesMultiplaEscolha().isEmpty() && visualizarViewHelper.getQuestoesVerdadeiroFalso().isEmpty()) {

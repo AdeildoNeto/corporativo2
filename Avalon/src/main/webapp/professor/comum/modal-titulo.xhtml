@@ -17,18 +17,20 @@ and open the template in the editor.
                   header="#{bean.headerModalTitulo}" modal="true" resizable="false"
                   widgetVar="modalTitulo" closeOnEscape="true" draggable="false">
 
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgTitulo" />
-                    <div class="form-group">
+                    <p:outputPanel class="form-group">
                         <p:outputLabel for="titulo" value="#{msg['label.titulo']}:" />
-                        <h:inputText id="titulo" required="true" class="form-control" value="#{bean.titulo}" />
-                    </div>
-                </div>
-            </div>
+                        <h:inputText id="titulo" required="true"
+                                     requiredMessage="#{msg['prova.titulo.obrigatorio']}"
+                                     class="form-control" value="#{bean.titulo}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="col text-right button-footer">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col text-right button-footer">
                     <p:commandButton id="btnSalvar"
                                      value="#{msg['btn.salvar']}"
                                      action="#{bean.iniciarPaginaGerar()}"
@@ -39,8 +41,8 @@ and open the template in the editor.
                                      value="#{msg['btn.cancelar']}" action="#{bean.fecharModalTitulo()}"
                                      styleClass="btn btn-secondary"
                                      immediate="true" process="@this" update="formTitulo form" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
         </p:dialog>
 
     </h:form>   

@@ -14,14 +14,14 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1 id="headerProvas">#{msg['titulo.provas.online']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row container-listar">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="tableProvas" value="#{provaBean.provas}" var="prova" styleClass="table table-striped table-fixed table-exames">
                         <h:column>
                             <f:facet name="header">
@@ -61,10 +61,10 @@ and open the template in the editor.
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
-            <div class="row">
-                <div class="offset-md-8 col-md-4 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row text-right">
+                <p:outputPanel class="offset-md-8 col-md-4 form-group">
                     <p:commandButton id="btnImprimir" value="#{msg['btn.imprimir.prova']}"
                                      action="#{provaBean.iniciarPaginaImprimir()}"
                                      onclick="PF('block').show()"
@@ -79,8 +79,8 @@ and open the template in the editor.
                                      oncomplete="PF('block').hide()"
                                      class="btn bg-default font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
@@ -97,8 +97,8 @@ and open the template in the editor.
                              visible="#{provaBean.exibirModalExclusao}" 
                              header="#{msg['modal.header.excluir']}" severity="alert"
                              closeOnEscape="true">
-                <div class="row">
-                    <div class="col text-right button-footer">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right button-footer">
                         <p:commandButton value="#{msg['btn.sim']}" id="btnSimExcluirProva"
                                          action="#{provaBean.excluirProva()}"
                                          update="form formModalExcluir" styleClass="btn btn-primary" />
@@ -106,8 +106,8 @@ and open the template in the editor.
                                          action="#{provaBean.fecharModalExclusao()}"
                                          styleClass="btn btn-secondary" update="formModalExcluir form"
                                          process="@this" />
-                    </div>
-                </div>
+                    </p:outputPanel>
+                </p:outputPanel>
             </p:confirmDialog>
         </h:form>
     </ui:define>

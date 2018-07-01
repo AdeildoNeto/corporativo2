@@ -15,8 +15,8 @@ and open the template in the editor.
                      header="#{msg['questao.header.salvar']}" severity="alert"
                      widgetVar="modalSalvar" closeOnEscape="true">
 
-        <div class="row">
-            <div class="col text-right button-footer">
+        <p:outputPanel class="row">
+            <p:outputPanel class="col text-right button-footer">
                 <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvar()}"
                                  validateClient="true" id="btnSimAdicionar"
                                  onclick="PF('block').show(); PF('modalSalvar').hide()"
@@ -27,8 +27,8 @@ and open the template in the editor.
                                  id="btnNaoAdicionar"
                                  onclick="PF('modalSalvar').hide();"
                                  type="button" styleClass="btn btn-secondary" />
-            </div>
-        </div>
+            </p:outputPanel>
+        </p:outputPanel>
 
     </p:confirmDialog>
 

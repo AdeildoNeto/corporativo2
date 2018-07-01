@@ -14,63 +14,63 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <h1>#{provaBean.prova.titulo}</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="componente">#{msg['label.componente.curricular']}: </label>
                     <span id="componente"> #{provaBean.prova.componenteCurricular.nome}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="criador">#{msg['label.criador']}: </label>
                     <span id="criador"> #{provaBean.prova.professor.nomeCompleto}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
                     <h:outputText id="dataHoraInicio" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraInicio}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
-                </div>
-                <div class="col-md-4 form-group">
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
                     <h:outputText id="dataHoraFim" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraFim}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
-                </div>
-                <div class="col-md-4 form-group">
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
                     <label for="duracao">#{msg['prova.duracao']}: </label>
                     <h:outputText id="duracaoProva" value="#{provaBean.prova.duracao}"
                                   class="margin-left-10"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <ui:include src="../comum/avaliacao/conteudo-vf.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}">
                         <ui:param name="bean" value="#{provaBean}" />
                     </ui:include>
                     <ui:include src="../comum/avaliacao/conteudo-multipla-escolha.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}">
                         <ui:param name="bean" value="#{provaBean}" />
                     </ui:include>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="offset-md-8 col-md-2">
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-8 col-md-2">
                     <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
                                    action="#{provaBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
         </h:form>
     </ui:define>

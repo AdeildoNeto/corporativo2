@@ -10,6 +10,8 @@ import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -20,8 +22,10 @@ import br.edu.ifpe.recife.avalon.viewhelper.PesquisarSimuladoViewHelper;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
@@ -45,7 +49,7 @@ public class SimuladoAlunoBean implements Serializable {
     private static final String GO_INICIAR_SIMULADO = "goIniciarSimulado";
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
     private static final String USUARIO = "usuario";
-    private static final String RESULTADO_ACERTOS = "resultado.acertos";
+    private static final String RESULTADO_ACERTOS = "resultado.obtido";
     private static final String SIMULADO_VAZIO = "simulado.vazio";
     private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
     private static final String PESQUISA_SEM_DADOS = "pesquisa.sem.dados";
@@ -70,6 +74,7 @@ public class SimuladoAlunoBean implements Serializable {
     private List<MultiplaEscolha> questoesMultiplaEscolha;
     private boolean exibirModalResultado;
     private String resultado;
+    SimuladoAluno simuladoAluno;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -105,12 +110,15 @@ public class SimuladoAlunoBean implements Serializable {
     public String iniciarSimulado(Simulado simulado) {
         limparTelaSimulado();
         simuladoSelecionado = simulado;
+        simuladoAluno = new SimuladoAluno();
+        simuladoAluno.setAluno(usuarioLogado);
+        simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
 
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simuladoSelecionado.getId());
+                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) simuladoSelecionado.getQuestoes();
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorSimulado(simuladoSelecionado.getId());
+                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) simuladoSelecionado.getQuestoes();
             }
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
@@ -152,22 +160,54 @@ public class SimuladoAlunoBean implements Serializable {
      */
     public void finalizar() {
         try {
+            simuladoAluno.setQuestoesAluno(new ArrayList<SimuladoAlunoQuestao>());
+
             if (!questoesVerdadeiroFalso.isEmpty()) {
                 verificarTodasQuestoesPreenchidasVF();
+                preencherSimuladoVF();
             } else {
                 verificarTodasQuestoesPreenchidasMS();
+                preencherSimuladoMS();
             }
 
-            calcularResultado();
-            exibirModalResultado = true;
+            exibirResultado(simuladoAluno.getNota());
+            simuladoServico.salvarProvaAluno(simuladoAluno);
         } catch (ValidacaoException ex) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
 
     /**
+     * Preenche a prova com as questões de 
+     * verdadeiro ou falso respondidas pelo aluno.
+     */
+    private void preencherSimuladoVF() {
+        for (VerdadeiroFalso verdadeiroFalso : questoesVerdadeiroFalso) {
+            SimuladoAlunoQuestao questao = new SimuladoAlunoQuestao();
+            questao.setQuestao(verdadeiroFalso);
+            questao.setRespostaVF(verdadeiroFalso.getRespostaUsuario());
+            questao.setSimuladoAluno(simuladoAluno);
+            simuladoAluno.getQuestoesAluno().add(questao);
+        }
+    }
+    
+    /**
+     * Preenche a prova com as questões de 
+     * múltipla escolha respondidas pelo aluno.
+     */
+    private void preencherSimuladoMS() {
+        for (MultiplaEscolha multiplaEscolha : questoesMultiplaEscolha) {
+            SimuladoAlunoQuestao questao = new SimuladoAlunoQuestao();
+            questao.setQuestao(multiplaEscolha);
+            questao.setRespostaMultiplaEscolha(multiplaEscolha.getRespostaUsuario());
+            questao.setSimuladoAluno(simuladoAluno);
+            simuladoAluno.getQuestoesAluno().add(questao);
+        }
+    }
+
+    /**
      * Verificar se todas as questões V/F foram preenchidas.
-     * 
+     *
      * @throws br.edu.ifpe.recife.avalon.excecao.ValidacaoException
      */
     public void verificarTodasQuestoesPreenchidasVF() throws ValidacaoException {
@@ -180,7 +220,8 @@ public class SimuladoAlunoBean implements Serializable {
 
     /**
      * Verifica se todas as questões de múltipla escolha foram preenchidas.
-     * @throws ValidacaoException 
+     *
+     * @throws ValidacaoException
      */
     public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
@@ -191,57 +232,12 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Calcula a proporção de acerto de questões do aluno no simulado.
+     * Exibi a nota obitida pelo aluno no simulado.
      */
-    private void calcularResultado() {
-        int quantidadeQuestoes;
-        int respostasCertas;
-
-        if (!questoesVerdadeiroFalso.isEmpty()) {
-            quantidadeQuestoes = questoesVerdadeiroFalso.size();
-            respostasCertas = verificarRespostasVF();
-        } else {
-            quantidadeQuestoes = questoesMultiplaEscolha.size();
-            respostasCertas = verificarRespostasMS();
-        }
-
-        resultado = MessageFormat.format(AvalonUtil.getInstance().getMensagem(RESULTADO_ACERTOS), respostasCertas, quantidadeQuestoes);
-    }
-
-    /**
-     * Verifica a quantidade de acertos do usúario em questões de
-     * V/F.
-     *
-     * @return quantidade de acertos
-     */
-    private int verificarRespostasVF() {
-        int quantidadeAcertos = 0;
-
-        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-            if (questao.getResposta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
-    }
-
-    /**
-     * Verifica a quantidade de acertos do usuário em questões de
-     * múltipla escolha.
-     *
-     * @return quantidade de acertos
-     */
-    private int verificarRespostasMS() {
-        int quantidadeAcertos = 0;
-
-        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-            if (questao.getOpcaoCorreta().equals(questao.getRespostaUsuario())) {
-                quantidadeAcertos++;
-            }
-        }
-
-        return quantidadeAcertos;
+    private void exibirResultado(Double nota) {
+        BigDecimal notaFormatada = BigDecimal.valueOf(nota).setScale(2);
+        resultado = MessageFormat.format(AvalonUtil.getInstance().getMensagem(RESULTADO_ACERTOS), notaFormatada);
+        exibirModalResultado = true;
     }
 
     /**
@@ -263,12 +259,12 @@ public class SimuladoAlunoBean implements Serializable {
         FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
-    
+
     /**
      * Recupera a imagem de uma questão.
-     * 
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public StreamedContent getImagem() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -276,8 +272,7 @@ public class SimuladoAlunoBean implements Serializable {
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
-        }
-        else {
+        } else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
             Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
@@ -304,7 +299,7 @@ public class SimuladoAlunoBean implements Serializable {
     public void setSimuladoSelecionado(Simulado simuladoSelecionado) {
         this.simuladoSelecionado = simuladoSelecionado;
     }
-    
+
     public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {
         return questoesMultiplaEscolha;
     }

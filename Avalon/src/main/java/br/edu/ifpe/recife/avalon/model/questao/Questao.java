@@ -55,13 +55,7 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
-                    + " AND q.criador.email = :emailCriador"
-            )
-            ,@NamedQuery(
-                    name = "Questao.PorTipo",
-                    query = "SELECT q FROM Questao q WHERE q.anulada = false"
-                    + " AND q.tipo = :tipo"
+                    query = "SELECT q FROM Questao q WHERE q.criador.email = :emailCriador"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipoValido",

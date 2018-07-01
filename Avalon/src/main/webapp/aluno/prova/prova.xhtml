@@ -14,52 +14,52 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <h1>#{provaAlunoBean.prova.titulo}</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.prova.componenteCurricular.nome}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="criador">#{msg['cabecalho.professor']}: </label><span id="criador"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <label for="duracao">#{msg['prova.duracao']}: </label>
                     <h:outputText id="duracaoProva" class="margin-left-10" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}" />
                     <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="duracaoProva" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgs" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:carousel value="#{provaAlunoBean.questoesVerdadeiroFalso}" var="questao"
                                 id="carouselVF"
                                 rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}"
                                 numVisible="1" pageLinks="2">
-                        <div class="form-group">
+                        <p:outputPanel class="form-group">
                             <span class="bold">#{questao.enunciado}</span>
                             <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
                             </p:selectOneRadio>
-                            <div class="img">
+                            <p:outputPanel class="img">
                                 <ui:fragment rendered="#{questao.imagem != null}">
                                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                                         <f:param name="questaoId" value="#{questao.id}"/>
                                     </p:graphicImage>
                                 </ui:fragment>
-                            </div>
+                            </p:outputPanel>
                             <h:panelGrid class="margin-left-20">
                                 <h:column>
                                     <p:radioButton for="radio" itemIndex="0" class="radio-button" />
@@ -71,21 +71,21 @@ and open the template in the editor.
                                     <span>#{msg['btn.falso']}</span>
                                 </h:column>
                             </h:panelGrid>
-                        </div>
+                        </p:outputPanel>
                     </p:carousel>
                     <p:carousel value="#{provaAlunoBean.questoesMultiplaEscolha}" var="questao"
                                 id="carouselME"
                                 rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}"
                                 numVisible="1" pageLinks="2">
-                        <div class="form-group">
+                        <p:outputPanel class="form-group">
                             <span class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</span>
-                            <div class="img">
+                            <p:outputPanel class="img">
                                 <ui:fragment rendered="#{questao.imagem != null}">
                                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                                         <f:param name="questaoId" value="#{questao.id}"/>
                                     </p:graphicImage>
                                 </ui:fragment>
-                            </div>
+                            </p:outputPanel>
                             <p:selectOneRadio id="radioMS" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
                                 <f:selectItem itemValue="0" />
                                 <f:selectItem itemValue="1" />
@@ -95,26 +95,26 @@ and open the template in the editor.
                             </p:selectOneRadio>
 
                             <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
-                                <div>
+                                <p:outputPanel>
                                     <p:radioButton for="form:carouselME:0:radioMS" itemIndex="#{j.index}" />
                                     <span>#{alternativa.descricao}</span>
-                                </div>
+                                </p:outputPanel>
                             </ui:repeat>
-                        </div>
+                        </p:outputPanel>
                     </p:carousel>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="offset-md-9 col-md-2">
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-9 col-md-2">
                     <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}"
                                      update="form:modalFinalizar msgs"
                                      action="#{provaAlunoBean.verificarQuestoesEmBranco()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide();"
                                      class="btn btn-primary font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
@@ -124,16 +124,16 @@ and open the template in the editor.
                       header="#{msg['btn.finalizar']}"
                       draggable="false" visible="#{provaAlunoBean.exibirModalFinalizar}"
                       closeOnEscape="true" modal="true">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12">
+                        <p:outputPanel class="form-group">
                             <span>#{provaAlunoBean.msgConfirmarFinalizacao}</span>
-                        </div>
-                    </div>
-                </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                </p:outputPanel>
 
-                <div class="row">
-                    <div class="col text-right">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right">
                         <p:commandButton id="btnNao"
                                          value="#{msg['btn.nao']}" action="#{provaAlunoBean.fecharModalFinalizar()}"
                                          styleClass="btn btn-secondary"
@@ -144,8 +144,8 @@ and open the template in the editor.
                                          action="#{provaAlunoBean.finalizar()}"
                                          onclick="PF('block').show();" oncomplete="PF('block').hide();"
                                          styleClass="btn btn-primary button-modal" />
-                    </div>
-                </div>
+                    </p:outputPanel>
+                </p:outputPanel>
             </p:dialog>
         </h:form>
     </ui:define>

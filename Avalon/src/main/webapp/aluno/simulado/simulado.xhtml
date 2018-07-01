@@ -14,39 +14,39 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <h1>#{simuladoAlunoBean.simuladoSelecionado.titulo}</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgs" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <ui:include src="fragmento/simulado-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
                         <ui:param name="bean" value="#{simuladoAlunoBean}" />
                     </ui:include>
                     <ui:include src="fragmento/simulado-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}">
                         <ui:param name="bean" value="#{simuladoAlunoBean}" />
                     </ui:include>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="offset-md-8 col-md-4">
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-8 col-md-4">
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
                                    action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
@@ -56,8 +56,8 @@ and open the template in the editor.
                                      oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

@@ -14,14 +14,14 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1 id="headerSimulados">#{msg['titulo.meus.simulados']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row container-listar">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-exames">
                         <h:column>
                             <f:facet name="header">
@@ -61,10 +61,10 @@ and open the template in the editor.
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
-            <div class="row">
-                <div class="offset-md-9 col-md-3 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-9 col-md-3 form-group">
                     <p:commandButton id="btnAdd" value="#{msg['btn.gerar.simulado']}"
                                      action="#{simuladoBean.exibirModalTitulo()}"
                                      onclick="PF('block').show()"
@@ -72,8 +72,8 @@ and open the template in the editor.
                                      update="formTitulo"
                                      class="btn bg-default btn-block font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

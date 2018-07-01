@@ -17,20 +17,20 @@ and open the template in the editor.
                   header="#{msg['novo.componente.header']}" modal="true" resizable="false"
                   widgetVar="modalComponente" closeOnEscape="true" draggable="false">
 
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgComponente" />
-                    <div class="form-group">
+                    <p:outputPanel class="form-group">
                         <p:outputLabel for="nomeComponente" value="#{msg['label.nome']}:" />
                         <h:inputText id="nomeComponente" required="true" tabindex="301"
                                      class="form-control" requiredMessage="#{msg['componente.curricular.nome.obrigatorio']}"
                                      value="#{questaoBean.novoComponenteCurricular.nome}" />
-                    </div>
-                </div>
-            </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="col text-right button-footer">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col text-right button-footer">
                     <p:commandButton value="#{msg['btn.salvar']}" tabindex="302"
                                      id="btnSalvarComponenteCurricular"
                                      action="#{questaoBean.salvarComponenteCurricular()}"
@@ -45,8 +45,8 @@ and open the template in the editor.
                                      immediate="true" process="@this" update="formComponente form" />
 
                     
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
         </p:dialog>
 

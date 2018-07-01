@@ -380,15 +380,14 @@ public class ProvaBean implements Serializable {
      * Inicializa a lista de questões a detalhar.
      */
     private void carregarQuestoesDetalhar(){
-        visualizarViewHelper.inicializar(questaoServico);
         
         if (!prova.getQuestoes().isEmpty()) {
             try {
 
                 if (prova.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorProva(prova.getId()));
+                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) prova.getQuestoes());
                 } else {
-                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorProva(prova.getId()));
+                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) prova.getQuestoes());
                 }
 
                 if (visualizarViewHelper.getQuestoesMultiplaEscolha().isEmpty() && visualizarViewHelper.getQuestoesVerdadeiroFalso().isEmpty()) {

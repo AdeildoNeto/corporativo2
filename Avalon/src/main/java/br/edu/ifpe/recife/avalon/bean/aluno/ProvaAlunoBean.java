@@ -99,9 +99,9 @@ public class ProvaAlunoBean implements Serializable {
 
         if (!prova.getQuestoes().isEmpty()) {
             if (prova.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) questaoServico.buscarQuestoesPorProva(prova.getId());
+                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) prova.getQuestoes();
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) questaoServico.buscarQuestoesPorProva(prova.getId());
+                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) prova.getQuestoes();
             }
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
@@ -138,8 +138,8 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Inicializa os componentes necessários para realização da prova.
-     * 
-     * @return 
+     *
+     * @return
      */
     public String iniciarProva() {
         prepararContador();
@@ -188,6 +188,7 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Finaliza a prova.
+     *
      * @return rota para listar provas disponíveis.
      */
     public String finalizar() {
@@ -203,27 +204,41 @@ public class ProvaAlunoBean implements Serializable {
      * Carrega as repostas do usuário no histórico da prova.
      */
     public void preencherRespostas() {
-        List<ProvaAlunoQuestao> questoes = new ArrayList<>();
+        provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
 
         if (!questoesMultiplaEscolha.isEmpty()) {
-            for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-                ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
-                questaoAluno.setProvaAluno(provaAluno);
-                questaoAluno.setQuestao(questao);
-                questaoAluno.setRespostaMultiplaEscolha(questao.getRespostaUsuario());
-                questoes.add(questaoAluno);
-            }
+            preencherProvaMS();
         } else if (!questoesVerdadeiroFalso.isEmpty()) {
-            for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-                ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
-                questaoAluno.setProvaAluno(provaAluno);
-                questaoAluno.setQuestao(questao);
-                questaoAluno.setRespostaVF(questao.getRespostaUsuario());
-                questoes.add(questaoAluno);
-            }
+            preencherProvaVF();
         }
+    }
 
-        provaAluno.setQuestoesAluno(questoes);
+    /**
+     * Preenche a prova com as questões de 
+     * múltipla escolha respondidas pelo aluno.
+     */
+    private void preencherProvaMS() {
+        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+            ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+            questaoAluno.setProvaAluno(provaAluno);
+            questaoAluno.setQuestao(questao);
+            questaoAluno.setRespostaMultiplaEscolha(questao.getRespostaUsuario());
+            provaAluno.getQuestoesAluno().add(questaoAluno);
+        }
+    }
+
+    /**
+     * Preenche a prova com as questões de 
+     * verdadeiro ou falso respondidas pelo aluno.
+     */
+    private void preencherProvaVF() {
+        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
+            ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+            questaoAluno.setProvaAluno(provaAluno);
+            questaoAluno.setQuestao(questao);
+            questaoAluno.setRespostaVF(questao.getRespostaUsuario());
+            provaAluno.getQuestoesAluno().add(questaoAluno);
+        }
     }
 
     /**
@@ -242,8 +257,7 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Verifica se todas as questões de múltipla escolha foram
-     * respondidas.
+     * Verifica se todas as questões de múltipla escolha foram respondidas.
      *
      * @return
      */
@@ -273,14 +287,14 @@ public class ProvaAlunoBean implements Serializable {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
-    
-    private void finalizarPorTempo() throws IOException{
+
+    private void finalizarPorTempo() throws IOException {
         finalizar();
         iniciarPagina();
         String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         FacesContext.getCurrentInstance().getExternalContext().redirect(path.concat("/aluno/prova/listar.xhtml"));
     }
-    
+
     /**
      * Prepara o contador da duração da prova.
      */
@@ -292,14 +306,14 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Inicia a contagem da duração da prova.
-     * 
+     *
      * @throws java.io.IOException
      */
     public void iniciarContadorProva() throws IOException {
-        if(duracaoMinutos == 0 && duracaoSegundos == 0){
+        if (duracaoMinutos == 0 && duracaoSegundos == 0) {
             finalizarPorTempo();
         }
-        
+
         if (getDuracaoSegundos() == 0) {
             duracaoSegundos = 59;
             --duracaoMinutos;
@@ -311,7 +325,7 @@ public class ProvaAlunoBean implements Serializable {
 
     /**
      * Recupera a imagem de uma questão.
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -364,13 +378,13 @@ public class ProvaAlunoBean implements Serializable {
     public String getMsgConfirmarFinalizacao() {
         return msgConfirmarFinalizacao;
     }
-    
+
     public long getDuracaoMinutos() {
         return duracaoMinutos;
     }
-    
+
     public long getDuracaoSegundos() {
         return duracaoSegundos;
     }
-    
+
 }

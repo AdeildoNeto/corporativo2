@@ -11,57 +11,57 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <div class="row">
-        <div class="logo-ifpe caixa-cabecalho">
+    <p:outputPanel class="row">
+        <p:outputPanel class="logo-ifpe caixa-cabecalho">
             <h:graphicImage name="img/logo-ifpe.png" width="180px" height="50px" />
-        </div>
-        <div class="column" style="width: 436px">
-            <div class="caixa-cabecalho" style="width: 430px">
+        </p:outputPanel>
+        <p:outputPanel class="column" style="width: 436px">
+            <p:outputPanel class="caixa-cabecalho" style="width: 430px">
                 #{msg['cabecalho.disciplina']}:
-            </div>
-            <div class="row">
-                <div class="caixa-cabecalho margin-left-0" style="width: 236px; margin-right: 3px">
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 236px; margin-right: 3px">
                     #{msg['cabecalho.prova']}/#{msg['cabecalho.unidade']}:
-                </div>
-                <div class="caixa-cabecalho margin-right-0" style="width: 192px;">
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho margin-right-0" style="width: 192px;">
                     #{msg['cabecalho.professor']}:
-                </div>
-            </div>
-        </div>
-        <div class="caixa-cabecalho" style="width: 80px; margin-top: 2px;">
+                </p:outputPanel>
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="caixa-cabecalho" style="width: 80px; margin-top: 2px;">
             <span class="text-center">#{msg['cabecalho.nota']}</span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column" style="width: 427px">
-            <div class="row">
-                <div class="caixa-cabecalho margin-left-0" style="width: 365px;">
+        </p:outputPanel>
+    </p:outputPanel>
+    <p:outputPanel class="row">
+        <p:outputPanel class="column" style="width: 427px">
+            <p:outputPanel class="row">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 365px;">
                     #{msg['cabecalho.curso']}:
-                </div>
-                <div class="caixa-cabecalho" style="width: 49px;">
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho" style="width: 49px;">
                     #{msg['cabecalho.periodo']}:
-                </div>
-            </div>
-            <div class="caixa-cabecalho" style="width: 420px">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="caixa-cabecalho" style="width: 420px">
                 #{msg['cabecalho.aluno']}:
-            </div>
-        </div>
-        <div class="column" style="width: 195px">
-            <div class="row margin-left-0">
-                <div class="caixa-cabecalho margin-left-0" style="width: 40%">
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="column" style="width: 195px">
+            <p:outputPanel class="row margin-left-0">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 40%">
                     #{msg['cabecalho.turno']}:
-                </div>
-                <div class="caixa-cabecalho margin-right-0" style="width: 60%">
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho margin-right-0" style="width: 60%">
                     #{msg['cabecalho.data']}:
-                </div>
-            </div>
-            <div class="caixa-cabecalho margin-left-0">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="caixa-cabecalho margin-left-0">
                 #{msg['cabecalho.matricula']}:
-            </div>
-        </div>
-        <div class="caixa-cabecalho" style="width: 80px; margin-top: 2px; white-space: pre-line">
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="caixa-cabecalho" style="width: 80px; margin-top: 2px; white-space: pre-line">
             <span class="text-center">#{msg['cabecalho.rubrica']}</span>
-        </div>
-    </div>  
+        </p:outputPanel>
+    </p:outputPanel>  
     
 </ui:composition>

@@ -14,22 +14,22 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container" enctype="multipart/form-data" accept="utf-8">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1>#{msg['titulo.inserir.questao']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="col-md-8">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-8">
                     <p:messages id="msgPrincipal" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <ui:include src="fragmento/conteudo-questao.xhtml" />
 
-            <div class="row buttons-save">
-                <div class="col-md-12">
+            <p:outputPanel class="row buttons-save">
+                <p:outputPanel class="col-md-12">
                     <p:commandLink id="goListarQuestao" value="#{msg['btn.cancelar']}"
                                    action="#{questaoBean.voltarListarQuestoes()}" immediate="true"
                                    class="btn btn-secondary font-color-default">
@@ -37,8 +37,8 @@ and open the template in the editor.
                     <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
                                      class="btn btn-primary font-color-default">
                     </p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

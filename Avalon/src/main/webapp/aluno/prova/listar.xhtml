@@ -15,20 +15,20 @@ and open the template in the editor.
     <ui:define name="conteudo">
         <h:form id="form" class="container">
             <p:poll interval="60" listener="#{provaAlunoBean.iniciarPagina()}" update="form" />
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1 id="headerSimulados">#{msg['provas.disponiveis']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <p:messages id="msgs" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row container-listar">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}"
                                  var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
                         <h:column>
@@ -69,8 +69,8 @@ and open the template in the editor.
                                              class="btn bg-default btn-block font-color-default"></p:commandButton>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>
@@ -83,15 +83,15 @@ and open the template in the editor.
                       header="#{msg['prova.iniciar.observacoes']}" modal="true" resizable="false"
                       widgetVar="modalComponente" closeOnEscape="true" draggable="false">
 
-                <div class="row">
-                    <div class="col-md-12 margin-bottom-30">
-                        <div>#{provaAlunoBean.observacaoDuracao}</div>
-                        <div>#{msg['prova.observacao.realizar']}</div>
-                    </div>
-                </div>
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12 margin-bottom-30">
+                        <p:outputPanel>#{provaAlunoBean.observacaoDuracao}</p:outputPanel>
+                        <p:outputPanel>#{msg['prova.observacao.realizar']}</p:outputPanel>
+                    </p:outputPanel>
+                </p:outputPanel>
 
-                <div class="row">
-                    <div class="col text-right">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right">
                         <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
                                          styleClass="btn btn-secondary"
                                          immediate="true" process="@this" update="formModalIniciar form" />
@@ -101,8 +101,8 @@ and open the template in the editor.
                                          onclick="PF('block').show();" oncomplete="PF('block').hide()"
                                          styleClass="btn btn-primary button-modal"
                                          update="formModalIniciar form" />
-                    </div>
-                </div>
+                    </p:outputPanel>
+                </p:outputPanel>
             </p:dialog>
         </h:form>
     </ui:define>

@@ -19,15 +19,9 @@ import java.util.List;
  */
 public class VisualizarAvaliacaoViewHelper implements Serializable {
 
-    private QuestaoServico questaoServico;
-
     private Simulado simuladoSelecionado;
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
-
-    public void inicializar(QuestaoServico servico) {
-        questaoServico = servico;
-    }
     
     public void limpar(){
         questoesMultiplaEscolha.clear();

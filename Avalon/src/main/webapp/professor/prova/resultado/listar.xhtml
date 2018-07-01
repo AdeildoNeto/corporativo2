@@ -14,36 +14,36 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <h1>#{provaBean.provaResultadoSelecionada.titulo}</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
                     <label for="componente">#{msg['label.componente.curricular']}: </label>
                     <span id="componente"> #{provaBean.provaResultadoSelecionada.componenteCurricular.nome}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
                     <h:outputText id="dataHoraInicio" class="margin-left-10"
                                   value="#{provaBean.provaResultadoSelecionada.dataHoraInicio}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
-                </div>
-                <div class="col-md-4 form-group">
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
                     <h:outputText id="dataHoraFim" class="margin-left-10"
                                   value="#{provaBean.provaResultadoSelecionada.dataHoraFim}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
-            <div class="row container-listar">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="tableResultados" value="#{provaBean.resultados}"
                                  var="resultado" styleClass="table table-striped table-fixed table-resultados">
                         <h:column>
@@ -72,8 +72,8 @@ and open the template in the editor.
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

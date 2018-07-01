@@ -14,24 +14,24 @@ and open the template in the editor.
 
     <ui:define name="conteudo">
         <h:form id="form" class="container">
-            <div class="row">
-                <div class="col-md-12 form-group">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
                     <h1>#{msg['titulo.gerar.prova']}</h1>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
             
-            <div class="row">
-                <div class="col-md-6">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-6">
                     <p:messages id="msgs" />
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
             
             <ui:include src="../comum/pesquisar-questao.xhtml">
                 <ui:param name="bean" value="#{provaBean}" />
             </ui:include>
             
-            <div class="row container-table-prova">
-                <div class="col-md-12">
+            <p:outputPanel class="row container-table-prova">
+                <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
@@ -72,16 +72,16 @@ and open the template in the editor.
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
-                </div>
-            </div>
-            <div id="button-container" class="row buttons-save">
-                <div class="offset-md-9 col-md-2 form-group">
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel id="button-container" class="row buttons-save">
+                <p:outputPanel class="offset-md-9 col-md-2 form-group">
                     <p:commandButton id="btn" value="#{msg['btn.imprimir.prova']}" update="@form"
                                      action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
                                      class="btn bg-default btn-block font-color-default"></p:commandButton>
-                </div>
-            </div>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

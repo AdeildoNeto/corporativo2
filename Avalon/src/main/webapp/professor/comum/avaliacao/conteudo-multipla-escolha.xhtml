@@ -12,15 +12,15 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:repeat value="#{bean.visualizarViewHelper.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
-        <div class="form-group">
-            <div class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</div>
-            <div class="img">
+        <p:outputPanel class="form-group">
+            <p:outputPanel class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</p:outputPanel>
+            <p:outputPanel class="img">
                 <ui:fragment rendered="#{questao.imagem != null}">
                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questao.id}"/>
                     </p:graphicImage>
                 </ui:fragment>
-            </div>
+            </p:outputPanel>
             <p:selectOneRadio id="radioMS" value="#{questao.opcaoCorreta}" layout="custom" plain="true" disabled="true" >
                 <f:selectItem itemValue="0" />
                 <f:selectItem itemValue="1" />
@@ -30,12 +30,12 @@ and open the template in the editor.
             </p:selectOneRadio>
 
             <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
-                <div>
+                <p:outputPanel>
                     <p:radioButton for="form:repeat:0:radioMS" itemIndex="#{j.index}" />
                     <span>#{alternativa.descricao}</span>
-                </div>
+                </p:outputPanel>
             </ui:repeat>
-        </div>
+        </p:outputPanel>
     </ui:repeat>
 
 </ui:composition>

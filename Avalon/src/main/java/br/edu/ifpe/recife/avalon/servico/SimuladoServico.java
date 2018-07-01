@@ -6,9 +6,11 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
 import javax.annotation.Resource;
@@ -129,6 +131,32 @@ public class SimuladoServico {
         query.setParameter("titulo", PERCENT.concat(filtro.getTitulo()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
         query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+
+        return query.getResultList();
+    }
+    
+    
+
+    /**
+     * Registra o simulado realizado pelo aluno.
+     * 
+     * @param simuladoAluno 
+     */
+    public void salvarProvaAluno(@Valid SimuladoAluno simuladoAluno){
+        entityManager.persist(simuladoAluno);
+    }
+
+    /**
+     * Consulta todos os simulados realizados por um aluno.
+     * 
+     * @param aluno 
+     * @return lista de simulados realizados pelo aluno.
+     */
+    public List<SimuladoAluno> buscarResultadosSimuladoAluno(Usuario aluno) {
+        TypedQuery<SimuladoAluno> query = entityManager.createNamedQuery("SimuladoAluno.PorAluno",
+                SimuladoAluno.class);
+
+        query.setParameter("idAluno", aluno.getId());
 
         return query.getResultList();
     }

@@ -16,27 +16,27 @@ and open the template in the editor.
         <link href="../../resources/css/impressao.css" rel="stylesheet" type="text/css" />
     </h:head>
     <h:body>
-        <div class="container-prova">
-            <div class="cabecalho">
+        <p:outputPanel class="container-prova">
+            <p:outputPanel class="cabecalho">
                 <ui:include src="cabecalho.xhtml" />          
-            </div>
+            </p:outputPanel>
             <ui:repeat value="#{provaBean.questoesSelecionadas.toArray()}" var="questao" varStatus="posicao">
                 <p:outputPanel styleClass="container-questao #{questao.tipo}">
-                    <div class="enunciado">
+                    <p:outputPanel class="enunciado">
                         <p:outputLabel>#{posicao.index+1}) #{questao.enunciado}</p:outputLabel>
-                    </div>
-                     <div class="img">
+                    </p:outputPanel>
+                     <p:outputPanel class="img">
                         <ui:fragment rendered="#{questao.imagem != null}">
                             <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                                 <f:param name="questaoId" value="#{questao.id}"/>
                             </p:graphicImage>
                         </ui:fragment>
-                    </div>
+                    </p:outputPanel>
                     <p:outputPanel styleClass="prova-alternativa" rendered="#{questao.tipo == 'VERDADEIRO_FALSO' || questao.tipo == 'MULTIPLA_ESCOLHA'}">
                         <h:outputText value="#{questao.formatarQuestao()}"></h:outputText>
                     </p:outputPanel>
                 </p:outputPanel>
             </ui:repeat>
-        </div>
+        </p:outputPanel>
     </h:body>
 </html>

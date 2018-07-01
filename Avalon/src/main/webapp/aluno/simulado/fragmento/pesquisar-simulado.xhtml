@@ -11,11 +11,11 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <div class="row">
-        <div class="col-md-3 form-group">
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroTitulo" value="#{msg['label.titulo']}:" />
             <h:inputText id="filtroTitulo" class="form-control" value="#{bean.pesquisarSimuladoViewHelper.filtro.titulo}" />
-        </div>
+        </p:outputPanel>
 
         <p:outputPanel class="col-md-3 form-group">
             <p:outputLabel for="filtroNomeCriador" value="#{msg['label.criador']}:" />
@@ -45,6 +45,6 @@ and open the template in the editor.
             </p:commandLink>
         </p:outputPanel>
 
-    </div>
+    </p:outputPanel>
 
 </ui:composition>

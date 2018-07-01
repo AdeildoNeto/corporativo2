@@ -484,8 +484,8 @@ public class QuestaoBean implements Serializable {
     
     public void anularQuestao(){
         questaoServico.anular(questao);
-        questoes.remove(questao);
         questao = null;
+        buscarQuestoes();
     }
 
     /*
