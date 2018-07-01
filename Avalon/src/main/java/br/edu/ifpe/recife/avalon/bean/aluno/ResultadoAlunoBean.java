@@ -50,7 +50,7 @@ public class ResultadoAlunoBean implements Serializable {
 
     private List<ProvaAluno> provasResultados = new ArrayList<>();
     private ProvaAluno provaAlunoDetalhe = new ProvaAluno();
-    private boolean quetoesVF;
+    private boolean provaVF;
 
     /**
      * Cria uma nova instância de <code>ResultadoAlunoBean</code>.
@@ -88,29 +88,11 @@ public class ResultadoAlunoBean implements Serializable {
         provaAlunoDetalhe = provaSelecionada;
 
         if (!provaAlunoDetalhe.getProva().getQuestoes().isEmpty()) {
-            if (provaAlunoDetalhe.getProva().getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                quetoesVF = true;
-            } else {
-                quetoesVF = false;
-            }
-
+            provaVF = provaAlunoDetalhe.getProva().getQuestoes().get(0) instanceof VerdadeiroFalso;
             return GO_DETALHAR_RESULTADO;
-
-        } else {
-            exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
         }
 
         return null;
-    }
-
-    /**
-     * Exibi uma mensagem de erro.
-     *
-     * @param mensagem - mensagem a ser exibida.
-     */
-    private void exibirMensagemError(String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     /**
@@ -133,8 +115,8 @@ public class ResultadoAlunoBean implements Serializable {
         }
     }
 
-    public boolean isQuetoesVF() {
-        return quetoesVF;
+    public boolean isProvaVF() {
+        return provaVF;
     }
 
     public List<ProvaAluno> getProvasResultados() {

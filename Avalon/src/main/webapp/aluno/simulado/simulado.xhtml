@@ -26,7 +26,7 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
-                    <label for="criador">#{msg['label.criador']}: </label><span id="criador"> #{simuladoAlunoBean.simuladoSelecionado.criador.nomeCompleto}</span>
+                    <label for="professor">#{msg['label.professor']}: </label><span id="professor"> #{simuladoAlunoBean.simuladoSelecionado.professor.nomeCompleto}</span>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
@@ -46,7 +46,7 @@ and open the template in the editor.
             </p:outputPanel>
 
             <p:outputPanel class="row">
-                <p:outputPanel class="offset-md-8 col-md-4">
+                <p:outputPanel class="offset-md-8 col-md-4 text-right">
                     <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
                                    action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
                                    class="btn btn-secondary font-color-default">

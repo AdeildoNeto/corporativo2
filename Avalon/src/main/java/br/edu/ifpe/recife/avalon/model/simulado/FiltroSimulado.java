@@ -15,7 +15,7 @@ public class FiltroSimulado implements Serializable {
     
     private Long idComponenteCurricular;
     private String titulo = "";
-    private String nomeCriador = "";
+    private String nomeProfessor = "";
 
     public Long getIdComponenteCurricular() {
         return idComponenteCurricular;
@@ -33,12 +33,12 @@ public class FiltroSimulado implements Serializable {
         this.titulo = titulo;
     }
 
-    public String getNomeCriador() {
-        return nomeCriador;
+    public String getnomeProfessor() {
+        return nomeProfessor;
     }
 
-    public void setNomeCriador(String nomeCriador) {
-        this.nomeCriador = nomeCriador;
+    public void setnomeProfessor(String nomeProfessor) {
+        this.nomeProfessor = nomeProfessor;
     }
 
 }

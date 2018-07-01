@@ -13,16 +13,16 @@ public class FiltroQuestao {
     
     private Long idComponenteCurricular;
     private String enunciado = "";
-    private String nomeCriador = "";
+    private String nomeProfessor = "";
     private String emailUsuario = "";
     private TipoQuestaoEnum tipo = TipoQuestaoEnum.DISCURSIVA;
 
-    public String getNomeCriador() {
-        return nomeCriador;
+    public String getNomeProfessor() {
+        return nomeProfessor;
     }
 
-    public void setNomeCriador(String nomeCriador) {
-        this.nomeCriador = nomeCriador;
+    public void setNomeProfessor(String nomeProfessor) {
+        this.nomeProfessor = nomeProfessor;
     }
 
     public String getEmailUsuario() {

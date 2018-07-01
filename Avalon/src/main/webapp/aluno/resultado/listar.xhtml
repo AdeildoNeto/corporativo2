@@ -73,8 +73,9 @@ and open the template in the editor.
                             <p:commandLink class="btnDetalhar"
                                            action="#{resultadoAlunoBean.iniciarPaginaDetalhar(provaAluno)}"
                                            onclick="PF('block').show()"
-                                           oncomplete="PF('block').hide();">
-                                <span class="material-icons">pageview</span>
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.detalhar']}">
+                                <span class="material-icons">list_alt</span>
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>

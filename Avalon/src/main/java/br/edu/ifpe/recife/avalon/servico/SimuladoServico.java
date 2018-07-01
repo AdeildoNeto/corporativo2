@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
@@ -81,7 +80,7 @@ public class SimuladoServico {
 
         query.setParameter("titulo", simulado.getTitulo());
         query.setParameter("idComponenteCurricular", simulado.getComponenteCurricular().getId());
-        query.setParameter("emailCriador", simulado.getCriador().getEmail());
+        query.setParameter("emailProfessor", simulado.getProfessor().getEmail());
 
         if (!query.getResultList().isEmpty()) {
             throw new ValidacaoException(AvalonUtil.getInstance()
@@ -104,16 +103,16 @@ public class SimuladoServico {
     }
 
     /**
-     * Consulta simulados por criador.
+     * Consulta simulados por professor.
      *
-     * @param emailCriador - email do criador.
+     * @param emailProfessor - email do professor.
      * @return lista de simulados.
      */
-    public List<Simulado> buscarSimuladosPorCriador(@NotNull String emailCriador) {
-        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorCriador",
+    public List<Simulado> buscarSimuladosPorProfessor(@NotNull String emailProfessor) {
+        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorProfessor",
                 Simulado.class);
 
-        query.setParameter("emailCriador", emailCriador);
+        query.setParameter("emailProfessor", emailProfessor);
 
         return query.getResultList();
     }
@@ -130,26 +129,24 @@ public class SimuladoServico {
 
         query.setParameter("titulo", PERCENT.concat(filtro.getTitulo()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
-        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+        query.setParameter("nomeProfessor", PERCENT.concat(filtro.getnomeProfessor()).concat(PERCENT));
 
         return query.getResultList();
     }
-    
-    
 
     /**
      * Registra o simulado realizado pelo aluno.
-     * 
-     * @param simuladoAluno 
+     *
+     * @param simuladoAluno
      */
-    public void salvarProvaAluno(@Valid SimuladoAluno simuladoAluno){
+    public void salvarProvaAluno(@Valid SimuladoAluno simuladoAluno) {
         entityManager.persist(simuladoAluno);
     }
 
     /**
      * Consulta todos os simulados realizados por um aluno.
-     * 
-     * @param aluno 
+     *
+     * @param aluno
      * @return lista de simulados realizados pelo aluno.
      */
     public List<SimuladoAluno> buscarResultadosSimuladoAluno(Usuario aluno) {
@@ -174,6 +171,22 @@ public class SimuladoServico {
         query.setParameter("idSimulado", simulado.getId());
 
         return query.getResultList();
+    }
+
+    /**
+     * Recupera um simulado por ID.
+     * 
+     * @param id
+     * @return 
+     */
+    public Simulado buscarSimuladoPorId(@NotNull Long id) {
+        TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorId", Simulado.class);
+        query.setParameter("idSimulado", id);
+
+        if (!query.getResultList().isEmpty()) {
+            return query.getSingleResult();
+        }
+        return null;
     }
 
 }

@@ -179,7 +179,7 @@ public class QuestaoBean implements Serializable {
      * Carrega as questões do usuário.
      */
     private void buscarQuestoes() {
-        this.questoes = questaoServico.buscarQuestoesPorCriador(usuarioLogado.getEmail());
+        this.questoes = questaoServico.buscarQuestoesPorProfessor(usuarioLogado.getEmail());
     }
 
     /**
@@ -273,7 +273,7 @@ public class QuestaoBean implements Serializable {
      */
     private void preencherQuestao() {
         questao.setTipo(tipoSelecionado);
-        questao.setCriador(usuarioLogado);
+        questao.setProfessor(usuarioLogado);
         questao.setDataCriacao(Calendar.getInstance().getTime());
         questao.setComponenteCurricular(buscarComponenteSelecionado());
     }
@@ -286,7 +286,7 @@ public class QuestaoBean implements Serializable {
      */
     private void copiarQuestao(Questao questao) {
         questao.setEnunciado(this.questao.getEnunciado());
-        questao.setCriador(this.questao.getCriador());
+        questao.setProfessor(this.questao.getProfessor());
         questao.setTipo(this.questao.getTipo());
         questao.setDataCriacao(this.questao.getDataCriacao());
         questao.setComponenteCurricular(this.questao.getComponenteCurricular());

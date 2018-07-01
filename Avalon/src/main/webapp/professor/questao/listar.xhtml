@@ -56,7 +56,8 @@ and open the template in the editor.
                             <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}"
                                            onclick="PF('block').show()"
                                            rendered="#{!questao.anulada}"
-                                           oncomplete="PF('block').hide();">
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.editar']}">
                                 <span class="material-icons">mode_edit</span>
                             </p:commandLink>
                             <p:commandLink action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"

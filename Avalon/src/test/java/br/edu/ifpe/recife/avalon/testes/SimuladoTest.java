@@ -128,8 +128,8 @@ public class SimuladoTest {
     }
     
     @Test
-    public void t05_buscarPorFiltroCriador(){
-        logger.info("Executando t05: buscarPorFiltroCriador");
+    public void t05_buscarPorFiltroProfessor(){
+        logger.info("Executando t05: buscarPorFiltroProfessor");
         FiltroSimulado filtro = new FiltroSimulado();
         
         filtro.setTitulo("Teste");
@@ -144,7 +144,7 @@ public class SimuladoTest {
         logger.info("Executando t06: criticarSimuladoSemTitulo");
         Simulado simulado = new Simulado();
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setCriador(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         simulado.setDataCriacao(Calendar.getInstance().getTime());
         
         FiltroQuestao filtro = new FiltroQuestao();
@@ -160,8 +160,8 @@ public class SimuladoTest {
     }
     
     @Test(expected = EJBException.class)
-    public void t07_criticarSimuladoSemCriador() throws ValidacaoException{
-        logger.info("Executando t07: criticarSimuladoSemCriador");
+    public void t07_criticarSimuladoSemProfessor() throws ValidacaoException{
+        logger.info("Executando t07: criticarSimuladoSemProfessor");
         Simulado simulado = new Simulado();
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
         simulado.setTitulo("Teste Simulado 7.");
@@ -185,7 +185,7 @@ public class SimuladoTest {
         Simulado simulado = new Simulado();
         simulado.setTitulo("Teste Simulado 8.");
         simulado.setDataCriacao(Calendar.getInstance().getTime());
-        simulado.setCriador(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         
         FiltroQuestao filtro = new FiltroQuestao();
         
@@ -204,7 +204,7 @@ public class SimuladoTest {
         logger.info("Executando t09: criticarSimuladoSemQuestoes");
         Simulado simulado = new Simulado();
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setCriador(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         simulado.setTitulo("Teste Simulado 9.");
         simulado.setDataCriacao(Calendar.getInstance().getTime());
         simulado.setQuestoes(null);
@@ -214,7 +214,7 @@ public class SimuladoTest {
     
     private Simulado preencherNovoSimulado(Simulado simulado){
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setCriador(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         simulado.setTitulo("Teste Simulado.");
         simulado.setDataCriacao(Calendar.getInstance().getTime());
         

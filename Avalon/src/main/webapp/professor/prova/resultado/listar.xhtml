@@ -74,6 +74,15 @@ and open the template in the editor.
                     </h:dataTable>
                 </p:outputPanel>
             </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 text-right">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                   action="#{provaBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
                 <p:graphicImage name="img/loading.gif" width="60" height="60"/>

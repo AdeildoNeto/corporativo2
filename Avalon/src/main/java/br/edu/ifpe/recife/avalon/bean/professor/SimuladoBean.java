@@ -46,6 +46,7 @@ public class SimuladoBean implements Serializable {
     private static final String GO_LISTAR_SIMULADO = "goLisarSimulado";
     private static final String GO_VISUALIZAR_SIMULADO = "goVisualizarSimulado";
     private static final String GO_SIMULADO_RESULTADOS = "goResultadosSimulado";
+    private static final String GO_DETALHAR_RESULTADO = "goDetalharResultadoSimulado";
     private static final String USUARIO = "usuario";
 
     @EJB
@@ -73,10 +74,11 @@ public class SimuladoBean implements Serializable {
     private boolean exibirModalExclusao;
     private String titulo;
     private final String headerModalTitulo;
-    
+
     private List<SimuladoAluno> resultados;
     private SimuladoAluno simuladoAlunoDetalhe;
-    private Simulado simuladoResultadoSelecionada;
+    private Simulado simuladoResultadoSelecionado;
+    private boolean simuladoVF;
 
     /**
      * Cria uma nova instância de <code>SimuladoBean</code>.
@@ -118,19 +120,19 @@ public class SimuladoBean implements Serializable {
         simulado.setTitulo(titulo);
 
         return GO_GERAR_SIMULADO;
-        
+
     }
-    
+
     /**
      * Inicializa a página de resultados de um simulado.
-     * 
+     *
      * @param simulado
-     * @return 
+     * @return
      */
-    public String iniciarPaginaResultados(Simulado simulado){
-        simuladoResultadoSelecionada = simulado;
+    public String iniciarPaginaResultados(Simulado simulado) {
+        simuladoResultadoSelecionado = simulado;
         buscarResultados(simulado);
-        
+
         return GO_SIMULADO_RESULTADOS;
     }
 
@@ -162,6 +164,24 @@ public class SimuladoBean implements Serializable {
         }
 
         return GO_VISUALIZAR_SIMULADO;
+    }
+
+    /**
+     * Inicializa a página de detalhes de um resultado.
+     *
+     * @param simuladoAluno
+     * @return rota
+     */
+    public String iniciarPaginaDetalhar(SimuladoAluno simuladoAluno) {
+        simuladoAlunoDetalhe = simuladoAluno;
+
+        if (!simuladoAlunoDetalhe.getSimulado().getQuestoes().isEmpty()) {
+            simuladoVF = simuladoAlunoDetalhe.getSimulado().getQuestoes().get(0) instanceof VerdadeiroFalso;
+
+            return GO_DETALHAR_RESULTADO;
+        }
+
+        return null;
     }
 
     /**
@@ -198,18 +218,18 @@ public class SimuladoBean implements Serializable {
      * Carrega os simulados do usuário.
      */
     private void buscarSimulados() {
-        simulados = simuladoServico.buscarSimuladosPorCriador(usuarioLogado.getEmail());
+        simulados = simuladoServico.buscarSimuladosPorProfessor(usuarioLogado.getEmail());
     }
 
     /**
      * Carrega todos os resultados dos alunos em um simulado.
-     * 
-     * @param simulado 
+     *
+     * @param simulado
      */
-    private void buscarResultados(Simulado simulado){
+    private void buscarResultados(Simulado simulado) {
         resultados = simuladoServico.buscarResultadosSimulado(simulado);
     }
-    
+
     /**
      * Seleciona uma questão da lista de questões.
      *
@@ -266,7 +286,7 @@ public class SimuladoBean implements Serializable {
         try {
             simulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
             simulado.setDataCriacao(Calendar.getInstance().getTime());
-            simulado.setCriador(usuarioLogado);
+            simulado.setProfessor(usuarioLogado);
             simulado.setQuestoes(new ArrayList<Questao>());
             simulado.getQuestoes().addAll(questoesSelecionadas);
             simuladoServico.salvar(simulado);
@@ -386,8 +406,8 @@ public class SimuladoBean implements Serializable {
         this.titulo = titulo;
     }
 
-    public Simulado getSimuladoResultadoSelecionada() {
-        return simuladoResultadoSelecionada;
+    public Simulado getSimuladoResultadoSelecionado() {
+        return simuladoResultadoSelecionado;
     }
 
     public List<SimuladoAluno> getResultados() {
@@ -396,6 +416,10 @@ public class SimuladoBean implements Serializable {
 
     public SimuladoAluno getSimuladoAlunoDetalhe() {
         return simuladoAlunoDetalhe;
+    }
+
+    public boolean isSimuladoVF() {
+        return simuladoVF;
     }
 
 }

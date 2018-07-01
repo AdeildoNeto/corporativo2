@@ -185,7 +185,7 @@ public class ProvaServico {
     /**
      * Consulta todas as provas criadas por um Professor.
      *
-     * @param email - email do criador.
+     * @param email - email do professor.
      * @return provas
      */
     public List<Prova> buscarProvasPorProfessor(@NotNull String email) {
@@ -237,5 +237,21 @@ public class ProvaServico {
         query.setParameter("idProva", prova.getId());
 
         return query.getResultList();
+    }
+    
+    /**
+     * Recupera uma prova por ID.
+     * 
+     * @param id
+     * @return 
+     */
+    public Prova buscarProvaPorId(@NotNull Long id) {
+        TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorId", Prova.class);
+        query.setParameter("idProva", id);
+
+        if (!query.getResultList().isEmpty()) {
+            return query.getSingleResult();
+        }
+        return null;
     }
 }

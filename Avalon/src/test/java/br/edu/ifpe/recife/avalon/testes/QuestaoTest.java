@@ -57,6 +57,7 @@ public class QuestaoTest {
     private static Logger logger;
 
     private static final String EMAIL_TESTE = "teste@gmail.com";
+    private static final String EMAIL2 = "email2@email.com";
 
     @BeforeClass
     public static void setUpClass() {
@@ -90,7 +91,7 @@ public class QuestaoTest {
 
         Usuario usuario = new Usuario();
 
-        usuario.setEmail("email2@email.com");
+        usuario.setEmail(EMAIL2);
         usuario.setNome("TESTE2");
         usuario.setSobrenome("TESTE2");
         usuario.setGrupo(GrupoEnum.PROFESSOR);
@@ -103,7 +104,7 @@ public class QuestaoTest {
 
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Teste?");
-        questao.setCriador(usuario);
+        questao.setProfessor(usuario);
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
         questao.setDataCriacao(Calendar.getInstance().getTime());
 
@@ -114,10 +115,10 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t02_buscarQuestaoPorCriador() {
-        logger.info("Executando t02: buscarQuestaoPorCriador");
+    public void t02_buscarQuestaoPorProfessor() {
+        logger.info("Executando t02: buscarQuestaoPorProfessor");
 
-        List<Questao> questao = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        List<Questao> questao = questaoServico.buscarQuestoesPorProfessor(EMAIL2);
 
         assertNotNull(questao.get(0));
 
@@ -125,8 +126,8 @@ public class QuestaoTest {
 
     @Test
     public void t03_alterarQuestao() throws ValidacaoException {
-        logger.info("Executando t03: AlterarQuestão");
-        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        logger.info("Executando t03: alterarQuestao");
+        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorProfessor(EMAIL2);
 
         Questao questao = questaoBuscada.get(0);
 
@@ -134,7 +135,7 @@ public class QuestaoTest {
 
         questaoServico.alterar(questao);
 
-        questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        questaoBuscada = questaoServico.buscarQuestoesPorProfessor(EMAIL2);
         Questao questao2 = questaoBuscada.get(0);
 
         assertEquals("Enunciado alterado", questao2.getEnunciado());
@@ -143,13 +144,17 @@ public class QuestaoTest {
 
     @Test
     public void t04_excluirQuestao() {
-        logger.info("Executando t03: ExcluirQuestão");
-
-        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorCriador("email2@email.com");
-
+        logger.info("Executando t04: excluirQuestao");
+        FiltroQuestao filtro = new FiltroQuestao();
+        filtro.setNomeProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL2).getNome());
+        filtro.setEmailUsuario(EMAIL_TESTE);
+        List<Questao> questaoBuscada = questaoServico.buscarQuestoesPorProfessor(EMAIL2);
+        
+        
         questaoServico.anular(questaoBuscada.get(0));
-
-        List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorCriador("email2@email.com");
+        
+        
+        List<Questao> questaoRemovida = questaoServico.buscarQuestoesPorFiltro(filtro);
 
         assertEquals(0, questaoRemovida.size());
 
@@ -157,9 +162,9 @@ public class QuestaoTest {
 
     @Test(expected = EJBException.class)
     public void t05_criticarExclusaoUsuarioComQuestoes() {
-        logger.info("Executando: T04 Excluir usuário");
+        logger.info("Executando: t05 criticarExclusaoUsuarioComQuestoes");
 
-        Usuario usuario = usuarioServico.buscarUsuarioPorEmail("email2@email.com");
+        Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL2);
 
         usuarioServico.remover(usuario);
 
@@ -178,7 +183,7 @@ public class QuestaoTest {
 
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Teste?");
-        questao.setCriador(usuario);
+        questao.setProfessor(usuario);
         questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         questao.setDataCriacao(Calendar.getInstance().getTime());
         List alternativas = new ArrayList();
@@ -226,7 +231,7 @@ public class QuestaoTest {
 
         Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
 
-        questao.setCriador(usuario);
+        questao.setProfessor(usuario);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Questao V/F teste");
         questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
@@ -270,7 +275,7 @@ public class QuestaoTest {
     @Test
     public void t10_editarQuestaoMultiplaEscolha() throws ValidacaoException {
         logger.info("Executando t10: editarQuestaoMultiplaEscolha");
-        List<Questao> questoes = questaoServico.buscarQuestoesPorCriador(EMAIL_TESTE);
+        List<Questao> questoes = questaoServico.buscarQuestoesPorProfessor(EMAIL_TESTE);
         MultiplaEscolha questaoMp = new MultiplaEscolha();
 
         for (Questao questao : questoes) {
@@ -304,14 +309,14 @@ public class QuestaoTest {
     }
 
     @Test(expected = EJBException.class)
-    public void t11_criticarQuestaoSemCriador() throws ValidacaoException {
-        logger.info("Executando t11: criticarQuestaoSemCriador");
+    public void t11_criticarQuestaoSemProfessor() throws ValidacaoException {
+        logger.info("Executando t11: criticarQuestaoSemProfessor");
 
         Questao questao = new Questao();
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
 
         questao.setComponenteCurricular(componente);
-        questao.setEnunciado("Questao sem criador?");
+        questao.setEnunciado("Questao sem professor?");
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
 
         questaoServico.salvar(questao);
@@ -322,9 +327,9 @@ public class QuestaoTest {
         logger.info("Executando t12: criticarQuestaoSemComponenteCurricular");
 
         Questao questao = new Questao();
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
 
-        questao.setCriador(criador);
+        questao.setProfessor(professor);
         questao.setEnunciado("Questao sem componente?");
         questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
 
@@ -335,12 +340,12 @@ public class QuestaoTest {
     public void t13_criticarQuestaoRepetida() throws ValidacaoException {
         logger.info("Executando t13: criticarQuestaoRepetida");
 
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
         Questao questao = new Questao();
         String enunciado = "Questao repetida?";
 
-        questao.setCriador(criador);
+        questao.setProfessor(professor);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado(enunciado);
         questao.setDataCriacao(Calendar.getInstance().getTime());
@@ -350,7 +355,7 @@ public class QuestaoTest {
 
         Questao questao2 = new Questao();
 
-        questao2.setCriador(criador);
+        questao2.setProfessor(professor);
         questao2.setComponenteCurricular(componente);
         questao2.setEnunciado(enunciado);
         questao2.setDataCriacao(Calendar.getInstance().getTime());
@@ -363,13 +368,13 @@ public class QuestaoTest {
     public void t14_criticarQuestaoRepetidaEdicao() throws ValidacaoException {
         logger.info("Executando t14: criticarQuestaoRepetidaEdicao");
 
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
         String enunciado = "Questao repetida?";
 
         Questao questao = new Questao();
 
-        questao.setCriador(criador);
+        questao.setProfessor(professor);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("questao x");
         questao.setDataCriacao(Calendar.getInstance().getTime());
@@ -377,7 +382,7 @@ public class QuestaoTest {
 
         questaoServico.salvar(questao);
 
-        List<Questao> lista = questaoServico.buscarQuestoesPorCriador(criador.getEmail());
+        List<Questao> lista = questaoServico.buscarQuestoesPorProfessor(professor.getEmail());
 
         questao = lista.get(lista.size() - 1);
 
@@ -394,7 +399,7 @@ public class QuestaoTest {
 
         questao.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("TESTE"));
         questao.setEnunciado("Teste?");
-        questao.setCriador(usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE));
+        questao.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE));
         questao.setTipo(TipoQuestaoEnum.MULTIPLA_ESCOLHA);
         questao.setDataCriacao(Calendar.getInstance().getTime());
         List<Alternativa> alternativas = new ArrayList<>();
@@ -415,15 +420,15 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t16_buscarQuestaoCompartilhadaCriador() throws ValidacaoException {
-        logger.info("Executando t16: buscarQuestaoCompartilhadaCriador");
+    public void t16_buscarQuestaoCompartilhadaProfessor() throws ValidacaoException {
+        logger.info("Executando t16: buscarQuestaoCompartilhadaProfessor");
         FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();
         List<Questao> lista;
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
 
-        questao.setCriador(criador);
+        questao.setProfessor(professor);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("questao compartilhada?");
         questao.setDataCriacao(Calendar.getInstance().getTime());
@@ -432,8 +437,8 @@ public class QuestaoTest {
         questaoServico.salvar(questao);
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setEmailUsuario(criador.getEmail());
-        filtro.setNomeCriador(criador.getNome());
+        filtro.setEmailUsuario(professor.getEmail());
+        filtro.setNomeProfessor(professor.getNome());
 
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
@@ -445,11 +450,11 @@ public class QuestaoTest {
         logger.info("Executando t17: buscarQuestaoCompartilhadaOutros");
         FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
         filtro.setEmailUsuario("user2@gmail.com");
-        filtro.setNomeCriador(criador.getNome());
+        filtro.setNomeProfessor(professor.getNome());
 
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
@@ -458,15 +463,15 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t18_buscarQuestaoNaoCompartilhadaCriador() throws ValidacaoException {
-        logger.info("Executando t18: buscarQuestaoNaoCompartilhadaCriador");
+    public void t18_buscarQuestaoNaoCompartilhadaProfessor() throws ValidacaoException {
+        logger.info("Executando t18: buscarQuestaoNaoCompartilhadaProfessor");
         FiltroQuestao filtro = new FiltroQuestao();
         Questao questao = new Questao();
         List<Questao> lista;
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
         ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
 
-        questao.setCriador(criador);
+        questao.setProfessor(professor);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("questao não compartilhada?");
         questao.setDataCriacao(Calendar.getInstance().getTime());
@@ -476,8 +481,8 @@ public class QuestaoTest {
         questaoServico.salvar(questao);
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
-        filtro.setNomeCriador(criador.getNome());
-        filtro.setEmailUsuario(criador.getEmail());
+        filtro.setNomeProfessor(professor.getNome());
+        filtro.setEmailUsuario(professor.getEmail());
 
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
@@ -489,11 +494,11 @@ public class QuestaoTest {
         logger.info("Executando t19: buscarQuestaoNaoCompartilhadaOutros");
         FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
         filtro.setEmailUsuario("user2@gmail.com");
-        filtro.setNomeCriador(criador.getNome());
+        filtro.setNomeProfessor(professor.getNome());
 
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
@@ -516,15 +521,15 @@ public class QuestaoTest {
     }
 
     @Test
-    public void t21_buscarQuestaoPorFiltroCriador() {
-        logger.info("Executando t21: buscarQuestaoPorFiltroCriador");
+    public void t21_buscarQuestaoPorFiltroProfessor() {
+        logger.info("Executando t21: buscarQuestaoPorFiltroProfessor");
         FiltroQuestao filtro = new FiltroQuestao();
         List<Questao> lista;
-        Usuario criador = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail("user1@gmail.com");
 
         filtro.setTipo(TipoQuestaoEnum.DISCURSIVA);
         filtro.setEmailUsuario("user2@gmail.com");
-        filtro.setNomeCriador(criador.getNome());
+        filtro.setNomeProfessor(professor.getNome());
 
         lista = questaoServico.buscarQuestoesPorFiltro(filtro);
 
@@ -556,7 +561,7 @@ public class QuestaoTest {
 
         Usuario usuario = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
 
-        questao.setCriador(usuario);
+        questao.setProfessor(usuario);
         questao.setComponenteCurricular(componente);
         questao.setEnunciado("Questao V/F teste");
         questao.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);

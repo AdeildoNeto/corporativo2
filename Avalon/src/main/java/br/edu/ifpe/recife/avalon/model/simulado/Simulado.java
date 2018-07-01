@@ -42,19 +42,24 @@ import javax.validation.constraints.Size;
                     query = "Select s from Simulado s where s.ativo = true"
                     + " AND s.titulo = :titulo"
                     + " AND s.componenteCurricular.id = :idComponenteCurricular"
-                    + " AND s.criador.email = :emailCriador"
+                    + " AND s.professor.email = :emailProfessor"
             )
             ,@NamedQuery(
-                    name = "Simulado.PorCriador",
+                    name = "Simulado.PorProfessor",
                     query = "Select s from Simulado s where s.ativo = true"
-                    + " AND s.criador.email = :emailCriador"
+                    + " AND s.professor.email = :emailProfessor"
             )
             ,@NamedQuery(
                     name = "Simulado.PorFiltro",
                     query = "Select s from Simulado s where s.ativo = true "
                     + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = s.componenteCurricular.id) "
-                    + "AND (:nomeCriador is null OR (CONCAT(s.criador.nome, ' ', s.criador.sobrenome) like :nomeCriador)) "
+                    + "AND (:nomeProfessor is null OR (CONCAT(s.professor.nome, ' ', s.professor.sobrenome) like :nomeProfessor)) "
                     + "AND (:titulo is null OR s.titulo like :titulo)"
+            )
+            ,@NamedQuery(
+                    name = "Simulado.PorId",
+                    query = "Select s from Simulado s where s.ativo = true "
+                    + "AND :idSimulado = s.id"
             )
         }
 )
@@ -70,10 +75,10 @@ public class Simulado implements Serializable {
     @Column(name = "TXT_TITULO")
     private String titulo;
 
-    @NotNull(message = "{criador.obrigatorio}")
+    @NotNull(message = "{professor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario criador;
+    private Usuario professor;
 
     @NotNull(message = "{componente.curricular.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -112,12 +117,12 @@ public class Simulado implements Serializable {
         this.titulo = titulo;
     }
 
-    public Usuario getCriador() {
-        return criador;
+    public Usuario getProfessor() {
+        return professor;
     }
 
-    public void setCriador(Usuario criador) {
-        this.criador = criador;
+    public void setProfessor(Usuario professor) {
+        this.professor = professor;
     }
 
     public ComponenteCurricular getComponenteCurricular() {

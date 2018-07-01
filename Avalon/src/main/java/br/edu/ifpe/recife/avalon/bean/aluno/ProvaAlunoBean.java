@@ -95,7 +95,7 @@ public class ProvaAlunoBean implements Serializable {
      */
     public void selecionarProva(Prova provaSelecionada) {
         limparTelaProva();
-        prova = provaSelecionada;
+        prova = provaServico.buscarProvaPorId(provaSelecionada.getId());
 
         if (!prova.getQuestoes().isEmpty()) {
             if (prova.getQuestoes().get(0) instanceof VerdadeiroFalso) {

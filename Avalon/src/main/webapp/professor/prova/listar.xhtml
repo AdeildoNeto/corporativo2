@@ -43,20 +43,23 @@ and open the template in the editor.
                             <p:commandLink class="btnResultados"
                                            action="#{provaBean.iniciarPaginaResultados(prova)}"
                                            onclick="PF('block').show()"
-                                           oncomplete="PF('block').hide()">
+                                           oncomplete="PF('block').hide()"
+                                           title="#{msg['label.resultados']}">
                                 <span class="material-icons">assignment</span>
                             </p:commandLink>               
                             <p:commandLink class="btnDetalhar"
                                            action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
-                                           oncomplete="PF('block').hide();">
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.detalhar']}">
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
                             <p:commandLink class="btnExcluir"
                                            action="#{provaBean.selecionarProvaExclusao(prova)}"
                                            update="formModalExcluir"
                                            onclick="PF('block').show();"
-                                           oncomplete="PF('block').hide();">
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.excluir']}">
                                 <span class="material-icons">delete</span>
                             </p:commandLink>
                         </h:column>

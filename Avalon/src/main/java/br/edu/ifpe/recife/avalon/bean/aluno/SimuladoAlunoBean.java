@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -109,10 +110,14 @@ public class SimuladoAlunoBean implements Serializable {
      */
     public String iniciarSimulado(Simulado simulado) {
         limparTelaSimulado();
-        simuladoSelecionado = simulado;
+        simuladoSelecionado = simuladoServico.buscarSimuladoPorId(simulado.getId());
         simuladoAluno = new SimuladoAluno();
         simuladoAluno.setAluno(usuarioLogado);
-        simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
+        simuladoAluno.setSimulado(simuladoSelecionado);
+        simuladoAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+
+        questoesMultiplaEscolha.clear();
+        questoesVerdadeiroFalso.clear();
 
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
@@ -125,6 +130,9 @@ public class SimuladoAlunoBean implements Serializable {
                 exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
                 return null;
             }
+        } else {
+            exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
+            return null;
         }
 
         return GO_INICIAR_SIMULADO;
@@ -171,6 +179,7 @@ public class SimuladoAlunoBean implements Serializable {
             }
 
             exibirResultado(simuladoAluno.getNota());
+            simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
             simuladoServico.salvarProvaAluno(simuladoAluno);
         } catch (ValidacaoException ex) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
@@ -178,8 +187,8 @@ public class SimuladoAlunoBean implements Serializable {
     }
 
     /**
-     * Preenche a prova com as questões de 
-     * verdadeiro ou falso respondidas pelo aluno.
+     * Preenche a prova com as questões de verdadeiro ou falso respondidas pelo
+     * aluno.
      */
     private void preencherSimuladoVF() {
         for (VerdadeiroFalso verdadeiroFalso : questoesVerdadeiroFalso) {
@@ -190,10 +199,10 @@ public class SimuladoAlunoBean implements Serializable {
             simuladoAluno.getQuestoesAluno().add(questao);
         }
     }
-    
+
     /**
-     * Preenche a prova com as questões de 
-     * múltipla escolha respondidas pelo aluno.
+     * Preenche a prova com as questões de múltipla escolha respondidas pelo
+     * aluno.
      */
     private void preencherSimuladoMS() {
         for (MultiplaEscolha multiplaEscolha : questoesMultiplaEscolha) {
@@ -235,7 +244,7 @@ public class SimuladoAlunoBean implements Serializable {
      * Exibi a nota obitida pelo aluno no simulado.
      */
     private void exibirResultado(Double nota) {
-        BigDecimal notaFormatada = BigDecimal.valueOf(nota).setScale(2);
+        BigDecimal notaFormatada = BigDecimal.valueOf(nota).setScale(2, RoundingMode.UP);
         resultado = MessageFormat.format(AvalonUtil.getInstance().getMensagem(RESULTADO_ACERTOS), notaFormatada);
         exibirModalResultado = true;
     }

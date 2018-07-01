@@ -48,6 +48,11 @@ import javax.validation.constraints.Size;
                     name = "Prova.PorProfessor",
                     query = "Select p from Prova p where p.ativa = true "
                             + "AND p.professor.email = :emailProfessor"
+            ),
+            @NamedQuery(
+                    name = "Prova.PorId",
+                    query = "Select p from Prova p where p.ativa = true "
+                            + "AND :idProva = p.id"
             )
         }
 )
@@ -63,7 +68,7 @@ public class Prova implements Serializable {
     @Column(name = "TXT_TITULO")
     private String titulo;
 
-    @NotNull(message = "{criador.obrigatorio}")
+    @NotNull(message = "{professor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     private Usuario professor;

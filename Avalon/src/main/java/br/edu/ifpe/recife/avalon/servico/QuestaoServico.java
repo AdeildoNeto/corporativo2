@@ -110,14 +110,14 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Consulta questões por criador.
+     * Consulta questões por professor.
      *
-     * @param emailCriador
+     * @param emailProfessor
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorCriador(@NotNull String emailCriador) {
-        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorCriador", Questao.class);
-        query.setParameter("emailCriador", emailCriador);
+    public List<Questao> buscarQuestoesPorProfessor(@NotNull String emailProfessor) {
+        TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorProfessor", Questao.class);
+        query.setParameter("emailProfessor", emailProfessor);
 
         return query.getResultList();
     }
@@ -132,7 +132,7 @@ public class QuestaoServico implements Serializable{
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorTipoValido", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
-        query.setParameter("idCriador", questao.getCriador().getId());
+        query.setParameter("idProfessor", questao.getProfessor().getId());
         query.setParameter("idComponenteCurricular", questao.getComponenteCurricular().getId());
         query.setParameter("idQuestao", questao.getId());
 
@@ -177,7 +177,7 @@ public class QuestaoServico implements Serializable{
         query.setParameter("tipo", filtro.getTipo());
         query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
-        query.setParameter("nomeCriador", PERCENT.concat(filtro.getNomeCriador()).concat(PERCENT));
+        query.setParameter("nomeProfessor", PERCENT.concat(filtro.getNomeProfessor()).concat(PERCENT));
         
         return query.getResultList();
     }

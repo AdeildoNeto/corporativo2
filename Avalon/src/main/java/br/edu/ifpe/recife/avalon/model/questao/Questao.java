@@ -29,8 +29,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -54,15 +52,15 @@ import org.hibernate.validator.constraints.NotBlank;
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "Questao.PorCriador",
-                    query = "SELECT q FROM Questao q WHERE q.criador.email = :emailCriador"
+                    name = "Questao.PorProfessor",
+                    query = "SELECT q FROM Questao q WHERE q.professor.email = :emailProfessor"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipoValido",
                     query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo"
                     + " AND q.enunciado = :enunciado"
-                    + " AND q.criador.id = :idCriador"
+                    + " AND q.professor.id = :idProfessor"
                     + " AND q.componenteCurricular.id = :idComponenteCurricular"
                     + " AND (:idQuestao IS NULL OR q.id <> :idQuestao)"
             )
@@ -70,42 +68,14 @@ import org.hibernate.validator.constraints.NotBlank;
                     name = "Questao.PorFiltroCompartilhada",
                     query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo "
-                    + " AND (q.criador.email = :emailUsuario OR (q.criador.email <> :emailUsuario AND q.compartilhada = true)) "
+                    + " AND (q.professor.email = :emailUsuario OR (q.professor.email <> :emailUsuario AND q.compartilhada = true)) "
                     + " AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
-                    + " AND (:nomeCriador is null OR (CONCAT(q.criador.nome, ' ', q.criador.sobrenome) like :nomeCriador)) "
+                    + " AND (:nomeProfessor is null OR (CONCAT(q.professor.nome, ' ', q.professor.sobrenome) like :nomeProfessor)) "
                     + " AND (:enunciado is null OR q.enunciado like :enunciado)"
             )
             ,@NamedQuery(
                     name = "Questao.PorId",
                     query = "Select u from Questao u where u.id = :id")
-        })
-@NamedNativeQueries(
-        {
-            @NamedNativeQuery(
-                    name = "Questao.PorSimulado",
-                    query = "SELECT Q.*, VF.*, MS.* FROM TB_QUESTAO Q LEFT OUTER JOIN TB_VERDADEIRO_FALSO VF "
-                    + "ON (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO) "
-                    + "LEFT OUTER JOIN TB_MULTIPLA_ESCOLHA MS "
-                    + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
-                    + "TB_QUESTOES_SIMULADO QS "
-                    + "WHERE QS.ID_SIMULADO = ?"
-                    + " AND QS.ID_QUESTAO = Q.ID_QUESTAO"
-                    + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
-                    resultClass = Questao.class
-            )
-            ,
-            @NamedNativeQuery(
-                    name = "Questao.PorProva",
-                    query = "SELECT Q.*, VF.*, MS.* FROM TB_QUESTAO Q LEFT OUTER JOIN TB_VERDADEIRO_FALSO VF "
-                    + "ON (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO) "
-                    + "LEFT OUTER JOIN TB_MULTIPLA_ESCOLHA MS "
-                    + "ON (Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA), "
-                    + "TB_QUESTOES_PROVA QP "
-                    + "WHERE QP.ID_PROVA = ?"
-                    + " AND QP.ID_QUESTAO = Q.ID_QUESTAO"
-                    + " AND (Q.ID_QUESTAO = VF.ID_VERDADEIRO_FALSO OR Q.ID_QUESTAO = MS.ID_MULTIPLA_ESCOLHA)",
-                    resultClass = Questao.class
-            )
         })
 public class Questao implements Serializable {
 
@@ -119,10 +89,10 @@ public class Questao implements Serializable {
     @Column(name = "TXT_ENUNCIADO", columnDefinition = "varchar(2000)")
     private String enunciado;
 
-    @NotNull(message = "{criador.obrigatorio}")
+    @NotNull(message = "{professor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario criador;
+    private Usuario professor;
 
     @NotNull(message = "{questao.tipo.obrigatorio}")
     @Enumerated(EnumType.STRING)
@@ -184,12 +154,12 @@ public class Questao implements Serializable {
         this.enunciado = enunciado;
     }
 
-    public Usuario getCriador() {
-        return criador;
+    public Usuario getProfessor() {
+        return professor;
     }
 
-    public void setCriador(Usuario criador) {
-        this.criador = criador;
+    public void setProfessor(Usuario professor) {
+        this.professor = professor;
     }
 
     public TipoQuestaoEnum getTipo() {
