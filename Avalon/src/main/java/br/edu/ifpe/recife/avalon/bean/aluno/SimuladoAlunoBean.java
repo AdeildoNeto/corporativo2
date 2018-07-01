@@ -180,7 +180,7 @@ public class SimuladoAlunoBean implements Serializable {
 
             exibirResultado(simuladoAluno.getNota());
             simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
-            simuladoServico.salvarProvaAluno(simuladoAluno);
+            simuladoServico.salvarSimuladoAluno(simuladoAluno);
         } catch (ValidacaoException ex) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }

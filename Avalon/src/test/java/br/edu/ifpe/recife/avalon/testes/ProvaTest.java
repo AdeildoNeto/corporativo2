@@ -300,11 +300,20 @@ public class ProvaTest {
     }
 
     @Test
-    public void t21_validarProvaNaoRepeticao() throws ValidacaoException {
+    public void t21_validarProvaNaoRepeticao() {
         logger.info("Executando t21: validarProvaNaoRepeticao");
         List<Prova> lista = provaServico.buscarProvasDisponiveis(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
 
         assertTrue(lista.isEmpty());
+    }
+    
+    @Test
+    public void t22_listarResultadosProvaAluno() {
+        logger.info("Executando t22: listarResultadosProvaAluno");
+        List<Prova> provas = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
+        List<ProvaAluno> resultados = provaServico.buscarResultadosProva(provas.get(0));
+
+        assertTrue(!resultados.isEmpty());
     }
 
     @Test

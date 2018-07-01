@@ -139,7 +139,7 @@ public class SimuladoServico {
      *
      * @param simuladoAluno
      */
-    public void salvarProvaAluno(@Valid SimuladoAluno simuladoAluno) {
+    public void salvarSimuladoAluno(@Valid SimuladoAluno simuladoAluno) {
         entityManager.persist(simuladoAluno);
     }
 

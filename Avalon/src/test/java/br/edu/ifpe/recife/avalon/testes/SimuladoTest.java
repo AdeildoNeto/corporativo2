@@ -11,10 +11,14 @@ import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.servico.UsuarioServico;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,6 +42,8 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SimuladoTest {
+    
+    private static final String EMAIL_TESTE = "teste@gmail.com";
     
     private static EJBContainer container;
     
@@ -144,7 +150,7 @@ public class SimuladoTest {
         logger.info("Executando t06: criticarSimuladoSemTitulo");
         Simulado simulado = new Simulado();
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE));
         simulado.setDataCriacao(Calendar.getInstance().getTime());
         
         FiltroQuestao filtro = new FiltroQuestao();
@@ -212,6 +218,66 @@ public class SimuladoTest {
         simuladoServico.salvar(simulado);
     }
     
+    @Test(expected = EJBException.class)
+    public void t10_salvarSimuladoAlunoSemSimulado() throws ValidacaoException {
+        logger.info("Executando t10: salvarSimuladoAlunoSemProva");
+        SimuladoAluno simuladoAluno = new SimuladoAluno();
+        preencherSimuladoAluno(simuladoAluno);
+        simuladoAluno.setSimulado(null);
+
+        simuladoServico.salvarSimuladoAluno(simuladoAluno);
+    }
+
+    @Test(expected = EJBException.class)
+    public void t11_salvarSimuladoAlunoSemAluno() throws ValidacaoException {
+        logger.info("Executando t11: salvarSimuladoAlunoSemAluno");
+        SimuladoAluno simuladoAluno = new SimuladoAluno();
+        preencherSimuladoAluno(simuladoAluno);
+        simuladoAluno.setAluno(null);
+
+        simuladoServico.salvarSimuladoAluno(simuladoAluno);
+    }
+
+    @Test(expected = EJBException.class)
+    public void t12_salvarSimuladoAlunoSemDHInicio() throws ValidacaoException {
+        logger.info("Executando t12: salvarSimuladoAlunoSemDHInicio");
+        SimuladoAluno simuladoAluno = new SimuladoAluno();
+        preencherSimuladoAluno(simuladoAluno);
+        simuladoAluno.setDataHoraInicio(null);
+
+        simuladoServico.salvarSimuladoAluno(simuladoAluno);
+    }
+
+    @Test(expected = EJBException.class)
+    public void t13_salvarSimuladoAlunoSemDHFim() throws ValidacaoException {
+        logger.info("Executando t13: salvarSimuladoAlunoSemDHFim");
+        SimuladoAluno simuladoAluno = new SimuladoAluno();
+        preencherSimuladoAluno(simuladoAluno);
+        simuladoAluno.setDataHoraFim(null);
+
+        simuladoServico.salvarSimuladoAluno(simuladoAluno);
+    }
+    
+    @Test
+    public void t14_salvarSimuladoAluno() throws ValidacaoException, InterruptedException {
+        logger.info("Executando t14: salvarSimuladoAluno");
+        SimuladoAluno simuladoAluno = new SimuladoAluno();
+        preencherSimuladoAluno(simuladoAluno);
+
+        simuladoServico.salvarSimuladoAluno(simuladoAluno);
+        
+        assertTrue(simuladoAluno.getId() > 0);
+    }
+    
+    @Test
+    public void t15_listarResultadosSimuladoAluno() {
+        logger.info("Executando t15: listarResultadosSimuladoAluno");
+        Simulado simulado = simuladoServico.buscarSimuladoPorId(1l);
+        List<SimuladoAluno> resultados = simuladoServico.buscarResultadosSimulado(simulado);
+
+        assertTrue(!resultados.isEmpty());
+    }
+    
     private Simulado preencherNovoSimulado(Simulado simulado){
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
         simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
@@ -228,6 +294,27 @@ public class SimuladoTest {
         simulado.setQuestoes(questoes);
         
         return simulado;
+    }
+    
+    private void preencherSimuladoAluno(SimuladoAluno simuladoAluno) {
+        Usuario aluno = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        FiltroSimulado filtro = new FiltroSimulado();
+        filtro.setIdComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste").getId());
+        Simulado simulado = simuladoServico.buscarSimuladoPorFiltro(filtro).get(0);
+        simuladoAluno.setAluno(aluno);
+        simuladoAluno.setSimulado(simulado);
+        simuladoAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+        simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
+        simuladoAluno.setQuestoesAluno(new ArrayList<SimuladoAlunoQuestao>());
+
+        for (Questao questao : simulado.getQuestoes()) {
+            SimuladoAlunoQuestao simuladoAlunoQuestao = new SimuladoAlunoQuestao();
+            simuladoAlunoQuestao.setSimuladoAluno(simuladoAluno);
+            simuladoAlunoQuestao.setQuestao(questao);
+            simuladoAlunoQuestao.setRespostaVF(Boolean.TRUE);
+            simuladoAluno.getQuestoesAluno().add(simuladoAlunoQuestao);
+        }
+
     }
     
 }
