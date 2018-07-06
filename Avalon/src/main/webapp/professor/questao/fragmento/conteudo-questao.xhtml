@@ -11,7 +11,6 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-
     <p:outputPanel class="row">
         <p:outputPanel class="col-md-3 form-group">
             <p:outputPanel>
@@ -22,7 +21,7 @@ and open the template in the editor.
                                      requiredMessage="#{msg['questao.tipo.obrigatorio']}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
                         <f:selectItems value="#{questaoBean.tipoQuestoes}" itemLabel="#{questao.descricao}" itemValue="#{questao}" var="questao" />
-                        <p:ajax update="panelAlt" event="change" process="@this" />
+                        <p:ajax update="panelAlt panelVF" event="change" process="@this" />
                     </p:selectOneMenu>
                 </p:outputPanel>
             </p:outputPanel>
@@ -104,14 +103,15 @@ and open the template in the editor.
             </ui:repeat>
         </p:outputPanel>
     </p:outputPanel>
-
-    <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
-        <p:outputPanel class="col-md-4 display-flex">
-            <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
-            <p:inputSwitch id="resposta-vf" styleClass="switch"
-                           value="#{questaoBean.respostaVF}"
-                           offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}"
-                           required="true" requiredMessage="#{msg['questao.resposta.obrigatoria']}" />
+    <p:outputPanel id="panelVF">
+        <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
+            <p:outputPanel class="col-md-4 display-flex">
+                <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
+                <p:inputSwitch id="resposta-vf" styleClass="switch"
+                               value="#{questaoBean.respostaVF}"
+                               offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}"
+                               required="true" requiredMessage="#{msg['questao.resposta.obrigatoria']}" />
+            </p:outputPanel>
         </p:outputPanel>
     </p:outputPanel>
 
