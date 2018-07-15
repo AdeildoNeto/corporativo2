@@ -9,7 +9,7 @@
         </form-login-config>
     </login-config>
     <security-constraint>
-        <display-name>Páginas do </display-name>
+        <display-name>Páginas do Professor</display-name>
         <web-resource-collection>
             <web-resource-name>Área Protegida</web-resource-name>
             <description>Área Protegida</description>
