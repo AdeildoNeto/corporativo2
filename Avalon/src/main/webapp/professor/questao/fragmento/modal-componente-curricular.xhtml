@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formComponente">
+        
+        <p:dialog id="modalComponente" visible="#{questaoBean.exibirModalComponente}"
+                  header="#{msg['novo.componente.header']}" modal="true" resizable="false"
+                  widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:messages id="msgComponente" />
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="nomeComponente" value="#{msg['label.nome']}:" />
+                        <h:inputText id="nomeComponente" required="true" tabindex="301"
+                                     class="form-control" requiredMessage="#{msg['componente.curricular.nome.obrigatorio']}"
+                                     value="#{questaoBean.novoComponenteCurricular.nome}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col text-right button-footer">
+                    <p:commandButton value="#{msg['btn.salvar']}" tabindex="302"
+                                     id="btnSalvarComponenteCurricular"
+                                     action="#{questaoBean.salvarComponenteCurricular()}"
+                                     onclick="PF('block').show();" oncomplete="PF('block').hide()"
+                                     styleClass="btn btn-primary button-modal"
+                                     update="formComponente form:componenteCurricular" />
+                    
+                    <p:commandButton value="#{msg['btn.cancelar']}"
+                                     id="btnCancelarComponenteCurricular"
+                                     action="#{questaoBean.fecharModalComponente()}"
+                                     styleClass="btn btn-secondary" tabindex="303"
+                                     immediate="true" process="@this" update="formComponente form" />
+
+                    
+                </p:outputPanel>
+            </p:outputPanel>
+
+        </p:dialog>
+
+    </h:form>   
+
+</ui:composition>

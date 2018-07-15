@@ -1,0 +1,635 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 11, 2018, 3:23:42 PM
+    Author     : eduardoamaral
+*/
+
+body{
+    height: 100%;
+}
+
+.container-principal{
+    padding-top: 15px; 
+}
+
+.font-color-default{
+    color: white;
+}
+
+.container-listar{
+    min-height: 100px;
+}
+
+textarea{
+    resize: none !important;
+}
+
+label{
+    font-weight: bold;
+}
+
+.margin-bottom-30{
+    margin-bottom: 30px;
+}
+
+/* Dialog */
+.ui-dialog .ui-dialog-titlebar{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    border-bottom: 1px solid #e9ecef !important;
+    border-top-left-radius: .3rem !important;
+    border-top-right-radius: .3rem !important;
+    padding: 1rem !important;
+    position: initial !important;
+    font-weight: bold;
+    line-height: 1.5;
+    font-size: 1.25rem;
+}
+
+.ui-confirm-dialog .ui-dialog-content {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1rem !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.ui-dialog {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    outline: 0;
+    min-width: 450px;
+}
+
+.ui-shadow {
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2) !important;
+}
+
+.ui-widget-overlay{
+    background: rgba(0,0,0,0.5);
+}
+
+.ui-dialog-footer button{
+    margin-left: 8px !important;
+}
+
+.button-footer button:first-of-type{
+    float: right;
+}
+
+.float-right{
+    float: right;
+}
+
+/* Menu */
+.nav-link{
+    color: white !important;
+}
+
+.navbar-brand{
+    color: white;
+}
+
+/* BlockUI */
+.ui-blockui-content.ui-shadow {
+    box-shadow: none !important;
+}
+
+.ui-blockui.ui-widget-overlay{
+    background: transparent;
+}
+
+/* Icons */
+.material-icons{
+    color: black !important;
+}
+
+a:focus{
+    outline: none !important;
+}
+
+/* List Table */
+.container-table{
+    max-height: 540px;
+    margin-bottom: 40px !important;
+}
+
+.table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.container-listar table{
+    display: block;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-height: 100%;
+    margin-top: 24px;
+}
+
+.table-questoes th:first-child{
+    width: 590px;
+}
+
+.table-questoes td:first-child{
+    max-width: 590px;
+}
+
+.table-questoes th:nth-child(2){
+    width: 250px;
+}
+
+.table-questoes td:nth-child(2){
+    max-width: 250px;
+}
+
+.table-questoes th:nth-child(3){
+    width: 165px;
+}
+
+.table-questoes th:nth-child(4){
+    width: 125px;
+}
+
+.table-questoes th:last-child{
+    width: 80px;
+}
+
+/* Generate Table */
+.container-table-prova{
+    max-height: 460px;
+    margin-bottom: 40px !important;
+}
+
+.table-questoes-prova{
+    display: block;
+    overflow-x: scroll;
+    max-height: 100%;
+}
+
+.table-questoes-prova th:first-child{
+    width: 25px;
+}
+
+.table-questoes-prova td:nth-child(2){
+    max-width: 610px !important;
+    width: 610px;
+}
+.table-questoes-prova td:nth-child(3){
+    width: 250px;
+    max-width: 250px;
+}
+
+.table-questoes-prova td:nth-child(4){
+    width: 200px;
+    max-width: 200px;
+}
+
+/* Button */
+
+.btn-primary{
+    background-color: #19882c !important;
+}
+
+.btn-secondary {
+    background-color: #7f7f7f !important;
+}
+
+.buttons-save{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.buttons-save button,
+.buttons-save a{
+    display: inline-block !important;
+    width: 200px !important;
+    margin-left: 20px;
+}
+
+.btn-add-componente{
+    margin-left: 5px;
+    color: white !important;
+}
+
+.button-modal{
+    margin-left: 8px;
+}
+
+/* Background */
+.bg-select-menu {
+    background-color: #EEE;
+    border: 1px solid #C3C3C3 !important;
+}
+
+.bg-select-menu option {
+    background-color: #FAFAFA;
+}
+
+.bg-default{
+    background-color: #19882c;
+}
+
+/* Login */
+
+#btnGoogleLogin{
+    width: 16%;
+}
+
+#loginRow{
+    height: 100vh;
+    align-items: center;
+}
+
+/* Switch */
+.ui-inputswitch .ui-inputswitch-on,
+.ui-inputswitch .ui-inputswitch-off{
+    height: 100% !important;
+    padding-top: 0 !important;
+}
+
+.ui-inputswitch{
+    margin-left: 8px;
+    background-color: #DFDFDF;
+    border-radius: 3px;
+}
+
+.ui-inputswitch span{
+    font-weight: normal !important;
+}
+
+.ui-inputswitch-on span,
+.ui-inputswitch-off span{
+    font-size: 10pt;
+    padding: 4px;
+}
+
+.ui-inputswitch-off span{
+    background-color: #7f7f7f9c;
+    color: whitesmoke;
+}
+
+.ui-inputswitch-on span{
+    background-color: #19882c9c;
+    color: whitesmoke;
+}
+
+/* Flex */
+.display-flex{
+    display: flex;
+}
+
+/* Dropdown */
+.dropdown-toggle::after {
+    display: inline-block;
+    position: absolute;
+    right: 8px;
+    top: 45%;
+}
+
+.ui-selectonemenu-width{
+    min-width: 250px !important;
+}
+
+.ui-selectonemenu-list,
+.ui-selectonemenu-panel {
+    background: white;
+}
+
+.ui-selectonemenu-label{
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ui-selectonemenu-185{
+    min-width: 185px !important;
+}
+
+/* h1 */
+h1 {
+    font-size: 2rem !important;
+}
+
+/* Detalhes */
+.prova-alternativa{
+    padding-left: 1.5em;
+    max-height: 30px;
+}
+
+
+.break-white-space{
+    white-space: pre-line;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
+.btn-modal{
+    margin-top: 15px;
+}
+
+.modal-detahes label{
+    margin-right: 5px;
+}
+
+.modal-detahes{
+    max-width: 850px;
+    max-height: 530px;
+}
+
+.container-questao{
+    max-height: 120px;
+    overflow-x: auto;
+}
+
+/* Search */
+.btn-search{
+    position: relative;
+    top: 36px;
+    color: white !important;
+}
+
+/* Menu Sair */
+.nav-logout{
+    position: absolute;
+    right: 15px;
+}
+
+/* Table Exames */
+.table-exames td:first-child{
+    max-width: 680px !important;
+    width: 680px;
+}
+
+.table-exames td:nth-child(2){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-exames td:last-child{
+    width: 120px;
+    max-width: 120px;
+}
+
+/* Simulado Aluno */
+
+.table-simulados-aluno td:first-child{
+    max-width: 410px !important;
+    width: 410px;
+}
+
+.table-simulados-aluno td:nth-child(2){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-simulados-aluno td:nth-child(3){
+    width: 320px;
+    max-width: 320px;
+}
+
+.table-simulados td:last-child{
+    width: 80px;
+    max-width: 80px;
+}
+
+.table-simulados-aluno .ui-button-text-only .ui-button-text{
+    padding: 0;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.margin-left-20{
+    margin-left: 20px;
+}
+
+.margin-left-10{
+    margin-left: 10px;
+}
+
+.radio-button input{
+    display: inherit;
+}
+
+.table-alternativa{
+    margin-bottom: 10px;
+}
+
+input[type="text"]{
+    display: block;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Datapicker */
+.ui-datepicker{
+    border-radius: .25rem;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+    background: #FFF;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    background: #BEBEBE;
+    border-radius: 50px;
+}
+
+.ui-slider-horizontal .ui-slider-handle:focus {
+    outline: none !important;
+}
+
+.ui-slider-horizontal {
+    height: .6em !important;
+    background: #19882c;
+    border-radius: .25rem;
+    margin-top: 17px;
+}
+
+.ui-datepicker .ui-datepicker-prev{
+    border: solid black;
+    border-width: 0 .15rem .15rem 0;
+    padding: 0;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    height: 15px !important;
+    width: 15px !important;
+    top: 10px !important;
+    left: 10px !important;
+    cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-next{
+    border: solid black;
+    border-width: 0 .15rem .15rem 0;
+    padding: 0;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    height: 15px !important;
+    width: 15px !important;
+    top: 10px !important;
+    right: 10px !important;
+    cursor: pointer;
+}
+
+/* Prova Aluno */
+
+.table-provas-aluno td:first-child{
+    max-width: 420px !important;
+    width: 420px;
+}
+
+.table-provas-aluno td:nth-child(2){
+    width: 250px;
+    max-width: 250px;
+}
+
+.table-provas-aluno td:nth-child(3){
+    width: 200px;
+    max-width: 200px;
+}
+
+.table-provas-aluno td:nth-child(4){
+    width: 180px;
+    max-width: 180px;
+}
+
+.table-provas-aluno td:last-child{
+    width: 100px;
+    max-width: 100px;
+}
+
+.table-provas-aluno .ui-button-text-only .ui-button-text{
+    padding: 0;
+}
+
+/* Image */
+.img img{
+    max-width: 250px;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+}
+
+/* Carousel */
+.ui-carousel .ui-carousel-page-link, .ui-carousel .ui-carousel-button {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    background-color: #BEBEBE;
+    border-radius: 5px;
+}
+
+.ui-carousel-button.ui-state-disabled{
+    background-color: #DFDFDF;
+}
+
+.ui-carousel-prev-button{
+    background-image: url("/Avalon/resources/img/ui-icons.png");
+    transform: rotate(-90deg);
+}
+
+.ui-carousel-next-button{
+    background-image: url("/Avalon/resources/img/ui-icons.png");
+    transform: rotate(90deg);
+}
+
+.ui-carousel-header{
+     width: 50%;
+    position: absolute;
+    bottom: -30px;
+}
+
+/* UPLOAD IMAGE */
+.ui-fileupload-buttonbar span {       
+    border-radius: .25rem;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 400 !important;
+    padding: .375rem .75rem;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose {
+    background-color: #19882c;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-cancel {
+    background-color: #6c757d !important;
+}
+
+.ui-fileupload-content .ui-fileupload-files{
+    display: none;
+}
+
+#btnCancelarImg commandButton{
+    background-color: white !important;
+
+}
+.ui-fileupload-content .ui-messages-error-detail{
+    display: none;
+}
+
+/* Table Resultados */
+.table-resultados td:first-child{
+    width: 1024px;
+}
+
+/* button text-right */
+.text-right button:last-child{
+    margin-left: 8px;
+}
+
+.imagem-questao{
+    max-width: 100px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+}

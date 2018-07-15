@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:poll interval="60" listener="#{provaAlunoBean.iniciarPagina()}" update="form" />
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h1 id="headerSimulados">#{msg['provas.disponiveis']}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:messages id="msgs" />
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable id="table" value="#{provaAlunoBean.provasDisponiveis}"
+                                 var="prova" styleClass="table table-striped table-fixed table-provas-aluno">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.titulo']}</span>
+                            </f:facet>
+                            <h:outputText class="provaTitulo" value="#{prova.titulo}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText class="provaComponenteCurricular" title="#{prova.componenteCurricular.nome}"
+                                          value="#{prova.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.professor']}</span>
+                            </f:facet>
+                            <h:outputText class="provaProfessor" title="#{prova.professor.nomeCompleto}"
+                                          value="#{prova.professor.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['prova.disponivel.ate']}</span>
+                            </f:facet>
+                            <h:outputText class="provaDisponibilidade"
+                                          value="#{prova.dataHoraFim}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                            </f:facet>
+                            <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="formModalIniciar"
+                                             action="#{provaAlunoBean.selecionarProva(prova)}" onclick="PF('block').show()"
+                                             oncomplete="PF('block').hide()"
+                                             class="btn bg-default btn-block font-color-default"></p:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+
+        <h:form id="formModalIniciar">
+            <p:dialog id="modalIniciar" visible="#{provaAlunoBean.exibirModalIniciar}"
+                      header="#{msg['prova.iniciar.observacoes']}" modal="true" resizable="false"
+                      widgetVar="modalComponente" closeOnEscape="true" draggable="false">
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12 margin-bottom-30">
+                        <p:outputPanel>#{provaAlunoBean.observacaoDuracao}</p:outputPanel>
+                        <p:outputPanel>#{msg['prova.observacao.realizar']}</p:outputPanel>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right">
+                        <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
+                                         styleClass="btn btn-secondary"
+                                         immediate="true" process="@this" update="formModalIniciar form" />
+
+                        <p:commandButton value="#{msg['btn.iniciar']}"
+                                         action="#{provaAlunoBean.iniciarProva()}"
+                                         onclick="PF('block').show();" oncomplete="PF('block').hide()"
+                                         styleClass="btn btn-primary button-modal"
+                                         update="formModalIniciar form" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

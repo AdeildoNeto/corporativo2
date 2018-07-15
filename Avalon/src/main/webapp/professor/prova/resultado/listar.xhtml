@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <h1>#{provaBean.provaResultadoSelecionada.titulo}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label>
+                    <span id="componente"> #{provaBean.provaResultadoSelecionada.componenteCurricular.nome}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4 form-group">
+                    <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
+                    <h:outputText id="dataHoraInicio" class="margin-left-10"
+                                  value="#{provaBean.provaResultadoSelecionada.dataHoraInicio}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
+                    </h:outputText>
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
+                    <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
+                    <h:outputText id="dataHoraFim" class="margin-left-10"
+                                  value="#{provaBean.provaResultadoSelecionada.dataHoraFim}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
+                    </h:outputText>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable id="tableResultados" value="#{provaBean.resultados}"
+                                 var="resultado" styleClass="table table-striped table-fixed table-resultados">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.aluno']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoAluno" value="#{resultado.aluno.nomeCompleto}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.nota']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoNota"
+                                          value="#{resultado.nota}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+
+                            </f:facet>             
+                            <p:commandLink class="btnDetalhar" rendered="false"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();">
+                                <span class="material-icons">pageview</span>
+                            </p:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 text-right">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                   action="#{provaBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

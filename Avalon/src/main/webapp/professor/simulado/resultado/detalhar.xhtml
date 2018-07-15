@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <h1>#{simuladoBean.simuladoAlunoDetalhe.simulado.titulo}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label>
+                    <span id="componente"> #{simuladoBean.simuladoAlunoDetalhe.simulado.componenteCurricular.nome}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="professor">#{msg['cabecalho.professor']}: </label>
+                    <span id="professor"> #{simuladoBean.simuladoAlunoDetalhe.simulado.professor.nomeCompleto}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4 form-group">
+                    <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
+                    <h:outputText id="dataHoraInicio" class="margin-left-10"
+                                  value="#{simuladoBean.simuladoAlunoDetalhe.dataHoraInicio}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
+                    </h:outputText>
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
+                    <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
+                    <h:outputText id="dataHoraFim" class="margin-left-10"
+                                  value="#{simuladoBean.simuladoAlunoDetalhe.dataHoraFim}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
+                    </h:outputText>
+                </p:outputPanel>
+                <p:outputPanel class="col-md-4 form-group">
+                    <label for="nota">#{msg['cabecalho.nota']}: </label>
+                    <h:outputText id="nota" value="#{simuladoBean.simuladoAlunoDetalhe.nota}"
+                                  class="margin-left-10">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </h:outputText>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <ui:include src="fragmento/resultado-vf.xhtml" />
+                    <ui:include src="fragmento/resultado-multipla-escolha.xhtml" />
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-8 col-md-2">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                     action="goResultadosSimulado" immediate="true"
+                                     class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

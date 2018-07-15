@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h1>#{msg['titulo.minhas.questoes']}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.questao']}</span>
+                            </f:facet>
+                            <h:outputText title="#{questao.enunciado}" value="#{questao.enunciado}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.componente.curricular']}</span>
+                            </f:facet>
+                            <h:outputText title="#{questao.componenteCurricular.nome}"
+                                          value="#{questao.componenteCurricular.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.tipo']}</span>
+                            </f:facet>
+                            <span>#{questao.tipo.descricao}</span>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.situacao']}</span>
+                            </f:facet>
+                            <h:outputText rendered="#{questao.anulada}"
+                                          value="#{msg['label.anulada']}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+
+                            </f:facet>
+                            <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}"
+                                           onclick="PF('block').show()"
+                                           rendered="#{!questao.anulada}"
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.editar']}">
+                                <span class="material-icons">mode_edit</span>
+                            </p:commandLink>
+                            <p:commandLink action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"
+                                           onclick="PF('block').show()"
+                                           rendered="#{!questao.anulada}"
+                                           title="#{msg['questao.anular']}"
+                                           oncomplete="PF('block').hide(); PF('modalAnular').show()">
+                                <span class="material-icons">cancel</span>
+                            </p:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-9 col-md-3 form-group">
+                    <p:commandButton id="btnAdd" value="#{msg['btn.adicionar.questao']}" action="#{questaoBean.iniciarPaginaInclusao()}" class="btn bg-default btn-block font-color-default"></p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+
+        <h:form id="formModalAnular">
+            <p:confirmDialog header="#{msg['header.anular.questao']}"
+                             message="#{msg['questao.anular']}"
+                             severity="alert"
+                             widgetVar="modalAnular" closeOnEscape="true">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right button-footer">
+                        <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.anularQuestao()}" oncomplete="PF('modalAnular').hide()" update="form" styleClass="btn btn-primary" />
+                        <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalAnular').hide();" type="button" styleClass="btn btn-secondary" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

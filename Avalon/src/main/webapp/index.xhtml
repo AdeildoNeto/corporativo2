@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous" defer="defer"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <h:outputStylesheet name="css/style.css" />
+        <title>Avalon</title>
+    </h:head>
+
+    <h:body>
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+        <h:form id="loginForm">
+            <div class="row">
+                <div class="offset-md-1 col-md-6">
+                    <p:messages id="msgs" />
+                </div>
+            </div>
+            
+            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin()}"
+                             onstart="PF('block').show()"
+                             oncomplete="PF('block').hide()"/>
+        
+            <div class="row" id="loginRow">
+                <div class="col-md-12 text-center">
+                    <p:commandButton id="btnGoogleLogin" class="btn btn-primary btnGoogleLogin"
+                                     value="Acessar">
+                    </p:commandButton>
+                </div>
+            </div>
+            
+            <p:blockUI animate="true" block="loginForm" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+
+        <h:outputScript name="js/login-google.js" />
+        <script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
+
+    </h:body>
+</html>
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:repeat value="#{bean.visualizarViewHelper.questoesVerdadeiroFalso}" var="questao" varStatus="i">
+        <p:outputPanel class="form-group">
+            <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
+            <p:outputPanel class="img">
+                <ui:fragment rendered="#{questao.imagem != null}">
+                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                        <f:param name="questaoId" value="#{questao.id}"/>
+                    </p:graphicImage>
+                </ui:fragment>
+            </p:outputPanel>
+            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.resposta}" disabled="true">
+                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
+                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+            </p:selectOneRadio>
+
+            <h:panelGrid class="margin-left-20">
+                <h:column>
+                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                    <span>#{msg['btn.verdadeiro']}</span>
+                </h:column>
+
+                <h:column>
+                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                    <span>#{msg['btn.falso']}</span>
+                </h:column>
+            </h:panelGrid>
+        </p:outputPanel>
+    </ui:repeat>
+
+</ui:composition>

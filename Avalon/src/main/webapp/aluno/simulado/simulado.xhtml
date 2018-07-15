@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <h1>#{simuladoAlunoBean.simuladoSelecionado.titulo}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{simuladoAlunoBean.simuladoSelecionado.componenteCurricular.nome}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <label for="professor">#{msg['label.professor']}: </label><span id="professor"> #{simuladoAlunoBean.simuladoSelecionado.professor.nomeCompleto}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:messages id="msgs" />
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <ui:include src="fragmento/simulado-vf.xhtml" rendered="#{simuladoAlunoBean.questoesVerdadeiroFalso.size() > 0}">
+                        <ui:param name="bean" value="#{simuladoAlunoBean}" />
+                    </ui:include>
+                    <ui:include src="fragmento/simulado-multipla-escolha.xhtml" rendered="#{simuladoAlunoBean.questoesMultiplaEscolha.size() > 0}">
+                        <ui:param name="bean" value="#{simuladoAlunoBean}" />
+                    </ui:include>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-8 col-md-4 text-right">
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}"
+                                   action="#{simuladoAlunoBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}" update="formModalResultado:modalResultado msgs"
+                                     action="#{simuladoAlunoBean.finalizar()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn btn-primary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+        
+        <ui:include src="fragmento/modal-resultado.xhtml">
+            <ui:param name="bean" value="#{simuladoAlunoBean}" />
+        </ui:include>
+    </ui:define>
+
+</ui:composition>

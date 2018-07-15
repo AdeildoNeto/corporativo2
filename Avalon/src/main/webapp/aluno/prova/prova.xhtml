@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <h1>#{provaAlunoBean.prova.titulo}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.prova.componenteCurricular.nome}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="professor">#{msg['cabecalho.professor']}: </label><span id="professor"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <label for="duracao">#{msg['prova.duracao']}: </label>
+                    <h:outputText id="duracaoProva" class="margin-left-10" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}" />
+                    <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="duracaoProva" />
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:messages id="msgs" />
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:carousel value="#{provaAlunoBean.questoesVerdadeiroFalso}" var="questao"
+                                id="carouselVF"
+                                rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}"
+                                numVisible="1" pageLinks="2">
+                        <p:outputPanel class="form-group">
+                            <span class="bold">#{questao.enunciado}</span>
+                            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
+                                <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
+                                <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                            </p:selectOneRadio>
+                            <p:outputPanel class="img">
+                                <ui:fragment rendered="#{questao.imagem != null}">
+                                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                                        <f:param name="questaoId" value="#{questao.id}"/>
+                                    </p:graphicImage>
+                                </ui:fragment>
+                            </p:outputPanel>
+                            <h:panelGrid class="margin-left-20">
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                                    <span>#{msg['btn.verdadeiro']}</span>
+                                </h:column>
+
+                                <h:column>
+                                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                                    <span>#{msg['btn.falso']}</span>
+                                </h:column>
+                            </h:panelGrid>
+                        </p:outputPanel>
+                    </p:carousel>
+                    <p:carousel value="#{provaAlunoBean.questoesMultiplaEscolha}" var="questao"
+                                id="carouselME"
+                                rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}"
+                                numVisible="1" pageLinks="2">
+                        <p:outputPanel class="form-group">
+                            <span class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</span>
+                            <p:outputPanel class="img">
+                                <ui:fragment rendered="#{questao.imagem != null}">
+                                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                                        <f:param name="questaoId" value="#{questao.id}"/>
+                                    </p:graphicImage>
+                                </ui:fragment>
+                            </p:outputPanel>
+                            <p:selectOneRadio id="radioMS" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
+                                <f:selectItem itemValue="0" />
+                                <f:selectItem itemValue="1" />
+                                <f:selectItem itemValue="2" />
+                                <f:selectItem itemValue="3" />
+                                <f:selectItem itemValue="4" />
+                            </p:selectOneRadio>
+
+                            <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
+                                <p:outputPanel>
+                                    <p:radioButton for="form:carouselME:0:radioMS" itemIndex="#{j.index}" />
+                                    <span>#{alternativa.descricao}</span>
+                                </p:outputPanel>
+                            </ui:repeat>
+                        </p:outputPanel>
+                    </p:carousel>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-9 col-md-2">
+                    <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}"
+                                     update="form:modalFinalizar msgs"
+                                     action="#{provaAlunoBean.verificarQuestoesEmBranco()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide();"
+                                     class="btn btn-primary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+            <p:dialog id="modalFinalizar"
+                      header="#{msg['btn.finalizar']}"
+                      draggable="false" visible="#{provaAlunoBean.exibirModalFinalizar}"
+                      closeOnEscape="true" modal="true">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12">
+                        <p:outputPanel class="form-group">
+                            <span>#{provaAlunoBean.msgConfirmarFinalizacao}</span>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right">
+                        <p:commandButton id="btnNao"
+                                         value="#{msg['btn.nao']}" action="#{provaAlunoBean.fecharModalFinalizar()}"
+                                         styleClass="btn btn-secondary"
+                                         immediate="true" process="@this" update="form" />
+
+                        <p:commandButton id="btnSim"
+                                         value="#{msg['btn.sim']}"
+                                         action="#{provaAlunoBean.finalizar()}"
+                                         onclick="PF('block').show();" oncomplete="PF('block').hide();"
+                                         styleClass="btn btn-primary button-modal" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

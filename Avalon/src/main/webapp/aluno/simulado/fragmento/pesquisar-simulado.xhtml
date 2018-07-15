@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-3 form-group">
+            <p:outputLabel for="filtroTitulo" value="#{msg['label.titulo']}:" />
+            <h:inputText id="filtroTitulo" class="form-control" value="#{bean.pesquisarSimuladoViewHelper.filtro.titulo}" />
+        </p:outputPanel>
+
+        <p:outputPanel class="col-md-3 form-group">
+            <p:outputLabel for="filtronomeProfessor" value="#{msg['label.professor']}:" />
+            <h:inputText id="filtronomeProfessor" class="form-control" value="#{bean.pesquisarSimuladoViewHelper.filtro.nomeProfessor}" />
+        </p:outputPanel>
+
+        <p:outputPanel class="col-md-3 form-group">
+            <p:outputLabel for="filtroComponente" value="#{msg['label.componente.curricular']}:" />
+            <p:selectOneMenu id="filtroComponente"
+                             value="#{bean.pesquisarSimuladoViewHelper.filtro.idComponenteCurricular}"
+                             class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
+                             filter="true" filterMatchMode="startsWith">
+                <f:selectItems value="#{bean.componenteViewHelper.getTodosComponentesCurricular()}"
+                               itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
+                <p:ajax update="@form" event="change" />
+            </p:selectOneMenu>
+        </p:outputPanel>
+        
+        <p:outputPanel class="col-md-1 form-group">
+            <p:commandLink id="pesquisar" value="search"
+                           class="btn material-icons bg-default btn-search"
+                           onclick="PF('block').show()"
+                           oncomplete="PF('block').hide()"
+                           action="#{bean.pesquisar()}"
+                           update="table msgs" ajax="true"
+                           title="#{msg['adicionar.componente.curricular']}">
+            </p:commandLink>
+        </p:outputPanel>
+
+    </p:outputPanel>
+
+</ui:composition>

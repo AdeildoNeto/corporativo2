@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel class="row">
+        <p:outputPanel class="logo-ifpe caixa-cabecalho">
+            <h:graphicImage name="img/logo-ifpe.png" width="180px" height="50px" />
+        </p:outputPanel>
+        <p:outputPanel class="column" style="width: 436px">
+            <p:outputPanel class="caixa-cabecalho" style="width: 430px">
+                #{msg['cabecalho.disciplina']}:
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 236px; margin-right: 3px">
+                    #{msg['cabecalho.prova']}/#{msg['cabecalho.unidade']}:
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho margin-right-0" style="width: 192px;">
+                    #{msg['cabecalho.professor']}:
+                </p:outputPanel>
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="caixa-cabecalho" style="width: 80px; margin-top: 2px;">
+            <span class="text-center">#{msg['cabecalho.nota']}</span>
+        </p:outputPanel>
+    </p:outputPanel>
+    <p:outputPanel class="row">
+        <p:outputPanel class="column" style="width: 427px">
+            <p:outputPanel class="row">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 365px;">
+                    #{msg['cabecalho.curso']}:
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho" style="width: 49px;">
+                    #{msg['cabecalho.periodo']}:
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="caixa-cabecalho" style="width: 420px">
+                #{msg['cabecalho.aluno']}:
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="column" style="width: 195px">
+            <p:outputPanel class="row margin-left-0">
+                <p:outputPanel class="caixa-cabecalho margin-left-0" style="width: 40%">
+                    #{msg['cabecalho.turno']}:
+                </p:outputPanel>
+                <p:outputPanel class="caixa-cabecalho margin-right-0" style="width: 60%">
+                    #{msg['cabecalho.data']}:
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="caixa-cabecalho margin-left-0">
+                #{msg['cabecalho.matricula']}:
+            </p:outputPanel>
+        </p:outputPanel>
+        <p:outputPanel class="caixa-cabecalho" style="width: 80px; margin-top: 2px; white-space: pre-line">
+            <span class="text-center">#{msg['cabecalho.rubrica']}</span>
+        </p:outputPanel>
+    </p:outputPanel>  
+    
+</ui:composition>

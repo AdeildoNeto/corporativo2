@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h1>#{msg['titulo.editar.questao']}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-8">
+                    <p:messages id="msgPrincipal" />
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <ui:include src="fragmento/conteudo-questao.xhtml" />
+            
+            <p:outputPanel class="row buttons-save">
+                <p:outputPanel class="col-md-12">
+                    <p:commandButton id="goListarQuestao" value="#{msg['btn.cancelar']}" immediate="true"
+                                     action="#{questaoBean.voltarListarQuestoes()}"
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
+                    <p:commandButton id="btnSave" onclick="PF('modalSalvar').show()" value="#{msg['btn.salvar']}"
+                                     class="btn btn-primary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+            <ui:include src="fragmento/modal-confirmar-editar.xhtml" />
+
+        </h:form>
+
+        <ui:include src="fragmento/modal-componente-curricular.xhtml" />
+        
+    </ui:define>
+
+</ui:composition>
