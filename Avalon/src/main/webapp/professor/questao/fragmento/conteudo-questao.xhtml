@@ -14,9 +14,9 @@ and open the template in the editor.
     <p:outputPanel class="row">
         <p:outputPanel class="col-md-3 form-group">
             <p:outputPanel>
-                <p:outputLabel for="tipoQuestao" value="#{msg['label.tipo']}:" />
+                <p:outputLabel for="selTipo" value="#{msg['label.tipo']}:" />
                 <p:outputPanel>
-                    <p:selectOneMenu id="tipoQuestao" value="#{questaoBean.tipoSelecionado}"
+                    <p:selectOneMenu id="selTipo" value="#{questaoBean.tipoSelecionado}"
                                      disabled="#{questaoBean.edicaoQuestao()}" required="true"
                                      requiredMessage="#{msg['questao.tipo.obrigatorio']}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width">
@@ -28,9 +28,9 @@ and open the template in the editor.
         </p:outputPanel>
         <p:outputPanel class="col-md-4 form-group">
             <p:outputPanel>
-                <p:outputLabel for="componenteCurricular" value="#{msg['label.componente.curricular']}:" />
+                <p:outputLabel for="selComponenteCurricular" value="#{msg['label.componente.curricular']}:" />
                 <p:outputPanel>
-                    <p:selectOneMenu id="componenteCurricular" required="true"
+                    <p:selectOneMenu id="selComponenteCurricular" required="true"
                                      requiredMessage="#{msg['componente.curricular.obrigatorio']}"
                                      value="#{questaoBean.componenteSelecionado}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
@@ -75,11 +75,11 @@ and open the template in the editor.
 
     <p:outputPanel class="row">
         <p:outputPanel class="col-md-12 form-group">
-            <p:outputLabel for="questao-enunciado" value="#{msg['label.enunciado']}:" />
+            <p:outputLabel for="txtEnunciado" value="#{msg['label.enunciado']}:" />
             <h:inputTextarea required="true"
                              requiredMessage="#{msg['questao.enunciado.obrigatorio']}"
                              class="form-control"
-                             id="questao-enunciado" rows="4"
+                             id="txtEnunciado" rows="4"
                              value="#{questaoBean.questao.enunciado}">
             </h:inputTextarea>
         </p:outputPanel>
