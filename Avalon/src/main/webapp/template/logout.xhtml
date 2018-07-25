@@ -12,7 +12,7 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui">
 
     <li class="nav-item nav-logout">
-        <h:commandLink styleClass="nav-link" value="#{msg['menu.sair']}" action="#{loginBean.logout()}" onclick="signOut()" />
+        <h:commandLink id="logout" styleClass="nav-link" value="#{msg['menu.sair']}" action="#{loginBean.logout()}" onclick="signOut()" />
     </li>
 
     <h:outputScript name="js/logout-google.js" />

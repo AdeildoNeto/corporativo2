@@ -38,7 +38,7 @@ and open the template in the editor.
                         <f:selectItems value="#{questaoBean.todosComponentesCurricular}"
                                        itemLabel="#{componente.nome}" itemValue="#{componente.id}" var="componente" />
                     </p:selectOneMenu>
-                    <p:commandLink id="addComponente" value="add" class="btn material-icons bg-default btn-add-componente"
+                    <p:commandLink id="btnAdicionarComponente" value="add" class="btn material-icons bg-default btn-add-componente"
                                    action="#{questaoBean.carregarModalComponente()}" update="formComponente:modalComponente"
                                    immediate="true" process="@this" title="#{msg['adicionar.componente.curricular']}">
                     </p:commandLink>

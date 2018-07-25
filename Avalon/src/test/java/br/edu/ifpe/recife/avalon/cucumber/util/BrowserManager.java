@@ -22,12 +22,10 @@ public class BrowserManager {
 
     public static void openBrowser(String url) {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
-
-        if (driver == null) {
-            driver = new ChromeDriver();
-            driver.manage().window();
-        }
-
+        
+        driver = new ChromeDriver();
+        driver.manage().window();
+        
         driver.get(url);
     }
 

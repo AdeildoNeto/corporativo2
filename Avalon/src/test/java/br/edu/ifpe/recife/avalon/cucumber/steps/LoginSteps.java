@@ -43,5 +43,10 @@ public class LoginSteps {
         }
 
     }
+    
+    public static void logout(){
+        BrowserManager.getDriver().findElement(By.id("menu:logout")).click();
+	BrowserManager.getDriver().close();
+    }
 
 }
