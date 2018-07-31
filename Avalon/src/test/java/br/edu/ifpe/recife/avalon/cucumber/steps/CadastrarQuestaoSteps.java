@@ -6,10 +6,8 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
-import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
@@ -18,31 +16,9 @@ import org.openqa.selenium.support.ui.Select;
  *
  * @author eduardoamaral
  */
-public class CadastrarQuestaoDiscursivasSteps {
+public class CadastrarQuestaoSteps {
 
-    @Dado("^que o usuario esta logado como professor$")
-    public void logarComoProfessor() throws Throwable {
-        LoginSteps.logar("efsa@a.recife.ifpe.edu.br", "Em!4&kz32");
-    }
-
-    @E("^esteja na pagina minhas questoes$")
-    public void irParaMinhasQuestoes() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("menu:menuQuestoes")).click();
-    }
-
-    @E("^deseje cadastrar uma nova questao$")
-    public void irParaCadastrarQuestao() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:btnAdicionarQuestao")).click();
-        BrowserManager.waitTime(1000);
-    }
-
-    @Quando("^o professor selecionar o tipo discursiva$")
-    public void selecionarTipoDiscursiva() throws Throwable {
-        Select selectTipo = new Select(BrowserManager.getDriver().findElement(By.id("form:selTipo_input")));
-        selectTipo.selectByValue("DISCURSIVA");
-    }
-    
-    @E("^selecionar o componente curricular$")
+    @E("^selecionar um componente curricular$")
     public void selecionarComponenteCurricular() throws Throwable {
         Select selectComponente = new Select(BrowserManager.getDriver().findElement(By.id("form:selComponenteCurricular_input")));
         selectComponente.selectByIndex(0);
@@ -67,6 +43,8 @@ public class CadastrarQuestaoDiscursivasSteps {
     
     @Entao("^uma nova questao sera cadastrada$")
     public void questaoCadastrada(){
+        int questoes = BrowserManager.getDriver().findElements(By.xpath("//*[@id='form:tbMinhasQuestoes']/tbody/tr")).size();
+        assertTrue(questoes > 0);
         LoginSteps.logout();
     }
     

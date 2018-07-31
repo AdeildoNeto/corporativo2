@@ -22,7 +22,8 @@ and open the template in the editor.
 
             <p:outputPanel class="row container-listar">
                 <p:outputPanel class="col-md-12">
-                    <h:dataTable value="#{questaoBean.questoes}" var="questao" styleClass="table table-striped table-fixed table-questoes">
+                    <h:dataTable id="tbMinhasQuestoes" value="#{questaoBean.questoes}"
+                                 var="questao" styleClass="table table-striped table-fixed table-questoes">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
