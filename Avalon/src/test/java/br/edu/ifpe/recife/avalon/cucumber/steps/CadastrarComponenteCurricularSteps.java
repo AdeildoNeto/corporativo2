@@ -46,6 +46,7 @@ public class CadastrarComponenteCurricularSteps {
     public void componenteCadastrado(){
         Select selComponente = new Select(BrowserManager.getDriver().findElement(By.id("form:selComponenteCurricular_input")));
         assertTrue(!selComponente.getOptions().isEmpty());
+        LoginSteps.logout();
     }
     
     @Entao("^sera exibido mensagem para componente duplicado$")

@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import cucumber.api.java.pt.Dado;
 import org.openqa.selenium.By;
 
 /**
@@ -15,6 +16,11 @@ import org.openqa.selenium.By;
 public class LoginSteps {
 
     private static String DOMAIN = "ifpe.edu.br";
+    
+    @Dado("^que o usuario esta logado como professor$")
+    public void logarComoProfessor() throws Throwable {
+        LoginSteps.logar("efsa@a.recife.ifpe.edu.br", "Em!4&kz32");
+    }
 
     public static void logar(String login, String senha) {
 
