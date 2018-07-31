@@ -20,6 +20,7 @@ public class CadastrarQuestaoVerdadeiroFalsoSteps {
     public void selecionarTipoVerdadeiroFalso() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
+        BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:selTipo_2']")).click();
     }
         
 }
