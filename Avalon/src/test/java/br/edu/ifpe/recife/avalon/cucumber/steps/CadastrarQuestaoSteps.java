@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import static org.junit.Assert.assertTrue;
@@ -24,7 +25,7 @@ public class CadastrarQuestaoSteps {
         selectComponente.selectByIndex(0);
     }
     
-    @E("^informar o enunciado da questao$")
+    @E("^preencher o enunciado da questao$")
     public void preencherEnunciado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Teste");
     }
@@ -48,27 +49,42 @@ public class CadastrarQuestaoSteps {
         LoginSteps.logout();
     }
     
-    @E("^nao informar o enunciado da questao$")
+    @E("^nao preencher o enunciado da questao$")
     public void naoPreencherEnunciado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("");
     }
     
     @Entao("^sera exibido mensagem para enunciado obrigatorio$")
     public void exibirMensagemEnunciadoObrigatorio() throws Throwable {
-        String mensagem = getMensagemValidacao();
+        String mensagem = TestUtil.obterMensagemValidacao();
         assertTrue(mensagem.equals("O enunciado da questão é obrigatório."));
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido mensagem para questao duplicada$")
+    @Entao("^sera exibido mensagem para questão duplicada$")
     public void exibirMensagemQuestaoDuplicada() throws Throwable {
-        String mensagem = getMensagemValidacao();
+        String mensagem = TestUtil.obterMensagemValidacao();
         assertTrue(mensagem.equals("Já existe uma questão com este enunciado."));
         LoginSteps.logout();
     }
     
-    private String getMensagemValidacao(){
-        return BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:msgPrincipal']/div/ul/li/span")).getText();
+    @E("^preencher o enunciado da questao com mais caracteres do que o permitido$")
+    public void preencherEnunciadoMaiorPermitido() throws Throwable {
+        StringBuilder builder = new StringBuilder();
+        
+        for (int i = 0; i < 30; i++) {
+            builder.append("0123456789012345678901234567890123456789012345678901234567890123456789");
+        }
+        
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado"))
+                .sendKeys(builder.toString());
+    }
+    
+    @Entao("^sera exibido mensagem para enunciado da questao maior que o permitido$")
+    public void exibirMensagemEnunciadoLimite() throws Throwable {
+        String mensagem = TestUtil.obterMensagemValidacao();
+        assertTrue(mensagem.equals("O tamanho do enunciado é maior do que o máximo permitido."));
+        LoginSteps.logout();
     }
     
 }

@@ -95,10 +95,10 @@ and open the template in the editor.
                 <f:selectItem itemValue="4" />
             </p:selectOneRadio>
 
-            <ui:repeat value="#{questaoBean.alternativas}" var="alternativa" varStatus="index">
+            <ui:repeat id="alternativas" value="#{questaoBean.alternativas}" var="alternativa" varStatus="index">
                 <h:panelGrid columns="2" width="100%" class="table-alternativa">
                     <p:radioButton for="form:radio" itemIndex="#{index.index}" />
-                    <h:inputText value="#{alternativa.descricao}" required="true" class="form-control" />
+                    <h:inputText id="alternativa" value="#{alternativa.descricao}" class="form-control" />
                 </h:panelGrid>
             </ui:repeat>
         </p:outputPanel>

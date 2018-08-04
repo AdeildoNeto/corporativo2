@@ -8,7 +8,6 @@ package br.edu.ifpe.recife.avalon.cucumber.steps;
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
 import cucumber.api.java.pt.Quando;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  *
@@ -20,7 +19,6 @@ public class CadastrarQuestaoVerdadeiroFalsoSteps {
     public void selecionarTipoVerdadeiroFalso() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
-        BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:selTipo_2']")).click();
     }
         
 }

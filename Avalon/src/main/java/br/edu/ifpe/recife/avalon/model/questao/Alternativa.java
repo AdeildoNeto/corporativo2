@@ -33,7 +33,6 @@ public class Alternativa implements Serializable {
     @Column(name = "ID_ALTERNATIVA")
     private Long id;
 
-    @NotBlank(message = "{questao.alternativa.obrigatorio}")
     @Size(max = 255, message = "{alternativa.tamanho.maximo}")
     @Column(name = "TXT_DESCRICAO")
     private String descricao;

@@ -1,8 +1,9 @@
 # language: pt
+# ID.09
 Funcionalidade: 
   Eu como professor
-  Quero cadastrar um componente curricular
-  Para poder atribui-lo a questoes visando a geracao de provas daquele componente
+  Quero atribuir um componente curricular a uma questão
+  Para gerar provas daquele componente curricular
 
   Contexto: 
     Dado que o usuario esta logado como professor
@@ -27,11 +28,8 @@ Funcionalidade:
     E clicar no botao salvar componente
     Entao sera exibido mensagem para nome do componente curricular obrigatorio
 
-Cenario: Criticar cadastro de questao com enunciado duplicado
+  Cenario: Criticar nome do componente maior que o permitido
     Quando o professor clicar no botao adicionar componente
-    E nao preencher o nome do componente curricular
     E preencher o nome do componente curricular com mais caracteres do que o permitido
     E clicar no botao salvar componente
     Entao sera exibido mensagem para nome do componente excedeu limite de caracteres
-
-

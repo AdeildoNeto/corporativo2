@@ -46,11 +46,11 @@ import org.primefaces.model.UploadedFile;
 public class QuestaoBean implements Serializable {
 
     public static final String QUESTAO_BEAN = "questaoBean";
-    private static final String GO_LISTAR_QUESTAO = "goListarQuestao";
-    private static final String GO_ADD_QUESTAO = "goAddQuestao";
-    private static final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
-    private static final String MSG_PRINCIPAL = "msgPrincial";
-    private static final String MSG_MODAL_COMPONENTE = "msgComponente";
+    private final String GO_LISTAR_QUESTAO = "goListarQuestao";
+    private final String GO_ADD_QUESTAO = "goAddQuestao";
+    private final String GO_ALTERAR_QUESTAO = "goAlterarQuestao";
+    private final String MSG_PRINCIPAL = "msgPrincial";
+    private final String MSG_MODAL_COMPONENTE = "msgComponente";
 
     @EJB
     private QuestaoServico questaoServico;
@@ -197,7 +197,7 @@ public class QuestaoBean implements Serializable {
     public String salvar() {
         String navegacao = GO_LISTAR_QUESTAO;
 
-        preencherQuestao();
+        QuestaoBean.this.preencherQuestao();
 
         try {
 
@@ -232,6 +232,7 @@ public class QuestaoBean implements Serializable {
         String navegacao = GO_LISTAR_QUESTAO;
         MultiplaEscolha multiplaEscolha = new MultiplaEscolha();
         
+        verificarTodasAlternativasPreenchidas();
         verificarOpcaoCorretaDefinida();
         copiarQuestao(multiplaEscolha);
 
@@ -280,7 +281,7 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Copia os dados básicos da questão para instâncias do tipo Múltipla Escolha
-     * e Verdadeiro ou Falso.
+     * ou Verdadeiro ou Falso.
      * 
      * @param questao - questão que receberá os dados básicos.
      */
@@ -305,6 +306,7 @@ public class QuestaoBean implements Serializable {
         try {
             questao.setComponenteCurricular(buscarComponenteSelecionado());
             if(questao instanceof MultiplaEscolha){
+                verificarTodasAlternativasPreenchidas();
                 verificarOpcaoCorretaDefinida();
                 MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
                 multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
@@ -324,6 +326,21 @@ public class QuestaoBean implements Serializable {
         }
 
         return navegacao;
+    }
+    
+    /**
+     * Verifica se as alternativas da questão de múltipla escolha
+     * foram preenchidas.
+     * 
+     * @throws ValidacaoException 
+     */
+    private void verificarTodasAlternativasPreenchidas() throws ValidacaoException{
+        for (Alternativa alternativa : alternativas) {
+            if(alternativa.getDescricao() == null || 
+                    alternativa.getDescricao().isEmpty()){
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("questao.alternativa.obrigatorias"));
+            }
+        }
     }
     
     /**
