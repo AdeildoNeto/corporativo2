@@ -550,14 +550,6 @@ input[type="text"]{
     padding: 0;
 }
 
-/* Image */
-.img img{
-    max-width: 250px;
-    max-height: 250px;
-    width: auto;
-    height: auto;
-}
-
 /* Carousel */
 .ui-carousel .ui-carousel-page-link, .ui-carousel .ui-carousel-button {
     cursor: pointer;
@@ -583,7 +575,7 @@ input[type="text"]{
 }
 
 .ui-carousel-header{
-     width: 50%;
+    width: 50%;
     position: absolute;
     bottom: -30px;
 }
@@ -632,4 +624,27 @@ input[type="text"]{
     max-height: 100px;
     width: auto;
     height: auto;
+}
+
+.imagem img{
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 25em;
+}
+
+.container-prova-questao {
+    margin-bottom: 2rem;
+}
+
+.container-prova-questao .imagem{
+    margin: 8px;
+}
+
+.prova-duracao {
+    font-size: 1.5rem;
+}
+
+.container-duracao{
+    vertical-align: top;
 }

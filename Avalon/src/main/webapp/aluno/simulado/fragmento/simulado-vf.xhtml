@@ -12,13 +12,13 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:repeat value="#{bean.questoesVerdadeiroFalso}" var="questao" varStatus="i">
-        <p:outputPanel class="form-group">
+        <p:outputPanel class="container-prova-questao">
             <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
             <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
             </p:selectOneRadio>
-            <p:outputPanel class="img">
+            <p:outputPanel class="imagem">
                 <ui:fragment rendered="#{questao.imagem != null}">
                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questao.id}"/>

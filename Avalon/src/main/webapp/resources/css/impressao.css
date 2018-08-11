@@ -58,23 +58,24 @@ and open the template in the editor.
     .margin-left-0{
         margin-left: 0 !important;
     }
-    
+
     .margin-right-0{
         margin-right: 0 !important;
     }
-    
+
     .text-center{
         display: inline-block;
         margin: 0 auto;
         text-align: center;
     }
-    
+
     .container-questao{
+        margin-top: 16px;
         white-space: pre-line;
     }
-    
+
     .DISCURSIVA{
-        margin-bottom: 60px;
+        margin-bottom: 120px;
     }
 
     head{
@@ -86,9 +87,20 @@ and open the template in the editor.
         width: 210mm;
         height: 100%;
     }
-    
+
     .enunciado{
         word-wrap: break-word;
+    }
+
+    .imagem{
+        margin: 8px;
+    }
+    
+    .imagem img{
+        width: auto;
+        height: auto;
+        max-width: 90%;
+        max-height: 25em;
     }
 }
 

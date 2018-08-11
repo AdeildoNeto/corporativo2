@@ -13,14 +13,14 @@ and open the template in the editor.
 
     <ui:repeat rendered="#{simuladoBean.simuladoVF}"
                value="#{simuladoBean.simuladoAlunoDetalhe.questoesAluno}" var="questaoAluno" varStatus="i">
-        <p:outputPanel class="form-group">
+        <p:outputPanel class="container-prova-questao">
             <span class="bold">#{i.index + 1}) #{questaoAluno.questao.enunciado}</span>
             <p:selectOneRadio id="radio" layout="custom" plain="true"
                               disabled="true" value="#{questaoAluno.respostaVF}">
                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
             </p:selectOneRadio>
-            <p:outputPanel class="img">
+            <p:outputPanel class="imagem">
                 <ui:fragment rendered="#{questaoAluno.questao.imagem != null}">
                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questaoAluno.questao.id}"/>

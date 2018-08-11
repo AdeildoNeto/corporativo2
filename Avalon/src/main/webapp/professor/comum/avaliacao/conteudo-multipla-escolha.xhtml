@@ -12,9 +12,9 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:repeat value="#{bean.visualizarViewHelper.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
-        <p:outputPanel class="form-group">
+        <p:outputPanel class="container-prova-questao">
             <p:outputPanel class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</p:outputPanel>
-            <p:outputPanel class="img">
+            <p:outputPanel class="imagem">
                 <ui:fragment rendered="#{questao.imagem != null}">
                     <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questao.id}"/>
