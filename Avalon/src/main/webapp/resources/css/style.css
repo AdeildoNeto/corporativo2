@@ -123,8 +123,9 @@ label{
     color: white !important;
 }
 
-.navbar-brand{
-    color: white;
+#menu > nav > a > span {
+    color: white !important;
+    vertical-align: text-bottom;
 }
 
 /* BlockUI */
