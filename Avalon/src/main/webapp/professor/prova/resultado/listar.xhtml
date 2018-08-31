@@ -54,6 +54,12 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
+                                <span>#{msg['label.email']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoEmail" value="#{resultado.aluno.email}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
                                 <span>#{msg['cabecalho.nota']}</span>
                             </f:facet>
                             <h:outputText class="resultadoNota"

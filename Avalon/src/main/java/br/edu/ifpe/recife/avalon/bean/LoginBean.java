@@ -17,6 +17,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
@@ -125,15 +126,22 @@ public class LoginBean implements Serializable {
             usuario.setNome(payload.get("given_name").toString());
             usuario.setSobrenome(payload.get("family_name").toString());
             
-            if(payload.getHostedDomain() != null && payload.getHostedDomain().contains(IFPE_DOMINIO)){
-                usuario.setGrupo(GrupoEnum.PROFESSOR);
-            }else{
+            if(payload.getHostedDomain() != null && verificarDominioAluno()){
                 usuario.setGrupo(GrupoEnum.ALUNO);
+            }else{
+                usuario.setGrupo(GrupoEnum.PROFESSOR);
             }
-                    
+            
             usuarioServico.salvar(usuario);
             
         }
+    }
+    
+    private boolean verificarDominioAluno(){
+        String[] dominios = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("dominioAluno").split(",");
+        int index = Arrays.binarySearch(dominios, payload.getHostedDomain());
+        
+        return index > -1;
     }
 
     /**

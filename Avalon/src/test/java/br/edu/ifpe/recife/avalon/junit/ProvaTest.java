@@ -293,6 +293,7 @@ public class ProvaTest {
         ProvaAluno provaAluno = new ProvaAluno();
         TimeUnit.SECONDS.sleep(15);
         preencherProvaAluno(provaAluno);
+        provaAluno.setFinalizada(true);
 
         provaServico.salvarProvaAluno(provaAluno);
         

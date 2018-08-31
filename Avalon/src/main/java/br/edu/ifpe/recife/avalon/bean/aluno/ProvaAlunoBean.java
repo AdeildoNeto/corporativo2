@@ -195,6 +195,7 @@ public class ProvaAlunoBean implements Serializable {
         preencherRespostas();
 
         provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
+        provaAluno.setFinalizada(true);
         provaServico.salvarProvaAluno(provaAluno);
 
         return iniciarPagina();
@@ -211,6 +212,14 @@ public class ProvaAlunoBean implements Serializable {
         } else if (!questoesVerdadeiroFalso.isEmpty()) {
             preencherProvaVF();
         }
+    }
+    
+    /**
+     * Salva a prova automaticamente durante a realização da mesma.
+     */
+    private void salvarProvaAutomaticamente(){
+        preencherRespostas();
+        provaAluno = provaServico.salvarProvaAluno(provaAluno);
     }
 
     /**
@@ -317,6 +326,7 @@ public class ProvaAlunoBean implements Serializable {
         if (getDuracaoSegundos() == 0) {
             duracaoSegundos = 59;
             --duracaoMinutos;
+            salvarProvaAutomaticamente();
         } else {
             --duracaoSegundos;
         }
@@ -387,4 +397,8 @@ public class ProvaAlunoBean implements Serializable {
         return duracaoSegundos;
     }
 
+    public ProvaAluno getProvaAluno() {
+        return provaAluno;
+    }
+    
 }

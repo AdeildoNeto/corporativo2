@@ -201,9 +201,16 @@ public class ProvaServico {
      * Registra a prova realizada pelo aluno.
      * 
      * @param provaAluno 
+     * @return a prova do aluno
      */
-    public void salvarProvaAluno(@Valid ProvaAluno provaAluno){
-        entityManager.persist(provaAluno);
+    public ProvaAluno salvarProvaAluno(@Valid ProvaAluno provaAluno){
+        if(provaAluno.getId() != null){
+            provaAluno = entityManager.merge(provaAluno);
+        }else{
+            entityManager.persist(provaAluno);
+        }
+        
+        return provaAluno;
     }
 
     /**

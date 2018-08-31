@@ -76,6 +76,9 @@ public class ProvaAluno implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
+    
+    @Column(name = "SN_FINALIZADA", nullable = false)
+    private boolean finalizada = false;
 
     @OneToMany(mappedBy = "provaAluno", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -166,4 +169,12 @@ public class ProvaAluno implements Serializable {
         this.nota = nota;
     }
 
+    public boolean isFinalizada() {
+        return finalizada;
+    }
+
+    public void setFinalizada(boolean finalizada) {
+        this.finalizada = finalizada;
+    }
+    
 }

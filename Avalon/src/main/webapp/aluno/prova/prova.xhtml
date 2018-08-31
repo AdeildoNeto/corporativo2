@@ -29,6 +29,16 @@ and open the template in the editor.
                     </p:outputPanel>
                 </p:outputPanel>
                 <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12">
+                        <label for="nomeAluno">#{msg['cabecalho.aluno']}: </label><span id="nomeAluno"> #{provaAlunoBean.provaAluno.aluno.nome}</span>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12">
+                        <label for="emailAluno">#{msg['label.email']}: </label><span id="emailAluno"> #{provaAlunoBean.provaAluno.aluno.email}</span>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <p:outputPanel class="row">
                     <p:outputPanel class="col-md-8 form-group">
                         <label for="professor">#{msg['cabecalho.professor']}: </label><span id="professor"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                     </p:outputPanel>

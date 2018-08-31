@@ -46,6 +46,14 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>none</param-value>
     </context-param>
+    <context-param>
+        <param-name>dominioProfessor</param-name>
+        <param-value>recife.ifpe.edu.br,gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dominioAluno</param-name>
+        <param-value>a.recife.ifpe.edu.br</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
