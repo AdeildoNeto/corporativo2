@@ -34,7 +34,13 @@ and open the template in the editor.
                             <f:facet name="header">
                                 <span>#{msg['cabecalho.aluno']}</span>
                             </f:facet>
-                            <h:outputText class="resultadoAluno" value="#{resultado.aluno.nomeCompleto}" />
+                            <h:outputText class="resultadoAluno" value="#{resultado.aluno.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.email']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoEmail" value="#{resultado.aluno.email}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">

@@ -214,26 +214,6 @@ public class ProvaTest {
         provaServico.salvar(prova);
     }
 
-    @Test(expected = ValidacaoException.class)
-    public void t13_criticarProvaDuracaoMinima() throws ValidacaoException {
-        logger.info("Executando t13: criticarProvaDuracaoMinima");
-        Prova prova = new Prova();
-        preencherNovaProva(prova);
-        prova.setDuracao(1l);
-
-        provaServico.salvar(prova);
-    }
-
-    @Test(expected = ValidacaoException.class)
-    public void t14_criticarProvaDuracaoMaxima() throws ValidacaoException {
-        logger.info("Executando t14: criticarProvaDuracaoMinima");
-        Prova prova = new Prova();
-        preencherNovaProva(prova);
-        prova.setDuracao(301l);
-
-        provaServico.salvar(prova);
-    }
-
     @Test(expected = EJBException.class)
     public void t15_salvarProvaAlunoSemProva() throws ValidacaoException {
         logger.info("Executando t15: salvarProvaAlunoSemProva");
@@ -263,23 +243,12 @@ public class ProvaTest {
 
         provaServico.salvarProvaAluno(provaAluno);
     }
-
-    @Test(expected = EJBException.class)
-    public void t18_salvarProvaAlunoSemDHFim() throws ValidacaoException {
-        logger.info("Executando t18: salvarProvaAlunoSemDHFim");
-        ProvaAluno provaAluno = new ProvaAluno();
-        preencherProvaAluno(provaAluno);
-        provaAluno.setDataHoraFim(null);
-
-        provaServico.salvarProvaAluno(provaAluno);
-    }
     
     @Test(expected = ValidacaoException.class)
     public void t19_salvarProvaDHInicioInvalida() throws ValidacaoException, InterruptedException {
         logger.info("Executando t19: salvarProvaDHInicioInvalida");
         Prova prova = new Prova();
         preencherNovaProva(prova);
-        prova.setDuracao(301l);
         Calendar dataHora = Calendar.getInstance();
         dataHora.add(Calendar.HOUR, -10);
         prova.setDataHoraInicio(dataHora.getTime());
@@ -293,7 +262,6 @@ public class ProvaTest {
         ProvaAluno provaAluno = new ProvaAluno();
         TimeUnit.SECONDS.sleep(15);
         preencherProvaAluno(provaAluno);
-        provaAluno.setFinalizada(true);
 
         provaServico.salvarProvaAluno(provaAluno);
         
@@ -342,7 +310,6 @@ public class ProvaTest {
         calendar.add(Calendar.HOUR, 4);
         prova.setDataHoraFim(calendar.getTime());
         prova.setAtiva(Boolean.TRUE);
-        prova.setDuracao(60l);
 
         FiltroQuestao filtro = new FiltroQuestao();
 

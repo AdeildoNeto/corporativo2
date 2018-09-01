@@ -48,14 +48,10 @@ public class ProvaServico {
     private static final String QUESTOES_MINIMAS = "prova.questoes.minimas";
     private static final String DATA_INICIO_ANTERIOR_DATA_ATUAL = "prova.data.inicia.anterior.data.atual";
     private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
-    private static final String DURACAO_MINIMA = "prova.duracao.minima";
-    private static final String DURACAO_MAXIMA = "prova.duracao.maxima";
     private static final String DISPONIBILIDADE_MINIMA = "prova.disponibilidade.minima";
     private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";
     private static final int PARAM_MIN_DISPONIBILIDADE_MINUTOS = 30;
     private static final int PARAM_MAX_DISPONIBILIDADE_HORAS = 5;
-    private static final int PARAM_MIN_DURACAO = 30;
-    private static final int PARAM_MAX_DURACAO = 300;
 
     /**
      * Salva uma prova.
@@ -65,7 +61,6 @@ public class ProvaServico {
      */
     public void salvar(@Valid Prova prova) throws ValidacaoException {
         validarDisponibilidade(prova);
-        validarDuracao(prova);
         validarQtdeQuestoesSelecionadas(prova);
         entityManager.persist(prova);
     }
@@ -132,24 +127,6 @@ public class ProvaServico {
         
         if(calendarInicio.before(calendarFim)){
             throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MAXIMA));
-        }
-    }
-    
-    /**
-     * Valida a duração da prova.
-     * 
-     * @param prova
-     * @throws ValidacaoException - Lançada quando:
-     * A duração definida for menor que 30 minutos.
-     * A duração definida for maior que 300 minutos.
-     */
-    private void validarDuracao(@Valid Prova prova) throws ValidacaoException {
-        if (prova.getDuracao() < PARAM_MIN_DURACAO) {
-            throw new ValidacaoException(getMensagemValidacao(DURACAO_MINIMA));
-        }
-        
-        if(prova.getDuracao() > PARAM_MAX_DURACAO){
-            throw new ValidacaoException(getMensagemValidacao(DURACAO_MAXIMA));
         }
     }
     
@@ -260,5 +237,20 @@ public class ProvaServico {
             return query.getSingleResult();
         }
         return null;
+    }
+    
+    public ProvaAluno buscarProvaAluno(Usuario aluno, Prova prova) {
+        TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorAlunoProva",
+                ProvaAluno.class);
+        ProvaAluno provaAluno = new ProvaAluno();
+
+        query.setParameter("idAluno", aluno.getId());
+        query.setParameter("idProva", prova.getId());
+        
+        if(!query.getResultList().isEmpty()){
+            provaAluno = query.getSingleResult();
+        }
+
+        return provaAluno;
     }
 }

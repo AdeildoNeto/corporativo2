@@ -612,7 +612,11 @@ input[type="text"]{
 
 /* Table Resultados */
 .table-resultados td:first-child{
-    width: 1024px;
+    width: 512px;
+}
+
+.table-resultados td:nth-child(2){
+    width: 512px;
 }
 
 /* button text-right */

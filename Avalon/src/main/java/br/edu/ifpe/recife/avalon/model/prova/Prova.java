@@ -11,6 +11,7 @@ import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +27,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -42,7 +44,7 @@ import javax.validation.constraints.Size;
                     query = "Select p from Prova p where p.ativa = true "
                             + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim "
                             + "AND (SELECT pa.id FROM ProvaAluno pa WHERE p.id = pa.prova.id "
-                            + "AND pa.aluno.id = :idAluno AND pa.finalizada = true) IS NULL"
+                            + "AND pa.aluno.id = :idAluno AND pa.dataHoraFim IS NOT NULL) IS NULL"
             ),
             @NamedQuery(
                     name = "Prova.PorProfessor",
@@ -93,12 +95,11 @@ public class Prova implements Serializable {
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
     
-    @NotNull(message = "{prova.duracao.obrigatoria}")
-    @Column(name = "NUM_DURACAO")
-    private Long duracao;
-
     @Column(name = "SN_ATIVA", nullable = false)
     private boolean ativa = true;
+    
+    @Transient
+    private Long duracao;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_QUESTOES_PROVA", joinColumns = {
@@ -181,11 +182,11 @@ public class Prova implements Serializable {
     }
 
     public Long getDuracao() {
+        if(dataHoraInicio != null && dataHoraFim != null){
+            duracao = TimeUnit.MILLISECONDS.toMinutes(dataHoraFim.getTime() - dataHoraInicio.getTime()); 
+        }
+        
         return duracao;
-    }
-
-    public void setDuracao(Long duracao) {
-        this.duracao = duracao;
     }
     
 }

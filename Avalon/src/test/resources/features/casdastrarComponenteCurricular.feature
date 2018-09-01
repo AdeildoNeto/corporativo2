@@ -10,6 +10,13 @@ Funcionalidade:
     E esteja na pagina minhas questoes
     E deseje cadastrar um novo componente curricular
 
+  Cenario: Cadastrar questoes sem componente curricular
+    Quando o professor selecionar o tipo discursiva
+    E preencher o enunciado da questao
+    E clicar no botao salvar questao
+    E confirmar cadastro da questao
+    Entao sera exibido mensagem para componente curricular obrigatorio
+
   Cenario: Cadastrar componente curricular
     Quando o professor clicar no botao adicionar componente
     E preencher o nome do componente curricular

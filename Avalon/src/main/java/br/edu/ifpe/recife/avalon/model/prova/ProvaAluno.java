@@ -48,6 +48,12 @@ import javax.validation.constraints.NotNull;
                     query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
                     + "ORDER BY pa.aluno.nome, pa.aluno.sobrenome"
             )
+            ,
+            @NamedQuery(
+                    name = "ProvaAluno.PorAlunoProva",
+                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
+                    + "AND pa.aluno.id = :idAluno"
+            )
         }
 )
 public class ProvaAluno implements Serializable {
@@ -72,13 +78,9 @@ public class ProvaAluno implements Serializable {
     @Column(name = "DH_INICIO")
     private Date dataHoraInicio;
 
-    @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
-    
-    @Column(name = "SN_FINALIZADA", nullable = false)
-    private boolean finalizada = false;
 
     @OneToMany(mappedBy = "provaAluno", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -107,7 +109,7 @@ public class ProvaAluno implements Serializable {
                     }
                 }
             }
-            
+
             nota = (respostasCertas / questoesAluno.size()) * 10.0;
         }
     }
@@ -169,12 +171,4 @@ public class ProvaAluno implements Serializable {
         this.nota = nota;
     }
 
-    public boolean isFinalizada() {
-        return finalizada;
-    }
-
-    public void setFinalizada(boolean finalizada) {
-        this.finalizada = finalizada;
-    }
-    
 }

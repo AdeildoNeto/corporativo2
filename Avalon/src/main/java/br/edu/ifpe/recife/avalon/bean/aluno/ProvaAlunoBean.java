@@ -24,6 +24,7 @@ import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -144,9 +145,16 @@ public class ProvaAlunoBean implements Serializable {
     public String iniciarProva() {
         prepararContador();
 
-        provaAluno.setAluno(usuarioLogado);
-        provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
-        provaAluno.setProva(prova);
+        provaAluno = provaServico.buscarProvaAluno(usuarioLogado, prova);
+
+        if (provaAluno.getId() == null) {
+            provaAluno.setAluno(usuarioLogado);
+            provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
+            provaAluno.setProva(prova);
+        } else {
+            preencherRespostasSalvas();
+        }
+
         fecharModalFinalizar();
         return GO_INICIAR_PROVA;
     }
@@ -195,7 +203,6 @@ public class ProvaAlunoBean implements Serializable {
         preencherRespostas();
 
         provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
-        provaAluno.setFinalizada(true);
         provaServico.salvarProvaAluno(provaAluno);
 
         return iniciarPagina();
@@ -204,7 +211,7 @@ public class ProvaAlunoBean implements Serializable {
     /**
      * Carrega as repostas do usuário no histórico da prova.
      */
-    public void preencherRespostas() {
+    private void preencherRespostas() {
         provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
 
         if (!questoesMultiplaEscolha.isEmpty()) {
@@ -213,18 +220,62 @@ public class ProvaAlunoBean implements Serializable {
             preencherProvaVF();
         }
     }
+
+    /**
+     * Preenche as questões da prova com as respostas salvas do aluno.
+     */
+    private void preencherRespostasSalvas() {
+        List<ProvaAlunoQuestao> questoesSalvas = provaAluno.getQuestoesAluno();
+        if (questoesSalvas != null && !questoesSalvas.isEmpty()) {
+            if (questoesSalvas.get(0).getQuestao() instanceof VerdadeiroFalso) {
+                marcarRespostasSalvasVF(questoesSalvas);
+            }else{
+                marcarRespostasSalvasMS(questoesSalvas);
+            }
+        }
+    }
+
+    /**
+     * Preenche as questões de verdadeiro ou falso da prova
+     * com as respostas salvas do usuário.
+     * @param questoesSalvas 
+     */
+    private void marcarRespostasSalvasVF(List<ProvaAlunoQuestao> questoesSalvas) {
+        for (ProvaAlunoQuestao questaoSalva : questoesSalvas) {
+            for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
+                if(questao.getId().equals(questaoSalva.getQuestao().getId())){
+                    questao.setRespostaUsuario(questaoSalva.getRespostaVF());
+                }
+            }
+        }
+    }
     
+    /**
+     * Preenche as questões de múltipla escolha da prova
+     * com as respostas salvas do usuário.
+     * @param questoesSalvas
+     */
+    private void marcarRespostasSalvasMS(List<ProvaAlunoQuestao> questoesSalvas) {
+        for (ProvaAlunoQuestao questaoSalva : questoesSalvas) {
+            for (MultiplaEscolha questao : questoesMultiplaEscolha) {
+                if(questao.getId().equals(questaoSalva.getQuestao().getId())){
+                    questao.setRespostaUsuario(questaoSalva.getRespostaMultiplaEscolha());
+                }
+            }
+        }
+    }
+
     /**
      * Salva a prova automaticamente durante a realização da mesma.
      */
-    private void salvarProvaAutomaticamente(){
+    private void salvarProvaAutomaticamente() {
         preencherRespostas();
         provaAluno = provaServico.salvarProvaAluno(provaAluno);
     }
 
     /**
-     * Preenche a prova com as questões de 
-     * múltipla escolha respondidas pelo aluno.
+     * Preenche a prova com as questões de múltipla escolha respondidas pelo
+     * aluno.
      */
     private void preencherProvaMS() {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
@@ -237,8 +288,8 @@ public class ProvaAlunoBean implements Serializable {
     }
 
     /**
-     * Preenche a prova com as questões de 
-     * verdadeiro ou falso respondidas pelo aluno.
+     * Preenche a prova com as questões de verdadeiro ou falso respondidas pelo
+     * aluno.
      */
     private void preencherProvaVF() {
         for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
@@ -308,7 +359,7 @@ public class ProvaAlunoBean implements Serializable {
      * Prepara o contador da duração da prova.
      */
     public void prepararContador() {
-        duracaoMinutos = prova.getDuracao() - 1;
+        duracaoMinutos = TimeUnit.MILLISECONDS.toMinutes(prova.getDataHoraFim().getTime() - Calendar.getInstance().getTimeInMillis());
         duracaoSegundos = 59;
 
     }
@@ -400,5 +451,5 @@ public class ProvaAlunoBean implements Serializable {
     public ProvaAluno getProvaAluno() {
         return provaAluno;
     }
-    
+
 }
