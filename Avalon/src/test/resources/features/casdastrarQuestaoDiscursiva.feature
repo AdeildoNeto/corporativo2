@@ -15,7 +15,7 @@ Funcionalidade:
     E selecionar um componente curricular
     E preencher o enunciado da questao
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao uma nova questao sera cadastrada
 
   Cenario: Criticar questao discursiva sem enunciado
@@ -23,7 +23,7 @@ Funcionalidade:
     E selecionar um componente curricular
     E nao preencher o enunciado da questao
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para enunciado obrigatorio
 
   Cenario: Criticar questao discursiva com enunciado duplicado
@@ -31,7 +31,7 @@ Funcionalidade:
     E selecionar um componente curricular
     E preencher o enunciado da questao
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para questão duplicada
 
 Cenario: Criticar questao discursiva com enunciado maior que o permitido
@@ -39,5 +39,5 @@ Cenario: Criticar questao discursiva com enunciado maior que o permitido
     E selecionar um componente curricular
     E preencher o enunciado da questao com mais caracteres do que o permitido
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para enunciado da questao maior que o permitido

@@ -33,7 +33,7 @@ public class CadastrarComponenteCurricularSteps {
     
     @E("^preencher o nome do componente curricular$")
     public void preencherNomeComponente(){
-        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Teste");
+        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Engenharia de Software");
     }
     
     @E("^clicar no botao salvar componente$")

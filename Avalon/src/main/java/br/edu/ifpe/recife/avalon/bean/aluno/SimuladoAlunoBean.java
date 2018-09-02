@@ -174,8 +174,8 @@ public class SimuladoAlunoBean implements Serializable {
                 verificarTodasQuestoesPreenchidasVF();
                 preencherSimuladoVF();
             } else {
-                verificarTodasQuestoesPreenchidasMS();
-                preencherSimuladoMS();
+                verificarTodasQuestoesPreenchidasMultiplaEscolha();
+                preencherSimuladoMultiplaEscolha();
             }
 
             exibirResultado(simuladoAluno.getNota());
@@ -204,7 +204,7 @@ public class SimuladoAlunoBean implements Serializable {
      * Preenche a prova com as questões de múltipla escolha respondidas pelo
      * aluno.
      */
-    private void preencherSimuladoMS() {
+    private void preencherSimuladoMultiplaEscolha() {
         for (MultiplaEscolha multiplaEscolha : questoesMultiplaEscolha) {
             SimuladoAlunoQuestao questao = new SimuladoAlunoQuestao();
             questao.setQuestao(multiplaEscolha);
@@ -232,7 +232,7 @@ public class SimuladoAlunoBean implements Serializable {
      *
      * @throws ValidacaoException
      */
-    public void verificarTodasQuestoesPreenchidasMS() throws ValidacaoException {
+    public void verificarTodasQuestoesPreenchidasMultiplaEscolha() throws ValidacaoException {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
             if (questao.getRespostaUsuario() == null) {
                 throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao(SIMULADO_QUESTOES_OBRIGATORIAS));

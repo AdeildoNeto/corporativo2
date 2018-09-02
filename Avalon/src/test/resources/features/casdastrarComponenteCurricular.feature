@@ -14,7 +14,7 @@ Funcionalidade:
     Quando o professor selecionar o tipo discursiva
     E preencher o enunciado da questao
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para componente curricular obrigatorio
 
   Cenario: Cadastrar componente curricular

@@ -17,7 +17,7 @@ Funcionalidade:
     E preencher todas as alternativas da questao
     E definir a alternativa correta
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao uma nova questao sera cadastrada
 
   Cenario: Criticar questao multipla escolha sem enunciado
@@ -27,7 +27,7 @@ Funcionalidade:
     E preencher todas as alternativas da questao
     E definir a alternativa correta
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para enunciado obrigatorio
 
   Cenario: Criticar questao multipla escolha sem todas as alternativas
@@ -37,7 +37,7 @@ Funcionalidade:
     E nao preencher um das alternativas da questao
     E definir a alternativa correta
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para alternativas obrigatorias
 
 Cenario: Criticar questao multipla escolha com enunciado maior que o permitido
@@ -45,7 +45,7 @@ Cenario: Criticar questao multipla escolha com enunciado maior que o permitido
     E selecionar um componente curricular
     E preencher o enunciado da questao com mais caracteres do que o permitido
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para enunciado da questao maior que o permitido
 
   Cenario: Criticar questao multipla escolha com alternativas repetidas
@@ -55,7 +55,7 @@ Cenario: Criticar questao multipla escolha com enunciado maior que o permitido
     E preencher as alternativas iguais para a questao
     E definir a alternativa correta
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para alternativas iguais
 
   Cenario: Criticar questao multipla escolha sem resposta correta definida
@@ -65,5 +65,5 @@ Cenario: Criticar questao multipla escolha com enunciado maior que o permitido
     E preencher todas as alternativas da questao
     E nao definir a alternativa correta
     E clicar no botao salvar questao
-    E confirmar cadastro da questao
+    E confirmar o cadastro da questao
     Entao sera exibido mensagem para respota obrigatoria

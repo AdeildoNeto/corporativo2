@@ -187,7 +187,7 @@ public class ProvaAlunoBean implements Serializable {
         exibirModalFinalizar = true;
 
         if (!questoesVerdadeiroFalso.isEmpty() && verificarTodasQuestoesPreenchidasVF()
-                || !questoesMultiplaEscolha.isEmpty() && verificarTodasQuestoesPreenchidasMS()) {
+                || !questoesMultiplaEscolha.isEmpty() && verificarTodasQuestoesPreenchidasMultiplaEscolha()) {
             msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_QUESTOES_EM_BRANCO);
         } else {
             msgConfirmarFinalizacao = AvalonUtil.getInstance().getMensagem(PROVA_FINALIZAR);
@@ -215,7 +215,7 @@ public class ProvaAlunoBean implements Serializable {
         provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
 
         if (!questoesMultiplaEscolha.isEmpty()) {
-            preencherProvaMS();
+            preencherProvaMultiplaEscolha();
         } else if (!questoesVerdadeiroFalso.isEmpty()) {
             preencherProvaVF();
         }
@@ -230,7 +230,7 @@ public class ProvaAlunoBean implements Serializable {
             if (questoesSalvas.get(0).getQuestao() instanceof VerdadeiroFalso) {
                 marcarRespostasSalvasVF(questoesSalvas);
             }else{
-                marcarRespostasSalvasMS(questoesSalvas);
+                marcarRespostasSalvasMultiplaEscolha(questoesSalvas);
             }
         }
     }
@@ -255,7 +255,7 @@ public class ProvaAlunoBean implements Serializable {
      * com as respostas salvas do usuário.
      * @param questoesSalvas
      */
-    private void marcarRespostasSalvasMS(List<ProvaAlunoQuestao> questoesSalvas) {
+    private void marcarRespostasSalvasMultiplaEscolha(List<ProvaAlunoQuestao> questoesSalvas) {
         for (ProvaAlunoQuestao questaoSalva : questoesSalvas) {
             for (MultiplaEscolha questao : questoesMultiplaEscolha) {
                 if(questao.getId().equals(questaoSalva.getQuestao().getId())){
@@ -277,7 +277,7 @@ public class ProvaAlunoBean implements Serializable {
      * Preenche a prova com as questões de múltipla escolha respondidas pelo
      * aluno.
      */
-    private void preencherProvaMS() {
+    private void preencherProvaMultiplaEscolha() {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
             ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
             questaoAluno.setProvaAluno(provaAluno);
@@ -321,7 +321,7 @@ public class ProvaAlunoBean implements Serializable {
      *
      * @return
      */
-    public boolean verificarTodasQuestoesPreenchidasMS() {
+    public boolean verificarTodasQuestoesPreenchidasMultiplaEscolha() {
         for (MultiplaEscolha questao : questoesMultiplaEscolha) {
             if (questao.getRespostaUsuario() == null) {
                 return true;

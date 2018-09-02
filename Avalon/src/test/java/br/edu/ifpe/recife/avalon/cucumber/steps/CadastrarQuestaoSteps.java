@@ -36,7 +36,7 @@ public class CadastrarQuestaoSteps {
         BrowserManager.waitTime(1000);
     }
 
-    @E("^confirmar cadastro da questao$")
+    @E("^confirmar o cadastro da questao$")
     public void confirmarCadastro() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnSimAdicionar")).click();
         BrowserManager.waitTime(1000);
@@ -90,7 +90,7 @@ public class CadastrarQuestaoSteps {
     @Entao("^sera exibido mensagem para componente curricular obrigatorio$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("É necessário informar um componente curricular."));
+        assertTrue(mensagem.equals("O componente curricular da questão é obrigatório."));
     }
 
 }
