@@ -11,6 +11,7 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -110,7 +111,7 @@ public class PesquisarQuestoesProvaSteps {
     @Entao("^sera exibido a mensagem sem resultados para o filtro informado$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("Sem resultados para o filtro informado."));
+        assertEquals("Sem resultados para o filtro informado.", mensagem);
         LoginSteps.logout();
     }
     

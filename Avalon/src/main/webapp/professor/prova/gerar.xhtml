@@ -63,11 +63,11 @@ and open the template in the editor.
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
-                                <h:selectBooleanCheckbox value="#{provaBean.todosSelecionados}">
+                                <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{provaBean.todosSelecionados}">
                                     <f:ajax listener="#{provaBean.selecionarTodos()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
-                            <h:selectBooleanCheckbox value="#{questao.selecionada}">
+                            <h:selectBooleanCheckbox id="chkSelecionarQuestao" value="#{questao.selecionada}">
                                 <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>

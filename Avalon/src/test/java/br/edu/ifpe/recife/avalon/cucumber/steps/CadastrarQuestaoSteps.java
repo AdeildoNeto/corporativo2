@@ -10,6 +10,7 @@ import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -57,14 +58,14 @@ public class CadastrarQuestaoSteps {
     @Entao("^sera exibido mensagem para enunciado obrigatorio$")
     public void exibirMensagemEnunciadoObrigatorio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("O enunciado da questão é obrigatório."));
+        assertEquals("O enunciado da questão é obrigatório.", mensagem);
         LoginSteps.logout();
     }
 
     @Entao("^sera exibido mensagem para questão duplicada$")
     public void exibirMensagemQuestaoDuplicada() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("Já existe uma questão com este enunciado."));
+        assertEquals("Já existe uma questão com este enunciado.", mensagem);
         LoginSteps.logout();
     }
 
@@ -83,14 +84,14 @@ public class CadastrarQuestaoSteps {
     @Entao("^sera exibido mensagem para enunciado da questao maior que o permitido$")
     public void exibirMensagemEnunciadoLimite() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("O tamanho do enunciado é maior do que o máximo permitido."));
+        assertEquals("O tamanho do enunciado é maior do que o máximo permitido.", mensagem);
         LoginSteps.logout();
     }
 
     @Entao("^sera exibido mensagem para componente curricular obrigatorio$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("O componente curricular da questão é obrigatório."));
+        assertEquals("O componente curricular da questão é obrigatório.", mensagem);
     }
 
 }

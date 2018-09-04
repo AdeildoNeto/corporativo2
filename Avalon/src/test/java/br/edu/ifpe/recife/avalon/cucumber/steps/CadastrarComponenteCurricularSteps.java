@@ -10,6 +10,7 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -52,7 +53,7 @@ public class CadastrarComponenteCurricularSteps {
     @Entao("^sera exibido mensagem para componente duplicado$")
     public void exibirMensagemComponenteDuplicado() throws Throwable {
         String mensagem = getMensagemValidacao();
-        assertTrue(mensagem.equals("O componente curricular já existe."));
+        assertEquals("O componente curricular já existe.", mensagem);
         fecharModalComponente();
         LoginSteps.logout();
     }
@@ -65,7 +66,7 @@ public class CadastrarComponenteCurricularSteps {
     @Entao("^sera exibido mensagem para nome do componente curricular obrigatorio$")
     public void exibirMensagemNomeComponenteObrigatorio() throws Throwable {
         String mensagem = getMensagemValidacao();
-        assertTrue(mensagem.equals("O nome do componente curricular é obrigatório."));
+        assertEquals("O nome do componente curricular é obrigatório.", mensagem);
         fecharModalComponente();
         LoginSteps.logout();
     }
@@ -81,7 +82,7 @@ public class CadastrarComponenteCurricularSteps {
     @Entao("^sera exibido mensagem para nome do componente excedeu limite de caracteres$")
     public void exibirMensagemNomeComponenteExcedeuLimite() throws Throwable {
         String mensagem = getMensagemValidacao();
-        assertTrue(mensagem.equals("O tamanho do nome é maior do que o máximo permitido."));
+        assertEquals("O tamanho do nome é maior do que o máximo permitido.", mensagem);
         fecharModalComponente();
         LoginSteps.logout();
     }

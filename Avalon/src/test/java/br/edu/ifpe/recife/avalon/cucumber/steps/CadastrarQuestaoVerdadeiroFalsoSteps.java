@@ -15,7 +15,7 @@ import org.openqa.selenium.By;
  */
 public class CadastrarQuestaoVerdadeiroFalsoSteps {
 
-    @Quando("^o professor selecionar o tipo verdadeiro ou falso")
+    @Quando("^o professor selecionar o tipo verdadeiro ou falso$")
     public void selecionarTipoVerdadeiroFalso() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();

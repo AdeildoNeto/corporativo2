@@ -10,7 +10,7 @@ import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 /**
@@ -19,7 +19,7 @@ import org.openqa.selenium.By;
  */
 public class CadastrarQuestaoMultiplaEscolhaSteps {
 
-    @Quando("^o professor selecionar o tipo multipla escolha")
+    @Quando("^o professor selecionar o tipo multipla escolha$")
     public void selecionarTipoMultiplaEscolha() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
@@ -54,7 +54,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
     @Entao("^sera exibido mensagem para alternativas obrigatorias$")
     public void exibirMensagemAlternativasObrigatorias() {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("O preenchimento das alternativas é obrigatório."));
+        assertEquals("O preenchimento das alternativas é obrigatório.", mensagem);
         LoginSteps.logout();
     }
 
@@ -75,7 +75,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
     @Entao("^sera exibido mensagem para alternativas iguais$")
     public void exibirMensagemAlternativasIguais() {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("Existem alternativas iguais. Favor revisar a questão."));
+        assertEquals("Existem alternativas iguais. Favor revisar a questão.", mensagem);
         LoginSteps.logout();
     }
 
@@ -86,7 +86,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
     @Entao("^sera exibido mensagem para respota obrigatoria$")
     public void exibirMensagemRespostaObrigatoria() {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertTrue(mensagem.equals("A resposta da questão deve ser selecionada."));
+        assertEquals("A resposta da questão deve ser selecionada.", mensagem);
         LoginSteps.logout();
     }
 
