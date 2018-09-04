@@ -20,10 +20,10 @@ and open the template in the editor.
 
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
-                    <label for="detalhesEnunciado">#{msg['label.enunciado']}: </label>
+                    <label for="lbDetalheEnunciado">#{msg['label.enunciado']}: </label>
                     <p:outputPanel styleClass="container-questao">
                         <p:outputPanel class="container-enunciado break-white-space">
-                            <h:outputText id="detalhesEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />                          
+                            <h:outputText id="lbDetalheEnunciado" value="#{bean.detalhesViewHelper.questaoDetalhes.enunciado}" class="detalhes-enunciado" />                          
                             <p:outputPanel styleClass="prova-alternativa" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
                                 <h:outputText value="#{bean.detalhesViewHelper.questaoDetalhes.formatarQuestao()}"></h:outputText>
                             </p:outputPanel>
@@ -34,8 +34,8 @@ and open the template in the editor.
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">                  
                     <ui:fragment rendered="#{bean.detalhesViewHelper.questaoDetalhes.imagem != null}">
-                        <label for="detalhesAnexoQuestao">#{msg['label.imagem']}: </label>
-                        <p:graphicImage value="#{provaBean.image}" width="25px" height="25px">
+                        <label for="lbDetalheImagem">#{msg['label.imagem']}: </label>
+                        <p:graphicImage id="lbDetalheImagem" value="#{provaBean.image}" width="25px" height="25px">
                             <f:param name="questaoId" value="#{bean.detalhesViewHelper.questaoDetalhes.id}"/>
                         </p:graphicImage>
                     </ui:fragment>
@@ -43,34 +43,34 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="detalhesTipoQuestao">#{msg['label.tipo']}: </label>
-                    <h:outputText id="detalhesTipoQuestao" value="#{bean.detalhesViewHelper.questaoDetalhes.tipo.descricao}" />
+                    <label for="lbDetalheTipoQuestao">#{msg['label.tipo']}: </label>
+                    <h:outputText id="lbDetalheTipoQuestao" value="#{bean.detalhesViewHelper.questaoDetalhes.tipo.descricao}" />
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="detalhesComponenteCurricular">#{msg['label.componente.curricular']}: </label>
-                    <h:outputText id="detalhesComponenteCurricular" value="#{bean.detalhesViewHelper.questaoDetalhes.componenteCurricular.nome}" />
+                    <label for="lbDetalheComponenteCurricular">#{msg['label.componente.curricular']}: </label>
+                    <h:outputText id="lbDetalheComponenteCurricular" value="#{bean.detalhesViewHelper.questaoDetalhes.componenteCurricular.nome}" />
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="detalhesDataCriacao">#{msg['label.data.cadastro']}: </label>
-                    <h:outputText id="detalhesDataCriacao" value="#{bean.detalhesViewHelper.questaoDetalhes.dataCriacao}">
+                    <label for="lbDetalheDataCriacao">#{msg['label.data.cadastro']}: </label>
+                    <h:outputText id="lbDetalheDataCriacao" value="#{bean.detalhesViewHelper.questaoDetalhes.dataCriacao}">
                         <f:convertDateTime parent="dd/MM/yyyy" />
                     </h:outputText>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="detalhesProfessorNome">#{msg['label.professor']}: </label>
-                    <h:outputText id="detalhesProfessorNome" value="#{bean.detalhesViewHelper.questaoDetalhes.professor.nomeCompleto}" />
+                    <label for="lbDetalheProfessor">#{msg['label.professor']}: </label>
+                    <h:outputText id="lbDetalheProfessor" value="#{bean.detalhesViewHelper.questaoDetalhes.professor.nomeCompleto}" />
                 </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row btn-modal">
                 <p:outputPanel class="col text-right">
-                    <p:commandButton id="btnVotarDetalhes" value="#{msg['btn.voltar']}" action="#{bean.detalhesViewHelper.fecharModalDetalhes()}"
+                    <p:commandButton id="btnVotarDetalhar" value="#{msg['btn.voltar']}" action="#{bean.detalhesViewHelper.fecharModalDetalhes()}"
                                      styleClass="btn btn-secondary" update="modalComponente"
                                      immediate="true" process="@this" />
                 </p:outputPanel>

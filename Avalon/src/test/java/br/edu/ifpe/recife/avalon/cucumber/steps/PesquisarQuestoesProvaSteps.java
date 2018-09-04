@@ -10,10 +10,8 @@ import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
-import java.util.List;
 import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 /**
@@ -76,14 +74,14 @@ public class PesquisarQuestoesProvaSteps {
     
     @Entao("^sera exibido a lista de questoes onde o nome do autor contenha o filtro informado$")
     public void pesquisaPorProfessor() {
-        int resultado = BrowserManager.getDriver().findElements(By.xpath("//td[contains(text(), 'Silva')]")).size();
+        int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Silva')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
     @Entao("^sera exibido a lista de questoes do componente curricular informado$")
     public void pesquisaPorComponente() {
-        int resultado = BrowserManager.getDriver().findElements(By.xpath("//td[contains(text(), 'Engenharia')]")).size();
+        int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Engenharia')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
@@ -117,7 +115,7 @@ public class PesquisarQuestoesProvaSteps {
     }
     
     private int obterResultado(){
-        return BrowserManager.getDriver().findElements(By.xpath("//td[contains(text(), 'Teste')]")).size();
+        return BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Teste')]")).size();
     }
 
 }

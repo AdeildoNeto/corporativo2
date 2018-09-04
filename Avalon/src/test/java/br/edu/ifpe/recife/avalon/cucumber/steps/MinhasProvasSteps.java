@@ -18,6 +18,7 @@ public class MinhasProvasSteps {
     @E("^esteja na pagina de provas$")
     public void irParaMinhasProvas() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuProvas")).click();
+        BrowserManager.waitTime(3000);
     }
 
     @E("^deseje imprimir uma prova$")
