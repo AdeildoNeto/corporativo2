@@ -18,7 +18,7 @@ Funcionalidade:
     E definir a alternativa correta
     E clicar no botao salvar questao
     E confirmar o cadastro da questao
-    Entao uma nova questao sera cadastrada
+    Entao uma nova questao de multipla escolha sera cadastrada
 
   Cenario: Criticar questao multipla escolha sem enunciado
     Quando o professor selecionar o tipo multipla escolha

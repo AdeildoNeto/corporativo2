@@ -6,7 +6,9 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 
 /**
@@ -19,6 +21,13 @@ public class CadastrarQuestaoVerdadeiroFalsoSteps {
     public void selecionarTipoVerdadeiroFalso() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
+    }
+    
+    @Entao("^uma nova questao de verdadeiro ou falso sera cadastrada$")
+    public void questaoCadastrada() {
+        int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Verdadeiro ou Falso')]")).size();
+        assertTrue(questoes > 0);
+        LoginSteps.logout();
     }
         
 }

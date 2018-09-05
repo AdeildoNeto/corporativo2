@@ -6,11 +6,12 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -83,6 +84,14 @@ public class CadastrarComponenteCurricularSteps {
     public void exibirMensagemNomeComponenteExcedeuLimite() throws Throwable {
         String mensagem = getMensagemValidacao();
         assertEquals("O tamanho do nome é maior do que o máximo permitido.", mensagem);
+        fecharModalComponente();
+        LoginSteps.logout();
+    }
+    
+    @Entao("^sera exibido mensagem para componente curricular obrigatorio$")
+    public void exibirMensagemComponenteObrigatorio() throws Throwable {
+        String mensagem = TestUtil.obterMensagemValidacao();
+        assertEquals("O componente curricular da questão é obrigatório.", mensagem);
         fecharModalComponente();
         LoginSteps.logout();
     }

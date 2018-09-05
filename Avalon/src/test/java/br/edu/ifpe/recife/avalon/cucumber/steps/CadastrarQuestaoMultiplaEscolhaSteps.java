@@ -11,6 +11,7 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 
 /**
@@ -43,6 +44,13 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
     @E("^definir a alternativa correta$")
     public void definirAlternativaCorreta() {
         BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:radio:0_clone']")).click();
+    }
+    
+    @Entao("^uma nova questao de multipla escolha sera cadastrada$")
+    public void questaoCadastrada() {
+        int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Múltipla Escolha')]")).size();
+        assertTrue(questoes > 0);
+        LoginSteps.logout();
     }
 
     @E("^nao preencher um das alternativas da questao$")

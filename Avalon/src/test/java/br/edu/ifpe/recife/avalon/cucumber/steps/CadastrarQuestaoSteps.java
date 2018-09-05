@@ -43,13 +43,6 @@ public class CadastrarQuestaoSteps {
         BrowserManager.waitTime(1000);
     }
 
-    @Entao("^uma nova questao sera cadastrada$")
-    public void questaoCadastrada() {
-        int questoes = BrowserManager.getDriver().findElements(By.xpath("//*[@id='form:tbMinhasQuestoes']/tbody/tr")).size();
-        assertTrue(questoes > 0);
-        LoginSteps.logout();
-    }
-
     @E("^nao preencher o enunciado da questao$")
     public void naoPreencherEnunciado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("");
@@ -86,12 +79,6 @@ public class CadastrarQuestaoSteps {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("O tamanho do enunciado é maior do que o máximo permitido.", mensagem);
         LoginSteps.logout();
-    }
-
-    @Entao("^sera exibido mensagem para componente curricular obrigatorio$")
-    public void exibirMensagemComponenteObrigatorio() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O componente curricular da questão é obrigatório.", mensagem);
     }
 
 }

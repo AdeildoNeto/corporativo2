@@ -6,7 +6,9 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -20,6 +22,13 @@ public class CadastrarQuestaoDiscursivaSteps {
     public void selecionarTipoDiscursiva() throws Throwable {
         Select selectTipo = new Select(BrowserManager.getDriver().findElement(By.id("form:selTipo_input")));
         selectTipo.selectByValue("DISCURSIVA");
+    }
+    
+    @Entao("^uma nova questao discursiva sera cadastrada$")
+    public void questaoCadastrada() {
+        int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Discursiva')]")).size();
+        assertTrue(questoes > 0);
+        LoginSteps.logout();
     }
     
 }

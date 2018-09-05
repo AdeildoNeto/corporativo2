@@ -16,7 +16,7 @@ Funcionalidade:
     E preencher o enunciado da questao
     E clicar no botao salvar questao
     E confirmar o cadastro da questao
-    Entao uma nova questao sera cadastrada
+    Entao uma nova questao discursiva sera cadastrada
 
   Cenario: Criticar questao discursiva sem enunciado
     Quando o professor selecionar o tipo discursiva
