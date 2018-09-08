@@ -20,14 +20,14 @@ import org.openqa.selenium.By;
  */
 public class CadastrarQuestaoMultiplaEscolhaSteps {
 
-    @Quando("^o professor selecionar o tipo multipla escolha$")
+    @Quando("^o professor selecionar o tipo múltipla escolha$")
     public void selecionarTipoMultiplaEscolha() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipo_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
         BrowserManager.waitTime(2000);
     }
 
-    @E("^preencher todas as alternativas da questao$")
+    @E("^preencher todas as alternativas da questão$")
     public void preencherTodasAlternativas() {
         BrowserManager.getDriver().findElement(By.id("form:alternativas:0:alternativa"))
                 .sendKeys("A");
@@ -46,20 +46,20 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:radio:0_clone']")).click();
     }
     
-    @Entao("^uma nova questao de multipla escolha sera cadastrada$")
+    @Entao("^uma nova questao de múltipla escolha será cadastrada$")
     public void questaoCadastrada() {
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Múltipla Escolha')]")).size();
         assertTrue(questoes > 0);
         LoginSteps.logout();
     }
 
-    @E("^nao preencher um das alternativas da questao$")
+    @E("^nao preencher um das alternativas da questão$")
     public void naoPreencherAlternativas() {
         BrowserManager.getDriver().findElement(By.id("form:alternativas:0:alternativa"))
                 .sendKeys("");
     }
 
-    @Entao("^sera exibido mensagem para alternativas obrigatorias$")
+    @Entao("^será exibido mensagem para alternativas obrigatórias$")
     public void exibirMensagemAlternativasObrigatorias() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("O preenchimento das alternativas é obrigatório.", mensagem);
@@ -80,7 +80,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
                 .sendKeys("C");
     }
 
-    @Entao("^sera exibido mensagem para alternativas iguais$")
+    @Entao("^será exibido mensagem para alternativas iguais$")
     public void exibirMensagemAlternativasIguais() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("Existem alternativas iguais. Favor revisar a questão.", mensagem);
@@ -91,7 +91,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
     public void naoDefinirAlternativaCorreta() {
     }
 
-    @Entao("^sera exibido mensagem para respota obrigatoria$")
+    @Entao("^será exibido mensagem para respota obrigatória$")
     public void exibirMensagemRespostaObrigatoria() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A resposta da questão deve ser selecionada.", mensagem);

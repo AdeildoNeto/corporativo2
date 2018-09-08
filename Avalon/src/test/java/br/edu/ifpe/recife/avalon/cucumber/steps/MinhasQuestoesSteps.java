@@ -22,13 +22,13 @@ public class MinhasQuestoesSteps {
         DbUnitUtil.inserirDados();
     }
 
-    @E("^esteja na pagina minhas questoes$")
+    @E("^esteja na página minhas questões$")
     public void irParaMinhasQuestoes() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuQuestoes")).click();
         BrowserManager.waitTime(3000);
     }
 
-    @E("^deseje cadastrar uma nova questao$")
+    @E("^deseje cadastrar uma nova questão$")
     public void irParaCadastrarQuestao() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnAdicionarQuestao")).click();
         BrowserManager.waitTime(3000);

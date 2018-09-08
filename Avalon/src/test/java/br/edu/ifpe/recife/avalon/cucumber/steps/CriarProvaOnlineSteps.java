@@ -6,8 +6,6 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
-import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
@@ -24,7 +22,7 @@ import org.openqa.selenium.By;
  */
 public class CriarProvaOnlineSteps {
 
-    @Quando("^o professor clicar no botao nova prova$")
+    @Quando("^o professor clicar no botão nova prova$")
     public void clicarBotaoNovaProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnGerarProva")).click();
         BrowserManager.waitTime(1000);
@@ -59,7 +57,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
     }
 
-    @E("^selecionar o tipo multipla escolha no filtro de questoes$")
+    @E("^selecionar o tipo múltipla escolha no filtro de questoes$")
     public void selecionarTipoQuestaoMultiplaEscolha() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipoQuestao_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
@@ -71,7 +69,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.waitTime(2000);
     }
 
-    @E("^clicar no botao salvar nova prova$")
+    @E("^clicar no botão salvar nova prova$")
     public void salvarNovaProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btn")).click();
         BrowserManager.waitTime(3000);
@@ -135,14 +133,14 @@ public class CriarProvaOnlineSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^uma nova prova do tipo multipla escolha sera criada$")
+    @Entao("^uma nova prova do tipo múltipla escolha sera criada$")
     public void salvarProvaMultiplaEscolha() {
         int resultado = obterListaProvas();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para titulo da prova obrigatorio$")
+    @Entao("^será exibido mensagem para titulo da prova obrigatório$")
     public void criticarTituloObrigatorio() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("O título da prova é obrigatório.", mensagem);
@@ -150,42 +148,42 @@ public class CriarProvaOnlineSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para data de inicio da prova obrigatorio$")
+    @Entao("^será exibido mensagem para data de inicio da prova obrigatório$")
     public void criticarDataInicioObrigatoria() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A data e hora de início é obrigatória.", mensagem);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para data de termino da prova obrigatorio$")
+    @Entao("^será exibido mensagem para data de termino da prova obrigatório$")
     public void criticarDataTerminioObrigatoria() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A data e hora de término é obrigatória.", mensagem);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para data de inicio da prova menor que a data atual$")
+    @Entao("^será exibido mensagem para data de inicio da prova menor que a data atual$")
     public void criticarDataInicioMenorAtual() {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A data de início da prova não pode ser menor que a data e hora atual.", mensagem);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para data de inicio da prova maior que a data de termino$")
+    @Entao("^será exibido mensagem para data de inicio da prova maior que a data de termino$")
     public void criticarDataInicioMaiorDataTerminio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A data de início da prova não pode ser maior que a data de término.", mensagem);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para disponibilidade minima da prova$")
+    @Entao("^será exibido mensagem para disponibilidade minima da prova$")
     public void criticarDisponibilidadeMinima() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A prova deve ficar disponível por ao menos 30 minutos.", mensagem);
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido mensagem para disponibilidade maxima da prova$")
+    @Entao("^será exibido mensagem para disponibilidade maxima da prova$")
     public void criticarDisponibilidadeMaxima() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("A prova deve ficar disponível por no máximo 5 horas.", mensagem);

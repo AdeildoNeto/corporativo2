@@ -6,37 +6,30 @@ Funcionalidade:
   Para gerar provas daquele componente curricular
 
   Contexto: 
-    Dado que o usuario esta logado como professor
-    E esteja na pagina minhas questoes
+    Dado que o usuário está logado como professor
+    E esteja na página minhas questões
     E deseje cadastrar um novo componente curricular
 
-  Cenario: Cadastrar questoes sem componente curricular
-    Quando o professor selecionar o tipo discursiva
-    E preencher o enunciado da questao
-    E clicar no botao salvar questao
-    E confirmar o cadastro da questao
-    Entao sera exibido mensagem para componente curricular obrigatorio
-
   Cenario: Cadastrar componente curricular
-    Quando o professor clicar no botao adicionar componente
+    Quando o professor clicar no botão adicionar componente
     E preencher o nome do componente curricular
-    E clicar no botao salvar componente
-    Entao um novo componente sera cadastrado
+    E clicar no botão salvar componente
+    Então um novo componente sera cadastrado
 
   Cenario: Criticar nome do componente curricular duplicado
-    Quando o professor clicar no botao adicionar componente
-    E preencher o nome do componente curricular
-    E clicar no botao salvar componente
-    Entao sera exibido mensagem para componente duplicado
+    Quando o professor clicar no botão adicionar componente
+    E preencher o nome do componente curricular com um nome já cadastrado
+    E clicar no botão salvar componente
+    Então será exibido mensagem para componente duplicado
 
-  Cenario: Criticar nome do componente obrigatorio
-    Quando o professor clicar no botao adicionar componente
+  Cenario: Criticar nome do componente obrigatório
+    Quando o professor clicar no botão adicionar componente
     E nao preencher o nome do componente curricular
-    E clicar no botao salvar componente
-    Entao sera exibido mensagem para nome do componente curricular obrigatorio
+    E clicar no botão salvar componente
+    Então será exibido mensagem para nome do componente curricular obrigatório
 
   Cenario: Criticar nome do componente maior que o permitido
-    Quando o professor clicar no botao adicionar componente
+    Quando o professor clicar no botão adicionar componente
     E preencher o nome do componente curricular com mais caracteres do que o permitido
-    E clicar no botao salvar componente
-    Entao sera exibido mensagem para nome do componente excedeu limite de caracteres
+    E clicar no botão salvar componente
+    Então será exibido mensagem para nome do componente excedeu limite de caracteres

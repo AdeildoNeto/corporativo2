@@ -24,7 +24,7 @@ public class CadastrarQuestaoDiscursivaSteps {
         selectTipo.selectByValue("DISCURSIVA");
     }
     
-    @Entao("^uma nova questao discursiva sera cadastrada$")
+    @Entao("^uma nova questão discursiva será cadastrada$")
     public void questaoCadastrada() {
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Discursiva')]")).size();
         assertTrue(questoes > 0);

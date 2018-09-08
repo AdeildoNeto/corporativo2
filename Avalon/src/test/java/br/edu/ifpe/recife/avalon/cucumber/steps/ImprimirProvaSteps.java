@@ -19,20 +19,20 @@ public class ImprimirProvaSteps {
     
     private String abaPrincipal;
 
-    @E("^selecionar uma questao$")
+    @E("^selecionar uma questão$")
     public void selecionarQuestao() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:table:0:chkSelecionarQuestao")).click();
         BrowserManager.waitTime(1000);
     }
 
-    @E("^clicar no botao imprimir$")
+    @E("^clicar no botão imprimir$")
     public void imprimirProva() throws Throwable {
         abaPrincipal = BrowserManager.getDriver().getWindowHandle();
         BrowserManager.getDriver().findElement(By.id("form:btn")).click();
         BrowserManager.waitTime(1000);
     }
 
-    @Entao("^sera exibido em uma nova aba a prova com as questoes discursivas selecionadas$")
+    @Entao("^será exibido em uma nova aba a prova com as questões discursivas selecionadas$")
     public void imprimirProvaDiscursiva() {
         mudarAbaImpressao();
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'prova-alternativa')]")).size();
@@ -41,7 +41,7 @@ public class ImprimirProvaSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido em uma nova aba a prova com as questoes de verdadeiro ou falso selecionadas$")
+    @Entao("^será exibido em uma nova aba a prova com as questões de verdadeiro ou falso selecionadas$")
     public void imprimirProvaVF() {
         mudarAbaImpressao();
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'VERDADEIRO_FALSO')]")).size();
@@ -50,7 +50,7 @@ public class ImprimirProvaSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^sera exibido em uma nova aba a prova com as questoes de multipla escolha selecionadas$")
+    @Entao("^será exibido em uma nova aba a prova com as questões de múltipla escolha selecionadas$")
     public void imprimirProvaMultiplaEscolha() throws Throwable {
         mudarAbaImpressao();
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'MULTIPLA_ESCOLHA')]")).size();

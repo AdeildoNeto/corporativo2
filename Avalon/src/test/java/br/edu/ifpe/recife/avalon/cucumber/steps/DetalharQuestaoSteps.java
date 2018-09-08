@@ -17,13 +17,13 @@ import org.openqa.selenium.By;
  */
 public class DetalharQuestaoSteps {
 
-    @E("^clicar no icone de informacao da questao$")
+    @E("^clicar no ícone de informação da questão$")
     public void detalharQuestao() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:table:0:btnDetalhar")).click();
         BrowserManager.waitTime(1000);
     }
 
-    @Entao("^sera exibido um modal com as informacoes da questao discursiva$")
+    @Entao("^será exibido um modal com as informações da questão discursiva$")
     public void detalharQuestaoDiscursiva() {
         String tipo = obterTipoQuestao();
         assertEquals("Discursiva", tipo);
@@ -31,7 +31,7 @@ public class DetalharQuestaoSteps {
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido um modal com as informacoes da questao de verdadeiro ou falso$")
+    @Entao("^será exibido um modal com as informações da questão de verdadeiro ou falso$")
     public void detalharQuestaoVF() {
         String tipo = obterTipoQuestao();
         assertEquals("Verdadeiro ou Falso", tipo);
@@ -39,7 +39,7 @@ public class DetalharQuestaoSteps {
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido um modal com as informacoes da questao de multipla escolha$")
+    @Entao("^será exibido um modal com as informações da questão de múltipla escolha$")
     public void detalharQuestaoMultiplaEscolha() {
         String tipo = obterTipoQuestao();
         assertEquals("Múltipla Escolha", tipo);

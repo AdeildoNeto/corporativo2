@@ -49,7 +49,7 @@ public class PesquisarQuestoesProvaSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
     }
     
-    @Quando("^o professor optar pelo tipo multipla escolha no filtro de pesquisa$")
+    @Quando("^o professor optar pelo tipo múltipla escolha no filtro de pesquisa$")
     public void selecionarTipoQuestaoMultiplaEscolha() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipoQuestao_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
@@ -60,56 +60,56 @@ public class PesquisarQuestoesProvaSteps {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Sed ut perspiciatis unde omnis iste natus error");
     }
 
-    @E("^clicar no botao pesquisar$")
+    @E("^clicar no botão pesquisar$")
     public void pesquisarQuestoes() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnPesquisar")).click();
         BrowserManager.waitTime(1000);
     }
 
-    @Entao("^sera exibido a lista de questoes onde o enunciado contenha o filtro informado$")
+    @Entao("^será exibido a lista de questoes onde o enunciado contenha o filtro informado$")
     public void pesquisaPorEnunciado() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a lista de questoes onde o nome do autor contenha o filtro informado$")
+    @Entao("^será exibido a lista de questoes onde o nome do autor contenha o filtro informado$")
     public void pesquisaPorProfessor() {
         int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Silva')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a lista de questoes do componente curricular informado$")
+    @Entao("^será exibido a lista de questoes do componente curricular informado$")
     public void pesquisaPorComponente() {
         int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Engenharia')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a lista de questoes do tipo discursiva$")
+    @Entao("^será exibido a lista de questoes do tipo discursiva$")
     public void pesquisaPorTipoDiscursiva() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a lista de questoes do tipo verdadeiro ou falso$")
+    @Entao("^será exibido a lista de questoes do tipo verdadeiro ou falso$")
     public void pesquisaPorTipoVF() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a lista de questoes do tipo multipla escolha$")
+    @Entao("^será exibido a lista de questoes do tipo múltipla escolha$")
     public void pesquisaPorTipoMultiplaEscolha() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido a mensagem sem resultados para o filtro informado$")
-    public void exibirMensagemComponenteObrigatorio() throws Throwable {
+    @Entao("^será exibido a mensagem sem resultados para o filtro informado$")
+    public void exibirMensagemPesquisaSemResultados() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("Sem resultados para o filtro informado.", mensagem);
         LoginSteps.logout();

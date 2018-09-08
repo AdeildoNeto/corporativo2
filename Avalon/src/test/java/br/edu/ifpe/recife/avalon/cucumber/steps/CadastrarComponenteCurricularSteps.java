@@ -27,7 +27,7 @@ public class CadastrarComponenteCurricularSteps {
         BrowserManager.waitTime(1000);
     }
     
-    @Quando("^o professor clicar no botao adicionar componente$")
+    @Quando("^o professor clicar no botão adicionar componente$")
     public void clicarBotaoAdicionarComponente() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnAdicionarComponente")).click();
         BrowserManager.waitTime(1000);
@@ -38,7 +38,13 @@ public class CadastrarComponenteCurricularSteps {
         BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Engenharia de Software");
     }
     
-    @E("^clicar no botao salvar componente$")
+    
+    @E("^preencher o nome do componente curricular com um nome já cadastrado$")
+    public void preencherNomeComponenteDuplicado(){
+        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Teste");
+    }
+    
+    @E("^clicar no botão salvar componente$")
     public void salvarComponente(){
         BrowserManager.getDriver().findElement(By.id("formComponente:btnSalvarComponenteCurricular")).click();
         BrowserManager.waitTime(1000);
@@ -51,7 +57,7 @@ public class CadastrarComponenteCurricularSteps {
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido mensagem para componente duplicado$")
+    @Entao("^será exibido mensagem para componente duplicado$")
     public void exibirMensagemComponenteDuplicado() throws Throwable {
         String mensagem = getMensagemValidacao();
         assertEquals("O componente curricular já existe.", mensagem);
@@ -64,7 +70,7 @@ public class CadastrarComponenteCurricularSteps {
         BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("");
     }
     
-    @Entao("^sera exibido mensagem para nome do componente curricular obrigatorio$")
+    @Entao("^será exibido mensagem para nome do componente curricular obrigatório$")
     public void exibirMensagemNomeComponenteObrigatorio() throws Throwable {
         String mensagem = getMensagemValidacao();
         assertEquals("O nome do componente curricular é obrigatório.", mensagem);
@@ -80,7 +86,7 @@ public class CadastrarComponenteCurricularSteps {
                 + "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
     }
     
-    @Entao("^sera exibido mensagem para nome do componente excedeu limite de caracteres$")
+    @Entao("^será exibido mensagem para nome do componente excedeu limite de caracteres$")
     public void exibirMensagemNomeComponenteExcedeuLimite() throws Throwable {
         String mensagem = getMensagemValidacao();
         assertEquals("O tamanho do nome é maior do que o máximo permitido.", mensagem);
@@ -88,7 +94,7 @@ public class CadastrarComponenteCurricularSteps {
         LoginSteps.logout();
     }
     
-    @Entao("^sera exibido mensagem para componente curricular obrigatorio$")
+    @Entao("^será exibido mensagem para componente curricular obrigatório$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("O componente curricular da questão é obrigatório.", mensagem);

@@ -15,7 +15,7 @@ import org.openqa.selenium.By;
  */
 public class LoginSteps {
 
-    @Dado("^que o usuario esta logado como professor$")
+    @Dado("^que o usuário está logado como professor$")
     public void logarComoProfessor() throws Throwable {
         LoginSteps.logar("avalonifpe@gmail.com", "Mantra1994");
     }
