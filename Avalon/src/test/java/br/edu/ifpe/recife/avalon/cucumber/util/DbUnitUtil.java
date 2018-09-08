@@ -1,4 +1,4 @@
-package br.edu.ifpe.recife.avalon.junit;
+package br.edu.ifpe.recife.avalon.cucumber.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -17,8 +18,14 @@ import org.dbunit.operation.DatabaseOperation;
 
 public class DbUnitUtil {
 
-    private static final String XML_FILE = "/Users/eduardoamaral/NetBeansProjects/corporativo2/Avalon/src/main/resources/dbunit/dataset.xml";
-    
+    private static String xml_file = "src/main/resources/dbunit/dataset.xml";
+    private static boolean cucumberTest = false;
+
+    public static void setDataSet(DataSetEnum dataSet) {
+        xml_file = dataSet.getSource();
+        cucumberTest = true;
+    }
+
     @SuppressWarnings("UseSpecificCatch")
     public static void inserirDados() {
         Connection conn = null;
@@ -27,12 +34,16 @@ public class DbUnitUtil {
             conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost/avalondb", "root", "root");
             db_conn = new DatabaseConnection(conn, "avalondb");
+            if (cucumberTest) {
+                limparBase(conn);
+            }
+            
             DatabaseConfig dbConfig = db_conn.getConfig();
             dbConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
             dbConfig.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, new MySqlMetadataHandler());
             FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
             builder.setColumnSensing(true);
-            InputStream in = new FileInputStream(new File(XML_FILE));
+            InputStream in = new FileInputStream(new File(xml_file));
             IDataSet dataSet = builder.build(in);
             DatabaseOperation.CLEAN_INSERT.execute(db_conn, dataSet);
         } catch (Exception ex) {
@@ -50,6 +61,47 @@ public class DbUnitUtil {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }
+    }
+
+    private static void limparBase(Connection connection) throws SQLException {
+
+        Statement stmt = connection.createStatement();
+
+        try {
+
+            String sql;
+
+            sql = "DELETE FROM TB_SIMULADO_ALUNO_QUESTAO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_SIMULADO_ALUNO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_QUESTAO_SIMULADO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_SIMULADO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_PROVA_ALUNO_QUESTAO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_PROVA_ALUNO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_QUESTAO_PROVA";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_PROVA";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_ALTERNATIVA";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_MULTIPLA_ESCOLHA";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_VERDADEIRO_FALSO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_QUESTAO";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_COMPONENTE_CURRICULAR";
+            stmt.executeUpdate(sql);
+
+        } finally {
+            stmt.close();
+        }
+
     }
 
 }

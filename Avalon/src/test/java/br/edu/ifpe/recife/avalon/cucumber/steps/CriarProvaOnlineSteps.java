@@ -6,11 +6,12 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
+import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import static org.junit.Assert.assertTrue;
@@ -31,13 +32,7 @@ public class CriarProvaOnlineSteps {
 
     @E("^preencher o titulo da prova$")
     public void preencherTituloProva() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("formTitulo:titulo")).sendKeys("Prova");
-    }
-
-    @E("^clicar no botao gerar$")
-    public void clicarBotaoGerar() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("formTitulo:btnGerar")).click();
-        BrowserManager.waitTime(1000);
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Prova");
     }
 
     @E("^preencher a data de inicio da prova$")
@@ -45,8 +40,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
         String dataInicio = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).sendKeys(dataInicio);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
 
     @E("^preencher a data de termino da prova$")
@@ -54,8 +49,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 120);
         String dataTermino = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).sendKeys(dataTermino);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
     }
 
     @E("^selecionar o tipo verdadeiro ou falso no filtro de questoes$")
@@ -84,17 +79,17 @@ public class CriarProvaOnlineSteps {
 
     @E("^nao preencher o titulo da prova$")
     public void naoPreencherTituloProva() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("formTitulo:titulo")).clear();
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).clear();
     }
 
     @E("^nao preencher a data de inicio da prova$")
     public void naoPreencherDataInicioProva() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).clear();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).clear();
     }
 
     @E("^nao preencher a data de termino da prova$")
     public void naoPreencherDataTerminioProva() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).clear();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).clear();
     }
 
     @E("^preencher a data de inicio da prova com uma data menor que a atual$")
@@ -102,8 +97,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -10);
         String dataInicio = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).sendKeys(dataInicio);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
 
     @E("^preencher a data de inicio da prova com uma data maior que a data de termino$")
@@ -111,8 +106,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 360);
         String dataInicio = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraInicio_input")).sendKeys(dataInicio);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
     
     @E("^preencher a data de termino da prova com um intervalo menor que trinta minutos$")
@@ -120,8 +115,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
         String dataTermino = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).sendKeys(dataTermino);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
     }
     
     @E("^preencher a data de termino da prova com um intervalo maior que cinco horas$")
@@ -129,8 +124,8 @@ public class CriarProvaOnlineSteps {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 500);
         String dataTermino = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).click();
-        BrowserManager.getDriver().findElement(By.id("form:dataHoraFim_input")).sendKeys(dataTermino);
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).click();
+        BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
     }
 
     @Entao("^uma nova prova do tipo verdadeiro ou falso sera criada$")
@@ -149,9 +144,8 @@ public class CriarProvaOnlineSteps {
 
     @Entao("^sera exibido mensagem para titulo da prova obrigatorio$")
     public void criticarTituloObrigatorio() {
-        String mensagem = BrowserManager.getDriver().findElement(By.xpath("//*[@id='formTitulo:msgTitulo']/div/ul/li/span")).getText();
+        String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("O título da prova é obrigatório.", mensagem);
-        BrowserManager.getDriver().findElement(By.id("formTitulo:btnCancelar")).click();
         BrowserManager.waitTime(1000);
         LoginSteps.logout();
     }

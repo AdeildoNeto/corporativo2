@@ -6,6 +6,8 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
+import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import cucumber.api.java.pt.E;
 import org.openqa.selenium.By;
 
@@ -14,10 +16,16 @@ import org.openqa.selenium.By;
  * @author eduardoamaral
  */
 public class MinhasQuestoesSteps {
+    
+    public MinhasQuestoesSteps() {
+        DbUnitUtil.setDataSet(DataSetEnum.CADASTRAR_QUESTOES);
+        DbUnitUtil.inserirDados();
+    }
 
     @E("^esteja na pagina minhas questoes$")
     public void irParaMinhasQuestoes() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuQuestoes")).click();
+        BrowserManager.waitTime(3000);
     }
 
     @E("^deseje cadastrar uma nova questao$")

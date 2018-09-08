@@ -12,7 +12,6 @@ Funcionalidade:
   Cenário: Gerar nova prova do tipo verdadeiro ou falso
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova
     E preencher a data de termino da prova
     E selecionar o tipo verdadeiro ou falso no filtro de questoes
@@ -24,7 +23,6 @@ Funcionalidade:
   Cenário: Gerar nova prova do tipo multipla escolha
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova
     E preencher a data de termino da prova
     E selecionar o tipo multipla escolha no filtro de questoes
@@ -36,13 +34,14 @@ Funcionalidade:
   Cenário: Criticar prova sem titulo
     Quando o professor clicar no botao nova prova
     E nao preencher o titulo da prova
-    E clicar no botao gerar
+    E preencher a data de inicio da prova
+    E preencher a data de termino da prova
+    E clicar no botao pesquisar
     Então sera exibido mensagem para titulo da prova obrigatorio
 
   Cenário: Criticar prova sem data de início
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E nao preencher a data de inicio da prova
     E preencher a data de termino da prova
     E clicar no botao pesquisar
@@ -51,7 +50,6 @@ Funcionalidade:
   Cenário: Criticar prova sem data de término
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova
     E nao preencher a data de termino da prova
     E clicar no botao pesquisar
@@ -60,7 +58,6 @@ Funcionalidade:
   Cenário: Criticar data de inicio da prova menor que a data atual
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova com uma data menor que a atual
     E preencher a data de termino da prova
     E clicar no botao pesquisar
@@ -71,7 +68,6 @@ Funcionalidade:
   Cenário: Criticar data de inicio da prova maior que a data de termino
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova com uma data maior que a data de termino
     E preencher a data de termino da prova
     E clicar no botao pesquisar
@@ -82,7 +78,6 @@ Funcionalidade:
   Cenário: Criticar disponibilidade da prova menor que trinta minutos
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova
     E preencher a data de termino da prova com um intervalo menor que trinta minutos
     E clicar no botao pesquisar
@@ -93,7 +88,6 @@ Funcionalidade:
   Cenário: Criticar disponibilidade da prova maior que cinco horas
     Quando o professor clicar no botao nova prova
     E preencher o titulo da prova
-    E clicar no botao gerar
     E preencher a data de inicio da prova
     E preencher a data de termino da prova com um intervalo maior que cinco horas
     E clicar no botao pesquisar

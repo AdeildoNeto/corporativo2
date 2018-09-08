@@ -69,10 +69,9 @@ and open the template in the editor.
             <p:outputPanel class="row">
                 <p:outputPanel class="offset-md-9 col-md-3 form-group">
                     <p:commandButton id="btnAdd" value="#{msg['btn.gerar.simulado']}"
-                                     action="#{simuladoBean.exibirModalTitulo()}"
+                                     action="#{simuladoBean.iniciarPaginaGerar()}"
                                      onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
-                                     update="formTitulo"
                                      class="btn bg-default btn-block font-color-default">
                     </p:commandButton>
                 </p:outputPanel>
@@ -83,10 +82,6 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-
-        <ui:include src="../comum/modal-titulo.xhtml">
-            <ui:param name="bean" value="#{simuladoBean}" />
-        </ui:include>
 
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"

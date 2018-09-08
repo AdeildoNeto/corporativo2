@@ -71,14 +71,12 @@ and open the template in the editor.
                     <p:commandButton id="btnImprimirProva" value="#{msg['btn.imprimir.prova']}"
                                      action="#{provaBean.iniciarPaginaImprimir()}"
                                      onclick="PF('block').show()"
-                                     update="formTitulo"
                                      oncomplete="PF('block').hide()"
                                      class="btn bg-default font-color-default">
                     </p:commandButton>
                     <p:commandButton id="btnGerarProva" value="#{msg['btn.gerar.prova']}"
-                                     action="#{provaBean.exibirModalTitulo()}"
+                                     action="#{provaBean.iniciarPaginaGerar()}"
                                      onclick="PF('block').show()"
-                                     update="formTitulo"
                                      oncomplete="PF('block').hide()"
                                      class="btn bg-default font-color-default">
                     </p:commandButton>
@@ -90,11 +88,7 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-
-        <ui:include src="../comum/modal-titulo.xhtml">
-            <ui:param name="bean" value="#{provaBean}" />
-        </ui:include>
-
+        
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
                              visible="#{provaBean.exibirModalExclusao}" 

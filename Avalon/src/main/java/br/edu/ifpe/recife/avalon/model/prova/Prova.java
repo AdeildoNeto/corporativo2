@@ -102,7 +102,7 @@ public class Prova implements Serializable {
     private Long duracao;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_QUESTOES_PROVA", joinColumns = {
+    @JoinTable(name = "TB_QUESTAO_PROVA", joinColumns = {
         @JoinColumn(name = "ID_PROVA")},
             inverseJoinColumns = {
                 @JoinColumn(name = "ID_QUESTAO")

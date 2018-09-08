@@ -16,13 +16,30 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
-                    <h1>#{simuladoBean.simulado.titulo}</h1>
+                    <h1>#{msg['simulado.novo']}</h1>
                 </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-6">
                     <p:messages id="msgPrincipal" />
+                </p:outputPanel>
+            </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtTitulo" value="#{msg['label.titulo']}:" />
+                        <h:inputText id="txtTitulo" required="true"
+                                     requiredMessage="#{msg['prova.titulo.obrigatorio']}"
+                                     class="form-control" value="#{simuladoBean.simulado.titulo}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h3>#{msg['selecionar.questoes']}:</h3>
                 </p:outputPanel>
             </p:outputPanel>
 

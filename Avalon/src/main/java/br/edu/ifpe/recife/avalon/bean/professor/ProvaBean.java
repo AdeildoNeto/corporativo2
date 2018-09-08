@@ -69,17 +69,14 @@ public class ProvaBean implements Serializable {
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-    private final String headerModalTitulo;
-
+    
     private Usuario usuarioLogado;
     private List<Questao> questoes;
     private List<Prova> provas;
     private Set<Questao> questoesSelecionadas;
     private boolean todosSelecionados;
     private boolean exibirModalExclusao;
-    private boolean exibirModalTitulo;
     private Prova prova;
-    private String titulo;
     
     private List<ProvaAluno> resultados;
     private ProvaAluno provaAlunoDetalhe;
@@ -98,7 +95,6 @@ public class ProvaBean implements Serializable {
         questoesSelecionadas = new HashSet<>();
         prova = new Prova();
         provas = new ArrayList<>();
-        headerModalTitulo = AvalonUtil.getInstance().getMensagem("prova.nova");
     }
     
     /**
@@ -122,7 +118,6 @@ public class ProvaBean implements Serializable {
     public String iniciarPaginaGerar(){
         inicializarHelpers(true);
         limparPaginaGerar();
-        prova.setTitulo(titulo);
         
         return GO_GERAR_PROVA;
     }
@@ -197,7 +192,6 @@ public class ProvaBean implements Serializable {
     private void limparPagina(){
         prova = new Prova();
         fecharModalExclusao();
-        fecharModalTitulo();
     }
 
     /**
@@ -339,21 +333,6 @@ public class ProvaBean implements Serializable {
     }
     
     /**
-     * Exibi o modal de título da prova.
-     */
-    public void exibirModalTitulo(){
-        titulo = null;
-        exibirModalTitulo = true;
-    }
-    
-    /**
-     * Fecha o modal de título da prova.
-     */
-    public void fecharModalTitulo(){
-        exibirModalTitulo = false;
-    }
-    
-    /**
      * Salva uma nova prova.
      * 
      * @return 
@@ -468,23 +447,7 @@ public class ProvaBean implements Serializable {
     public boolean isExibirModalExclusao() {
         return exibirModalExclusao;
     }
-
-    public boolean isExibirModalTitulo() {
-        return exibirModalTitulo;
-    }
-
-    public String getHeaderModalTitulo() {
-        return headerModalTitulo;
-    }
     
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public List<ProvaAluno> getResultados() {
         return resultados;
     }

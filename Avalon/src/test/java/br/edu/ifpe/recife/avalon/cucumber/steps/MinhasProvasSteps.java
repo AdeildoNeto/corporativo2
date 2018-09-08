@@ -6,6 +6,8 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
+import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import cucumber.api.java.pt.E;
 import org.openqa.selenium.By;
 
@@ -15,6 +17,11 @@ import org.openqa.selenium.By;
  */
 public class MinhasProvasSteps {
 
+    public MinhasProvasSteps() {
+        DbUnitUtil.setDataSet(DataSetEnum.QUESTOES_PROVAS);
+        DbUnitUtil.inserirDados();
+    }
+    
     @E("^esteja na pagina de provas$")
     public void irParaMinhasProvas() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuProvas")).click();

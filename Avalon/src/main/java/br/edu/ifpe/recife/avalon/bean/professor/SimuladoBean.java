@@ -70,10 +70,7 @@ public class SimuladoBean implements Serializable {
     private List<Simulado> simulados;
     private Set<Questao> questoesSelecionadas;
     private boolean todosSelecionados;
-    private boolean exibirModalTitulo;
     private boolean exibirModalExclusao;
-    private String titulo;
-    private final String headerModalTitulo;
 
     private List<SimuladoAluno> resultados;
     private SimuladoAluno simuladoAlunoDetalhe;
@@ -92,7 +89,6 @@ public class SimuladoBean implements Serializable {
         questoes = new ArrayList<>();
         questoesSelecionadas = new HashSet<>();
         simulado = new Simulado();
-        headerModalTitulo = AvalonUtil.getInstance().getMensagem("simulado.novo");
     }
 
     /**
@@ -117,7 +113,6 @@ public class SimuladoBean implements Serializable {
         detalhesViewHelper.inicializar();
         pesquisarQuestoesViewHelper.inicializar(questaoServico, usuarioLogado, true);
         limparTelaGerarSimulado();
-        simulado.setTitulo(titulo);
 
         return GO_GERAR_SIMULADO;
 
@@ -189,8 +184,6 @@ public class SimuladoBean implements Serializable {
      */
     private void limparPagina() {
         simulado = new Simulado();
-        titulo = null;
-        fecharModalTitulo();
         fecharModalExclusao();
     }
 
@@ -318,21 +311,6 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Exibi o modal Título.
-     */
-    public void exibirModalTitulo() {
-        titulo = null;
-        exibirModalTitulo = true;
-    }
-
-    /**
-     * Fecha o modal Título.
-     */
-    public void fecharModalTitulo() {
-        exibirModalTitulo = false;
-    }
-
-    /**
      * Exibi o modal de exclusão.
      */
     private void exibirModalExclusao() {
@@ -382,28 +360,12 @@ public class SimuladoBean implements Serializable {
         return simulados;
     }
 
-    public boolean isExibirModalTitulo() {
-        return exibirModalTitulo;
-    }
-
     public VisualizarAvaliacaoViewHelper getVisualizarViewHelper() {
         return visualizarViewHelper;
     }
 
     public boolean isExibirModalExclusao() {
         return exibirModalExclusao;
-    }
-
-    public String getHeaderModalTitulo() {
-        return headerModalTitulo;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
     }
 
     public Simulado getSimuladoResultadoSelecionado() {

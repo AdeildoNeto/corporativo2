@@ -16,7 +16,7 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
-                    <h1>#{provaBean.prova.titulo}</h1>
+                    <h1>#{msg['prova.nova']}</h1>
                 </p:outputPanel>
             </p:outputPanel>
 
@@ -25,11 +25,22 @@ and open the template in the editor.
                     <p:messages id="msgPrincipal" />
                 </p:outputPanel>
             </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-4">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtTitulo" value="#{msg['label.titulo']}:" />
+                        <h:inputText id="txtTitulo" required="true"
+                                     requiredMessage="#{msg['prova.titulo.obrigatorio']}"
+                                     class="form-control" value="#{provaBean.prova.titulo}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
 
             <p:outputPanel class="row margin-bottom-30">
                 <p:outputPanel class="col-md-3 form-group">
-                    <p:outputLabel for="dataHoraInicio" value="#{msg['prova.data.inicio']}:" />
-                    <p:calendar id="dataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
+                    <p:outputLabel for="calDataHoraInicio" value="#{msg['prova.data.inicio']}:" />
+                    <p:calendar id="calDataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
                                 showHour="true" showMinute="true" required="true"
                                 requiredMessage="#{msg['prova.data.hora.inicio.obrigatoria']}"
                                 showButtonPanel="true"
@@ -37,8 +48,8 @@ and open the template in the editor.
                                 pattern="dd/MM/yyyy HH:mm" />
                 </p:outputPanel>
                 <p:outputPanel class="col-md-3 form-group">
-                    <p:outputLabel for="dataHoraFim" value="#{msg['prova.data.fim']}:" />
-                    <p:calendar id="dataHoraFim" value="#{provaBean.prova.dataHoraFim}"
+                    <p:outputLabel for="calDataHoraFim" value="#{msg['prova.data.fim']}:" />
+                    <p:calendar id="calDataHoraFim" value="#{provaBean.prova.dataHoraFim}"
                                 showHour="true" showMinute="true" required="true"
                                 requiredMessage="#{msg['prova.data.hora.fim.obrigatoria']}"
                                 showButtonPanel="true"

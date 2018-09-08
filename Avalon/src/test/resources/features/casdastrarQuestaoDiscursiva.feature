@@ -29,7 +29,7 @@ Funcionalidade:
   Cenario: Criticar questao discursiva com enunciado duplicado
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
-    E preencher o enunciado da questao
+    E preencher o enunciado da questao com um valor ja cadastrado
     E clicar no botao salvar questao
     E confirmar o cadastro da questao
     Entao sera exibido mensagem para questão duplicada

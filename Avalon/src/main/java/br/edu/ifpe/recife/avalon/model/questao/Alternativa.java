@@ -18,14 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
  * @author aldenio
  */
 @Entity
-@Table(name = "TB_ALTERNATIVAS")
+@Table(name = "TB_ALTERNATIVA")
 public class Alternativa implements Serializable {
     
     @Id
