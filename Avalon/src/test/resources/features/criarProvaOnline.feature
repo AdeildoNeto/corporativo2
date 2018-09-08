@@ -14,7 +14,7 @@ Funcionalidade:
     E preencher o titulo da prova
     E preencher a data de inicio da prova
     E preencher a data de termino da prova
-    E selecionar o tipo verdadeiro ou falso no filtro de questoes
+    E selecionar o tipo verdadeiro ou falso no filtro de questões
     E clicar no botão pesquisar
     E selecionar questoes para prova
     E clicar no botão salvar nova prova
@@ -25,7 +25,7 @@ Funcionalidade:
     E preencher o titulo da prova
     E preencher a data de inicio da prova
     E preencher a data de termino da prova
-    E selecionar o tipo múltipla escolha no filtro de questoes
+    E selecionar o tipo múltipla escolha no filtro de questões
     E clicar no botão pesquisar
     E selecionar questoes para prova
     E clicar no botão salvar nova prova

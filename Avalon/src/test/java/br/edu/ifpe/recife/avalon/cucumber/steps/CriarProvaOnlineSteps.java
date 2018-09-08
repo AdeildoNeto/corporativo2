@@ -51,13 +51,13 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
     }
 
-    @E("^selecionar o tipo verdadeiro ou falso no filtro de questoes$")
+    @E("^selecionar o tipo verdadeiro ou falso no filtro de questões$")
     public void selecionarTipoQuestaoVF() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipoQuestao_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
     }
 
-    @E("^selecionar o tipo múltipla escolha no filtro de questoes$")
+    @E("^selecionar o tipo múltipla escolha no filtro de questões$")
     public void selecionarTipoQuestaoMultiplaEscolha() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:selTipoQuestao_label")).click();
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();

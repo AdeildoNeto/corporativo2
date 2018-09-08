@@ -55,7 +55,7 @@ public class PesquisarQuestoesProvaSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
     }
     
-    @Quando("^o professor preencher o filtro enunciado com um enunciado nao existente$")
+    @Quando("^o professor preencher o filtro enunciado com um enunciado não existente$")
     public void preencherFiltroEnunciadoSemDados() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Sed ut perspiciatis unde omnis iste natus error");
     }
@@ -66,42 +66,42 @@ public class PesquisarQuestoesProvaSteps {
         BrowserManager.waitTime(1000);
     }
 
-    @Entao("^será exibido a lista de questoes onde o enunciado contenha o filtro informado$")
+    @Entao("^será exibido a lista de questões onde o enunciado contenha o filtro informado$")
     public void pesquisaPorEnunciado() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^será exibido a lista de questoes onde o nome do autor contenha o filtro informado$")
+    @Entao("^será exibido a lista de questões onde o nome do autor contenha o filtro informado$")
     public void pesquisaPorProfessor() {
         int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Silva')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^será exibido a lista de questoes do componente curricular informado$")
+    @Entao("^será exibido a lista de questões do componente curricular informado$")
     public void pesquisaPorComponente() {
         int resultado = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Engenharia')]")).size();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^será exibido a lista de questoes do tipo discursiva$")
+    @Entao("^será exibido a lista de questões do tipo discursiva$")
     public void pesquisaPorTipoDiscursiva() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^será exibido a lista de questoes do tipo verdadeiro ou falso$")
+    @Entao("^será exibido a lista de questões do tipo verdadeiro ou falso$")
     public void pesquisaPorTipoVF() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
-    @Entao("^será exibido a lista de questoes do tipo múltipla escolha$")
+    @Entao("^será exibido a lista de questões do tipo múltipla escolha$")
     public void pesquisaPorTipoMultiplaEscolha() {
         int resultado = obterResultado();
         assertTrue(resultado > 0);
@@ -113,6 +113,22 @@ public class PesquisarQuestoesProvaSteps {
         String mensagem = TestUtil.obterMensagemValidacao();
         assertEquals("Sem resultados para o filtro informado.", mensagem);
         LoginSteps.logout();
+    }
+    
+    @Quando("^o professor preencher o filtro com o enunciado de uma questão compartilhada$")
+    public void preencherFiltroCompartilhado() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Compartilhada");
+    }
+    
+    @Entao("^será exibido a lista de questões compartilhadas em que o enunciado contenha o filtro informado$")
+    public void exibirQuestoesCompartilhadas() throws Throwable {
+        int resultados = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Compartilhada')]")).size();
+        assertTrue(resultados > 0);
+    }
+    
+    @Quando("^o professor preencher o filtro com o enunciado de uma questão não compartilhada$")
+    public void preencherFiltroNaoCompartilhado() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Não");
     }
     
     private int obterResultado(){
