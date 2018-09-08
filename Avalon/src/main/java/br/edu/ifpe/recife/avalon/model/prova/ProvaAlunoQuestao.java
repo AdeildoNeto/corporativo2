@@ -32,7 +32,7 @@ public class ProvaAlunoQuestao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PROVA_QUESTAO_ALUNO")
+    @Column(name = "ID")
     private Long id;
 
     @NotNull(message = "{questao.obrigatoria}")

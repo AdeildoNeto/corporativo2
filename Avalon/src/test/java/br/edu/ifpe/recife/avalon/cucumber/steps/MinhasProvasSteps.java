@@ -18,7 +18,7 @@ import org.openqa.selenium.By;
 public class MinhasProvasSteps {
 
     public MinhasProvasSteps() {
-        DbUnitUtil.setDataSet(DataSetEnum.QUESTOES_PROVAS);
+        DbUnitUtil.setDataSet(DataSetEnum.MINHAS_PROVAS);
         DbUnitUtil.inserirDados();
     }
     

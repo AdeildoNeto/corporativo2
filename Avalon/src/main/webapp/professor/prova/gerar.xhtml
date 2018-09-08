@@ -105,7 +105,7 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header"></f:facet>
-                            <p:commandLink action="#{provaBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
+                            <p:commandLink id="btnDetalhar" action="#{provaBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
                                 <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
                             </p:commandLink>
                         </h:column>

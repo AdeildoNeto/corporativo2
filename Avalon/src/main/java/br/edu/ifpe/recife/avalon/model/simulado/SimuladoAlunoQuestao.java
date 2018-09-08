@@ -5,7 +5,6 @@
  */
 package br.edu.ifpe.recife.avalon.model.simulado;
 
-import br.edu.ifpe.recife.avalon.model.prova.*;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
@@ -33,7 +32,7 @@ public class SimuladoAlunoQuestao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SIMULADO_QUESTAO_ALUNO")
+    @Column(name = "ID")
     private Long id;
 
     @NotNull(message = "{questao.obrigatoria}")

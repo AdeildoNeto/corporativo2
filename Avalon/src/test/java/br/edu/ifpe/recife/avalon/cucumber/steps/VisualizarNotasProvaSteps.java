@@ -6,14 +6,10 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
-import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Select;
 
 /**
  *
@@ -22,19 +18,16 @@ import org.openqa.selenium.support.ui.Select;
 public class VisualizarNotasProvaSteps {
 
     @Quando("^o professor clicar no botão notas da prova selecionada$")
-    public void preencherFiltroEnunciado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Teste");
+    public void clicarBotaoResultadosProva() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:tableProvas:0:btnResultadosProva")).click();
+        BrowserManager.waitTime(2000);
     }
     
     @Entao("^será exibido a lista de notas dos alunos que realizaram esta prova$")
-    public void exibirMensagemComponenteobrigatório() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("Sem resultados para o filtro informado.", mensagem);
+    public void exibirListaNotasProva() throws Throwable {
+        int resultados = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'ifpe')]")).size();
+        assertTrue(resultados > 0);
         LoginSteps.logout();
     }
     
-    private int obterResultado(){
-        return BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Teste')]")).size();
-    }
-
 }

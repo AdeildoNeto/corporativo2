@@ -1,6 +1,5 @@
 # language: pt
-# ID.30 Visualizar nota dos alunos por prova
-# ID.1
+# ID.30
 Funcionalidade: 
   Eu como professor
   Quero poder visualizar lista de notas de uma prova

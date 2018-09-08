@@ -40,21 +40,21 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
-                            <p:commandLink class="btnResultados"
+                            <p:commandLink id="btnResultadosProva"
                                            action="#{provaBean.iniciarPaginaResultados(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide()"
                                            title="#{msg['label.resultados']}">
                                 <span class="material-icons">assignment</span>
                             </p:commandLink>               
-                            <p:commandLink class="btnDetalhar"
+                            <p:commandLink id="btnDetalharProva"
                                            action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.detalhar']}">
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
-                            <p:commandLink class="btnExcluir"
+                            <p:commandLink id="btnExcluirProva"
                                            action="#{provaBean.selecionarProvaExclusao(prova)}"
                                            update="formModalExcluir"
                                            onclick="PF('block').show();"
