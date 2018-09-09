@@ -124,6 +124,7 @@ public class PesquisarQuestoesProvaSteps {
     public void exibirQuestoesCompartilhadas() throws Throwable {
         int resultados = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Compartilhada')]")).size();
         assertTrue(resultados > 0);
+        LoginSteps.logout();
     }
     
     @Quando("^o professor preencher o filtro com o enunciado de uma questão não compartilhada$")
