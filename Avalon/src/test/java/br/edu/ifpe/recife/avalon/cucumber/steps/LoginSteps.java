@@ -19,6 +19,11 @@ public class LoginSteps {
     public void logarComoProfessor() throws Throwable {
         LoginSteps.logar("avalonifpe@gmail.com", "Mantra1994");
     }
+    
+    @Dado("^que o usuário está logado como aluno$")
+    public void logarComoAluno() throws Throwable {
+        LoginSteps.logar("efsa@a.recife.ifpe.edu.br", "Em!4&kz32");
+    }
 
     public static void logar(String login, String senha) {
 

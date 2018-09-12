@@ -29,13 +29,13 @@ and open the template in the editor.
                 <p:outputPanel class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['menu.simulados']}" action="#{simuladoAlunoBean.iniciarPagina()}" />
+                            <h:commandLink id="menuSimulados" styleClass="nav-link" value="#{msg['menu.simulados']}" action="#{simuladoAlunoBean.iniciarPagina()}" />
                         </li>
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['menu.provas']}" action="#{provaAlunoBean.iniciarPagina()}" />
+                            <h:commandLink id="menuProvas" styleClass="nav-link" value="#{msg['menu.provas']}" action="#{provaAlunoBean.iniciarPagina()}" />
                         </li>
                         <li class="nav-item">
-                            <h:commandLink styleClass="nav-link" value="#{msg['label.resultados']}" action="#{resultadoAlunoBean.iniciarPagina()}" />
+                            <h:commandLink id="menuResultados" styleClass="nav-link" value="#{msg['label.resultados']}" action="#{resultadoAlunoBean.iniciarPagina()}" />
                         </li>
                         <ui:include src="../../template/logout.xhtml" />
                     </ul>

@@ -25,27 +25,27 @@ and open the template in the editor.
                 </p:outputPanel>
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12">
-                        <label for="componente">#{msg['label.componente.curricular']}: </label><span id="componente"> #{provaAlunoBean.prova.componenteCurricular.nome}</span>
+                        <label for="lbComponenteCurricular">#{msg['label.componente.curricular']}: </label><span id="lbComponenteCurricular"> #{provaAlunoBean.prova.componenteCurricular.nome}</span>
                     </p:outputPanel>
                 </p:outputPanel>
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12">
-                        <label for="nomeAluno">#{msg['cabecalho.aluno']}: </label><span id="nomeAluno"> #{provaAlunoBean.provaAluno.aluno.nome}</span>
+                        <label for="lbNomeAluno">#{msg['cabecalho.aluno']}: </label><span id="lbNomeAluno"> #{provaAlunoBean.provaAluno.aluno.nome}</span>
                     </p:outputPanel>
                 </p:outputPanel>
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12">
-                        <label for="emailAluno">#{msg['label.email']}: </label><span id="emailAluno"> #{provaAlunoBean.provaAluno.aluno.email}</span>
+                        <label for="lbEmailAluno">#{msg['label.email']}: </label><span id="lbEmailAluno"> #{provaAlunoBean.provaAluno.aluno.email}</span>
                     </p:outputPanel>
                 </p:outputPanel>
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-8 form-group">
-                        <label for="professor">#{msg['cabecalho.professor']}: </label><span id="professor"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
+                        <label for="lbProfessor">#{msg['cabecalho.professor']}: </label><span id="lbProfessor"> #{provaAlunoBean.prova.professor.nomeCompleto}</span>
                     </p:outputPanel>
                     <p:outputPanel class="col-md-4 form-group container-duracao">
-                        <label for="duracao">#{msg['prova.duracao']}: </label>
-                        <h:outputText id="contadorProva" class="margin-left-10 prova-duracao" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}" />
-                        <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="contadorProva" />
+                        <label for="lbDuracao">#{msg['prova.duracao']}: </label>
+                        <h:outputText id="lbDuracao" class="margin-left-10 prova-duracao" value="#{provaAlunoBean.duracaoMinutos}:#{provaAlunoBean.duracaoSegundos}" />
+                        <p:poll interval="1" listener="#{provaAlunoBean.iniciarContadorProva()}" update="lbDuracao" />
                     </p:outputPanel>
                 </p:outputPanel>
                 <p:outputPanel class="row">
@@ -56,14 +56,15 @@ and open the template in the editor.
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12">
                         <p:carousel value="#{provaAlunoBean.questoesVerdadeiroFalso}" var="questao"
-                                    id="carouselVF" binding="#{caraouselVF}"
+                                    id="cslVerdadeiroFalso" binding="#{carouselVerdadeiroFalso}"
                                     rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}"
                                     numVisible="1" pageLinks="2">
                             <p:outputPanel class="form-group">
-                                <span class="bold">#{caraouselVF.rowIndex + 1}) #{questao.enunciado}</span>
-                                <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
+                                <span class="bold">#{carouselVerdadeiroFalso.rowIndex + 1}) #{questao.enunciado}</span>
+                                <p:selectOneRadio id="rbRespostaVerdadeiroFalso" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                                     <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                                     <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
+                                    <f:ajax event="click" listener="#{provaAlunoBean.salvarProvaAutomaticamente()}" />
                                 </p:selectOneRadio>
                                 <p:outputPanel class="imagem">
                                     <ui:fragment rendered="#{questao.imagem != null}">
@@ -74,19 +75,19 @@ and open the template in the editor.
                                 </p:outputPanel>
                                 <h:panelGrid class="margin-left-20">
                                     <h:column>
-                                        <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                                        <p:radioButton id="opcVerdadeiro" for="rbRespostaVerdadeiroFalso" itemIndex="0" class="radio-button" />
                                         <span>#{msg['btn.verdadeiro']}</span>
                                     </h:column>
 
                                     <h:column>
-                                        <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                                        <p:radioButton id="opcFalso" for="rbRespostaVerdadeiroFalso" itemIndex="1" class="radio-button" />
                                         <span>#{msg['btn.falso']}</span>
                                     </h:column>
                                 </h:panelGrid>
                             </p:outputPanel>
                         </p:carousel>
                         <p:carousel value="#{provaAlunoBean.questoesMultiplaEscolha}" var="questao"
-                                    id="carouselME" binding="#{carouselMS}"
+                                    id="cslMultiplaEscolha" binding="#{carouselMultiplaEscolha}"
                                     rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}"
                                     numVisible="1" pageLinks="2">
                             <p:outputPanel class="form-group">
@@ -98,17 +99,18 @@ and open the template in the editor.
                                         </p:graphicImage>
                                     </ui:fragment>
                                 </p:outputPanel>
-                                <p:selectOneRadio id="radioMS" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
+                                <p:selectOneRadio id="rbRespostaMultiplaEscolha" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
                                     <f:selectItem itemValue="0" />
                                     <f:selectItem itemValue="1" />
                                     <f:selectItem itemValue="2" />
                                     <f:selectItem itemValue="3" />
                                     <f:selectItem itemValue="4" />
+                                    <f:ajax event="click" listener="#{provaAlunoBean.salvarProvaAutomaticamente()}" />
                                 </p:selectOneRadio>
 
                                 <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
                                     <p:outputPanel>
-                                        <p:radioButton for="form:carouselME:0:radioMS" itemIndex="#{j.index}" />
+                                        <p:radioButton for="form:cslMultiplaEscolha:0:rbRespostaMultiplaEscolha" itemIndex="#{j.index}" />
                                         <span>#{alternativa.descricao}</span>
                                     </p:outputPanel>
                                 </ui:repeat>
@@ -139,19 +141,19 @@ and open the template in the editor.
                     <p:outputPanel class="row">
                         <p:outputPanel class="col-md-12">
                             <p:outputPanel class="form-group">
-                                <span>#{provaAlunoBean.msgConfirmarFinalizacao}</span>
+                                <span id="lbMensagemFinalizacao">#{provaAlunoBean.msgConfirmarFinalizacao}</span>
                             </p:outputPanel>
                         </p:outputPanel>
                     </p:outputPanel>
 
                     <p:outputPanel class="row">
                         <p:outputPanel class="col text-right">
-                            <p:commandButton id="btnNao"
+                            <p:commandButton id="btnNaoFinalizar"
                                              value="#{msg['btn.nao']}" action="#{provaAlunoBean.fecharModalFinalizar()}"
                                              styleClass="btn btn-secondary"
                                              immediate="true" process="@this" update="form" />
 
-                            <p:commandButton id="btnSim"
+                            <p:commandButton id="btnSimFinalizar"
                                              value="#{msg['btn.sim']}"
                                              action="#{provaAlunoBean.finalizar()}"
                                              onclick="PF('block').show();" oncomplete="PF('block').hide();"

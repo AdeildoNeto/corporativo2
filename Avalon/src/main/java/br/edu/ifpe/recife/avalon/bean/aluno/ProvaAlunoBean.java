@@ -268,7 +268,7 @@ public class ProvaAlunoBean implements Serializable {
     /**
      * Salva a prova automaticamente durante a realização da mesma.
      */
-    private void salvarProvaAutomaticamente() {
+    public void salvarProvaAutomaticamente() {
         preencherRespostas();
         provaAluno = provaServico.salvarProvaAluno(provaAluno);
     }
@@ -377,7 +377,6 @@ public class ProvaAlunoBean implements Serializable {
         if (getDuracaoSegundos() == 0) {
             duracaoSegundos = 59;
             --duracaoMinutos;
-            salvarProvaAutomaticamente();
         } else {
             --duracaoSegundos;
         }

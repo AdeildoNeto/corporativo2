@@ -92,11 +92,13 @@ and open the template in the editor.
 
                 <p:outputPanel class="row">
                     <p:outputPanel class="col text-right">
-                        <p:commandButton value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
+                        <p:commandButton id="btnCancelar"
+                                         value="#{msg['btn.cancelar']}" action="#{provaAlunoBean.fecharModalIniciar()}"
                                          styleClass="btn btn-secondary"
                                          immediate="true" process="@this" update="formModalIniciar form" />
 
-                        <p:commandButton value="#{msg['btn.iniciar']}"
+                        <p:commandButton id="btnIniciarProva"
+                                         value="#{msg['btn.iniciar']}"
                                          action="#{provaAlunoBean.iniciarProva()}"
                                          onclick="PF('block').show();" oncomplete="PF('block').hide()"
                                          styleClass="btn btn-primary button-modal"
