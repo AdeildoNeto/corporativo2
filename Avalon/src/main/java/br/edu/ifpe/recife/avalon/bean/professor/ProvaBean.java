@@ -27,9 +27,12 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -81,6 +84,9 @@ public class ProvaBean implements Serializable {
     private List<ProvaAluno> resultados;
     private ProvaAluno provaAlunoDetalhe;
     private Prova provaResultadoSelecionada;
+    private boolean exibirModalReagendamento;
+    private Date dataHoraInicioReagendamento;
+    private Date dataHoraFimReagendamento;
    
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
@@ -192,6 +198,7 @@ public class ProvaBean implements Serializable {
     private void limparPagina(){
         prova = new Prova();
         fecharModalExclusao();
+        fecharModalReagendamento();
     }
 
     /**
@@ -379,14 +386,45 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    public void selecionarProvaReagendamento(Prova provaSelecionada){
+        prova = provaSelecionada;
+        dataHoraInicioReagendamento = new Date(prova.getDataHoraInicio().getTime());
+        dataHoraFimReagendamento = new Date(prova.getDataHoraFim().getTime());
+        exibirModalReagendamento();
+    }
+    
+    public void reagendarProva(){
+        try {
+            validarReagendamento();
+            prova.setDataHoraInicio(dataHoraInicioReagendamento);
+            prova.setDataHoraFim(dataHoraFimReagendamento);
+            provaServico.reagendarProva(prova);
+            fecharModalReagendamento();
+        } catch (ValidacaoException ex) {
+            exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public void exibirModalReagendamento(){
+        exibirModalReagendamento = true;
+    }
+    
+    public void fecharModalReagendamento(){
+        exibirModalReagendamento = false;
+        buscarProvas();
+    }
+    
+    private void validarReagendamento() throws ValidacaoException {
+        if(prova.getDataHoraInicio().getTime() != dataHoraInicioReagendamento.getTime() && prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("prova.reagendamento.data.inicio.em.andamento"));
+        }
+    }
   
     /**
      * Recupera arquivo para exibicao
      * @return arquivo
      * @throws IOException
      */
-
-    
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -459,5 +497,25 @@ public class ProvaBean implements Serializable {
     public ProvaAluno getProvaAlunoDetalhe() {
         return provaAlunoDetalhe;
     }
-        
+
+    public boolean isExibirModalReagendamento() {
+        return exibirModalReagendamento;
+    }
+
+    public Date getDataHoraInicioReagendamento() {
+        return dataHoraInicioReagendamento;
+    }
+
+    public void setDataHoraInicioReagendamento(Date dataHoraInicioReagendamento) {
+        this.dataHoraInicioReagendamento = dataHoraInicioReagendamento;
+    }
+
+    public Date getDataHoraFimReagendamento() {
+        return dataHoraFimReagendamento;
+    }
+
+    public void setDataHoraFimReagendamento(Date dataHoraFimReagendamento) {
+        this.dataHoraFimReagendamento = dataHoraFimReagendamento;
+    }
+
 }

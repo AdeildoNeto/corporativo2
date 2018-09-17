@@ -21,34 +21,34 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="componente">#{msg['label.componente.curricular']}: </label>
-                    <span id="componente"> #{provaBean.prova.componenteCurricular.nome}</span>
+                    <label for="lbComponente">#{msg['label.componente.curricular']}: </label>
+                    <span id="lbComponente"> #{provaBean.prova.componenteCurricular.nome}</span>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <label for="professor">#{msg['label.professor']}: </label>
-                    <span id="professor"> #{provaBean.prova.professor.nomeCompleto}</span>
+                    <label for="lbProfessor">#{msg['label.professor']}: </label>
+                    <span id="lbProfessor"> #{provaBean.prova.professor.nomeCompleto}</span>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-4 form-group">
-                    <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
-                    <h:outputText id="dataHoraInicio" class="margin-left-10"
+                    <label for="lbDataHoraInicio">#{msg['prova.data.inicio']}: </label>
+                    <h:outputText id="lbDataHoraInicio" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraInicio}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </p:outputPanel>
                 <p:outputPanel class="col-md-4 form-group">
-                    <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
-                    <h:outputText id="dataHoraFim" class="margin-left-10"
+                    <label for="lbDataHoraFim">#{msg['prova.data.fim']}: </label>
+                    <h:outputText id="lbDataHoraFim" class="margin-left-10"
                                   value="#{provaBean.prova.dataHoraFim}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </p:outputPanel>
                 <p:outputPanel class="col-md-4 form-group">
-                    <label for="duracao">#{msg['prova.duracao']}: </label>
-                    <h:outputText id="duracaoProva" value="#{provaBean.prova.duracao}"
+                    <label for="lbDuracao">#{msg['prova.duracao']}: </label>
+                    <h:outputText id="lbDuracao" value="#{provaBean.prova.duracao}"
                                   class="margin-left-10"/>
                 </p:outputPanel>
             </p:outputPanel>

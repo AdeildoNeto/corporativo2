@@ -49,7 +49,7 @@ public class ProvaServico {
     private static final String DATA_INICIO_ANTERIOR_DATA_ATUAL = "prova.data.inicia.anterior.data.atual";
     private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
     private static final String DISPONIBILIDADE_MINIMA = "prova.disponibilidade.minima";
-    private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";
+    private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";    
     private static final int PARAM_MIN_DISPONIBILIDADE_MINUTOS = 30;
     private static final int PARAM_MAX_DISPONIBILIDADE_HORAS = 5;
 
@@ -102,13 +102,17 @@ public class ProvaServico {
      * A dispobilidade for maior que 5 horas.
      */
     private void validarDisponibilidade(@Valid Prova prova) throws ValidacaoException {
-        Calendar calendarInicio = Calendar.getInstance();
-        Calendar calendarFim = Calendar.getInstance();
-        
         if(prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
             throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_ANTERIOR_DATA_ATUAL));
         }
 
+        validarDataHoraProva(prova);
+    }
+    
+    private void validarDataHoraProva(Prova prova) throws ValidacaoException{
+        Calendar calendarInicio = Calendar.getInstance();
+        Calendar calendarFim = Calendar.getInstance();
+        
         if (prova.getDataHoraInicio().after(prova.getDataHoraFim())) {
             throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_MAIOR_DATA_FIM));
         }
@@ -253,4 +257,16 @@ public class ProvaServico {
 
         return provaAluno;
     }
+
+    /**
+     * Reagenda uma prova alterando sua disponibilidade.
+     * 
+     * @param prova
+     * @throws ValidacaoException 
+     */
+    public void reagendarProva(Prova prova) throws ValidacaoException {
+        validarDataHoraProva(prova);
+        entityManager.merge(prova);
+    }
+
 }

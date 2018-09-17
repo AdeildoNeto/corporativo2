@@ -40,13 +40,21 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
+                            <p:commandLink id="btnReagendarProva"
+                                           action="#{provaBean.selecionarProvaReagendamento(prova)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide()"
+                                           update="formReagendamento"
+                                           title="#{msg['label.reagendar']}">
+                                <span class="material-icons">access_time</span>
+                            </p:commandLink>
                             <p:commandLink id="btnResultadosProva"
                                            action="#{provaBean.iniciarPaginaResultados(prova)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide()"
                                            title="#{msg['label.resultados']}">
                                 <span class="material-icons">assignment</span>
-                            </p:commandLink>               
+                            </p:commandLink>
                             <p:commandLink id="btnDetalharProva"
                                            action="#{provaBean.iniciarPaginaDetalhar(prova)}"
                                            onclick="PF('block').show()"
@@ -88,7 +96,7 @@ and open the template in the editor.
             </p:blockUI>
 
         </h:form>
-        
+
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
                              visible="#{provaBean.exibirModalExclusao}" 
@@ -106,6 +114,60 @@ and open the template in the editor.
                     </p:outputPanel>
                 </p:outputPanel>
             </p:confirmDialog>
+        </h:form>
+
+        <h:form id="formReagendamento">
+            <p:dialog id="modalReagendamento" visible="#{provaBean.exibirModalReagendamento}"
+                      header="#{msg['label.reagendar.prova']}" modal="true" resizable="false"
+                      widgetVar="modalReagendamento" closeOnEscape="false" draggable="false"
+                      class="modal-reagendamento">
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12 form-group">
+                        <p:messages id="msgReagendamento" />
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-12 form-group">
+                        <label for="lbTitulo">#{msg['label.titulo']}: </label>
+                        <span id="lbTitulo"> #{provaBean.prova.titulo}</span>
+                        <input type="hidden" />
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col-md-6 form-group">
+                        <p:outputLabel for="calDataHoraInicioReagendamento" value="#{msg['prova.data.inicio']}:" />
+                        <p:calendar id="calDataHoraInicioReagendamento" value="#{provaBean.dataHoraInicioReagendamento}"
+                                    showHour="true" showMinute="true" required="true"
+                                    requiredMessage="#{msg['prova.data.hora.inicio.obrigatoria']}"
+                                    showButtonPanel="true"
+                                    mask="99/99/9999 99:99" maskAutoClear="true"
+                                    pattern="dd/MM/yyyy HH:mm" />
+                    </p:outputPanel>
+                    <p:outputPanel class="col-md-6 form-group">
+                        <p:outputLabel for="calDataHoraFimReagendamento" value="#{msg['prova.data.fim']}:" />
+                        <p:calendar id="calDataHoraFimReagendamento" value="#{provaBean.dataHoraFimReagendamento}"
+                                    showHour="true" showMinute="true" required="true"
+                                    requiredMessage="#{msg['prova.data.hora.fim.obrigatoria']}"
+                                    showButtonPanel="true"
+                                    mask="99/99/9999 99:99" maskAutoClear="true"
+                                    pattern="dd/MM/yyyy HH:mm" />
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel class="row">
+                    <p:outputPanel class="col text-right button-footer">
+                        <p:commandButton value="#{msg['label.reagendar']}" id="btnConfirmarReagendamento"
+                                         action="#{provaBean.reagendarProva()}"
+                                         update="form formReagendamento" styleClass="btn btn-primary" />
+                        <p:commandButton value="#{msg['btn.cancelar']}" id="btnCancelarReagendamento"
+                                         action="#{provaBean.fecharModalReagendamento()}"
+                                         styleClass="btn btn-secondary" update="form formReagendamento"
+                                         process="@this" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:dialog>
         </h:form>
     </ui:define>
 
