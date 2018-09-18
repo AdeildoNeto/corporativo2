@@ -386,6 +386,10 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    /**
+     * Seleciona uma prova para reagendamento.
+     * @param provaSelecionada 
+     */
     public void selecionarProvaReagendamento(Prova provaSelecionada){
         prova = provaSelecionada;
         dataHoraInicioReagendamento = new Date(prova.getDataHoraInicio().getTime());
@@ -393,6 +397,9 @@ public class ProvaBean implements Serializable {
         exibirModalReagendamento();
     }
     
+    /**
+     * Reagenda uma prova.
+     */
     public void reagendarProva(){
         try {
             validarReagendamento();
@@ -405,15 +412,27 @@ public class ProvaBean implements Serializable {
         }
     }
     
+    /**
+     * Exibe o modal de reagendamento.
+     */
     public void exibirModalReagendamento(){
         exibirModalReagendamento = true;
     }
     
+    /**
+     * Fecha o modal de reagendamento.
+     */
     public void fecharModalReagendamento(){
         exibirModalReagendamento = false;
         buscarProvas();
     }
     
+    /**
+     * Valida se a data de início de uma prova em andamento foi
+     * alterada.
+     * 
+     * @throws ValidacaoException 
+     */
     private void validarReagendamento() throws ValidacaoException {
         if(prova.getDataHoraInicio().getTime() != dataHoraInicioReagendamento.getTime() && prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("prova.reagendamento.data.inicio.em.andamento"));

@@ -130,8 +130,7 @@ and open the template in the editor.
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12 form-group">
                         <label for="lbTitulo">#{msg['label.titulo']}: </label>
-                        <span id="lbTitulo"> #{provaBean.prova.titulo}</span>
-                        <input type="hidden" />
+                        <p:inputText id="lbTitulo" value="#{provaBean.prova.titulo}" readonly="true" styleClass="form-control" />
                     </p:outputPanel>
                 </p:outputPanel>
 

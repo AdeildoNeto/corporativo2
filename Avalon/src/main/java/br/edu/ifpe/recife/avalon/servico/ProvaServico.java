@@ -109,6 +109,12 @@ public class ProvaServico {
         validarDataHoraProva(prova);
     }
     
+    /**
+     * Valida se as datas da prova são validas.
+     * 
+     * @param prova
+     * @throws ValidacaoException 
+     */
     private void validarDataHoraProva(Prova prova) throws ValidacaoException{
         Calendar calendarInicio = Calendar.getInstance();
         Calendar calendarFim = Calendar.getInstance();
@@ -243,6 +249,13 @@ public class ProvaServico {
         return null;
     }
     
+    /**
+     * Recupera o histórico de uma prova de um aluno.
+     * 
+     * @param aluno
+     * @param prova
+     * @return 
+     */
     public ProvaAluno buscarProvaAluno(Usuario aluno, Prova prova) {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorAlunoProva",
                 ProvaAluno.class);
