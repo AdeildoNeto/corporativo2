@@ -52,10 +52,7 @@ public class ReagendarProvaSteps {
     
     @E("^alterar apenas a data fim de reagendamento$")
     public void alterarApenasDataFim() throws Throwable {
-        Calendar calendar = Calendar.getInstance();
-        String dataFim = formatarData(calendar);
-        BrowserManager.getDriver().findElement(By.id("formReagendamento:calDataHoraFimReagendamento_input")).click();
-        BrowserManager.getDriver().findElement(By.id("formReagendamento:calDataHoraFimReagendamento_input")).sendKeys(dataFim);
+        alterarDataFim();
     }
 
     @E("^clicar no botão reagendar$")
