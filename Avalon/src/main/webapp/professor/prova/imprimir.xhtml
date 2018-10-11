@@ -76,10 +76,10 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel id="button-container" class="row buttons-save">
                 <p:outputPanel class="offset-md-9 col-md-2 form-group">
-                    <p:commandButton id="btn" value="#{msg['btn.imprimir']}" update="@form"
-                                     action="#{provaBean.imprimirProva()}" onclick="PF('block').show()"
+                    <p:commandLink id="btn" value="#{msg['btn.imprimir']}" ajax="false"
+                                     action="#{provaBean.imprimirPdf()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
-                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                                     class="btn bg-default btn-block font-color-default" />
                 </p:outputPanel>
             </p:outputPanel>
 

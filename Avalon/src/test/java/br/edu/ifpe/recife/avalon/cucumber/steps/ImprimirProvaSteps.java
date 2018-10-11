@@ -31,44 +31,11 @@ public class ImprimirProvaSteps {
         BrowserManager.getDriver().findElement(By.id("form:btn")).click();
         BrowserManager.waitTime(1000);
     }
-
-    @Entao("^será exibido em uma nova aba a prova com as questões discursivas selecionadas$")
-    public void imprimirProvaDiscursiva() {
-        mudarAbaImpressao();
-        int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'prova-alternativa')]")).size();
-        assertTrue(questoes == 0);
-        fecharAbaImpressao();
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido em uma nova aba a prova com as questões de verdadeiro ou falso selecionadas$")
-    public void imprimirProvaVF() {
-        mudarAbaImpressao();
-        int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'VERDADEIRO_FALSO')]")).size();
-        assertTrue(questoes > 0);
-        fecharAbaImpressao();
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido em uma nova aba a prova com as questões de múltipla escolha selecionadas$")
+    
+    @Entao("^será gerado o pdf da prova com as questões selecionadas$")
     public void imprimirProvaMultiplaEscolha() throws Throwable {
-        mudarAbaImpressao();
-        int questoes = BrowserManager.getDriver().findElements(By.xpath("//div[contains(@class, 'MULTIPLA_ESCOLHA')]")).size();
-        assertTrue(questoes > 0);
-        fecharAbaImpressao();
+        BrowserManager.waitTime(1000);
         LoginSteps.logout();
     }
     
-    private void mudarAbaImpressao(){
-        for (String curWindow : BrowserManager.getDriver().getWindowHandles()) {
-            BrowserManager.getDriver().switchTo().window(curWindow);
-        }
-    }
-
-    private void fecharAbaImpressao() {
-        BrowserManager.getDriver().close();
-        BrowserManager.getDriver().switchTo().window(abaPrincipal);
-        BrowserManager.waitTime(1000);
-    }
-
 }

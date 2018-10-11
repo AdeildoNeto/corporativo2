@@ -137,6 +137,14 @@ public class Questao implements Serializable {
         StringBuilder sb = new StringBuilder();
         return sb.toString();
     }
+    
+    public String formatarEnunciado(int numeroQuestao){
+        StringBuilder sb = new StringBuilder();
+        sb.append(numeroQuestao);
+        sb.append(") ");
+        sb.append(enunciado);
+        return sb.toString();
+    }
 
     public Long getId() {
         return id;

@@ -17,12 +17,17 @@ import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
+import br.edu.ifpe.recife.avalon.viewhelper.PdfGeneratorViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URL;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
@@ -63,7 +69,7 @@ public class ProvaBean implements Serializable {
 
     @EJB
     private ComponenteCurricularServico componenteServico;
-    
+
     @EJB
     private ProvaServico provaServico;
 
@@ -72,7 +78,7 @@ public class ProvaBean implements Serializable {
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
     private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-    
+
     private Usuario usuarioLogado;
     private List<Questao> questoes;
     private List<Prova> provas;
@@ -80,14 +86,14 @@ public class ProvaBean implements Serializable {
     private boolean todosSelecionados;
     private boolean exibirModalExclusao;
     private Prova prova;
-    
+
     private List<ProvaAluno> resultados;
     private ProvaAluno provaAlunoDetalhe;
     private Prova provaResultadoSelecionada;
     private boolean exibirModalReagendamento;
     private Date dataHoraInicioReagendamento;
     private Date dataHoraFimReagendamento;
-   
+
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
      */
@@ -102,47 +108,47 @@ public class ProvaBean implements Serializable {
         prova = new Prova();
         provas = new ArrayList<>();
     }
-    
+
     /**
      * Inicializa a página de listar provas.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String iniciarPagina(){
+    public String iniciarPagina() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         limparPagina();
         buscarProvas();
-        
+
         return GO_LISTAR_PROVA;
     }
-    
+
     /**
      * Inicializa a página de gerar nova prova.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String iniciarPaginaGerar(){
+    public String iniciarPaginaGerar() {
         inicializarHelpers(true);
         limparPaginaGerar();
-        
+
         return GO_GERAR_PROVA;
     }
-    
+
     /**
      * Inicializa a página de detalhar prova.
-     * 
+     *
      * @param provaSelecionada
-     * @return 
+     * @return
      */
-    public String iniciarPaginaDetalhar(Prova provaSelecionada){
+    public String iniciarPaginaDetalhar(Prova provaSelecionada) {
         prova = provaSelecionada;
         carregarQuestoesDetalhar();
         return GO_DETALHAR_PROVA;
     }
-    
+
     /**
-     * Inicializa a página para imprimir uma prova.
-     * 
+     * Inicializa a página para gerarArquivo uma prova.
+     *
      * @return rota para página de geração de prova
      */
     public String iniciarPaginaImprimir() {
@@ -151,24 +157,24 @@ public class ProvaBean implements Serializable {
 
         return GO_IMPRIMIR_PROVA;
     }
-    
+
     /**
      * Inicializa a página de resultados de uma prova.
-     * 
+     *
      * @param prova
-     * @return 
+     * @return
      */
-    public String iniciarPaginaResultados(Prova prova){
+    public String iniciarPaginaResultados(Prova prova) {
         provaResultadoSelecionada = prova;
         buscarResultados(prova);
-        
+
         return GO_RESULTADOS_PROVA;
     }
-    
+
     /**
      * Carrega as provas do professor logado.
      */
-    private void buscarProvas(){
+    private void buscarProvas() {
         this.provas.clear();
         this.provas = provaServico.buscarProvasPorProfessor(usuarioLogado.getEmail());
     }
@@ -182,20 +188,20 @@ public class ProvaBean implements Serializable {
         this.todosSelecionados = false;
         this.questoes = pesquisarQuestoesViewHelper.pesquisar();
     }
-    
+
     /**
      * Recupera todos os resultados dos alunos em uma prova.
-     * 
-     * @param prova 
+     *
+     * @param prova
      */
-    private void buscarResultados(Prova prova){
+    private void buscarResultados(Prova prova) {
         resultados = provaServico.buscarResultadosProva(prova);
     }
-    
+
     /**
      * Limpa a página Listar Provas.
      */
-    private void limparPagina(){
+    private void limparPagina() {
         prova = new Prova();
         fecharModalExclusao();
         fecharModalReagendamento();
@@ -204,33 +210,33 @@ public class ProvaBean implements Serializable {
     /**
      * Limpra a página de geração de provas.
      */
-    private void limparPaginaGerar(){
+    private void limparPaginaGerar() {
         prova = new Prova();
         inicializarQuestoes();
     }
-    
+
     /**
      * Limpa os campos da tela de geração de provas.
      */
     private void limparPaginaImprimir() {
         inicializarQuestoes();
     }
-    
+
     /**
      * Inicializa os componentes de questão.
      */
-    private void inicializarQuestoes(){
+    private void inicializarQuestoes() {
         todosSelecionados = false;
         questoesSelecionadas.clear();
         questoes.clear();
     }
-    
+
     /**
      * Inicializa os ViewHelpers.
-     * 
-     * @param apenasQuestoesObjetivas 
+     *
+     * @param apenasQuestoesObjetivas
      */
-    private void inicializarHelpers(boolean apenasQuestoesObjetivas){
+    private void inicializarHelpers(boolean apenasQuestoesObjetivas) {
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
         pesquisarQuestoesViewHelper.inicializar(questaoServico, usuarioLogado, apenasQuestoesObjetivas);
@@ -238,7 +244,7 @@ public class ProvaBean implements Serializable {
 
     /**
      * Seleciona uma questão da lista de questões.
-     * 
+     *
      * @param questao - questão selecionada.
      */
     public void selecionarQuestao(Questao questao) {
@@ -263,7 +269,7 @@ public class ProvaBean implements Serializable {
     /**
      * Exibe mensagem na tela.
      */
-     private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
+    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
         FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
@@ -294,7 +300,7 @@ public class ProvaBean implements Serializable {
 
     /**
      * Monta a URL da página de impressão da prova.
-     * 
+     *
      * @return url da prova.
      */
     private String montarUrlProva() {
@@ -304,47 +310,48 @@ public class ProvaBean implements Serializable {
         builder.append(path);
         builder.append("/professor/prova/impressao.xhtml");
         builder.append("')");
-        
+
         return builder.toString();
     }
-    
+
     /**
      * Seleciona uma prova para exclusão.
+     *
      * @param provaSelecionada - prova selecionada.
      */
-    public void selecionarProvaExclusao(Prova provaSelecionada){
+    public void selecionarProvaExclusao(Prova provaSelecionada) {
         prova = provaSelecionada;
         exibirModalExclusao();
     }
-    
+
     /**
      * Exclui uma prova selecionada.
      */
-    public void excluirProva(){
+    public void excluirProva() {
         provaServico.excluir(prova);
         provas.remove(prova);
     }
-    
+
     /**
      * Exibe o modal de exclusão.
      */
-    private void exibirModalExclusao(){
+    private void exibirModalExclusao() {
         exibirModalExclusao = true;
     }
-    
+
     /**
      * Fecha o modal de exclusão.
      */
-    public void fecharModalExclusao(){
+    public void fecharModalExclusao() {
         exibirModalExclusao = false;
     }
-    
+
     /**
      * Salva uma nova prova.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String adicionarProva(){
+    public String adicionarProva() {
         String navegacao = null;
 
         try {
@@ -361,12 +368,12 @@ public class ProvaBean implements Serializable {
 
         return navegacao;
     }
-    
+
     /**
      * Inicializa a lista de questões a detalhar.
      */
-    private void carregarQuestoesDetalhar(){
-        
+    private void carregarQuestoesDetalhar() {
+
         if (!prova.getQuestoes().isEmpty()) {
             try {
 
@@ -385,22 +392,23 @@ public class ProvaBean implements Serializable {
             }
         }
     }
-    
+
     /**
      * Seleciona uma prova para reagendamento.
-     * @param provaSelecionada 
+     *
+     * @param provaSelecionada
      */
-    public void selecionarProvaReagendamento(Prova provaSelecionada){
+    public void selecionarProvaReagendamento(Prova provaSelecionada) {
         prova = provaSelecionada;
         dataHoraInicioReagendamento = new Date(prova.getDataHoraInicio().getTime());
         dataHoraFimReagendamento = new Date(prova.getDataHoraFim().getTime());
         exibirModalReagendamento();
     }
-    
+
     /**
      * Reagenda uma prova.
      */
-    public void reagendarProva(){
+    public void reagendarProva() {
         try {
             validarReagendamento();
             prova.setDataHoraInicio(dataHoraInicioReagendamento);
@@ -411,36 +419,36 @@ public class ProvaBean implements Serializable {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
-    
+
     /**
      * Exibe o modal de reagendamento.
      */
-    public void exibirModalReagendamento(){
+    public void exibirModalReagendamento() {
         exibirModalReagendamento = true;
     }
-    
+
     /**
      * Fecha o modal de reagendamento.
      */
-    public void fecharModalReagendamento(){
+    public void fecharModalReagendamento() {
         exibirModalReagendamento = false;
         buscarProvas();
     }
-    
+
     /**
-     * Valida se a data de início de uma prova em andamento foi
-     * alterada.
-     * 
-     * @throws ValidacaoException 
+     * Valida se a data de início de uma prova em andamento foi alterada.
+     *
+     * @throws ValidacaoException
      */
     private void validarReagendamento() throws ValidacaoException {
-        if(prova.getDataHoraInicio().getTime() != dataHoraInicioReagendamento.getTime() && prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
+        if (prova.getDataHoraInicio().getTime() != dataHoraInicioReagendamento.getTime() && prova.getDataHoraInicio().before(Calendar.getInstance().getTime())) {
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("prova.reagendamento.data.inicio.em.andamento"));
         }
     }
-  
+
     /**
      * Recupera arquivo para exibicao
+     *
      * @return arquivo
      * @throws IOException
      */
@@ -449,13 +457,36 @@ public class ProvaBean implements Serializable {
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             return new DefaultStreamedContent();
-        }
-        else {
+        } else {
             String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
             Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
             DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
             return arquivo;
         }
+    }
+
+    public String imprimirPdf() {
+        try {
+            PdfGeneratorViewHelper pdf = new PdfGeneratorViewHelper();
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+            
+            response.reset();   // Algum filtro pode ter configurado alguns cabeçalhos no buffer de antemão. Queremos livrar-se deles, senão ele pode colidir.
+            response.setHeader("Content-Type", "application/pdf");  // Define apenas o tipo de conteúdo, Utilize se necessário ServletContext#getMimeType() para detecção automática com base em nome de arquivo.
+            response.setHeader("Content-Disposition", "attachment;"+"filename=Prova_"+System.currentTimeMillis()+".pdf");
+            
+            OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
+            List<Questao> questoesImpressao = new ArrayList<>();
+            questoesImpressao.addAll(questoesSelecionadas);
+            
+            pdf.gerarArquivo(responseOutputStream, questoesImpressao);
+            
+            facesContext.responseComplete();
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
     }
 
     /*
@@ -492,7 +523,7 @@ public class ProvaBean implements Serializable {
     public VisualizarAvaliacaoViewHelper getVisualizarViewHelper() {
         return visualizarViewHelper;
     }
-    
+
     public Prova getProva() {
         return prova;
     }
@@ -504,7 +535,7 @@ public class ProvaBean implements Serializable {
     public boolean isExibirModalExclusao() {
         return exibirModalExclusao;
     }
-    
+
     public List<ProvaAluno> getResultados() {
         return resultados;
     }
