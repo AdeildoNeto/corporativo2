@@ -18,24 +18,17 @@ import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PdfGeneratorViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
 import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
-import java.net.URL;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -54,7 +47,7 @@ import org.primefaces.model.StreamedContent;
  */
 @Named(value = ProvaBean.NOME)
 @SessionScoped
-public class ProvaBean implements Serializable {
+public class ProvaBean extends AvaliacaoBean {
 
     public static final String NOME = "provaBean";
     private static final String GO_GERAR_PROVA = "goGerarProva";
@@ -76,14 +69,10 @@ public class ProvaBean implements Serializable {
     private final VisualizarAvaliacaoViewHelper visualizarViewHelper;
     private final ComponenteCurricularViewHelper componenteViewHelper;
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
-    private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     private Usuario usuarioLogado;
-    private List<Questao> questoes;
     private List<Prova> provas;
-    private Set<Questao> questoesSelecionadas;
-    private boolean todosSelecionados;
     private boolean exibirModalExclusao;
     private Prova prova;
 
@@ -101,10 +90,7 @@ public class ProvaBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();
         detalhesViewHelper = new QuestaoDetalhesViewHelper();
-        pesquisarQuestoesViewHelper = new PesquisarQuestaoViewHelper();
         visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
-        questoes = new ArrayList<>();
-        questoesSelecionadas = new HashSet<>();
         prova = new Prova();
         provas = new ArrayList<>();
     }
@@ -179,15 +165,6 @@ public class ProvaBean implements Serializable {
         this.provas = provaServico.buscarProvasPorProfessor(usuarioLogado.getEmail());
     }
 
-    /**
-     * Carrega as as questões do a partir do filtro informado.
-     */
-    private void buscarQuestoes() {
-        this.questoes.clear();
-        this.questoesSelecionadas.clear();
-        this.todosSelecionados = false;
-        this.questoes = pesquisarQuestoesViewHelper.pesquisar();
-    }
 
     /**
      * Recupera todos os resultados dos alunos em uma prova.
@@ -222,14 +199,7 @@ public class ProvaBean implements Serializable {
         inicializarQuestoes();
     }
 
-    /**
-     * Inicializa os componentes de questão.
-     */
-    private void inicializarQuestoes() {
-        todosSelecionados = false;
-        questoesSelecionadas.clear();
-        questoes.clear();
-    }
+    
 
     /**
      * Inicializa os ViewHelpers.
@@ -239,59 +209,14 @@ public class ProvaBean implements Serializable {
     private void inicializarHelpers(boolean apenasQuestoesObjetivas) {
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
-        pesquisarQuestoesViewHelper.inicializar(questaoServico, usuarioLogado, apenasQuestoesObjetivas);
-    }
-
-    /**
-     * Seleciona uma questão da lista de questões.
-     *
-     * @param questao - questão selecionada.
-     */
-    public void selecionarQuestao(Questao questao) {
-        if (questao.isSelecionada()) {
-            questoesSelecionadas.add(questao);
-        } else {
-            questoesSelecionadas.remove(questao);
-            todosSelecionados = false;
-        }
-    }
-
-    /**
-     * Pesquisa as questões disponíveis para impressão.
-     */
-    public void pesquisar() {
-        buscarQuestoes();
-        if (questoes.isEmpty()) {
-            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
-        }
-    }
-
-    /**
-     * Exibe mensagem na tela.
-     */
-    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-    }
-
-    /**
-     * Marca ou desmarca todas as questões disponíveis para impressão.
-     */
-    public void selecionarTodos() {
-        questoesSelecionadas = new HashSet<>();
-
-        for (Questao questao : questoes) {
-            questao.setSelecionada(todosSelecionados);
-            selecionarQuestao(questao);
-        }
-
+        getPesquisarQuestoesViewHelper().inicializar(questaoServico, usuarioLogado, apenasQuestoesObjetivas);
     }
 
     /**
      * Gera uma prova a partir das questões selecionada.
      */
     public void imprimirProva() {
-        if (questoesSelecionadas.isEmpty()) {
+        if (getQuestoesSelecionadas().isEmpty()) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("selecione.uma.questao"));
         } else {
             RequestContext.getCurrentInstance().execute(montarUrlProva());
@@ -355,11 +280,11 @@ public class ProvaBean implements Serializable {
         String navegacao = null;
 
         try {
-            prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
+            prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
             prova.setDataCriacao(Calendar.getInstance().getTime());
             prova.setProfessor(usuarioLogado);
             prova.setQuestoes(new ArrayList<Questao>());
-            prova.getQuestoes().addAll(questoesSelecionadas);
+            prova.getQuestoes().addAll(getQuestoesSelecionadas());
             provaServico.salvar(prova);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -477,7 +402,7 @@ public class ProvaBean implements Serializable {
             
             OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
             List<Questao> questoesImpressao = new ArrayList<>();
-            questoesImpressao.addAll(questoesSelecionadas);
+            questoesImpressao.addAll(getQuestoesSelecionadas());
             
             pdf.gerarArquivo(responseOutputStream, questoesImpressao);
             
@@ -492,22 +417,6 @@ public class ProvaBean implements Serializable {
     /*
         GETTERS AND SETTERS
      */
-    public List<Questao> getQuestoes() {
-        return questoes;
-    }
-
-    public boolean isTodosSelecionados() {
-        return todosSelecionados;
-    }
-
-    public void setTodosSelecionados(boolean todosSelecionados) {
-        this.todosSelecionados = todosSelecionados;
-    }
-
-    public Set<Questao> getQuestoesSelecionadas() {
-        return questoesSelecionadas;
-    }
-
     public ComponenteCurricularViewHelper getComponenteViewHelper() {
         return componenteViewHelper;
     }
@@ -515,11 +424,7 @@ public class ProvaBean implements Serializable {
     public QuestaoDetalhesViewHelper getDetalhesViewHelper() {
         return detalhesViewHelper;
     }
-
-    public PesquisarQuestaoViewHelper getPesquisarQuestoesViewHelper() {
-        return pesquisarQuestoesViewHelper;
-    }
-
+    
     public VisualizarAvaliacaoViewHelper getVisualizarViewHelper() {
         return visualizarViewHelper;
     }

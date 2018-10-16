@@ -5,23 +5,17 @@
  */
 package br.edu.ifpe.recife.avalon.model.prova;
 
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,7 +23,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -58,33 +51,8 @@ import javax.validation.constraints.Size;
             )
         }
 )
-public class Prova implements Serializable {
+public class Prova extends Avaliacao {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PROVA")
-    private Long id;
-
-    @NotNull(message = "{prova.titulo.obrigatorio}")
-    @Size(max = 40, message = "{titulo.tamanho.maximo}")
-    @Column(name = "TXT_TITULO")
-    private String titulo;
-
-    @NotNull(message = "{professor.obrigatorio}")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario professor;
-
-    @NotNull(message = "{componente.curricular.obrigatorio}")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
-    private ComponenteCurricular componenteCurricular;
-
-    @NotNull(message = "{prova.data.criacao.obrigatoria}")
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DT_CRIACAO")
-    private Date dataCriacao;
-    
     @NotNull(message = "{prova.data.hora.fim.obrigatoria}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DH_INICIO")
@@ -95,59 +63,16 @@ public class Prova implements Serializable {
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
     
-    @Column(name = "SN_ATIVA", nullable = false)
-    private boolean ativa = true;
-    
     @Transient
     private Long duracao;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_QUESTAO_PROVA", joinColumns = {
-        @JoinColumn(name = "ID_PROVA")},
+        @JoinColumn(name = "ID_AVALIACAO")},
             inverseJoinColumns = {
                 @JoinColumn(name = "ID_QUESTAO")
             })
     private List<Questao> questoes;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Usuario getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Usuario professor) {
-        this.professor = professor;
-    }
-
-    public ComponenteCurricular getComponenteCurricular() {
-        return componenteCurricular;
-    }
-
-    public void setComponenteCurricular(ComponenteCurricular componenteCurricular) {
-        this.componenteCurricular = componenteCurricular;
-    }
-
-    public Date getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(Date dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
 
     public Date getDataHoraInicio() {
         return dataHoraInicio;
@@ -163,14 +88,6 @@ public class Prova implements Serializable {
 
     public void setDataHoraFim(Date dataHoraFim) {
         this.dataHoraFim = dataHoraFim;
-    }
-
-    public boolean isAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(boolean ativa) {
-        this.ativa = ativa;
     }
 
     public List<Questao> getQuestoes() {

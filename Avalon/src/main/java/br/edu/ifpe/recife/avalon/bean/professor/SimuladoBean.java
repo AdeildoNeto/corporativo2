@@ -17,17 +17,13 @@ import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
-import br.edu.ifpe.recife.avalon.viewhelper.PesquisarQuestaoViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -39,7 +35,7 @@ import javax.servlet.http.HttpSession;
  */
 @Named(value = SimuladoBean.NOME)
 @SessionScoped
-public class SimuladoBean implements Serializable {
+public class SimuladoBean extends AvaliacaoBean {
 
     public static final String NOME = "simuladoBean";
     private static final String GO_GERAR_SIMULADO = "goGerarSimulado";
@@ -60,16 +56,12 @@ public class SimuladoBean implements Serializable {
 
     private final ComponenteCurricularViewHelper componenteViewHelper;
     private final QuestaoDetalhesViewHelper detalhesViewHelper;
-    private final PesquisarQuestaoViewHelper pesquisarQuestoesViewHelper;
     private final VisualizarAvaliacaoViewHelper visualizarViewHelper;
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     private final Usuario usuarioLogado;
 
     private Simulado simulado;
-    private List<Questao> questoes;
     private List<Simulado> simulados;
-    private Set<Questao> questoesSelecionadas;
-    private boolean todosSelecionados;
     private boolean exibirModalExclusao;
 
     private List<SimuladoAluno> resultados;
@@ -84,10 +76,7 @@ public class SimuladoBean implements Serializable {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
         componenteViewHelper = new ComponenteCurricularViewHelper();
         detalhesViewHelper = new QuestaoDetalhesViewHelper();
-        pesquisarQuestoesViewHelper = new PesquisarQuestaoViewHelper();
         visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
-        questoes = new ArrayList<>();
-        questoesSelecionadas = new HashSet<>();
         simulado = new Simulado();
     }
 
@@ -111,7 +100,7 @@ public class SimuladoBean implements Serializable {
     public String iniciarPaginaGerar() {
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
-        pesquisarQuestoesViewHelper.inicializar(questaoServico, usuarioLogado, true);
+        getPesquisarQuestoesViewHelper().inicializar(questaoServico, usuarioLogado, true);
         limparTelaGerarSimulado();
 
         return GO_GERAR_SIMULADO;
@@ -192,19 +181,7 @@ public class SimuladoBean implements Serializable {
      */
     private void limparTelaGerarSimulado() {
         simulado = new Simulado();
-        todosSelecionados = false;
-        questoesSelecionadas.clear();
-        questoes.clear();
-    }
-
-    /**
-     * Carrega as questões disponíveis para simulado.
-     */
-    private void buscarQuestoes() {
-        this.questoes.clear();
-        this.questoesSelecionadas.clear();
-        this.todosSelecionados = false;
-        this.questoes = pesquisarQuestoesViewHelper.pesquisar();
+        super.inicializarQuestoes();
     }
 
     /**
@@ -224,51 +201,6 @@ public class SimuladoBean implements Serializable {
     }
 
     /**
-     * Seleciona uma questão da lista de questões.
-     *
-     * @param questao
-     */
-    public void selecionarQuestao(Questao questao) {
-        if (questao.isSelecionada()) {
-            questoesSelecionadas.add(questao);
-        } else {
-            questoesSelecionadas.remove(questao);
-            todosSelecionados = false;
-        }
-    }
-
-    /**
-     * Pesquisa questões disponíveis para simulado.
-     */
-    public void pesquisar() {
-        buscarQuestoes();
-        if (questoes.isEmpty()) {
-            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
-        }
-    }
-
-    /**
-     * Exibe uma mensagem em tela.
-     */
-    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-    }
-
-    /**
-     * Marca ou desmarca todas as questões disponíveis.
-     */
-    public void selecionarTodos() {
-        questoesSelecionadas = new HashSet<>();
-
-        for (Questao questao : questoes) {
-            questao.setSelecionada(todosSelecionados);
-            selecionarQuestao(questao);
-        }
-
-    }
-
-    /**
      * Salva um novo simulado.
      *
      * @return navegacao
@@ -277,11 +209,11 @@ public class SimuladoBean implements Serializable {
         String navegacao = null;
 
         try {
-            simulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(pesquisarQuestoesViewHelper.getFiltro().getIdComponenteCurricular()));
+            simulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
             simulado.setDataCriacao(Calendar.getInstance().getTime());
             simulado.setProfessor(usuarioLogado);
             simulado.setQuestoes(new ArrayList<Questao>());
-            simulado.getQuestoes().addAll(questoesSelecionadas);
+            simulado.getQuestoes().addAll(getQuestoesSelecionadas());
             simuladoServico.salvar(simulado);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -324,22 +256,6 @@ public class SimuladoBean implements Serializable {
         exibirModalExclusao = false;
     }
 
-    public List<Questao> getQuestoes() {
-        return questoes;
-    }
-
-    public boolean isTodosSelecionados() {
-        return todosSelecionados;
-    }
-
-    public void setTodosSelecionados(boolean todosSelecionados) {
-        this.todosSelecionados = todosSelecionados;
-    }
-
-    public Set<Questao> getQuestoesSelecionadas() {
-        return questoesSelecionadas;
-    }
-
     public Simulado getSimulado() {
         return simulado;
     }
@@ -350,10 +266,6 @@ public class SimuladoBean implements Serializable {
 
     public QuestaoDetalhesViewHelper getDetalhesViewHelper() {
         return detalhesViewHelper;
-    }
-
-    public PesquisarQuestaoViewHelper getPesquisarQuestoesViewHelper() {
-        return pesquisarQuestoesViewHelper;
     }
 
     public List<Simulado> getSimulados() {

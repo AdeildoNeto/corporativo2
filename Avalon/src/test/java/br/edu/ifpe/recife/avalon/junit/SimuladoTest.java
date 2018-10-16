@@ -248,20 +248,10 @@ public class SimuladoTest {
 
         simuladoServico.salvarSimuladoAluno(simuladoAluno);
     }
-
-    @Test(expected = EJBException.class)
-    public void t13_salvarSimuladoAlunoSemDHFim() throws ValidacaoException {
-        logger.info("Executando t13: salvarSimuladoAlunoSemDHFim");
-        SimuladoAluno simuladoAluno = new SimuladoAluno();
-        preencherSimuladoAluno(simuladoAluno);
-        simuladoAluno.setDataHoraFim(null);
-
-        simuladoServico.salvarSimuladoAluno(simuladoAluno);
-    }
     
     @Test
-    public void t14_salvarSimuladoAluno() throws ValidacaoException, InterruptedException {
-        logger.info("Executando t14: salvarSimuladoAluno");
+    public void t13_salvarSimuladoAluno() throws ValidacaoException, InterruptedException {
+        logger.info("Executando t13: salvarSimuladoAluno");
         SimuladoAluno simuladoAluno = new SimuladoAluno();
         preencherSimuladoAluno(simuladoAluno);
 
@@ -271,8 +261,8 @@ public class SimuladoTest {
     }
     
     @Test
-    public void t15_listarResultadosSimuladoAluno() {
-        logger.info("Executando t15: listarResultadosSimuladoAluno");
+    public void t14_listarResultadosSimuladoAluno() {
+        logger.info("Executando t14: listarResultadosSimuladoAluno");
         Simulado simulado = simuladoServico.buscarSimuladoPorId(1l);
         List<SimuladoAluno> resultados = simuladoServico.buscarResultadosSimulado(simulado);
 

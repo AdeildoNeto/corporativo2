@@ -244,7 +244,7 @@ public class ProvaTest {
 
         provaServico.salvarProvaAluno(provaAluno);
     }
-    
+
     @Test(expected = ValidacaoException.class)
     public void t19_salvarProvaDHInicioInvalida() throws ValidacaoException, InterruptedException {
         logger.info("Executando t19: salvarProvaDHInicioInvalida");
@@ -265,7 +265,7 @@ public class ProvaTest {
         preencherProvaAluno(provaAluno);
 
         provaServico.salvarProvaAluno(provaAluno);
-        
+
         assertTrue(provaAluno.getId() > 0);
     }
 
@@ -276,7 +276,7 @@ public class ProvaTest {
 
         assertTrue(lista.isEmpty());
     }
-    
+
     @Test
     public void t22_listarResultadosProvaAluno() {
         logger.info("Executando t22: listarResultadosProvaAluno");

@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.model.prova;
 
+import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvalicao;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
@@ -28,56 +29,12 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "TB_PROVA_ALUNO_QUESTAO")
-public class ProvaAlunoQuestao implements Serializable {
+public class ProvaAlunoQuestao extends QuestaoAvalicao {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
-
-    @NotNull(message = "{questao.obrigatoria}")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
-    private Questao questao;
-
-    @Column(name = "SN_RESPOSTA_VF")
-    private Boolean respostaVF;
-    
-    @Column(name = "IDX_RESPOSTA_MULTIPLA_ESCOLHA")
-    private Integer respostaMultiplaEscolha;
-    
     @NotNull(message = "{prova.obrigatoria}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_PROVA_ALUNO", referencedColumnName = "ID_PROVA_ALUNO")
+    @JoinColumn(name = "ID_AVALIACAO_ALUNO", referencedColumnName = "ID_AVALIACAO_ALUNO")
     private ProvaAluno provaAluno;
-
-    public boolean getRespostaCorreta(){
-        return ((VerdadeiroFalso) questao).getResposta();
-    }
-    
-    public char getAlternativaCorreta(){
-        return (char) (65 + ((MultiplaEscolha) questao).getOpcaoCorreta());
-    }
-    
-    public List<Alternativa> getAlternativas(){
-        return ((MultiplaEscolha) questao).getAlternativas();
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Questao getQuestao() {
-        return questao;
-    }
-
-    public void setQuestao(Questao questao) {
-        this.questao = questao;
-    }
 
     public ProvaAluno getProvaAluno() {
         return provaAluno;
@@ -87,20 +44,6 @@ public class ProvaAlunoQuestao implements Serializable {
         this.provaAluno = provaAluno;
     }
 
-    public Boolean getRespostaVF() {
-        return respostaVF;
-    }
-
-    public void setRespostaVF(Boolean respostaVF) {
-        this.respostaVF = respostaVF;
-    }
-
-    public Integer getRespostaMultiplaEscolha() {
-        return respostaMultiplaEscolha;
-    }
-
-    public void setRespostaMultiplaEscolha(Integer respostaMultiplaEscolha) {
-        this.respostaMultiplaEscolha = respostaMultiplaEscolha;
-    }
+    
     
 }
