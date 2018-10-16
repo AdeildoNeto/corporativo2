@@ -7,20 +7,16 @@ package br.edu.ifpe.recife.avalon.bean.aluno;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
-import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarSimuladoViewHelper;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,10 +29,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.servlet.http.HttpSession;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -54,9 +47,6 @@ public class SimuladoAlunoBean implements Serializable {
     private static final String SIMULADO_VAZIO = "simulado.vazio";
     private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
     private static final String PESQUISA_SEM_DADOS = "pesquisa.sem.dados";
-
-    @EJB
-    private QuestaoServico questaoServico;
 
     @EJB
     private SimuladoServico simuladoServico;
@@ -119,6 +109,12 @@ public class SimuladoAlunoBean implements Serializable {
         questoesMultiplaEscolha.clear();
         questoesVerdadeiroFalso.clear();
 
+        return carregarQuestoes();
+    }
+    
+    private String carregarQuestoes(){
+        String navegacao = GO_INICIAR_SIMULADO;
+        
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
                 questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) simuladoSelecionado.getQuestoes();
@@ -128,14 +124,11 @@ public class SimuladoAlunoBean implements Serializable {
 
             if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
                 exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
-                return null;
+                navegacao = null;
             }
-        } else {
-            exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
-            return null;
         }
-
-        return GO_INICIAR_SIMULADO;
+        
+        return navegacao;
     }
 
     /**
@@ -267,26 +260,6 @@ public class SimuladoAlunoBean implements Serializable {
     private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
         FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-    }
-
-    /**
-     * Recupera a imagem de uma questão.
-     *
-     * @return
-     * @throws IOException
-     */
-    public StreamedContent getImagem() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
-            Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
-            return new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
-        }
     }
 
     public ComponenteCurricularViewHelper getComponenteViewHelper() {

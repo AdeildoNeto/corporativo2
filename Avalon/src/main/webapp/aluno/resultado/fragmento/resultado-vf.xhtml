@@ -22,7 +22,7 @@ and open the template in the editor.
             </p:selectOneRadio>
             <p:outputPanel class="imagem">
                 <ui:fragment rendered="#{questaoAluno.questao.imagem != null}">
-                    <p:graphicImage value="#{provaBean.image}" width="225px" height="225px">
+                    <p:graphicImage value="#{baseBean.imagem}" width="225px" height="225px">
                         <f:param name="questaoId" value="#{questaoAluno.questao.id}"/>
                     </p:graphicImage>
                 </ui:fragment>

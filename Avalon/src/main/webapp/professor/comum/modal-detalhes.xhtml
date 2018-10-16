@@ -35,7 +35,7 @@ and open the template in the editor.
                 <p:outputPanel class="col-md-12">                  
                     <ui:fragment rendered="#{bean.detalhesViewHelper.questaoDetalhes.imagem != null}">
                         <label for="lbDetalheImagem">#{msg['label.imagem']}: </label>
-                        <p:graphicImage id="lbDetalheImagem" value="#{provaBean.image}" width="25px" height="25px">
+                        <p:graphicImage id="lbDetalheImagem" value="#{baseBean.imagem}" width="25px" height="25px">
                             <f:param name="questaoId" value="#{bean.detalhesViewHelper.questaoDetalhes.id}"/>
                         </p:graphicImage>
                     </ui:fragment>

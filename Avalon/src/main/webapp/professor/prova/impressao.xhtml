@@ -27,7 +27,7 @@ and open the template in the editor.
                     </p:outputPanel>
                      <p:outputPanel class="imagem">
                         <ui:fragment rendered="#{questao.imagem != null}">
-                            <p:graphicImage value="#{provaBean.image}">
+                            <p:graphicImage value="#{baseBean.imagem}">
                                 <f:param name="questaoId" value="#{questao.id}"/>
                             </p:graphicImage>
                         </ui:fragment>

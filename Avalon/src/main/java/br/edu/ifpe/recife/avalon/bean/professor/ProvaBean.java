@@ -20,7 +20,6 @@ import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PdfGeneratorViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.inject.Named;
@@ -34,12 +33,9 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -368,25 +364,6 @@ public class ProvaBean extends AvaliacaoBean {
     private void validarReagendamento() throws ValidacaoException {
         if (prova.getDataHoraInicio().getTime() != dataHoraInicioReagendamento.getTime() && prova.getDataHoraInicio().before(Calendar.getInstance().getTime())) {
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("prova.reagendamento.data.inicio.em.andamento"));
-        }
-    }
-
-    /**
-     * Recupera arquivo para exibicao
-     *
-     * @return arquivo
-     * @throws IOException
-     */
-    public StreamedContent getImage() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        } else {
-            String questaoId = context.getExternalContext().getRequestParameterMap().get("questaoId");
-            Questao questao = questaoServico.buscarQuestaoPorId(Long.valueOf(questaoId));
-            DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
-            return arquivo;
         }
     }
 
