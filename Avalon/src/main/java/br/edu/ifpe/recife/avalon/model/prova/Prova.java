@@ -63,6 +63,9 @@ public class Prova extends Avaliacao {
     @Column(name = "DH_FIM")
     private Date dataHoraFim;
     
+    @Column(name = "SN_LIBERAR_RESULTADO")
+    private boolean liberarResultado = true;
+    
     @Transient
     private Long duracao;
 
@@ -96,6 +99,14 @@ public class Prova extends Avaliacao {
 
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
+    }
+
+    public boolean isLiberarResultado() {
+        return liberarResultado;
+    }
+
+    public void setLiberarResultado(boolean liberarResultado) {
+        this.liberarResultado = liberarResultado;
     }
 
     public Long getDuracao() {

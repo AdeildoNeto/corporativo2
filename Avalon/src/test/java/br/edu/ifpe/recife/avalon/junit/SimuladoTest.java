@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,10 +7,10 @@ package br.edu.ifpe.recife.avalon.junit;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;

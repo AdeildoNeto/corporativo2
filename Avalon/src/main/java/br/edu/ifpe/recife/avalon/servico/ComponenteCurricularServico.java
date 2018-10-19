@@ -6,7 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.List;
 import javax.annotation.Resource;

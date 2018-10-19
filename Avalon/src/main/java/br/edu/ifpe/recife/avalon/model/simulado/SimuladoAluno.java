@@ -6,8 +6,6 @@
 package br.edu.ifpe.recife.avalon.model.simulado;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.AvaliacaoAluno;
-import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

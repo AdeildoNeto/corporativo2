@@ -7,10 +7,10 @@ package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.List;
@@ -178,6 +178,7 @@ public class QuestaoServico implements Serializable{
         query.setParameter("enunciado", PERCENT.concat(filtro.getEnunciado()).concat(PERCENT));
         query.setParameter("idComponenteCurricular", filtro.getIdComponenteCurricular());
         query.setParameter("nomeProfessor", PERCENT.concat(filtro.getNomeProfessor()).concat(PERCENT));
+        query.setParameter("questaoSimulado", filtro.getQuestaoSimulado());
         
         return query.getResultList();
     }

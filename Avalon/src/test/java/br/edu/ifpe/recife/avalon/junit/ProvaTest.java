@@ -10,9 +10,9 @@ import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAlunoQuestao;
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
@@ -284,6 +284,14 @@ public class ProvaTest {
         List<ProvaAluno> resultados = provaServico.buscarResultadosProva(provas.get(0));
 
         assertTrue(!resultados.isEmpty());
+    }
+    
+    @Test
+    public void t22_validarResultadoNaoExibido() {
+        logger.info("Executando t22: validarResultadoNaoExibido");
+        List<ProvaAluno> provas = provaServico.buscarResultadosProvasAluno(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
+        
+        assertTrue(provas.isEmpty());
     }
 
     @Test

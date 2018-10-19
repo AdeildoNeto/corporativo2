@@ -36,6 +36,11 @@ label{
     margin-bottom: 30px;
 }
 
+.margin-top-bottom-10{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 /* Dialog */
 .ui-dialog .ui-dialog-titlebar{
     display: -webkit-box;

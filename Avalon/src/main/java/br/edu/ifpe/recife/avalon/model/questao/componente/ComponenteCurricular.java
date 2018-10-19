@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.questao;
+package br.edu.ifpe.recife.avalon.model.questao.componente;
 
+import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;

@@ -49,7 +49,7 @@ public class ProvaServico {
     private static final String DATA_INICIO_ANTERIOR_DATA_ATUAL = "prova.data.inicia.anterior.data.atual";
     private static final String DATA_INICIO_MAIOR_DATA_FIM = "prova.data.inicio.maior.data.fim";
     private static final String DISPONIBILIDADE_MINIMA = "prova.disponibilidade.minima";
-    private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";    
+    private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";
     private static final int PARAM_MIN_DISPONIBILIDADE_MINUTOS = 30;
     private static final int PARAM_MAX_DISPONIBILIDADE_HORAS = 5;
 
@@ -94,34 +94,43 @@ public class ProvaServico {
 
     /**
      * Valida se o período de disponibilidade da prova.
-     * 
+     *
      * @param prova
-     * @throws ValidacaoException - Lançada quando:
-     * A data de início da disponibilidade for maior que a data de fim.
-     * A disponiblidade for menor que 30 minutos.
-     * A dispobilidade for maior que 5 horas.
+     * @throws ValidacaoException - Lançada quando: A data de início da
+     * disponibilidade for maior que a data de fim. A disponiblidade for menor
+     * que 30 minutos. A dispobilidade for maior que 5 horas.
      */
-    private void validarDisponibilidade(@Valid Prova prova) throws ValidacaoException {
-        if(prova.getDataHoraInicio().before(Calendar.getInstance().getTime())){
+    private void validarDisponibilidade(@Valid Prova prova) throws ValidacaoException, ValidacaoException, ValidacaoException {
+        if (prova.getDataHoraInicio().before(Calendar.getInstance().getTime())) {
             throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_ANTERIOR_DATA_ATUAL));
         }
 
         validarDataHoraProva(prova);
     }
-    
+
     /**
      * Valida se as datas da prova são validas.
-     * 
+     *
      * @param prova
-     * @throws ValidacaoException 
+     * @throws ValidacaoException
      */
-    private void validarDataHoraProva(Prova prova) throws ValidacaoException{
-        Calendar calendarInicio = Calendar.getInstance();
-        Calendar calendarFim = Calendar.getInstance();
-        
+    private void validarDataHoraProva(Prova prova) throws ValidacaoException {
         if (prova.getDataHoraInicio().after(prova.getDataHoraFim())) {
             throw new ValidacaoException(getMensagemValidacao(DATA_INICIO_MAIOR_DATA_FIM));
         }
+
+        validarLimiteDisponibilidade(prova);
+    }
+
+    /**
+     * Valida se a disponibilidade da prova é válida.
+     *
+     * @param prova
+     * @throws ValidacaoException
+     */
+    private void validarLimiteDisponibilidade(Prova prova) throws ValidacaoException {
+        Calendar calendarInicio = Calendar.getInstance();
+        Calendar calendarFim = Calendar.getInstance();
 
         calendarInicio.setTime(prova.getDataHoraInicio());
         calendarFim.setTime(prova.getDataHoraFim());
@@ -130,23 +139,22 @@ public class ProvaServico {
         if (calendarInicio.after(calendarFim)) {
             throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MINIMA));
         }
-        
-        calendarFim.setTime(prova.getDataHoraFim());
+
         calendarInicio.setTime(prova.getDataHoraInicio());
         calendarInicio.add(Calendar.HOUR, PARAM_MAX_DISPONIBILIDADE_HORAS);
-        
-        if(calendarInicio.before(calendarFim)){
+
+        if (calendarInicio.before(calendarFim)) {
             throw new ValidacaoException(getMensagemValidacao(DISPONIBILIDADE_MAXIMA));
         }
     }
-    
+
     /**
      * Recupera uma mensagem de validação.
-     * 
+     *
      * @param key - chave definida para a mensagem.
      * @return mensagem.
      */
-    private String getMensagemValidacao(String key){
+    private String getMensagemValidacao(String key) {
         return AvalonUtil.getInstance().getMensagemValidacao(key);
     }
 
@@ -186,42 +194,38 @@ public class ProvaServico {
 
     /**
      * Registra a prova realizada pelo aluno.
-     * 
-     * @param provaAluno 
+     *
+     * @param provaAluno
      * @return a prova do aluno
      */
-    public ProvaAluno salvarProvaAluno(@Valid ProvaAluno provaAluno){
-        if(provaAluno.getId() != null){
+    public ProvaAluno salvarProvaAluno(@Valid ProvaAluno provaAluno) {
+        if (provaAluno.getId() != null) {
             provaAluno = entityManager.merge(provaAluno);
-        }else{
+        } else {
             entityManager.persist(provaAluno);
         }
-        
+
         return provaAluno;
     }
 
     /**
      * Consulta todos as provas realizadas por um aluno.
-     * 
-     * @param aluno 
+     *
+     * @param aluno
      * @return lista de provas realizada pelo aluno.
      */
     public List<ProvaAluno> buscarResultadosProvasAluno(Usuario aluno) {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorResultadoAluno",
                 ProvaAluno.class);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-
         query.setParameter("idAluno", aluno.getId());
-        query.setParameter("dhAtual", calendar.getTime());
 
         return query.getResultList();
     }
-    
+
     /**
      * Consulta todos os resultados de uma prova.
-     * 
-     * @param prova 
+     *
+     * @param prova
      * @return provas.
      */
     public List<ProvaAluno> buscarResultadosProva(Prova prova) {
@@ -232,12 +236,12 @@ public class ProvaServico {
 
         return query.getResultList();
     }
-    
+
     /**
      * Recupera uma prova por ID.
-     * 
+     *
      * @param id
-     * @return 
+     * @return
      */
     public Prova buscarProvaPorId(@NotNull Long id) {
         TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorId", Prova.class);
@@ -248,13 +252,13 @@ public class ProvaServico {
         }
         return null;
     }
-    
+
     /**
      * Recupera o histórico de uma prova de um aluno.
-     * 
+     *
      * @param aluno
      * @param prova
-     * @return 
+     * @return
      */
     public ProvaAluno buscarProvaAluno(Usuario aluno, Prova prova) {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorAlunoProva",
@@ -263,8 +267,8 @@ public class ProvaServico {
 
         query.setParameter("idAluno", aluno.getId());
         query.setParameter("idProva", prova.getId());
-        
-        if(!query.getResultList().isEmpty()){
+
+        if (!query.getResultList().isEmpty()) {
             provaAluno = query.getSingleResult();
         }
 
@@ -273,9 +277,9 @@ public class ProvaServico {
 
     /**
      * Reagenda uma prova alterando sua disponibilidade.
-     * 
+     *
      * @param prova
-     * @throws ValidacaoException 
+     * @throws ValidacaoException
      */
     public void reagendarProva(Prova prova) throws ValidacaoException {
         validarDataHoraProva(prova);

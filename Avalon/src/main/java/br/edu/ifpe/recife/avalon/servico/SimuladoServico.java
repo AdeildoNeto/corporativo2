@@ -6,7 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;

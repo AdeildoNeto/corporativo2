@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
@@ -98,13 +99,23 @@ public class SimuladoBean extends AvaliacaoBean {
      * @return navegação.
      */
     public String iniciarPaginaGerar() {
+        FiltroQuestao filtro = inicializarFiltro();
+        
+        
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
-        getPesquisarQuestoesViewHelper().inicializar(questaoServico, usuarioLogado, true);
+        getPesquisarQuestoesViewHelper().inicializar(questaoServico, filtro);
         limparTelaGerarSimulado();
 
         return GO_GERAR_SIMULADO;
 
+    }
+    
+    private FiltroQuestao inicializarFiltro(){
+        FiltroQuestao filtro = new FiltroQuestao(usuarioLogado.getEmail(), true);
+        filtro.setQuestaoSimulado(true);
+        
+        return filtro;
     }
 
     /**

@@ -7,7 +7,7 @@ package br.edu.ifpe.recife.avalon.junit;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import java.util.List;
 import java.util.logging.Level;

@@ -7,11 +7,11 @@ package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.questao.Imagem;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
@@ -106,18 +106,19 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Inicializa os dados necessários para a tela de listar questões.
-     * 
+     *
      * @return goListarQuestao
      */
     public String iniciarPagina() {
         this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+        limparTelaInclusao();
         buscarQuestoes();
         return GO_LISTAR_QUESTAO;
     }
 
     /**
      * Inicializa os dados da tela de inclusão da questão.
-     * 
+     *
      * @return goAddQuestao
      */
     public String iniciarPaginaInclusao() {
@@ -127,7 +128,7 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Inicializa os dados necessários para a tela de alteração da questão.
-     * 
+     *
      * @param questaoSelecionada - a questão selecionada
      * @return goAlterarQuestao
      */
@@ -141,14 +142,13 @@ public class QuestaoBean implements Serializable {
             MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
             this.alternativas = multiplaEscolha.getAlternativas();
             this.opcaoCorreta = multiplaEscolha.getOpcaoCorreta();
-        }else if(TipoQuestaoEnum.VERDADEIRO_FALSO.equals(questao.getTipo())){
+        } else if (TipoQuestaoEnum.VERDADEIRO_FALSO.equals(questao.getTipo())) {
             this.respostaVF = ((VerdadeiroFalso) questao).getResposta();
         }
-        
+
         return GO_ALTERAR_QUESTAO;
     }
-    
-    
+
     /**
      * Limpa os campos da tela de inclusão.
      */
@@ -161,6 +161,13 @@ public class QuestaoBean implements Serializable {
         opcaoCorreta = null;
         imagem = null;
 
+        limparAlternativas();
+    }
+
+    /**
+     * Inicializa as alteranativas de uma questão.
+     */
+    private void limparAlternativas() {
         alternativas = new ArrayList<>();
         alt1 = new Alternativa();
         alt2 = new Alternativa();
@@ -191,30 +198,17 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Salva uma nova questão.
-     * 
+     *
      * @return navegacao
      */
     public String salvar() {
-        String navegacao = GO_LISTAR_QUESTAO;
+        String navegacao;
 
-        QuestaoBean.this.preencherQuestao();
+        preencherQuestao();
 
         try {
-
-            switch (tipoSelecionado) {
-                case MULTIPLA_ESCOLHA:
-                    navegacao = salvarQuestaoMultiplaEscolha();
-                    break;
-                case VERDADEIRO_FALSO:
-                    navegacao = salvarQuestaoVF();
-                    break;
-                default:
-                    questaoServico.salvar(questao);
-                    break;
-            }
-
-            limparTelaInclusao();
-            buscarQuestoes();
+            navegacao = adicionarQuestao();
+            iniciarPagina();
         } catch (ValidacaoException ex) {
             exibirMensagem(ex.getMessage(), MSG_PRINCIPAL);
             navegacao = "";
@@ -224,14 +218,38 @@ public class QuestaoBean implements Serializable {
     }
 
     /**
-     * Salva uma nova questao de múltipla escolha.
+     * Adiciona uma questão no banco de questões.
      * 
+     * @return
+     * @throws ValidacaoException 
+     */
+    private String adicionarQuestao() throws ValidacaoException {
+        String navegacao = GO_LISTAR_QUESTAO;
+
+        switch (tipoSelecionado) {
+            case MULTIPLA_ESCOLHA:
+                navegacao = salvarQuestaoMultiplaEscolha();
+                break;
+            case VERDADEIRO_FALSO:
+                navegacao = salvarQuestaoVF();
+                break;
+            default:
+                questaoServico.salvar(questao);
+                break;
+        }
+
+        return navegacao;
+    }
+
+    /**
+     * Salva uma nova questao de múltipla escolha.
+     *
      * @return navegacao
      */
     private String salvarQuestaoMultiplaEscolha() throws ValidacaoException {
         String navegacao = GO_LISTAR_QUESTAO;
         MultiplaEscolha multiplaEscolha = new MultiplaEscolha();
-        
+
         verificarTodasAlternativasPreenchidas();
         verificarOpcaoCorretaDefinida();
         copiarQuestao(multiplaEscolha);
@@ -242,7 +260,6 @@ public class QuestaoBean implements Serializable {
         alternativas.get(3).setQuestao(multiplaEscolha);
         alternativas.get(4).setQuestao(multiplaEscolha);
 
-        
         multiplaEscolha.setAlternativas(alternativas);
         multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
         questaoServico.salvar(multiplaEscolha);
@@ -252,7 +269,7 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Salva uma nova questão de Verdadeiro ou Falso.
-     * 
+     *
      * @return navegacao
      * @throws ValidacaoException
      */
@@ -280,9 +297,9 @@ public class QuestaoBean implements Serializable {
     }
 
     /**
-     * Copia os dados básicos da questão para instâncias do tipo Múltipla Escolha
-     * ou Verdadeiro ou Falso.
-     * 
+     * Copia os dados básicos da questão para instâncias do tipo Múltipla
+     * Escolha ou Verdadeiro ou Falso.
+     *
      * @param questao - questão que receberá os dados básicos.
      */
     private void copiarQuestao(Questao questao) {
@@ -297,7 +314,7 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Salva as alterações realizadas em uma questão.
-     * 
+     *
      * @return navegacao
      */
     public String salvarEdicao() {
@@ -305,21 +322,14 @@ public class QuestaoBean implements Serializable {
 
         try {
             questao.setComponenteCurricular(buscarComponenteSelecionado());
-            if(questao instanceof MultiplaEscolha){
-                verificarTodasAlternativasPreenchidas();
-                verificarOpcaoCorretaDefinida();
-                MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
-                multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
-                questaoServico.alterar(multiplaEscolha);
-            }else if(questao instanceof VerdadeiroFalso){
-                VerdadeiroFalso verdadeiroFalso = (VerdadeiroFalso) questao;
-                verdadeiroFalso.setResposta(respostaVF);
-                questaoServico.alterar(verdadeiroFalso);
+            if (questao instanceof MultiplaEscolha) {
+                alterarQuestaoMultiplaEscolha();
+            } else if (questao instanceof VerdadeiroFalso) {
+                alterarQuestaoVerdadeiroFalso();
             } else {
                 questaoServico.alterar(questao);
             }
-            limparTelaInclusao();
-            buscarQuestoes();
+            iniciarPagina();
         } catch (ValidacaoException ex) {
             exibirMensagem(ex.getMessage(), MSG_PRINCIPAL);
             navegacao = "";
@@ -327,30 +337,52 @@ public class QuestaoBean implements Serializable {
 
         return navegacao;
     }
-    
+
     /**
-     * Verifica se as alternativas da questão de múltipla escolha
-     * foram preenchidas.
-     * 
+     * Altera uma questão de múltipla escolha.
      * @throws ValidacaoException 
      */
-    private void verificarTodasAlternativasPreenchidas() throws ValidacaoException{
+    private void alterarQuestaoMultiplaEscolha() throws ValidacaoException {
+        verificarTodasAlternativasPreenchidas();
+        verificarOpcaoCorretaDefinida();
+        MultiplaEscolha multiplaEscolha = ((MultiplaEscolha) questao);
+        multiplaEscolha.setOpcaoCorreta(opcaoCorreta);
+        questaoServico.alterar(multiplaEscolha);
+    }
+
+    /**
+     * Altera uma questão de verdadeiro ou falso.
+     * @throws ValidacaoException 
+     */
+    private void alterarQuestaoVerdadeiroFalso() throws ValidacaoException {
+        VerdadeiroFalso verdadeiroFalso = (VerdadeiroFalso) questao;
+        verdadeiroFalso.setResposta(respostaVF);
+        questaoServico.alterar(verdadeiroFalso);
+    }
+
+    /**
+     * Verifica se as alternativas da questão de múltipla escolha foram
+     * preenchidas.
+     *
+     * @throws ValidacaoException
+     */
+    private void verificarTodasAlternativasPreenchidas() throws ValidacaoException {
         for (Alternativa alternativa : alternativas) {
-            if(alternativa.getDescricao() == null || 
-                    alternativa.getDescricao().isEmpty()){
+            if (alternativa.getDescricao() == null
+                    || alternativa.getDescricao().isEmpty()) {
                 throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("questao.alternativa.obrigatorias"));
             }
         }
     }
-    
+
     /**
-     * Verifica se a opção correta foi definida para questões
-     * de Múltipla Escolha.
-     * 
-     * @throws ValidacaoException 
+     * Verifica se a opção correta foi definida para questões de Múltipla
+     * Escolha.
+     *
+     * @throws ValidacaoException
      */
-    private void verificarOpcaoCorretaDefinida() throws ValidacaoException{
-        if(opcaoCorreta == null){
+    private void verificarOpcaoCorretaDefinida() throws ValidacaoException {
+        if (opcaoCorreta == null) {
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("questao.resposta.obrigatoria"));
         }
     }
@@ -438,9 +470,10 @@ public class QuestaoBean implements Serializable {
     public void fecharModalComponente() {
         exibirModalComponente = false;
     }
-    
+
     /**
      * Inicializa o carregamento da imagem
+     *
      * @param evento
      */
     public void upload(FileUploadEvent evento) {
@@ -449,23 +482,25 @@ public class QuestaoBean implements Serializable {
 
     /**
      * Insere os dados da imagem na questao
+     *
      * @param img
      */
     private void setFile(UploadedFile img) {
-        
+
         imagem = new Imagem();
         imagem.setArquivo(img.getContents());
         imagem.setExtensao(img.getContentType());
         imagem.setNome(img.getFileName());
-        questao.setImagem(imagem);       
+        questao.setImagem(imagem);
     }
-    
+
     public Imagem getArquivo() {
-        return imagem;    
+        return imagem;
     }
-    
+
     /**
      * Recupera a imagem para ser exibida
+     *
      * @return arquivo
      * @throws IOException
      */
@@ -474,13 +509,12 @@ public class QuestaoBean implements Serializable {
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             return new DefaultStreamedContent();
-        }
-        else {           
-           DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
-           return arquivo;
+        } else {
+            DefaultStreamedContent arquivo = new DefaultStreamedContent(new ByteArrayInputStream(questao.getImagem().getArquivo()));
+            return arquivo;
         }
     }
-    
+
     /**
      * Cancela a inserção da imagem
      *
@@ -489,17 +523,17 @@ public class QuestaoBean implements Serializable {
         imagem = null;
         questao.setImagem(imagem);
     }
-    
+
     /**
      * Selecina uma questão para anulação.
-     * 
-     * @param questaoSelecionada 
+     *
+     * @param questaoSelecionada
      */
-    public void selecionarQuestaoAnulacao(Questao questaoSelecionada){
+    public void selecionarQuestaoAnulacao(Questao questaoSelecionada) {
         questao = questaoSelecionada;
     }
-    
-    public void anularQuestao(){
+
+    public void anularQuestao() {
         questaoServico.anular(questao);
         questao = null;
         buscarQuestoes();
@@ -543,7 +577,7 @@ public class QuestaoBean implements Serializable {
     public void setComponenteSelecionado(Long componenteSelecionado) {
         this.componenteSelecionado = componenteSelecionado;
     }
-    
+
     public boolean isExibirModalComponente() {
         return exibirModalComponente;
     }

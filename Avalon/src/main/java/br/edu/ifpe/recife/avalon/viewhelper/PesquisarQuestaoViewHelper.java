@@ -5,9 +5,9 @@
  */
 package br.edu.ifpe.recife.avalon.viewhelper;
 
-import br.edu.ifpe.recife.avalon.model.questao.FiltroQuestao;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import java.io.Serializable;
@@ -25,19 +25,15 @@ public class PesquisarQuestaoViewHelper implements Serializable {
     
     private FiltroQuestao filtro = new FiltroQuestao();
     private List<TipoQuestaoEnum> tipoQuestoes = new ArrayList<>();
-    private Usuario usuarioLogado;
-    private boolean filtroSimulado;
     
     /**
      * Inicializa a instância de <code>PesquisarQuestaoViewHelper</code>.
      * @param servico - QuestaoServico
-     * @param usuario - Usuario
+     * @param filtro - filtro
      */
-    public void inicializar(QuestaoServico servico, Usuario usuario, boolean filtroSimulado){
-        this.filtro = new FiltroQuestao();
-        this.usuarioLogado = usuario;
+    public void inicializar(QuestaoServico servico, FiltroQuestao filtro){
+        this.filtro = filtro;
         this.questaoServico = servico;
-        this.filtroSimulado = filtroSimulado;
         carregarTiposQuestao();
     }
     
@@ -45,7 +41,7 @@ public class PesquisarQuestaoViewHelper implements Serializable {
      * Carrega os tipos de questão disponíveis.
      */
     private void carregarTiposQuestao() {
-        if(filtroSimulado){
+        if(filtro.isApenasQuestoesObjetivas()){
             this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.MULTIPLA_ESCOLHA, TipoQuestaoEnum.VERDADEIRO_FALSO);
         }else{
             this.tipoQuestoes = Arrays.asList(TipoQuestaoEnum.values());
@@ -57,8 +53,6 @@ public class PesquisarQuestaoViewHelper implements Serializable {
      * @return lista de questoes.
      */
     public List<Questao> pesquisar() {
-        this.filtro.setEmailUsuario(usuarioLogado.getEmail());
-        
         return questaoServico.buscarQuestoesPorFiltro(filtro);
     }
 
@@ -68,14 +62,6 @@ public class PesquisarQuestaoViewHelper implements Serializable {
 
     public List<TipoQuestaoEnum> getTipoQuestoes() {
         return tipoQuestoes;
-    }
-
-    public boolean isFiltroSimulado() {
-        return filtroSimulado;
-    }
-
-    public void setFiltroSimulado(boolean filtroSimulado) {
-        this.filtroSimulado = filtroSimulado;
     }
     
 }

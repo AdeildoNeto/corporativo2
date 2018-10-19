@@ -5,7 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.viewhelper;
 
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import java.io.Serializable;
 import java.util.ArrayList;

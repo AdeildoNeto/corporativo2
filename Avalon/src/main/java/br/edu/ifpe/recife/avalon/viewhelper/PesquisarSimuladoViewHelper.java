@@ -5,7 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.viewhelper;
 
-import br.edu.ifpe.recife.avalon.model.simulado.FiltroSimulado;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroSimulado;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;

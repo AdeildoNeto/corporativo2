@@ -25,9 +25,9 @@ and open the template in the editor.
                     <p:messages id="msgPrincipal" />
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row">
-                <p:outputPanel class="col-md-4">
+                <p:outputPanel class="col-md-6">
                     <p:outputPanel class="form-group">
                         <p:outputLabel for="txtTitulo" value="#{msg['label.titulo']}:" />
                         <h:inputText id="txtTitulo" required="true"
@@ -35,9 +35,7 @@ and open the template in the editor.
                                      class="form-control" value="#{provaBean.prova.titulo}" />
                     </p:outputPanel>
                 </p:outputPanel>
-            </p:outputPanel>
-
-            <p:outputPanel class="row margin-bottom-30">
+                
                 <p:outputPanel class="col-md-3 form-group">
                     <p:outputLabel for="calDataHoraInicio" value="#{msg['prova.data.inicio']}:" />
                     <p:calendar id="calDataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
@@ -56,8 +54,19 @@ and open the template in the editor.
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
                 </p:outputPanel>
+                
             </p:outputPanel>
             
+            <p:outputPanel class="row margin-top-bottom-10 margin-bottom-30">
+                <p:outputPanel class="col-md-6 display-flex">
+                    <p:outputLabel for="tglLiberarResultado" value="#{msg['label.prova.liberar.resultado']}:" />
+                    <p:inputSwitch id="tglLiberarResultado" styleClass="switch"
+                                   value="#{provaBean.prova.liberarResultado}"
+                                   offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}"
+                                   required="true" />
+                </p:outputPanel>
+            </p:outputPanel>
+
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
                     <h3>#{msg['selecionar.questoes']}:</h3>

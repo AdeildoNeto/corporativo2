@@ -104,7 +104,7 @@ and open the template in the editor.
         </p:outputPanel>
     </p:outputPanel>
     <p:outputPanel id="panelVF">
-        <p:outputPanel styleClass="row" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
+        <p:outputPanel styleClass="row margin-top-bottom-10" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
             <p:outputPanel class="col-md-4 display-flex">
                 <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
                 <p:inputSwitch id="resposta-vf" styleClass="switch"
@@ -116,14 +116,25 @@ and open the template in the editor.
     </p:outputPanel>
 
     <p:outputPanel class="row">
-        <p:outputPanel class="col-md-4 display-flex">
-            <p:outputLabel for="questao-compartilhada" value="#{msg['label.compartilhar.questao']}:" />
-            <p:inputSwitch id="questao-compartilhada" styleClass="switch"
+        <p:outputPanel class="col-md-4 display-flex margin-top-bottom-10">
+            <p:outputLabel for="tglCompartilhar" value="#{msg['label.compartilhar.questao']}:" />
+            <p:inputSwitch id="tglCompartilhar" styleClass="switch"
                            value="#{questaoBean.questao.compartilhada}"
                            offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}"
                            required="true" />
         </p:outputPanel>        
     </p:outputPanel>
+
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-5 display-flex margin-top-bottom-10">
+            <p:outputLabel for="tglQuestaoSimulado" value="#{msg['label.questao.simulado']}:" />
+            <p:inputSwitch id="tglQuestaoSimulado" styleClass="switch"
+                           value="#{questaoBean.questao.questaoSimulado}"
+                           offLabel="#{msg['btn.nao']}" onLabel="#{msg['btn.sim']}"
+                           required="true" />
+        </p:outputPanel>
+    </p:outputPanel>
+
     <p:outputPanel class="row">
 
     </p:outputPanel>

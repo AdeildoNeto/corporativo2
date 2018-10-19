@@ -5,6 +5,8 @@
  */
 package br.edu.ifpe.recife.avalon.model.questao;
 
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -72,6 +74,7 @@ import org.hibernate.validator.constraints.NotBlank;
                     + " AND (:idComponenteCurricular is null OR :idComponenteCurricular = q.componenteCurricular.id) "
                     + " AND (:nomeProfessor is null OR (CONCAT(q.professor.nome, ' ', q.professor.sobrenome) like :nomeProfessor)) "
                     + " AND (:enunciado is null OR q.enunciado like :enunciado)"
+                    + " AND (:questaoSimulado is null OR q.questaoSimulado = true)"
             )
             ,@NamedQuery(
                     name = "Questao.PorId",
@@ -120,10 +123,13 @@ public class Questao implements Serializable {
 
     @ManyToMany(mappedBy = "questoes")
     private List<Prova> provas;
+    
+    @Column(name = "SN_QUESTAO_SIMULADO")
+    private boolean questaoSimulado = false;
 
     @Transient
     private boolean selecionada;
-
+    
     @Valid
     @Embedded
     private Imagem imagem;
@@ -238,6 +244,14 @@ public class Questao implements Serializable {
         return anulada;
     }
 
+    public boolean isQuestaoSimulado() {
+        return questaoSimulado;
+    }
+
+    public void setQuestaoSimulado(boolean questaoSimulado) {
+        this.questaoSimulado = questaoSimulado;
+    }
+    
     public void setAnulada(boolean anulada) {
         this.anulada = anulada;
     }

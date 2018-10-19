@@ -6,9 +6,6 @@
 package br.edu.ifpe.recife.avalon.model.prova;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.AvaliacaoAluno;
-import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvalicao;
-import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -33,7 +30,7 @@ import javax.validation.constraints.NotNull;
             @NamedQuery(
                     name = "ProvaAluno.PorResultadoAluno",
                     query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
-                    + " AND :dhAtual > pa.prova.dataHoraInicio"
+                    + " AND (pa.prova.liberarResultado = true AND CURRENT_DATE > pa.prova.dataHoraFim)"
             )
             ,
             @NamedQuery(

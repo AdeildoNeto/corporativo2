@@ -5,7 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.model.avaliacao;
 
-import br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;

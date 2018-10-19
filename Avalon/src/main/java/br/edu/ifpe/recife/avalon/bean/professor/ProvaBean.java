@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
@@ -203,9 +204,11 @@ public class ProvaBean extends AvaliacaoBean {
      * @param apenasQuestoesObjetivas
      */
     private void inicializarHelpers(boolean apenasQuestoesObjetivas) {
+        FiltroQuestao filtro = new FiltroQuestao(usuarioLogado.getEmail(), apenasQuestoesObjetivas);
+        
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
-        getPesquisarQuestoesViewHelper().inicializar(questaoServico, usuarioLogado, apenasQuestoesObjetivas);
+        getPesquisarQuestoesViewHelper().inicializar(questaoServico, filtro);
     }
 
     /**

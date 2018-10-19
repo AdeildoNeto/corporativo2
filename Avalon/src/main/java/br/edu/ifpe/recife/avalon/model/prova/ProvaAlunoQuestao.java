@@ -6,18 +6,8 @@
 package br.edu.ifpe.recife.avalon.model.prova;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvalicao;
-import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
-import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.Questao;
-import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -44,6 +34,4 @@ public class ProvaAlunoQuestao extends QuestaoAvalicao {
         this.provaAluno = provaAluno;
     }
 
-    
-    
 }
