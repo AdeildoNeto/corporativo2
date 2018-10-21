@@ -15,10 +15,10 @@ import org.junit.runner.RunWith;
  * @author eduardoamaral
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/visualizarNotasSimulado.feature",
+@CucumberOptions(features = "src/test/resources/features/visualizarHistoricoSimulado.feature",
         glue = "br.edu.ifpe.recife.avalon.cucumber.steps",
         monochrome = false,
         snippets = SnippetType.CAMELCASE)
-public class VisualizarNotasSimuladoRun {
+public class VisualizarHistoricoSimuladoRun {
     
 }
