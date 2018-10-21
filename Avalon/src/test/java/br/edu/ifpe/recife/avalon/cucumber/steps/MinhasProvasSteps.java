@@ -21,7 +21,7 @@ public class MinhasProvasSteps {
         DbUnitUtil.setDataSet(DataSetEnum.MINHAS_PROVAS);
         DbUnitUtil.inserirDados();
     }
-    
+
     @E("^esteja na página de provas$")
     public void irParaMinhasProvas() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuProvas")).click();
@@ -33,11 +33,11 @@ public class MinhasProvasSteps {
         BrowserManager.getDriver().findElement(By.id("form:btnImprimirProva")).click();
         BrowserManager.waitTime(3000);
     }
-    
+
     @E("^deseje cadastrar uma nova prova online$")
     public void irParaGerarProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:btnGerarProva")).click();
         BrowserManager.waitTime(3000);
     }
-    
+
 }

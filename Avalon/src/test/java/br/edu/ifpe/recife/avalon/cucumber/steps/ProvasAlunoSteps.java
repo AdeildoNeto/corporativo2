@@ -15,9 +15,9 @@ import org.openqa.selenium.By;
  *
  * @author eduardoamaral
  */
-public class ProvasDisponiveisSteps {
+public class ProvasAlunoSteps {
 
-    public ProvasDisponiveisSteps() {
+    public ProvasAlunoSteps() {
         DbUnitUtil.setDataSet(DataSetEnum.REALIZAR_PROVA);
         DbUnitUtil.inserirDados();
     }
@@ -26,6 +26,12 @@ public class ProvasDisponiveisSteps {
     public void irParaProvasDisponiveis() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("menu:menuProvas")).click();
         BrowserManager.waitTime(3000);
+    }
+    
+    @E("^esteja na página de resultados da prova$")
+    public void clicarBotaoResultadosProva() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("menu:menuResultados")).click();
+        BrowserManager.waitTime(2000);
     }
     
 }
