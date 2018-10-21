@@ -13,7 +13,8 @@ public enum DataSetEnum {
     
     CADASTRAR_QUESTOES("src/main/resources/dbunit/cadastrarQuestoes.xml"),
     MINHAS_PROVAS("src/main/resources/dbunit/minhasProvas.xml"),
-    REALIZAR_PROVA("src/main/resources/dbunit/realizarProva.xml");
+    REALIZAR_PROVA("src/main/resources/dbunit/realizarProva.xml"),
+    MEUS_SIMULADOS("src/main/resources/dbunit/meusSimulados.xml");
 
     private final String source;
     

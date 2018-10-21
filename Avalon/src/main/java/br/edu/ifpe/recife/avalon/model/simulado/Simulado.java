@@ -28,34 +28,31 @@ import javax.persistence.Table;
         {
             @NamedQuery(
                     name = "Simulado.PorTituloValido",
-                    query = "Select s from Simulado s where s.ativo = true"
+                    query = "Select s from Simulado s where s.ativa = true"
                     + " AND s.titulo = :titulo"
                     + " AND s.componenteCurricular.id = :idComponenteCurricular"
                     + " AND s.professor.email = :emailProfessor"
             )
             ,@NamedQuery(
                     name = "Simulado.PorProfessor",
-                    query = "Select s from Simulado s where s.ativo = true"
+                    query = "Select s from Simulado s where s.ativa = true"
                     + " AND s.professor.email = :emailProfessor"
             )
             ,@NamedQuery(
                     name = "Simulado.PorFiltro",
-                    query = "Select s from Simulado s where s.ativo = true "
+                    query = "Select s from Simulado s where s.ativa = true "
                     + "AND (:idComponenteCurricular is null OR :idComponenteCurricular = s.componenteCurricular.id) "
                     + "AND (:nomeProfessor is null OR (CONCAT(s.professor.nome, ' ', s.professor.sobrenome) like :nomeProfessor)) "
                     + "AND (:titulo is null OR s.titulo like :titulo)"
             )
             ,@NamedQuery(
                     name = "Simulado.PorId",
-                    query = "Select s from Simulado s where s.ativo = true "
+                    query = "Select s from Simulado s where s.ativa = true "
                     + "AND :idSimulado = s.id"
             )
         }
 )
 public class Simulado extends Avaliacao {
-
-    @Column(name = "SN_ATIVO", nullable = false)
-    private Boolean ativo = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_QUESTAO_SIMULADO", joinColumns = {
@@ -64,14 +61,6 @@ public class Simulado extends Avaliacao {
                 @JoinColumn(name = "ID_QUESTAO")
             })
     private List<Questao> questoes;
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
 
     public List<Questao> getQuestoes() {
         return questoes;

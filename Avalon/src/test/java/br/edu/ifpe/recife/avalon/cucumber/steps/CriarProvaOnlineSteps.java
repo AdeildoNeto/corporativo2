@@ -63,7 +63,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Múltipla Escolha']")).click();
     }
 
-    @E("^selecionar questoes para prova$")
+    @E("^selecionar questões para prova$")
     public void selecionarTodasQuestoes() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:table:chkSelecionarTodas")).click();
         BrowserManager.waitTime(2000);

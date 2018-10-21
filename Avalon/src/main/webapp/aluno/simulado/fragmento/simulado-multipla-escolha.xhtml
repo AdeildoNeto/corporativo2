@@ -11,7 +11,7 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:repeat value="#{bean.questoesMultiplaEscolha}" var="questao" varStatus="i" id="repeat">
+    <ui:repeat id="rpQuestoesME" value="#{bean.questoesMultiplaEscolha}" var="questao" varStatus="i">
         <p:outputPanel class="container-prova-questao">
             <span class="bold break-white-space">#{i.index + 1}) #{questao.enunciado}</span>
             <p:outputPanel class="imagem">
@@ -21,7 +21,7 @@ and open the template in the editor.
                     </p:graphicImage>
                 </ui:fragment>
             </p:outputPanel>
-            <p:selectOneRadio id="radioMS" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
+            <p:selectOneRadio id="rbRespostaMultiplaEscolha" value="#{questao.respostaUsuario}" layout="custom" plain="true" >
                 <f:selectItem itemValue="0" />
                 <f:selectItem itemValue="1" />
                 <f:selectItem itemValue="2" />
@@ -31,7 +31,7 @@ and open the template in the editor.
             
             <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
                 <p:outputPanel>
-                    <p:radioButton for="form:repeat:0:radioMS" itemIndex="#{j.index}" />
+                    <p:radioButton for="form:rpQuestoesME:0:rbRespostaMultiplaEscolha" itemIndex="#{j.index}" />
                     <span>#{alternativa.descricao}</span>
                 </p:outputPanel>
             </ui:repeat>

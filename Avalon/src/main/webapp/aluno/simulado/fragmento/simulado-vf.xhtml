@@ -11,10 +11,10 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:repeat value="#{bean.questoesVerdadeiroFalso}" var="questao" varStatus="i">
+    <ui:repeat id="rpQuestoesVF" value="#{bean.questoesVerdadeiroFalso}" var="questao" varStatus="i">
         <p:outputPanel class="container-prova-questao">
             <span class="bold">#{i.index + 1}) #{questao.enunciado}</span>
-            <p:selectOneRadio id="radio" layout="custom" plain="true" value="#{questao.respostaUsuario}">
+            <p:selectOneRadio id="rbRespostaVerdadeiroFalso" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                 <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                 <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
             </p:selectOneRadio>
@@ -27,12 +27,12 @@ and open the template in the editor.
             </p:outputPanel>
             <h:panelGrid class="margin-left-20">
                 <h:column>
-                    <p:radioButton for="radio" itemIndex="0" class="radio-button" />
+                    <p:radioButton for="rbRespostaVerdadeiroFalso" itemIndex="0" class="radio-button" />
                     <span>#{msg['btn.verdadeiro']}</span>
                 </h:column>
 
                 <h:column>
-                    <p:radioButton for="radio" itemIndex="1" class="radio-button" />
+                    <p:radioButton for="rbRespostaVerdadeiroFalso" itemIndex="1" class="radio-button" />
                     <span>#{msg['btn.falso']}</span>
                 </h:column>
             </h:panelGrid>

@@ -63,7 +63,7 @@ public class SimuladoServico {
      */
     public void remover(@Valid Simulado simulado) {
         if (!entityManager.contains(simulado)) {
-            simulado.setAtivo(false);
+            simulado.setAtiva(false);
             entityManager.merge(simulado);
         }
     }

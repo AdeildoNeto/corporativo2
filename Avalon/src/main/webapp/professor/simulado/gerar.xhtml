@@ -31,7 +31,7 @@ and open the template in the editor.
                     <p:outputPanel class="form-group">
                         <p:outputLabel for="txtTitulo" value="#{msg['label.titulo']}:" />
                         <h:inputText id="txtTitulo" required="true"
-                                     requiredMessage="#{msg['prova.titulo.obrigatorio']}"
+                                     requiredMessage="#{msg['simulado.titulo.obrigatorio']}"
                                      class="form-control" value="#{simuladoBean.simulado.titulo}" />
                     </p:outputPanel>
                 </p:outputPanel>
@@ -53,7 +53,7 @@ and open the template in the editor.
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
-                                <h:selectBooleanCheckbox value="#{simuladoBean.todosSelecionados}">
+                                <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{simuladoBean.todosSelecionados}">
                                     <f:ajax listener="#{simuladoBean.selecionarTodos()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>

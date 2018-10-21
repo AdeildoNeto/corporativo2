@@ -16,7 +16,7 @@ Funcionalidade:
     E preencher a data de termino da prova
     E selecionar o tipo verdadeiro ou falso no filtro de questões
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então uma nova prova do tipo verdadeiro ou falso sera criada
 
@@ -27,7 +27,7 @@ Funcionalidade:
     E preencher a data de termino da prova
     E selecionar o tipo múltipla escolha no filtro de questões
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então uma nova prova do tipo múltipla escolha sera criada
 
@@ -61,7 +61,7 @@ Funcionalidade:
     E preencher a data de inicio da prova com uma data menor que a atual
     E preencher a data de termino da prova
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então será exibido mensagem para data de inicio da prova menor que a data atual
 
@@ -71,7 +71,7 @@ Funcionalidade:
     E preencher a data de inicio da prova com uma data maior que a data de termino
     E preencher a data de termino da prova
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então será exibido mensagem para data de inicio da prova maior que a data de termino
 
@@ -81,7 +81,7 @@ Funcionalidade:
     E preencher a data de inicio da prova
     E preencher a data de termino da prova com um intervalo menor que trinta minutos
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então será exibido mensagem para disponibilidade minima da prova
 
@@ -91,6 +91,6 @@ Funcionalidade:
     E preencher a data de inicio da prova
     E preencher a data de termino da prova com um intervalo maior que cinco horas
     E clicar no botão pesquisar
-    E selecionar questoes para prova
+    E selecionar questões para prova
     E clicar no botão salvar nova prova
     Então será exibido mensagem para disponibilidade maxima da prova

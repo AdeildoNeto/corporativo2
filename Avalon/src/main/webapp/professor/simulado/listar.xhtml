@@ -40,21 +40,21 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
-                            <p:commandLink class="btnResultados"
+                            <p:commandLink id="btnResultadosSimulado"
                                            action="#{simuladoBean.iniciarPaginaResultados(simulado)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide()"
                                            title="#{msg['label.resultados']}">
                                 <span class="material-icons">assignment</span>
                             </p:commandLink>
-                            <p:commandLink class="btnDetalhar"
+                            <p:commandLink id="btnDetalharSimulado"
                                            action="#{simuladoBean.iniciarPaginaVisualizarSimulado(simulado)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.detalhar']}">
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
-                            <p:commandLink class="btnExcluir"
+                            <p:commandLink id="btnExcluirSimulado"
                                            action="#{simuladoBean.selecionarSimuladoExclusao(simulado)}"
                                            onclick="PF('block').show()"
                                            update="formModalExcluir"
@@ -68,7 +68,7 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="offset-md-9 col-md-3 form-group">
-                    <p:commandButton id="btnAdd" value="#{msg['btn.gerar.simulado']}"
+                    <p:commandButton id="btnGerarSimulado" value="#{msg['btn.gerar.simulado']}"
                                      action="#{simuladoBean.iniciarPaginaGerar()}"
                                      onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
