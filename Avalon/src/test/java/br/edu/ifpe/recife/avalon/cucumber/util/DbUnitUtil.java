@@ -71,21 +71,23 @@ public class DbUnitUtil {
 
             String sql;
 
-            sql = "DELETE FROM TB_SIMULADO_ALUNO_QUESTAO";
+            sql = "DELETE FROM TB_QUESTAO_ALUNO_SIMULADO";
             stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_SIMULADO_ALUNO";
             stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_QUESTAO_SIMULADO";
             stmt.executeUpdate(sql);
-            sql = "DELETE FROM TB_SIMULADO";
-            stmt.executeUpdate(sql);
-            sql = "DELETE FROM TB_PROVA_ALUNO_QUESTAO";
+            sql = "DELETE FROM TB_QUESTAO_ALUNO_PROVA";
             stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_PROVA_ALUNO";
             stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_QUESTAO_PROVA";
             stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_SIMULADO";
+            stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_PROVA";
+            stmt.executeUpdate(sql);
+            sql = "DELETE FROM TB_QUESTAO_AVALIACAO";
             stmt.executeUpdate(sql);
             sql = "DELETE FROM TB_ALTERNATIVA";
             stmt.executeUpdate(sql);

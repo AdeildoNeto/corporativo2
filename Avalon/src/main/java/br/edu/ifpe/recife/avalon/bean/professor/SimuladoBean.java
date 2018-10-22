@@ -10,8 +10,9 @@ import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
-import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -22,9 +23,11 @@ import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -70,6 +73,9 @@ public class SimuladoBean extends AvaliacaoBean {
     private Simulado simuladoResultadoSelecionado;
     private boolean simuladoVF;
 
+    private final List<QuestaoSimulado> questoesSimulado;
+    private final Set<QuestaoSimulado> questoesSimuladoSelecionadas;
+
     /**
      * Cria uma nova instância de <code>SimuladoBean</code>.
      */
@@ -79,6 +85,8 @@ public class SimuladoBean extends AvaliacaoBean {
         detalhesViewHelper = new QuestaoDetalhesViewHelper();
         visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
         simulado = new Simulado();
+        questoesSimulado = new ArrayList<>();
+        questoesSimuladoSelecionadas = new HashSet<>();
     }
 
     /**
@@ -100,8 +108,7 @@ public class SimuladoBean extends AvaliacaoBean {
      */
     public String iniciarPaginaGerar() {
         FiltroQuestao filtro = inicializarFiltro();
-        
-        
+
         componenteViewHelper.inicializar(componenteCurricularServico);
         detalhesViewHelper.inicializar();
         getPesquisarQuestoesViewHelper().inicializar(questaoServico, filtro);
@@ -110,11 +117,11 @@ public class SimuladoBean extends AvaliacaoBean {
         return GO_GERAR_SIMULADO;
 
     }
-    
-    private FiltroQuestao inicializarFiltro(){
+
+    private FiltroQuestao inicializarFiltro() {
         FiltroQuestao filtro = new FiltroQuestao(usuarioLogado.getEmail(), true);
         filtro.setQuestaoSimulado(true);
-        
+
         return filtro;
     }
 
@@ -141,24 +148,46 @@ public class SimuladoBean extends AvaliacaoBean {
         simulado = simuladoSelecionado;
 
         if (!simulado.getQuestoes().isEmpty()) {
-            try {
 
-                if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) simulado.getQuestoes());
-                } else {
-                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) simulado.getQuestoes());
-                }
-
-                if (visualizarViewHelper.getQuestoesMultiplaEscolha().isEmpty() && visualizarViewHelper.getQuestoesVerdadeiroFalso().isEmpty()) {
-                    throw new ValidacaoException(AvalonUtil.getInstance().getMensagem("simulado.vazio"));
-                }
-
-            } catch (ValidacaoException ex) {
-                exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+            if (isSimuladoVerdadeiroFalso()) {
+                carregarQuestoesVerdadeiroFalso();
+            } else {
+                carregarQuetoesMultiplaEscolha();
             }
+
         }
 
         return GO_VISUALIZAR_SIMULADO;
+    }
+
+    private boolean isSimuladoVerdadeiroFalso() {
+        return simulado.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+    }
+
+    /**
+     * Carrega as questões de verdadeiro ou falso do simulado para detalhá-lo.
+     */
+    private void carregarQuestoesVerdadeiroFalso() {
+        List<VerdadeiroFalso> questoesVF = new ArrayList<>();
+
+        for (QuestaoSimulado questaoSimulado : simulado.getQuestoes()) {
+            questoesVF.add((VerdadeiroFalso) questaoSimulado.getQuestao());
+        }
+
+        visualizarViewHelper.setQuestoesVerdadeiroFalso(questoesVF);
+    }
+
+    /**
+     * Carrega as questões de múltipla escolha do simulado para detalhá-lo.
+     */
+    private void carregarQuetoesMultiplaEscolha() {
+        List<MultiplaEscolha> questoesME = new ArrayList<>();
+
+        for (QuestaoSimulado questaoSimulado : simulado.getQuestoes()) {
+            questoesME.add((MultiplaEscolha) questaoSimulado.getQuestao());
+        }
+
+        visualizarViewHelper.setQuestoesMultiplaEscolha(questoesME);
     }
 
     /**
@@ -171,8 +200,7 @@ public class SimuladoBean extends AvaliacaoBean {
         simuladoAlunoDetalhe = simuladoAluno;
 
         if (!simuladoAlunoDetalhe.getSimulado().getQuestoes().isEmpty()) {
-            simuladoVF = simuladoAlunoDetalhe.getSimulado().getQuestoes().get(0) instanceof VerdadeiroFalso;
-
+            simuladoVF = simuladoAlunoDetalhe.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
             return GO_DETALHAR_RESULTADO;
         }
 
@@ -192,7 +220,13 @@ public class SimuladoBean extends AvaliacaoBean {
      */
     private void limparTelaGerarSimulado() {
         simulado = new Simulado();
-        super.inicializarQuestoes();
+        inicializarQuestoes();
+    }
+    
+    private void inicializarQuestoes() {
+        super.setTodosSelecionados(false);
+        questoesSimuladoSelecionadas.clear();
+        questoesSimulado.clear();
     }
 
     /**
@@ -210,6 +244,57 @@ public class SimuladoBean extends AvaliacaoBean {
     private void buscarResultados(Simulado simulado) {
         resultados = simuladoServico.buscarResultadosSimulado(simulado);
     }
+    
+    /**
+     * Pesquisa as questões disponíveis para impressão.
+     */
+    public void pesquisar() {
+        buscarQuestoes();
+        if (questoesSimulado.isEmpty()) {
+            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
+        }
+    }
+    
+    /**
+     * Carrega as as questões do a partir do filtro informado.
+     */
+    private void buscarQuestoes() {
+        inicializarQuestoes();
+        for (Questao questao : super.getPesquisarQuestoesViewHelper().pesquisar()) {
+            QuestaoSimulado questaoSimulado = new QuestaoSimulado();
+            questaoSimulado.setQuestao(questao);
+            questaoSimulado.setSimulado(simulado);
+            questoesSimulado.add(questaoSimulado);
+        }
+    }
+
+    /**
+     * Seleciona uma questão da lista de questões.
+     *
+     * @param questaoSimulado - questão de simulado selecionada.
+     */
+    public void selecionarQuestaoSimulado(QuestaoSimulado questaoSimulado) {
+        if (questaoSimulado.getQuestao().isSelecionada()) {
+            questoesSimuladoSelecionadas.add(questaoSimulado);
+        } else {
+            questoesSimuladoSelecionadas.remove(questaoSimulado);
+            super.setTodosSelecionados(false);
+        }
+    }
+
+    /**
+     * Marca ou desmarca todas as questões disponíveis para gerar um simulado
+     * online.
+     */
+    public void selecionarTodasQuestoesProva() {
+        questoesSimuladoSelecionadas.clear();
+
+        for (QuestaoSimulado questaoSimulado : questoesSimulado) {
+            questaoSimulado.getQuestao().setSelecionada(super.isTodosSelecionados());
+            selecionarQuestaoSimulado(questaoSimulado);
+        }
+
+    }
 
     /**
      * Salva um novo simulado.
@@ -223,8 +308,8 @@ public class SimuladoBean extends AvaliacaoBean {
             simulado.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
             simulado.setDataCriacao(Calendar.getInstance().getTime());
             simulado.setProfessor(usuarioLogado);
-            simulado.setQuestoes(new ArrayList<Questao>());
-            simulado.getQuestoes().addAll(getQuestoesSelecionadas());
+            simulado.setQuestoes(new ArrayList<QuestaoSimulado>());
+            simulado.getQuestoes().addAll(questoesSimuladoSelecionadas);
             simuladoServico.salvar(simulado);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -307,4 +392,12 @@ public class SimuladoBean extends AvaliacaoBean {
         return simuladoVF;
     }
 
+    public List<QuestaoSimulado> getQuestoesSimulado() {
+        return questoesSimulado;
+    }
+
+    public Set<QuestaoSimulado> getQuestoesSimuladoSelecionadas() {
+        return questoesSimuladoSelecionadas;
+    }
+    
 }

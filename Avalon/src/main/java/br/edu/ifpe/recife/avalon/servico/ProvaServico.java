@@ -6,8 +6,8 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;

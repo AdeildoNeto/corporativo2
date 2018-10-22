@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
@@ -34,7 +35,7 @@ public class Avaliacao implements Serializable {
     @Column(name = "ID_AVALIACAO")
     private Long id;
 
-    @NotNull(message = "{prova.titulo.obrigatorio}")
+    @NotBlank(message = "{prova.titulo.obrigatorio}")
     @Size(max = 40, message = "{titulo.tamanho.maximo}")
     @Column(name = "TXT_TITULO")
     private String titulo;

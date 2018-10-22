@@ -6,11 +6,14 @@
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
-import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
-import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoAlunoSimulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
@@ -22,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -44,7 +48,6 @@ public class SimuladoAlunoBean implements Serializable {
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
     private static final String USUARIO = "usuario";
     private static final String RESULTADO_ACERTOS = "resultado.obtido";
-    private static final String SIMULADO_VAZIO = "simulado.vazio";
     private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
     private static final String PESQUISA_SEM_DADOS = "pesquisa.sem.dados";
 
@@ -116,19 +119,42 @@ public class SimuladoAlunoBean implements Serializable {
         String navegacao = GO_INICIAR_SIMULADO;
         
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
-            if (simuladoSelecionado.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) simuladoSelecionado.getQuestoes();
+            if (isSimuladoVerdadeiroFalso()) {
+                questoesVerdadeiroFalso = carregarQuestoesVerdadeiroFalso();
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) simuladoSelecionado.getQuestoes();
-            }
-
-            if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
-                exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagem(SIMULADO_VAZIO));
-                navegacao = null;
+                questoesMultiplaEscolha = carregarQuestoesMultiplaEscolha();
             }
         }
         
         return navegacao;
+    }
+    
+    private boolean isSimuladoVerdadeiroFalso(){
+        return simuladoSelecionado.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+    }
+    
+    /**
+     * Carrega as questões de verdadeiro ou falso de um simulado.
+     * @return 
+     */
+    private List<VerdadeiroFalso> carregarQuestoesVerdadeiroFalso(){
+        List<VerdadeiroFalso> questoes = new ArrayList<>();
+        for (QuestaoSimulado questaoSimulado : simuladoSelecionado.getQuestoes()) {
+            questoes.add((VerdadeiroFalso) questaoSimulado.getQuestao());
+        }
+        return questoes;
+    }
+    
+    /**
+     * Carrega as questões de múltipla escolha de um simulado.
+     * @return 
+     */
+    private List<MultiplaEscolha> carregarQuestoesMultiplaEscolha(){
+        List<MultiplaEscolha> questoes = new ArrayList<>();
+        for (QuestaoSimulado questaoSimulado : simuladoSelecionado.getQuestoes()) {
+            questoes.add((MultiplaEscolha) questaoSimulado.getQuestao());
+        }
+        return questoes;
     }
 
     /**
@@ -161,7 +187,7 @@ public class SimuladoAlunoBean implements Serializable {
      */
     public void finalizar() {
         try {
-            simuladoAluno.setQuestoesAluno(new ArrayList<SimuladoAlunoQuestao>());
+            simuladoAluno.setQuestoesAluno(new ArrayList<QuestaoAlunoSimulado>());
 
             if (!questoesVerdadeiroFalso.isEmpty()) {
                 verificarTodasQuestoesPreenchidasVF();
@@ -185,12 +211,22 @@ public class SimuladoAlunoBean implements Serializable {
      */
     private void preencherSimuladoVF() {
         for (VerdadeiroFalso verdadeiroFalso : questoesVerdadeiroFalso) {
-            SimuladoAlunoQuestao questao = new SimuladoAlunoQuestao();
-            questao.setQuestao(verdadeiroFalso);
+            QuestaoAlunoSimulado questao = new QuestaoAlunoSimulado();
+            questao.setQuestaoAvaliacao(carregarQuestaoAvaliacao(verdadeiroFalso.getId()));
             questao.setRespostaVF(verdadeiroFalso.getRespostaUsuario());
             questao.setSimuladoAluno(simuladoAluno);
             simuladoAluno.getQuestoesAluno().add(questao);
         }
+    }
+    
+    /**
+     * Recupera a questaoAvaliacao de um simulado.
+     * @param idQuestao
+     * @return 
+     */
+    private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao){
+        int index = Arrays.binarySearch(simuladoSelecionado.getQuestoes().toArray(), idQuestao);
+        return simuladoSelecionado.getQuestoes().get(index);
     }
 
     /**
@@ -199,8 +235,8 @@ public class SimuladoAlunoBean implements Serializable {
      */
     private void preencherSimuladoMultiplaEscolha() {
         for (MultiplaEscolha multiplaEscolha : questoesMultiplaEscolha) {
-            SimuladoAlunoQuestao questao = new SimuladoAlunoQuestao();
-            questao.setQuestao(multiplaEscolha);
+            QuestaoAlunoSimulado questao = new QuestaoAlunoSimulado();
+            questao.setQuestaoAvaliacao(carregarQuestaoAvaliacao(multiplaEscolha.getId()));
             questao.setRespostaMultiplaEscolha(multiplaEscolha.getRespostaUsuario());
             questao.setSimuladoAluno(simuladoAluno);
             simuladoAluno.getQuestoesAluno().add(questao);

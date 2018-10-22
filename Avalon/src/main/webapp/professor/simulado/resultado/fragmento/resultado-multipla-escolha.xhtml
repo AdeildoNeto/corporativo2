@@ -15,11 +15,11 @@ and open the template in the editor.
                value="#{simuladoBean.simuladoAlunoDetalhe.questoesAluno}"
                var="questaoAluno" varStatus="i" id="repeat">
         <p:outputPanel class="container-prova-questao">
-            <span class="bold break-white-space">#{i.index + 1}) #{questaoAluno.questao.enunciado}</span>
+            <span class="bold break-white-space">#{i.index + 1}) #{questaoAluno.questaoAvaliacao.enunciado}</span>
             <p:outputPanel class="imagem">
-                <ui:fragment rendered="#{questaoAluno.questao.imagem != null}">
+                <ui:fragment rendered="#{questaoAluno.questaoAvaliacao.imagem != null}">
                     <p:graphicImage value="#{baseBean.imagem}" width="225px" height="225px">
-                        <f:param name="questaoId" value="#{questaoAluno.questao.id}"/>
+                        <f:param name="questaoId" value="#{questaoAluno.questaoAvaliacao.id}"/>
                     </p:graphicImage>
                 </ui:fragment>
             </p:outputPanel>

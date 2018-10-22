@@ -5,9 +5,12 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAlunoQuestao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvaliacao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoAlunoProva;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -17,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -90,19 +94,45 @@ public class ProvaAlunoBean implements Serializable {
         prova = provaServico.buscarProvaPorId(provaSelecionada.getId());
 
         if (!prova.getQuestoes().isEmpty()) {
-            if (prova.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                questoesVerdadeiroFalso = (List<VerdadeiroFalso>) (List<?>) prova.getQuestoes();
+            if (isProvaVerdadeiroFalso()) {
+                questoesVerdadeiroFalso = carregarQuestoesVerdadeiroFalso();
             } else {
-                questoesMultiplaEscolha = (List<MultiplaEscolha>) (List<?>) prova.getQuestoes();
+                questoesMultiplaEscolha = carregarQuestoesMultiplaEscolha();
             }
 
-            if (questoesVerdadeiroFalso.isEmpty() && questoesMultiplaEscolha.isEmpty()) {
-                exibirMensagemError("Ocorreu um erro ao realizar esta ação.");
-            } else {
-                carregarObservacoes();
-                abrirModalIniciar();
-            }
+            carregarObservacoes();
+            abrirModalIniciar();
         }
+    }
+
+    private boolean isProvaVerdadeiroFalso() {
+        return prova.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+    }
+
+    /**
+     * Carrega as questões de verdadeiro ou falso de um simulado.
+     *
+     * @return
+     */
+    private List<VerdadeiroFalso> carregarQuestoesVerdadeiroFalso() {
+        List<VerdadeiroFalso> questoes = new ArrayList<>();
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            questoes.add((VerdadeiroFalso) questaoProva.getQuestao());
+        }
+        return questoes;
+    }
+
+    /**
+     * Carrega as questões de múltipla escolha de um simulado.
+     *
+     * @return
+     */
+    private List<MultiplaEscolha> carregarQuestoesMultiplaEscolha() {
+        List<MultiplaEscolha> questoes = new ArrayList<>();
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            questoes.add((MultiplaEscolha) questaoProva.getQuestao());
+        }
+        return questoes;
     }
 
     /**
@@ -203,7 +233,7 @@ public class ProvaAlunoBean implements Serializable {
      * Carrega as repostas do usuário no histórico da prova.
      */
     private void preencherRespostas() {
-        provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
+        provaAluno.setQuestoesAluno(new ArrayList<QuestaoAlunoProva>());
 
         if (!questoesMultiplaEscolha.isEmpty()) {
             preencherProvaMultiplaEscolha();
@@ -216,40 +246,46 @@ public class ProvaAlunoBean implements Serializable {
      * Preenche as questões da prova com as respostas salvas do aluno.
      */
     private void preencherRespostasSalvas() {
-        List<ProvaAlunoQuestao> questoesSalvas = provaAluno.getQuestoesAluno();
+        List<QuestaoAlunoProva> questoesSalvas = provaAluno.getQuestoesAluno();
         if (questoesSalvas != null && !questoesSalvas.isEmpty()) {
-            if (questoesSalvas.get(0).getQuestao() instanceof VerdadeiroFalso) {
+            if (isQuestaoAlunoVerdadeiroFalso(questoesSalvas.get(0))) {
                 marcarRespostasSalvasVF(questoesSalvas);
-            }else{
+            } else {
                 marcarRespostasSalvasMultiplaEscolha(questoesSalvas);
             }
         }
     }
 
+    private boolean isQuestaoAlunoVerdadeiroFalso(QuestaoAlunoProva questaoAluno) {
+        return questaoAluno.getQuestaoAvaliacao().getQuestao() instanceof VerdadeiroFalso;
+    }
+
     /**
-     * Preenche as questões de verdadeiro ou falso da prova
-     * com as respostas salvas do usuário.
-     * @param questoesSalvas 
+     * Preenche as questões de verdadeiro ou falso da prova com as respostas
+     * salvas do usuário.
+     *
+     * @param questoesSalvas
      */
-    private void marcarRespostasSalvasVF(List<ProvaAlunoQuestao> questoesSalvas) {
-        for (ProvaAlunoQuestao questaoSalva : questoesSalvas) {
+    private void marcarRespostasSalvasVF(List<QuestaoAlunoProva> questoesSalvas) {
+        for (QuestaoAlunoProva questaoSalva : questoesSalvas) {
             for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-                if(questao.getId().equals(questaoSalva.getQuestao().getId())){
+                if (questao.getId().equals(questaoSalva.getQuestaoAvaliacao().getId())) {
                     questao.setRespostaUsuario(questaoSalva.getRespostaVF());
                 }
             }
         }
     }
-    
+
     /**
-     * Preenche as questões de múltipla escolha da prova
-     * com as respostas salvas do usuário.
+     * Preenche as questões de múltipla escolha da prova com as respostas salvas
+     * do usuário.
+     *
      * @param questoesSalvas
      */
-    private void marcarRespostasSalvasMultiplaEscolha(List<ProvaAlunoQuestao> questoesSalvas) {
-        for (ProvaAlunoQuestao questaoSalva : questoesSalvas) {
+    private void marcarRespostasSalvasMultiplaEscolha(List<QuestaoAlunoProva> questoesSalvas) {
+        for (QuestaoAlunoProva questaoSalva : questoesSalvas) {
             for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-                if(questao.getId().equals(questaoSalva.getQuestao().getId())){
+                if (questao.getId().equals(questaoSalva.getQuestaoAvaliacao().getId())) {
                     questao.setRespostaUsuario(questaoSalva.getRespostaMultiplaEscolha());
                 }
             }
@@ -269,13 +305,24 @@ public class ProvaAlunoBean implements Serializable {
      * aluno.
      */
     private void preencherProvaMultiplaEscolha() {
-        for (MultiplaEscolha questao : questoesMultiplaEscolha) {
-            ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+        for (MultiplaEscolha questaoME : questoesMultiplaEscolha) {
+            QuestaoAlunoProva questaoAluno = new QuestaoAlunoProva();
             questaoAluno.setProvaAluno(provaAluno);
-            questaoAluno.setQuestao(questao);
-            questaoAluno.setRespostaMultiplaEscolha(questao.getRespostaUsuario());
+            questaoAluno.setQuestaoAvaliacao(carregarQuestaoAvaliacao(questaoME.getId()));
+            questaoAluno.setRespostaMultiplaEscolha(questaoME.getRespostaUsuario());
             provaAluno.getQuestoesAluno().add(questaoAluno);
         }
+    }
+
+    /**
+     * Recupera a questaoAvaliacao de uma prova.
+     *
+     * @param idQuestao
+     * @return
+     */
+    private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao) {
+        int index = Arrays.binarySearch(prova.getQuestoes().toArray(), idQuestao);
+        return prova.getQuestoes().get(index);
     }
 
     /**
@@ -283,11 +330,11 @@ public class ProvaAlunoBean implements Serializable {
      * aluno.
      */
     private void preencherProvaVF() {
-        for (VerdadeiroFalso questao : questoesVerdadeiroFalso) {
-            ProvaAlunoQuestao questaoAluno = new ProvaAlunoQuestao();
+        for (VerdadeiroFalso questaoVF : questoesVerdadeiroFalso) {
+            QuestaoAlunoProva questaoAluno = new QuestaoAlunoProva();
             questaoAluno.setProvaAluno(provaAluno);
-            questaoAluno.setQuestao(questao);
-            questaoAluno.setRespostaVF(questao.getRespostaUsuario());
+            questaoAluno.setQuestaoAvaliacao(carregarQuestaoAvaliacao(questaoVF.getId()));
+            questaoAluno.setRespostaVF(questaoVF.getRespostaUsuario());
             provaAluno.getQuestoesAluno().add(questaoAluno);
         }
     }

@@ -7,8 +7,7 @@ package br.edu.ifpe.recife.avalon.model.questao;
 
 import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.Date;
@@ -117,12 +116,6 @@ public class Questao implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
     private ComponenteCurricular componenteCurricular;
-
-    @ManyToMany(mappedBy = "questoes")
-    private List<Simulado> simulados;
-
-    @ManyToMany(mappedBy = "questoes")
-    private List<Prova> provas;
     
     @Column(name = "SN_QUESTAO_SIMULADO")
     private boolean questaoSimulado = false;
@@ -214,22 +207,6 @@ public class Questao implements Serializable {
 
     public void setComponenteCurricular(ComponenteCurricular componenteCurricular) {
         this.componenteCurricular = componenteCurricular;
-    }
-
-    public List<Simulado> getSimulados() {
-        return simulados;
-    }
-
-    public void setSimulados(List<Simulado> simulados) {
-        this.simulados = simulados;
-    }
-
-    public List<Prova> getProvas() {
-        return provas;
-    }
-
-    public void setProvas(List<Prova> provas) {
-        this.provas = provas;
     }
 
     public Imagem getImagem() {

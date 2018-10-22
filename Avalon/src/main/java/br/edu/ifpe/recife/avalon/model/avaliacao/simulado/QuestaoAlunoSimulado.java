@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.prova;
+package br.edu.ifpe.recife.avalon.model.avaliacao.simulado;
 
-import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvalicao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAlunoAvalicao;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -18,20 +18,20 @@ import javax.validation.constraints.NotNull;
  * @author eduardoamaral
  */
 @Entity
-@Table(name = "TB_PROVA_ALUNO_QUESTAO")
-public class ProvaAlunoQuestao extends QuestaoAvalicao {
+@Table(name = "TB_QUESTAO_ALUNO_SIMULADO")
+public class QuestaoAlunoSimulado extends QuestaoAlunoAvalicao {
 
-    @NotNull(message = "{prova.obrigatoria}")
+    @NotNull(message = "{simulado.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_AVALIACAO_ALUNO", referencedColumnName = "ID_AVALIACAO_ALUNO")
-    private ProvaAluno provaAluno;
+    private SimuladoAluno simuladoAluno;
 
-    public ProvaAluno getProvaAluno() {
-        return provaAluno;
+    public SimuladoAluno getSimuladoAluno() {
+        return simuladoAluno;
     }
 
-    public void setProvaAluno(ProvaAluno provaAluno) {
-        this.provaAluno = provaAluno;
+    public void setSimuladoAluno(SimuladoAluno simuladoAluno) {
+        this.simuladoAluno = simuladoAluno;
     }
 
 }

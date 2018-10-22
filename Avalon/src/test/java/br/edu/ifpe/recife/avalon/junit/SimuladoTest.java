@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,13 +7,16 @@ package br.edu.ifpe.recife.avalon.junit;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
 import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.filtro.FiltroSimulado;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
-import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAluno;
-import br.edu.ifpe.recife.avalon.model.simulado.SimuladoAlunoQuestao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoAlunoSimulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -43,14 +46,14 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SimuladoTest {
-    
+
     private static final String EMAIL_TESTE = "teste@gmail.com";
-    
+
     private static EJBContainer container;
-    
+
     @EJB
     private SimuladoServico simuladoServico;
-    
+
     @EJB
     private QuestaoServico questaoServico;
 
@@ -61,7 +64,7 @@ public class SimuladoTest {
     private ComponenteCurricularServico ccurricularServico;
 
     private static Logger logger;
-    
+
     public SimuladoTest() {
     }
 
@@ -85,140 +88,107 @@ public class SimuladoTest {
         usuarioServico = (UsuarioServico) container.getContext().lookup("java:global/classes/UsuarioServico");
         ccurricularServico = (ComponenteCurricularServico) container.getContext().lookup("java:global/classes/ComponenteCurricularServico");
     }
-    
+
     @After
     public void tearDown() {
     }
 
     @Test
-    public void t01_inserirSimulado() throws ValidacaoException{
+    public void t01_inserirSimulado() throws ValidacaoException {
         logger.info("Executando t01: inserirSimulado");
         Simulado simulado = new Simulado();
         preencherNovoSimulado(simulado);
-        
+
         simuladoServico.salvar(simulado);
-        
+
         assertNotNull(simulado.getId());
     }
-    
+
     @Test(expected = ValidacaoException.class)
-    public void t02_criticarSimuladoComTituloRepetido() throws ValidacaoException{
+    public void t02_criticarSimuladoComTituloRepetido() throws ValidacaoException {
         logger.info("Executando t02: criticarSimuladoComTituloRepetido");
         Simulado simulado = new Simulado();
         preencherNovoSimulado(simulado);
-        
+
         simuladoServico.salvar(simulado);
     }
-    
+
     @Test
-    public void t03_buscarPorFiltroComponenteCurricular(){
+    public void t03_buscarPorFiltroComponenteCurricular() {
         logger.info("Executando t03: buscarPorFiltroComponenteCurricular");
         FiltroSimulado filtro = new FiltroSimulado();
-        
+
         filtro.setIdComponenteCurricular(1l);
-        
+
         List<Simulado> lista = simuladoServico.buscarSimuladoPorFiltro(filtro);
-        
+
         assertTrue(!lista.isEmpty());
     }
-    
+
     @Test
-    public void t04_buscarPorFiltroTitulo(){
+    public void t04_buscarPorFiltroTitulo() {
         logger.info("Executando t04: buscarPorComponenteCurricular");
         FiltroSimulado filtro = new FiltroSimulado();
-        
+
         filtro.setTitulo("Teste");
-        
+
         List<Simulado> lista = simuladoServico.buscarSimuladoPorFiltro(filtro);
-        
+
         assertTrue(!lista.isEmpty());
     }
-    
+
     @Test
-    public void t05_buscarPorFiltroProfessor(){
+    public void t05_buscarPorFiltroProfessor() {
         logger.info("Executando t05: buscarPorFiltroProfessor");
         FiltroSimulado filtro = new FiltroSimulado();
-        
+
         filtro.setTitulo("Teste");
-        
+
         List<Simulado> lista = simuladoServico.buscarSimuladoPorFiltro(filtro);
-        
+
         assertTrue(!lista.isEmpty());
     }
-    
+
     @Test(expected = EJBException.class)
-    public void t06_criticarSimuladoSemTitulo() throws ValidacaoException{
+    public void t06_criticarSimuladoSemTitulo() throws ValidacaoException {
         logger.info("Executando t06: criticarSimuladoSemTitulo");
         Simulado simulado = new Simulado();
-        simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE));
-        simulado.setDataCriacao(Calendar.getInstance().getTime());
-        
-        FiltroQuestao filtro = new FiltroQuestao();
-        
-        filtro.setIdComponenteCurricular(1l);
-        filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
-        
-        List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
-        
-        simulado.setQuestoes(questoes);
-        
+        preencherNovoSimulado(simulado);
+        simulado.setTitulo("");
+
         simuladoServico.salvar(simulado);
     }
-    
+
     @Test(expected = EJBException.class)
-    public void t07_criticarSimuladoSemProfessor() throws ValidacaoException{
+    public void t07_criticarSimuladoSemProfessor() throws ValidacaoException {
         logger.info("Executando t07: criticarSimuladoSemProfessor");
         Simulado simulado = new Simulado();
-        simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setTitulo("Teste Simulado 7.");
-        simulado.setDataCriacao(Calendar.getInstance().getTime());
-        
-        FiltroQuestao filtro = new FiltroQuestao();
-        
-        filtro.setIdComponenteCurricular(1l);
-        filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
-        
-        List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
-        
-        simulado.setQuestoes(questoes);
-        
+        preencherNovoSimulado(simulado);
+        simulado.setProfessor(null);
+
         simuladoServico.salvar(simulado);
     }
-    
+
     @Test(expected = EJBException.class)
-    public void t08_criticarSimuladoSemComponenteCurricular() throws ValidacaoException{
+    public void t08_criticarSimuladoSemComponenteCurricular() throws ValidacaoException {
         logger.info("Executando t08: criticarSimuladoSemComponenteCurricular");
         Simulado simulado = new Simulado();
-        simulado.setTitulo("Teste Simulado 8.");
-        simulado.setDataCriacao(Calendar.getInstance().getTime());
-        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
-        
-        FiltroQuestao filtro = new FiltroQuestao();
-        
-        filtro.setIdComponenteCurricular(1l);
-        filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
-        
-        List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
-        
-        simulado.setQuestoes(questoes);
-        
+        preencherNovoSimulado(simulado);
+        simulado.setComponenteCurricular(null);
+
         simuladoServico.salvar(simulado);
     }
-    
+
     @Test(expected = ValidacaoException.class)
-    public void t09_criticarSimuladoSemQuestoes() throws ValidacaoException{
+    public void t09_criticarSimuladoSemQuestoes() throws ValidacaoException {
         logger.info("Executando t09: criticarSimuladoSemQuestoes");
         Simulado simulado = new Simulado();
-        simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
-        simulado.setTitulo("Teste Simulado 9.");
-        simulado.setDataCriacao(Calendar.getInstance().getTime());
+        preencherNovoSimulado(simulado);
         simulado.setQuestoes(null);
-        
+
         simuladoServico.salvar(simulado);
     }
-    
+
     @Test(expected = EJBException.class)
     public void t10_salvarSimuladoAlunoSemSimulado() throws ValidacaoException {
         logger.info("Executando t10: salvarSimuladoAlunoSemProva");
@@ -248,7 +218,7 @@ public class SimuladoTest {
 
         simuladoServico.salvarSimuladoAluno(simuladoAluno);
     }
-    
+
     @Test
     public void t13_salvarSimuladoAluno() throws ValidacaoException, InterruptedException {
         logger.info("Executando t13: salvarSimuladoAluno");
@@ -256,10 +226,10 @@ public class SimuladoTest {
         preencherSimuladoAluno(simuladoAluno);
 
         simuladoServico.salvarSimuladoAluno(simuladoAluno);
-        
+
         assertTrue(simuladoAluno.getId() > 0);
     }
-    
+
     @Test
     public void t14_listarResultadosSimuladoAluno() {
         logger.info("Executando t14: listarResultadosSimuladoAluno");
@@ -268,25 +238,32 @@ public class SimuladoTest {
 
         assertTrue(!resultados.isEmpty());
     }
-    
-    private Simulado preencherNovoSimulado(Simulado simulado){
+
+    private Simulado preencherNovoSimulado(Simulado simulado) {
         simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
         simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
         simulado.setTitulo("Teste Simulado.");
         simulado.setDataCriacao(Calendar.getInstance().getTime());
-        
+
         FiltroQuestao filtro = new FiltroQuestao();
-        
+
         filtro.setIdComponenteCurricular(1l);
         filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
-        
+
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
-        
-        simulado.setQuestoes(questoes);
-        
+        List<QuestaoSimulado> questoesSimulados = new ArrayList<>();
+
+        for (Questao questao : questoes) {
+            QuestaoSimulado questaoSimulado = new QuestaoSimulado();
+            questaoSimulado.setSimulado(simulado);
+            questaoSimulado.setQuestao(questao);
+            questoesSimulados.add(questaoSimulado);
+        }
+        simulado.setQuestoes(questoesSimulados);
+
         return simulado;
     }
-    
+
     private void preencherSimuladoAluno(SimuladoAluno simuladoAluno) {
         Usuario aluno = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
         FiltroSimulado filtro = new FiltroSimulado();
@@ -296,16 +273,16 @@ public class SimuladoTest {
         simuladoAluno.setSimulado(simulado);
         simuladoAluno.setDataHoraInicio(Calendar.getInstance().getTime());
         simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
-        simuladoAluno.setQuestoesAluno(new ArrayList<SimuladoAlunoQuestao>());
+        simuladoAluno.setQuestoesAluno(new ArrayList<QuestaoAlunoSimulado>());
 
-        for (Questao questao : simulado.getQuestoes()) {
-            SimuladoAlunoQuestao simuladoAlunoQuestao = new SimuladoAlunoQuestao();
+        for (QuestaoSimulado questaoSimulado : simulado.getQuestoes()) {
+            QuestaoAlunoSimulado simuladoAlunoQuestao = new QuestaoAlunoSimulado();
             simuladoAlunoQuestao.setSimuladoAluno(simuladoAluno);
-            simuladoAlunoQuestao.setQuestao(questao);
+            simuladoAlunoQuestao.setQuestaoAvaliacao(questaoSimulado);
             simuladoAlunoQuestao.setRespostaVF(Boolean.TRUE);
             simuladoAluno.getQuestoesAluno().add(simuladoAlunoQuestao);
         }
 
     }
-    
+
 }

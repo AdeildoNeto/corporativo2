@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
  * @author eduardoamaral
  */
 @MappedSuperclass
-public class QuestaoAvalicao implements Serializable {
+public class QuestaoAlunoAvalicao implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +35,8 @@ public class QuestaoAvalicao implements Serializable {
 
     @NotNull(message = "{questao.obrigatoria}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
-    private Questao questao;
+    @JoinColumn(name = "ID_QUESTAO_AVALIACAO", referencedColumnName = "ID_QUESTAO_AVALIACAO")
+    private QuestaoAvaliacao questaoAvaliacao;
 
     @Column(name = "SN_RESPOSTA_VF")
     private Boolean respostaVF;
@@ -45,15 +45,15 @@ public class QuestaoAvalicao implements Serializable {
     private Integer respostaMultiplaEscolha;
     
     public boolean getRespostaCorreta(){
-        return ((VerdadeiroFalso) questao).getResposta();
+        return ((VerdadeiroFalso) questaoAvaliacao.getQuestao()).getResposta();
     }
     
     public char getAlternativaCorreta(){
-        return (char) (65 + ((MultiplaEscolha) questao).getOpcaoCorreta());
+        return (char) (65 + ((MultiplaEscolha) questaoAvaliacao.getQuestao()).getOpcaoCorreta());
     }
     
     public List<Alternativa> getAlternativas(){
-        return ((MultiplaEscolha) questao).getAlternativas();
+        return ((MultiplaEscolha) questaoAvaliacao.getQuestao()).getAlternativas();
     }
     
     public Long getId() {
@@ -64,12 +64,12 @@ public class QuestaoAvalicao implements Serializable {
         this.id = id;
     }
 
-    public Questao getQuestao() {
-        return questao;
+    public QuestaoAvaliacao getQuestaoAvaliacao() {
+        return questaoAvaliacao;
     }
 
-    public void setQuestao(Questao questao) {
-        this.questao = questao;
+    public void setQuestaoAvaliacao(QuestaoAvaliacao questaoAvaliacao) {
+        this.questaoAvaliacao = questaoAvaliacao;
     }
 
     public Boolean getRespostaVF() {

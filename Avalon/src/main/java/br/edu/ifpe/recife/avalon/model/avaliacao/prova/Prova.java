@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.prova;
+package br.edu.ifpe.recife.avalon.model.avaliacao.prova;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,13 +71,9 @@ public class Prova extends Avaliacao {
     @Transient
     private Long duracao;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_QUESTAO_PROVA", joinColumns = {
-        @JoinColumn(name = "ID_AVALIACAO")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "ID_QUESTAO")
-            })
-    private List<Questao> questoes;
+    @OneToMany(mappedBy = "prova", fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<QuestaoProva> questoes;
 
     public Date getDataHoraInicio() {
         return dataHoraInicio;
@@ -93,11 +91,11 @@ public class Prova extends Avaliacao {
         this.dataHoraFim = dataHoraFim;
     }
 
-    public List<Questao> getQuestoes() {
+    public List<QuestaoProva> getQuestoes() {
         return questoes;
     }
 
-    public void setQuestoes(List<Questao> questoes) {
+    public void setQuestoes(List<QuestaoProva> questoes) {
         this.questoes = questoes;
     }
 

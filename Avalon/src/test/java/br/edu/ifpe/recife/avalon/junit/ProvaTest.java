@@ -7,11 +7,12 @@ package br.edu.ifpe.recife.avalon.junit;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAlunoQuestao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoAlunoProva;
 import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
 import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
@@ -312,7 +313,7 @@ public class ProvaTest {
 
         prova.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
         prova.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
-        prova.setTitulo("Teste Simulado.");
+        prova.setTitulo("Teste Prova.");
         prova.setDataCriacao(calendar.getTime());
         calendar.add(Calendar.SECOND, 10);
         prova.setDataHoraInicio(calendar.getTime());
@@ -326,8 +327,16 @@ public class ProvaTest {
         filtro.setTipo(TipoQuestaoEnum.VERDADEIRO_FALSO);
 
         List<Questao> questoes = questaoServico.buscarQuestoesPorFiltro(filtro);
+        List<QuestaoProva> questoesProva = new ArrayList<>();
+        
+        for (Questao questao : questoes) {
+            QuestaoProva questaoProva = new QuestaoProva();
+            questaoProva.setProva(prova);
+            questaoProva.setQuestao(questao);
+            questoesProva.add(questaoProva);
+        }
 
-        prova.setQuestoes(questoes);
+        prova.setQuestoes(questoesProva);
     }
 
     private void preencherProvaAluno(ProvaAluno provaAluno) {
@@ -337,12 +346,12 @@ public class ProvaTest {
         provaAluno.setProva(prova);
         provaAluno.setDataHoraInicio(Calendar.getInstance().getTime());
         provaAluno.setDataHoraFim(Calendar.getInstance().getTime());
-        provaAluno.setQuestoesAluno(new ArrayList<ProvaAlunoQuestao>());
+        provaAluno.setQuestoesAluno(new ArrayList<QuestaoAlunoProva>());
 
-        for (Questao questao : prova.getQuestoes()) {
-            ProvaAlunoQuestao provaAlunoQuestao = new ProvaAlunoQuestao();
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            QuestaoAlunoProva provaAlunoQuestao = new QuestaoAlunoProva();
             provaAlunoQuestao.setProvaAluno(provaAluno);
-            provaAlunoQuestao.setQuestao(questao);
+            provaAlunoQuestao.setQuestaoAvaliacao(questaoProva);
             provaAlunoQuestao.setRespostaVF(Boolean.TRUE);
             provaAluno.getQuestoesAluno().add(provaAlunoQuestao);
         }

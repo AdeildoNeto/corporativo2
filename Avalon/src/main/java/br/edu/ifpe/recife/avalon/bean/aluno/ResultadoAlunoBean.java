@@ -5,7 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
@@ -77,7 +77,7 @@ public class ResultadoAlunoBean implements Serializable {
         provaAlunoDetalhe = provaSelecionada;
 
         if (!provaAlunoDetalhe.getProva().getQuestoes().isEmpty()) {
-            provaVF = provaAlunoDetalhe.getProva().getQuestoes().get(0) instanceof VerdadeiroFalso;
+            provaVF = provaAlunoDetalhe.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
             return GO_DETALHAR_RESULTADO;
         }
 

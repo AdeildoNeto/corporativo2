@@ -55,28 +55,59 @@ public class AvaliacaoAluno implements Serializable {
 
     /**
      * Calcula a nota obtida pelo aluno em uma avaliação.
+     *
      * @param questoesAvaliacao
      */
-    public void calcularNota(List<QuestaoAvalicao> questoesAvaliacao) {
+    public void calcularNota(List<QuestaoAlunoAvalicao> questoesAvaliacao) {
         double respostasCertas = 0.0;
+        int pesoQuestoes = 0;
 
-        for (QuestaoAvalicao questaoAvaliacao : questoesAvaliacao) {
-            if (questaoAvaliacao.getQuestao() instanceof VerdadeiroFalso) {
-                VerdadeiroFalso questaoVF = (VerdadeiroFalso) questaoAvaliacao.getQuestao();
-                if (questaoVF.isAnulada()
-                        || questaoVF.getResposta().equals(questaoAvaliacao.getRespostaVF())) {
-                    respostasCertas++;
-                }
+        for (QuestaoAlunoAvalicao questaoAlunoAvalicao : questoesAvaliacao) {
+            pesoQuestoes += questaoAlunoAvalicao.getQuestaoAvaliacao().getPeso();
+            if (questaoAlunoAvalicao.getQuestaoAvaliacao().getQuestao() instanceof VerdadeiroFalso) {
+                respostasCertas += verificarAcertoVF(questaoAlunoAvalicao);
             } else {
-                MultiplaEscolha questaoMS = (MultiplaEscolha) questaoAvaliacao.getQuestao();
-                if (questaoMS.isAnulada()
-                        || questaoMS.getOpcaoCorreta().equals(questaoAvaliacao.getRespostaMultiplaEscolha())) {
-                    respostasCertas++;
-                }
+                respostasCertas += verificarAcertoME(questaoAlunoAvalicao);
             }
         }
 
-        nota = (respostasCertas / questoesAvaliacao.size()) * 10.0;
+        nota = (respostasCertas / pesoQuestoes) * 10.0;
+    }
+
+    /**
+     * Verifica se o aluno acertou uma questão de verdadeiro ou falso.
+     *
+     * @param questaoAlunoAvalicao
+     * @return quantidade de pontos
+     */
+    private int verificarAcertoVF(QuestaoAlunoAvalicao questaoAlunoAvalicao) {
+        int pontos = 0;
+
+        VerdadeiroFalso questaoVF = (VerdadeiroFalso) questaoAlunoAvalicao.getQuestaoAvaliacao().getQuestao();
+        if (questaoVF.isAnulada()
+                || questaoVF.getResposta().equals(questaoAlunoAvalicao.getRespostaVF())) {
+            pontos = questaoAlunoAvalicao.getQuestaoAvaliacao().getPeso();
+        }
+
+        return pontos;
+    }
+
+    /**
+     * Verifica se o aluno acertou uma questão de múltipla escolha.
+     * 
+     * @param questaoAlunoAvalicao
+     * @return 
+     */
+    private int verificarAcertoME(QuestaoAlunoAvalicao questaoAlunoAvalicao) {
+        int pontos = 0;
+
+        MultiplaEscolha questaoMS = (MultiplaEscolha) questaoAlunoAvalicao.getQuestaoAvaliacao().getQuestao();
+        if (questaoMS.isAnulada()
+                || questaoMS.getOpcaoCorreta().equals(questaoAlunoAvalicao.getRespostaMultiplaEscolha())) {
+            pontos = questaoAlunoAvalicao.getQuestaoAvaliacao().getPeso();
+        }
+        
+        return pontos;
     }
 
     public Long getId() {

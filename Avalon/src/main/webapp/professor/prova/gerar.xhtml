@@ -79,42 +79,42 @@ and open the template in the editor.
 
             <p:outputPanel class="row container-table-prova">
                 <p:outputPanel class="col-md-12">
-                    <h:dataTable id="table" value="#{provaBean.questoes}" var="questao"
+                    <h:dataTable id="table" value="#{provaBean.questoesProva}" var="questaoProva"
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{provaBean.todosSelecionados}">
-                                    <f:ajax listener="#{provaBean.selecionarTodos()}" render="@form" />
+                                    <f:ajax listener="#{provaBean.selecionarTodasQuestoesProva()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
-                            <h:selectBooleanCheckbox id="chkSelecionarQuestao" value="#{questao.selecionada}">
-                                <f:ajax listener="#{provaBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
+                            <h:selectBooleanCheckbox id="chkSelecionarQuestao" value="#{questaoProva.questao.selecionada}">
+                                <f:ajax listener="#{provaBean.selecionarQuestaoProva(questaoProva)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.enunciado}"
-                                          value="#{questao.enunciado}" />
+                            <h:outputText title="#{questaoProva.questao.enunciado}"
+                                          value="#{questaoProva.questao.enunciado}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.componente.curricular']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.componenteCurricular.nome}"
-                                          value="#{questao.componenteCurricular.nome}" />
+                            <h:outputText title="#{questaoProva.questao.componenteCurricular.nome}"
+                                          value="#{questaoProva.questao.componenteCurricular.nome}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.professor']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.professor.nomeCompleto}"
-                                          value="#{questao.professor.nomeCompleto}" />
+                            <h:outputText title="#{questaoProva.questao.professor.nomeCompleto}"
+                                          value="#{questaoProva.questao.professor.nomeCompleto}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header"></f:facet>
-                            <p:commandLink id="btnDetalhar" action="#{provaBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
+                            <p:commandLink id="btnDetalhar" action="#{provaBean.detalhesViewHelper.exibirDetalhes(questaoProva.questao)}" update="formDetalhes">
                                 <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
                             </p:commandLink>
                         </h:column>
@@ -129,7 +129,7 @@ and open the template in the editor.
                                      class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
                                      action="#{provaBean.adicionarProva()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesSelecionadas.isEmpty()}"
+                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesProvaSelecionadas.isEmpty()}"
                                      class="btn btn-primary font-color-default"></p:commandButton>
                 </p:outputPanel>
             </p:outputPanel>

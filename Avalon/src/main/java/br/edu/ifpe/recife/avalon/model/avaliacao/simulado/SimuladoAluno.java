@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.prova;
+package br.edu.ifpe.recife.avalon.model.avaliacao.simulado;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.AvaliacaoAluno;
 import java.util.ArrayList;
@@ -24,39 +24,35 @@ import javax.validation.constraints.NotNull;
  * @author eduardoamaral
  */
 @Entity
-@Table(name = "TB_PROVA_ALUNO")
+@Table(name = "TB_SIMULADO_ALUNO")
 @NamedQueries(
         {
             @NamedQuery(
-                    name = "ProvaAluno.PorResultadoAluno",
-                    query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
-                    + " AND (pa.prova.liberarResultado = true AND CURRENT_DATE > pa.prova.dataHoraFim)"
-            )
-            ,
+                    name = "SimuladoAluno.PorAluno",
+                    query = "Select sa from SimuladoAluno sa where sa.aluno.id = :idAluno "
+                            + "ORDER BY sa.dataHoraInicio"
+            ),
             @NamedQuery(
-                    name = "ProvaAluno.PorProva",
-                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
-                    + "ORDER BY pa.aluno.nome, pa.aluno.sobrenome"
-            )
-            ,
-            @NamedQuery(
-                    name = "ProvaAluno.PorAlunoProva",
-                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
-                    + "AND pa.aluno.id = :idAluno"
+                    name = "SimuladoAluno.PorSimulado",
+                    query = "Select sa from SimuladoAluno sa where sa.simulado.id = :idSimulado "
+                    + "ORDER BY sa.aluno.nome, sa.aluno.sobrenome"
             )
         }
 )
-public class ProvaAluno extends AvaliacaoAluno {
+public class SimuladoAluno extends AvaliacaoAluno {
 
-    @NotNull(message = "{prova.obrigatoria}")
+    @NotNull(message = "{simulado.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_AVALIACAO", referencedColumnName = "ID_AVALIACAO")
-    private Prova prova;
+    private Simulado simulado;
 
-    @OneToMany(mappedBy = "provaAluno", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "simuladoAluno", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<ProvaAlunoQuestao> questoesAluno;
+    private List<QuestaoAlunoSimulado> questoesAluno;
 
+    /**
+     * Calcula a nota obtida pelo aluno no simulado.
+     */
     private void calcularNota() {
         super.setNota(0.0);
 
@@ -65,19 +61,19 @@ public class ProvaAluno extends AvaliacaoAluno {
         }
     }
 
-    public Prova getProva() {
-        return prova;
+    public Simulado getSimulado() {
+        return simulado;
     }
 
-    public void setProva(Prova prova) {
-        this.prova = prova;
+    public void setSimulado(Simulado simulado) {
+        this.simulado = simulado;
     }
 
-    public List<ProvaAlunoQuestao> getQuestoesAluno() {
+    public List<QuestaoAlunoSimulado> getQuestoesAluno() {
         return questoesAluno;
     }
 
-    public void setQuestoesAluno(List<ProvaAlunoQuestao> questoesAluno) {
+    public void setQuestoesAluno(List<QuestaoAlunoSimulado> questoesAluno) {
         this.questoesAluno = questoesAluno;
     }
 

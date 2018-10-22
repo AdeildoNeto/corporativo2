@@ -7,10 +7,11 @@ package br.edu.ifpe.recife.avalon.bean.professor;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
-import br.edu.ifpe.recife.avalon.model.prova.Prova;
-import br.edu.ifpe.recife.avalon.model.prova.ProvaAluno;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
@@ -28,7 +29,9 @@ import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -36,7 +39,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -76,9 +78,13 @@ public class ProvaBean extends AvaliacaoBean {
     private List<ProvaAluno> resultados;
     private ProvaAluno provaAlunoDetalhe;
     private Prova provaResultadoSelecionada;
+    
     private boolean exibirModalReagendamento;
     private Date dataHoraInicioReagendamento;
     private Date dataHoraFimReagendamento;
+    
+    private final List<QuestaoProva> questoesProva;
+    private final Set<QuestaoProva> questoesProvaSelecionadas;
 
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
@@ -90,6 +96,8 @@ public class ProvaBean extends AvaliacaoBean {
         visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
         prova = new Prova();
         provas = new ArrayList<>();
+        questoesProva = new ArrayList<>();
+        questoesProvaSelecionadas = new HashSet<>();
     }
 
     /**
@@ -162,7 +170,6 @@ public class ProvaBean extends AvaliacaoBean {
         this.provas = provaServico.buscarProvasPorProfessor(usuarioLogado.getEmail());
     }
 
-
     /**
      * Recupera todos os resultados dos alunos em uma prova.
      *
@@ -195,8 +202,12 @@ public class ProvaBean extends AvaliacaoBean {
     private void limparPaginaImprimir() {
         inicializarQuestoes();
     }
-
     
+    private void inicializarQuestoes() {
+        super.setTodosSelecionados(false);
+        questoesProvaSelecionadas.clear();
+        questoesProva.clear();
+    }
 
     /**
      * Inicializa os ViewHelpers.
@@ -205,37 +216,10 @@ public class ProvaBean extends AvaliacaoBean {
      */
     private void inicializarHelpers(boolean apenasQuestoesObjetivas) {
         FiltroQuestao filtro = new FiltroQuestao(usuarioLogado.getEmail(), apenasQuestoesObjetivas);
-        
+
         componenteViewHelper.inicializar(componenteServico);
         detalhesViewHelper.inicializar();
         getPesquisarQuestoesViewHelper().inicializar(questaoServico, filtro);
-    }
-
-    /**
-     * Gera uma prova a partir das questões selecionada.
-     */
-    public void imprimirProva() {
-        if (getQuestoesSelecionadas().isEmpty()) {
-            exibirMensagem(FacesMessage.SEVERITY_ERROR, AvalonUtil.getInstance().getMensagemValidacao("selecione.uma.questao"));
-        } else {
-            RequestContext.getCurrentInstance().execute(montarUrlProva());
-        }
-    }
-
-    /**
-     * Monta a URL da página de impressão da prova.
-     *
-     * @return url da prova.
-     */
-    private String montarUrlProva() {
-        String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        StringBuilder builder = new StringBuilder();
-        builder.append("window.open('");
-        builder.append(path);
-        builder.append("/professor/prova/impressao.xhtml");
-        builder.append("')");
-
-        return builder.toString();
     }
 
     /**
@@ -269,6 +253,57 @@ public class ProvaBean extends AvaliacaoBean {
     public void fecharModalExclusao() {
         exibirModalExclusao = false;
     }
+    
+    /**
+     * Pesquisa as questões disponíveis para impressão.
+     */
+    public void pesquisar() {
+        buscarQuestoes();
+        if (questoesProva.isEmpty()) {
+            exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
+        }
+    }
+    
+    /**
+     * Carrega as as questões do a partir do filtro informado.
+     */
+    private void buscarQuestoes() {
+        inicializarQuestoes();
+        for (Questao questao : super.getPesquisarQuestoesViewHelper().pesquisar()) {
+            QuestaoProva questaoProva = new QuestaoProva();
+            questaoProva.setQuestao(questao);
+            questaoProva.setProva(prova);
+            questoesProva.add(questaoProva);
+        }
+    }
+
+    /**
+     * Seleciona uma questão da lista de questões.
+     *
+     * @param questaoProva - questão de prova selecionada.
+     */
+    public void selecionarQuestaoProva(QuestaoProva questaoProva) {
+        if (questaoProva.getQuestao().isSelecionada()) {
+            questoesProvaSelecionadas.add(questaoProva);
+        } else {
+            questoesProvaSelecionadas.remove(questaoProva);
+            super.setTodosSelecionados(false);
+        }
+    }
+    
+    /**
+     * Marca ou desmarca todas as questões disponíveis
+     * para gerar uma prova online.
+     */
+    public void selecionarTodasQuestoesProva() {
+        questoesProvaSelecionadas.clear();
+
+        for (QuestaoProva questaoProva : questoesProva) {
+            questaoProva.getQuestao().setSelecionada(super.isTodosSelecionados());
+            selecionarQuestaoProva(questaoProva);
+        }
+
+    }
 
     /**
      * Salva uma nova prova.
@@ -282,8 +317,8 @@ public class ProvaBean extends AvaliacaoBean {
             prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
             prova.setDataCriacao(Calendar.getInstance().getTime());
             prova.setProfessor(usuarioLogado);
-            prova.setQuestoes(new ArrayList<Questao>());
-            prova.getQuestoes().addAll(getQuestoesSelecionadas());
+            prova.setQuestoes(new ArrayList<QuestaoProva>());
+            prova.getQuestoes().addAll(questoesProvaSelecionadas);
             provaServico.salvar(prova);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -299,22 +334,43 @@ public class ProvaBean extends AvaliacaoBean {
     private void carregarQuestoesDetalhar() {
 
         if (!prova.getQuestoes().isEmpty()) {
-            try {
 
-                if (prova.getQuestoes().get(0) instanceof VerdadeiroFalso) {
-                    visualizarViewHelper.setQuestoesVerdadeiroFalso((List<VerdadeiroFalso>) (List<?>) prova.getQuestoes());
-                } else {
-                    visualizarViewHelper.setQuestoesMultiplaEscolha((List<MultiplaEscolha>) (List<?>) prova.getQuestoes());
-                }
-
-                if (visualizarViewHelper.getQuestoesMultiplaEscolha().isEmpty() && visualizarViewHelper.getQuestoesVerdadeiroFalso().isEmpty()) {
-                    throw new ValidacaoException(AvalonUtil.getInstance().getMensagem("prova.vazia"));
-                }
-
-            } catch (ValidacaoException ex) {
-                exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+            if (isProvaVerdadeiroFalso()) {
+                carregarQuestoesVerdadeiroFalso();
+            } else {
+                carregarQuetoesMultiplaEscolha();
             }
         }
+    }
+    
+    private boolean isProvaVerdadeiroFalso(){
+        return prova.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+    }
+
+    /**
+     * Carrega as questões de verdadeiro ou falso da prova para detalhá-la.
+     */
+    private void carregarQuestoesVerdadeiroFalso() {
+        List<VerdadeiroFalso> questoesVF = new ArrayList<>();
+
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            questoesVF.add((VerdadeiroFalso) questaoProva.getQuestao());
+        }
+
+        visualizarViewHelper.setQuestoesVerdadeiroFalso(questoesVF);
+    }
+
+    /**
+     * Carrega as questões de múltipla escolha da prova para detalhá-la.
+     */
+    private void carregarQuetoesMultiplaEscolha() {
+        List<MultiplaEscolha> questoesME = new ArrayList<>();
+
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            questoesME.add((MultiplaEscolha) questaoProva.getQuestao());
+        }
+
+        visualizarViewHelper.setQuestoesMultiplaEscolha(questoesME);
     }
 
     /**
@@ -375,23 +431,33 @@ public class ProvaBean extends AvaliacaoBean {
             PdfGeneratorViewHelper pdf = new PdfGeneratorViewHelper();
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-            
+
             response.reset();   // Algum filtro pode ter configurado alguns cabeçalhos no buffer de antemão. Queremos livrar-se deles, senão ele pode colidir.
             response.setHeader("Content-Type", "application/pdf");  // Define apenas o tipo de conteúdo, Utilize se necessário ServletContext#getMimeType() para detecção automática com base em nome de arquivo.
-            response.setHeader("Content-Disposition", "attachment;"+"filename=Prova_"+System.currentTimeMillis()+".pdf");
-            
+            response.setHeader("Content-Disposition", "attachment;" + "filename=Prova_" + System.currentTimeMillis() + ".pdf");
+
             OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
             List<Questao> questoesImpressao = new ArrayList<>();
             questoesImpressao.addAll(getQuestoesSelecionadas());
-            
+
             pdf.gerarArquivo(responseOutputStream, questoesImpressao);
-            
+
             facesContext.responseComplete();
         } catch (IOException ex) {
             Logger.getLogger(ProvaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "";
+    }
+    
+    private List<Questao> getQuestoesSelecionadas(){
+        List<Questao> questoes = new ArrayList<>();
+        
+        for (QuestaoProva questaoProva : questoesProvaSelecionadas) {
+            questoes.add(questaoProva.getQuestao());
+        }
+        
+        return questoes;
     }
 
     /*
@@ -404,7 +470,7 @@ public class ProvaBean extends AvaliacaoBean {
     public QuestaoDetalhesViewHelper getDetalhesViewHelper() {
         return detalhesViewHelper;
     }
-    
+
     public VisualizarAvaliacaoViewHelper getVisualizarViewHelper() {
         return visualizarViewHelper;
     }
@@ -453,4 +519,12 @@ public class ProvaBean extends AvaliacaoBean {
         this.dataHoraFimReagendamento = dataHoraFimReagendamento;
     }
 
+    public List<QuestaoProva> getQuestoesProva() {
+        return questoesProva;
+    }
+
+    public Set<QuestaoProva> getQuestoesProvaSelecionadas() {
+        return questoesProvaSelecionadas;
+    }
+    
 }

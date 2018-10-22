@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpe.recife.avalon.model.simulado;
+package br.edu.ifpe.recife.avalon.model.avaliacao.simulado;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -54,19 +56,15 @@ import javax.persistence.Table;
 )
 public class Simulado extends Avaliacao {
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_QUESTAO_SIMULADO", joinColumns = {
-        @JoinColumn(name = "ID_AVALIACAO")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "ID_QUESTAO")
-            })
-    private List<Questao> questoes;
+    @OneToMany(mappedBy = "simulado", fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<QuestaoSimulado> questoes;
 
-    public List<Questao> getQuestoes() {
+    public List<QuestaoSimulado> getQuestoes() {
         return questoes;
     }
 
-    public void setQuestoes(List<Questao> questoes) {
+    public void setQuestoes(List<QuestaoSimulado> questoes) {
         this.questoes = questoes;
     }
 

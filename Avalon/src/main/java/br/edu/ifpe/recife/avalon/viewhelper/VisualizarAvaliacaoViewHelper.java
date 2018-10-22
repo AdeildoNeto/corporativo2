@@ -7,7 +7,7 @@ package br.edu.ifpe.recife.avalon.viewhelper;
 
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
-import br.edu.ifpe.recife.avalon.model.simulado.Simulado;
+import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
 import java.io.Serializable;
 import java.util.ArrayList;

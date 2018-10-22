@@ -25,7 +25,7 @@ and open the template in the editor.
                     <p:messages id="msgPrincipal" />
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-4">
                     <p:outputPanel class="form-group">
@@ -36,7 +36,7 @@ and open the template in the editor.
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
                     <h3>#{msg['selecionar.questoes']}:</h3>
@@ -49,7 +49,7 @@ and open the template in the editor.
 
             <p:outputPanel class="row container-table-prova">
                 <p:outputPanel class="col-md-12">
-                    <h:dataTable id="table" value="#{simuladoBean.questoes}" var="questao"
+                    <h:dataTable id="table" value="#{simuladoBean.questoesSimulado}" var="questaoSimulado"
                                  styleClass="table table-striped table-fixed table-questoes-prova">
                         <h:column>
                             <f:facet name="header">
@@ -58,33 +58,33 @@ and open the template in the editor.
                                 </h:selectBooleanCheckbox>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{questao.selecionada}">
-                                <f:ajax listener="#{simuladoBean.selecionarQuestao(questao)}" render="@form" execute="@form" />
+                                <f:ajax listener="#{simuladoBean.selecionarQuestaoSimulado(questaoSimulado)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['questao.listar.header.questao']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.enunciado}"
-                                          value="#{questao.enunciado}" />
+                            <h:outputText title="#{questaoSimulado.questao.enunciado}"
+                                          value="#{questaoSimulado.questao.enunciado}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.componente.curricular']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.componenteCurricular.nome}"
-                                          value="#{questao.componenteCurricular.nome}" />
+                            <h:outputText title="#{questaoSimulado.questao.componenteCurricular.nome}"
+                                          value="#{questaoSimulado.questao.componenteCurricular.nome}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.professor']}</span>
                             </f:facet>
-                            <h:outputText title="#{questao.professor.nomeCompleto}"
-                                          value="#{questao.professor.nomeCompleto}" />
+                            <h:outputText title="#{questaoSimulado.questao.professor.nomeCompleto}"
+                                          value="#{questaoSimulado.questao.professor.nomeCompleto}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header"></f:facet>
-                            <p:commandLink action="#{simuladoBean.detalhesViewHelper.exibirDetalhes(questao)}" update="formDetalhes">
+                            <p:commandLink action="#{simuladoBean.detalhesViewHelper.exibirDetalhes(questaoSimulado.questao)}" update="formDetalhes">
                                 <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
                             </p:commandLink>
                         </h:column>
@@ -99,7 +99,7 @@ and open the template in the editor.
                                      class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
                                      action="#{simuladoBean.salvar()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSelecionadas.isEmpty()}"
+                                     oncomplete="PF('block').hide()" disabled="#{simuladoBean.questoesSimuladoSelecionadas.isEmpty()}"
                                      class="btn btn-primary font-color-default"></p:commandButton>
                 </p:outputPanel>
             </p:outputPanel>
