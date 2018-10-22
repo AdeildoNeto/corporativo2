@@ -18,7 +18,7 @@ import org.openqa.selenium.By;
 public class MeusSimuladosSteps {
 
     public MeusSimuladosSteps() {
-        DbUnitUtil.setDataSet(DataSetEnum.MEUS_SIMULADOS);
+        DbUnitUtil.setDataSet(DataSetEnum.PROVAS_SIMULADOS);
         DbUnitUtil.inserirDados();
     }
     
