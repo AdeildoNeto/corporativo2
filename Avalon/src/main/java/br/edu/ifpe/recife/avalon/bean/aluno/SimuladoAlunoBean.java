@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
 import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
@@ -25,7 +24,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -114,10 +112,10 @@ public class SimuladoAlunoBean implements Serializable {
 
         return carregarQuestoes();
     }
-    
-    private String carregarQuestoes(){
+
+    private String carregarQuestoes() {
         String navegacao = GO_INICIAR_SIMULADO;
-        
+
         if (!simuladoSelecionado.getQuestoes().isEmpty()) {
             if (isSimuladoVerdadeiroFalso()) {
                 questoesVerdadeiroFalso = carregarQuestoesVerdadeiroFalso();
@@ -125,31 +123,33 @@ public class SimuladoAlunoBean implements Serializable {
                 questoesMultiplaEscolha = carregarQuestoesMultiplaEscolha();
             }
         }
-        
+
         return navegacao;
     }
-    
-    private boolean isSimuladoVerdadeiroFalso(){
+
+    private boolean isSimuladoVerdadeiroFalso() {
         return simuladoSelecionado.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
     }
-    
+
     /**
      * Carrega as questões de verdadeiro ou falso de um simulado.
-     * @return 
+     *
+     * @return
      */
-    private List<VerdadeiroFalso> carregarQuestoesVerdadeiroFalso(){
+    private List<VerdadeiroFalso> carregarQuestoesVerdadeiroFalso() {
         List<VerdadeiroFalso> questoes = new ArrayList<>();
         for (QuestaoSimulado questaoSimulado : simuladoSelecionado.getQuestoes()) {
             questoes.add((VerdadeiroFalso) questaoSimulado.getQuestao());
         }
         return questoes;
     }
-    
+
     /**
      * Carrega as questões de múltipla escolha de um simulado.
-     * @return 
+     *
+     * @return
      */
-    private List<MultiplaEscolha> carregarQuestoesMultiplaEscolha(){
+    private List<MultiplaEscolha> carregarQuestoesMultiplaEscolha() {
         List<MultiplaEscolha> questoes = new ArrayList<>();
         for (QuestaoSimulado questaoSimulado : simuladoSelecionado.getQuestoes()) {
             questoes.add((MultiplaEscolha) questaoSimulado.getQuestao());
@@ -218,15 +218,20 @@ public class SimuladoAlunoBean implements Serializable {
             simuladoAluno.getQuestoesAluno().add(questao);
         }
     }
-    
+
     /**
      * Recupera a questaoAvaliacao de um simulado.
+     *
      * @param idQuestao
-     * @return 
+     * @return
      */
-    private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao){
-        int index = Arrays.binarySearch(simuladoSelecionado.getQuestoes().toArray(), idQuestao);
-        return simuladoSelecionado.getQuestoes().get(index);
+    private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao) {
+        for (QuestaoSimulado questaoSimulado : simuladoSelecionado.getQuestoes()) {
+            if (questaoSimulado.getQuestao().getId().equals(idQuestao)) {
+                return questaoSimulado;
+            }
+        }
+        return null;
     }
 
     /**

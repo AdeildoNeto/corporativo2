@@ -10,7 +10,6 @@ import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoAlunoProva;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
-import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -321,8 +319,12 @@ public class ProvaAlunoBean implements Serializable {
      * @return
      */
     private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao) {
-        int index = Arrays.binarySearch(prova.getQuestoes().toArray(), idQuestao);
-        return prova.getQuestoes().get(index);
+        for (QuestaoProva questaoProva : prova.getQuestoes()) {
+            if(questaoProva.getQuestao().getId().equals(idQuestao)){
+                return questaoProva;
+            }
+        }
+        return null;
     }
 
     /**

@@ -54,10 +54,10 @@ and open the template in the editor.
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{simuladoBean.todosSelecionados}">
-                                    <f:ajax listener="#{simuladoBean.selecionarTodos()}" render="@form" />
+                                    <f:ajax listener="#{simuladoBean.selecionarTodasQuestoesSimulado()}" render="@form" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
-                            <h:selectBooleanCheckbox value="#{questao.selecionada}">
+                            <h:selectBooleanCheckbox value="#{questaoSimulado.questao.selecionada}">
                                 <f:ajax listener="#{simuladoBean.selecionarQuestaoSimulado(questaoSimulado)}" render="@form" execute="@form" />
                             </h:selectBooleanCheckbox>
                         </h:column>

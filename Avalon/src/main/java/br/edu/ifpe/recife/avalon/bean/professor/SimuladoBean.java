@@ -23,11 +23,9 @@ import br.edu.ifpe.recife.avalon.viewhelper.QuestaoDetalhesViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.VisualizarAvaliacaoViewHelper;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -74,7 +72,7 @@ public class SimuladoBean extends AvaliacaoBean {
     private boolean simuladoVF;
 
     private final List<QuestaoSimulado> questoesSimulado;
-    private final Set<QuestaoSimulado> questoesSimuladoSelecionadas;
+    private final List<QuestaoSimulado> questoesSimuladoSelecionadas;
 
     /**
      * Cria uma nova instância de <code>SimuladoBean</code>.
@@ -86,7 +84,7 @@ public class SimuladoBean extends AvaliacaoBean {
         visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
         simulado = new Simulado();
         questoesSimulado = new ArrayList<>();
-        questoesSimuladoSelecionadas = new HashSet<>();
+        questoesSimuladoSelecionadas = new ArrayList<>();
     }
 
     /**
@@ -286,7 +284,7 @@ public class SimuladoBean extends AvaliacaoBean {
      * Marca ou desmarca todas as questões disponíveis para gerar um simulado
      * online.
      */
-    public void selecionarTodasQuestoesProva() {
+    public void selecionarTodasQuestoesSimulado() {
         questoesSimuladoSelecionadas.clear();
 
         for (QuestaoSimulado questaoSimulado : questoesSimulado) {
@@ -396,7 +394,7 @@ public class SimuladoBean extends AvaliacaoBean {
         return questoesSimulado;
     }
 
-    public Set<QuestaoSimulado> getQuestoesSimuladoSelecionadas() {
+    public List<QuestaoSimulado> getQuestoesSimuladoSelecionadas() {
         return questoesSimuladoSelecionadas;
     }
     

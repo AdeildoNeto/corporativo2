@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorValue("A")
 @Access(AccessType.FIELD)
-public class QuestaoAvaliacao implements Serializable {
+public class QuestaoAvaliacao implements Serializable, Comparable<Long>{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,5 +94,10 @@ public class QuestaoAvaliacao implements Serializable {
         final QuestaoAvaliacao other = (QuestaoAvaliacao) obj;
         return Objects.equals(this.id, other.id);
     }
-    
+
+    @Override
+    public int compareTo(Long o) {
+        return this.id.compareTo(o);
+    }
+
 }

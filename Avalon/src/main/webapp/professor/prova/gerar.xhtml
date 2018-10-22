@@ -35,7 +35,9 @@ and open the template in the editor.
                                      class="form-control" value="#{provaBean.prova.titulo}" />
                     </p:outputPanel>
                 </p:outputPanel>
-                
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
                 <p:outputPanel class="col-md-3 form-group">
                     <p:outputLabel for="calDataHoraInicio" value="#{msg['prova.data.inicio']}:" />
                     <p:calendar id="calDataHoraInicio" value="#{provaBean.prova.dataHoraInicio}"
@@ -54,7 +56,6 @@ and open the template in the editor.
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
                 </p:outputPanel>
-                
             </p:outputPanel>
             
             <p:outputPanel class="row margin-top-bottom-10 margin-bottom-30">

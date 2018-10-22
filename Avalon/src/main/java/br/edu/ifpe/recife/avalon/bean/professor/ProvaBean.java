@@ -29,9 +29,7 @@ import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -84,7 +82,7 @@ public class ProvaBean extends AvaliacaoBean {
     private Date dataHoraFimReagendamento;
     
     private final List<QuestaoProva> questoesProva;
-    private final Set<QuestaoProva> questoesProvaSelecionadas;
+    private final List<QuestaoProva> questoesProvaSelecionadas;
 
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
@@ -97,7 +95,7 @@ public class ProvaBean extends AvaliacaoBean {
         prova = new Prova();
         provas = new ArrayList<>();
         questoesProva = new ArrayList<>();
-        questoesProvaSelecionadas = new HashSet<>();
+        questoesProvaSelecionadas = new ArrayList<>();
     }
 
     /**
@@ -523,7 +521,7 @@ public class ProvaBean extends AvaliacaoBean {
         return questoesProva;
     }
 
-    public Set<QuestaoProva> getQuestoesProvaSelecionadas() {
+    public List<QuestaoProva> getQuestoesProvaSelecionadas() {
         return questoesProvaSelecionadas;
     }
     
