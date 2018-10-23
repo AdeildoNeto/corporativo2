@@ -57,7 +57,7 @@ and open the template in the editor.
                                 pattern="dd/MM/yyyy HH:mm" />
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row margin-top-bottom-10 margin-bottom-30">
                 <p:outputPanel class="col-md-6 display-flex">
                     <p:outputLabel for="tglLiberarResultado" value="#{msg['label.prova.liberar.resultado']}:" />
@@ -81,7 +81,7 @@ and open the template in the editor.
             <p:outputPanel class="row container-table-prova">
                 <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{provaBean.questoesProva}" var="questaoProva"
-                                 styleClass="table table-striped table-fixed table-questoes-prova">
+                                 styleClass="table table-striped table-fixed table-questao-prova">
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{provaBean.todosSelecionados}">
@@ -98,6 +98,13 @@ and open the template in the editor.
                             </f:facet>
                             <h:outputText title="#{questaoProva.questao.enunciado}"
                                           value="#{questaoProva.questao.enunciado}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['questao.listar.header.peso']}</span>
+                            </f:facet>
+                            <p:inputMask mask="9" id="txtPeso" rendered="#{questaoProva.questao.selecionada}"
+                                         class="form-control" maxlength="1" value="#{questaoProva.peso}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">

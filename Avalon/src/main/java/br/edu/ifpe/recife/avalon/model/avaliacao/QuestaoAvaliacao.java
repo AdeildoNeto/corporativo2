@@ -42,7 +42,7 @@ public class QuestaoAvaliacao implements Serializable, Comparable<Long>{
     private Long id;
     
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
     private Questao questao;
     
