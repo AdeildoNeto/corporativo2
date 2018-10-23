@@ -7,7 +7,6 @@ package br.edu.ifpe.recife.avalon.model.avaliacao;
 
 import br.edu.ifpe.recife.avalon.model.questao.Alternativa;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
-import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import java.io.Serializable;
 import java.util.List;

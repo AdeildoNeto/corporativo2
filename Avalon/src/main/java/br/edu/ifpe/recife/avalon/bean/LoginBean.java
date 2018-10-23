@@ -50,7 +50,6 @@ public class LoginBean implements Serializable {
     private static final String NAV_LOGIN = "goLogin";
     private static final String LOGIN_FALHA_GERAL = "login.falha.geral";
     private static final String LOGIN_FALHA_TOKEN = "login.falha.token";
-    private static final String IFPE_DOMINIO = "recife.ifpe.edu.br";
 
     @EJB
     private UsuarioServico usuarioServico;

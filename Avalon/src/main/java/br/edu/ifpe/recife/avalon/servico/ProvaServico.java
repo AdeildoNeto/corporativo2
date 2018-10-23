@@ -11,6 +11,7 @@ import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
@@ -218,6 +219,7 @@ public class ProvaServico {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorResultadoAluno",
                 ProvaAluno.class);
         query.setParameter("idAluno", aluno.getId());
+        query.setParameter("dataAtual", new Date());
 
         return query.getResultList();
     }

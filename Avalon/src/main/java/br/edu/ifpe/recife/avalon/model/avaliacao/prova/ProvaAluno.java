@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
             @NamedQuery(
                     name = "ProvaAluno.PorResultadoAluno",
                     query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
-                    + " AND (pa.prova.liberarResultado = true AND CURRENT_DATE > pa.prova.dataHoraFim)"
+                    + " AND (pa.prova.liberarResultado = true AND :dataAtual > pa.prova.dataHoraFim)"
             )
             ,
             @NamedQuery(
