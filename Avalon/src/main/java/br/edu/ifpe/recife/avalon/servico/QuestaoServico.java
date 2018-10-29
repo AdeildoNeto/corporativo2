@@ -14,9 +14,7 @@ import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.LocalBean;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -44,9 +42,6 @@ public class QuestaoServico implements Serializable{
     private static final String MSG_QUESTAO_UNICA = "questao.enunciado.repetido";
     private static final String MSG_ALTERNATIVAS_IGUAIS = "questao.alternativas.iguais";
     private static final String PERCENT = "%";
-
-    @Resource
-    private SessionContext sessao;
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;

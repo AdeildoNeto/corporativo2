@@ -13,9 +13,7 @@ import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.LocalBean;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -37,9 +35,6 @@ import javax.validation.constraints.NotNull;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ProvaServico {
-
-    @Resource
-    private SessionContext sessao;
 
     @PersistenceContext(name = "jdbc/avalonDataSource", type = TRANSACTION)
     private EntityManager entityManager;
