@@ -61,7 +61,7 @@ public class ProvaAluno extends AvaliacaoAluno {
         super.setNota(0.0);
 
         if (questoesAluno != null && !questoesAluno.isEmpty()) {
-            super.calcularNota(new ArrayList(questoesAluno));
+            super.calcularNota(new ArrayList(questoesAluno), prova.getNotaMaxima());
         }
     }
 

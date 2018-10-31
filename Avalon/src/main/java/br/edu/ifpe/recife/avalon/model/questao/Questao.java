@@ -114,9 +114,12 @@ public class Questao implements Serializable {
     @JoinColumn(name = "ID_COMPONENTE_CURRICULAR", referencedColumnName = "ID")
     private ComponenteCurricular componenteCurricular;
     
-    @Column(name = "SN_QUESTAO_SIMULADO")
+    @Column(name = "SN_QUESTAO_SIMULADO", nullable = false)
     private boolean questaoSimulado = false;
 
+    @Column(name = "TXT_SOLUCAO")
+    private String solucao;
+    
     @Transient
     private boolean selecionada;
     
@@ -230,6 +233,14 @@ public class Questao implements Serializable {
         this.anulada = anulada;
     }
 
+    public String getSolucao() {
+        return solucao;
+    }
+
+    public void setSolucao(String solucao) {
+        this.solucao = solucao;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -249,10 +260,7 @@ public class Questao implements Serializable {
             return false;
         }
         final Questao other = (Questao) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.id, other.id);
     }
 
 }

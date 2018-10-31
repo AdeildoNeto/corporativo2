@@ -314,12 +314,9 @@ public class QuestaoTest {
         logger.info("Executando t11: criticarQuestaoSemProfessor");
 
         Questao questao = new Questao();
-        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
-
-        questao.setComponenteCurricular(componente);
-        questao.setEnunciado("Questao sem professor?");
-        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-
+        preencherQuestao(questao);
+        questao.setProfessor(null);
+        
         questaoServico.salvar(questao);
     }
 
@@ -328,12 +325,9 @@ public class QuestaoTest {
         logger.info("Executando t12: criticarQuestaoSemComponenteCurricular");
 
         Questao questao = new Questao();
-        Usuario professor = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
-
-        questao.setProfessor(professor);
-        questao.setEnunciado("Questao sem componente?");
-        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
-
+        preencherQuestao(questao);
+        questao.setComponenteCurricular(null);
+        
         questaoServico.salvar(questao);
     }
 
@@ -569,6 +563,17 @@ public class QuestaoTest {
         questao.setDataCriacao(Calendar.getInstance().getTime());
 
         questaoServico.salvar(questao);
+    }
+
+    private void preencherQuestao(Questao questao) {
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("TESTE");
+        Usuario professor = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        
+        questao.setComponenteCurricular(componente);
+        questao.setEnunciado("Questao sem professor?");
+        questao.setTipo(TipoQuestaoEnum.DISCURSIVA);
+        questao.setProfessor(professor);
+        questao.setSolucao("Teste Solução");
     }
 
 }

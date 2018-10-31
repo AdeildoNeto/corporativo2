@@ -294,6 +294,36 @@ public class ProvaTest {
         
         assertTrue(provas.isEmpty());
     }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t23_criticarNotaMaximaInferior() throws ValidacaoException{
+        logger.info("Executando t23_criticarNotaMaximaInferior");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
+        prova.setNotaMaxima(-1.0);
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t24_criticarNotaMaximaSuperior() throws ValidacaoException{
+        logger.info("Executando t24_criticarNotaMaximaSuperior");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
+        prova.setNotaMaxima(11.0);
+        
+        provaServico.salvar(prova);
+    }
+    
+    @Test(expected = ValidacaoException.class)
+    public void t25_criticarProvaQuestoesSemPeso() throws ValidacaoException{
+        logger.info("Executando t25_criticarProvaQuestoesSemPeso");
+        Prova prova = new Prova();
+        preencherNovaProva(prova);
+        prova.getQuestoes().get(0).setPeso(null);
+        
+        provaServico.salvar(prova);
+    }
 
     @Test
     public void t99_excluirProva() throws InterruptedException {
@@ -320,6 +350,7 @@ public class ProvaTest {
         calendar.add(Calendar.HOUR, 4);
         prova.setDataHoraFim(calendar.getTime());
         prova.setAtiva(Boolean.TRUE);
+        prova.setNotaMaxima(5.0);
 
         FiltroQuestao filtro = new FiltroQuestao();
 

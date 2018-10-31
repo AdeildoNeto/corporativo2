@@ -84,6 +84,15 @@ and open the template in the editor.
             </h:inputTextarea>
         </p:outputPanel>
     </p:outputPanel>
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-12 form-group">
+            <p:outputLabel for="txtSolucao" value="#{msg['label.solucao']}:" />
+            <h:inputTextarea class="form-control"
+                             id="txtSolucao" rows="2"
+                             value="#{questaoBean.questao.solucao}">
+            </h:inputTextarea>
+        </p:outputPanel>
+    </p:outputPanel>
     <p:outputPanel id="panelAlt">
         <p:outputPanel rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
                        styleClass="col-md-6 form-group">

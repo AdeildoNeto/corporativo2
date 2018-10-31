@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
+import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvaliacao;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
@@ -48,6 +49,8 @@ public class ProvaServico {
     private static final String DISPONIBILIDADE_MAXIMA = "prova.disponibilidade.maxima";
     private static final int PARAM_MIN_DISPONIBILIDADE_MINUTOS = 30;
     private static final int PARAM_MAX_DISPONIBILIDADE_HORAS = 5;
+    private static final double LIMITE_INFERIOR_NOTA_MAXIMA = 1.0;
+    private static final double LIMITE_SUPERIOR_NOTA_MAXIMA = 10.0;
 
     /**
      * Salva uma prova.
@@ -58,6 +61,8 @@ public class ProvaServico {
     public void salvar(@Valid Prova prova) throws ValidacaoException {
         validarDisponibilidade(prova);
         validarQtdeQuestoesSelecionadas(prova);
+        validarPesoQuestoes(prova);
+        validarNotaMaxima(prova);
         entityManager.persist(prova);
     }
 
@@ -281,6 +286,30 @@ public class ProvaServico {
     public void reagendarProva(Prova prova) throws ValidacaoException {
         validarDataHoraProva(prova);
         entityManager.merge(prova);
+    }
+
+    /**
+     * Valida se todas as questões da prova possuem peso definido.
+     * 
+     * @param prova
+     * @throws ValidacaoException 
+     */
+    private void validarPesoQuestoes(Prova prova) throws ValidacaoException {
+        for(QuestaoAvaliacao questao : prova.getQuestoes()){
+            if(questao.getPeso() == null || questao.getPeso() <= 0){
+                throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("questao.peso.obrigatorio"));
+            }
+        }
+    }
+
+    private void validarNotaMaxima(Prova prova) throws ValidacaoException {
+        if(prova.getNotaMaxima().compareTo(1.0) < 0){
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("limite.nota.maxima.inferior"));
+        }
+        
+        if(prova.getNotaMaxima().compareTo(10.0) > 0){
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("limite.nota.maxima.superior"));
+        }
     }
 
 }

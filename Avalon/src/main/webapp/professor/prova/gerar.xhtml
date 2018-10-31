@@ -56,6 +56,16 @@ and open the template in the editor.
                                 mask="99/99/9999 99:99" maskAutoClear="true"
                                 pattern="dd/MM/yyyy HH:mm" />
                 </p:outputPanel>
+                <p:outputPanel class="col-md-3">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtNotaMaxima" value="#{msg['label.nota.maxima']}:" />
+                        <h:inputText id="txtNotaMaxima" required="true"
+                                     requiredMessage="#{msg['avaliacao.nota.maxima.obrigatoria']}"
+                                     class="form-control" value="#{provaBean.prova.notaMaxima}">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="1" maxIntegerDigits="2" />
+                        </h:inputText>
+                    </p:outputPanel>
+                </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row margin-top-bottom-10 margin-bottom-30">

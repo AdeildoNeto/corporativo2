@@ -310,6 +310,8 @@ public class QuestaoBean implements Serializable {
         questao.setComponenteCurricular(this.questao.getComponenteCurricular());
         questao.setCompartilhada(this.questao.getCompartilhada());
         questao.setImagem(this.questao.getImagem());
+        questao.setQuestaoSimulado(this.questao.isQuestaoSimulado());
+        questao.setSolucao(this.questao.getSolucao());
     }
 
     /**

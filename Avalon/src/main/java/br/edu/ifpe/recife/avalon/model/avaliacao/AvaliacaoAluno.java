@@ -57,8 +57,9 @@ public class AvaliacaoAluno implements Serializable {
      * Calcula a nota obtida pelo aluno em uma avaliação.
      *
      * @param questoesAvaliacao
+     * @param notaMaxima
      */
-    public void calcularNota(List<QuestaoAlunoAvalicao> questoesAvaliacao) {
+    public void calcularNota(List<QuestaoAlunoAvalicao> questoesAvaliacao, double notaMaxima) {
         double respostasCertas = 0.0;
         int pesoQuestoes = 0;
 
@@ -71,7 +72,7 @@ public class AvaliacaoAluno implements Serializable {
             }
         }
 
-        nota = (respostasCertas / pesoQuestoes) * 10.0;
+        nota = (respostasCertas / pesoQuestoes) * notaMaxima;
     }
 
     /**

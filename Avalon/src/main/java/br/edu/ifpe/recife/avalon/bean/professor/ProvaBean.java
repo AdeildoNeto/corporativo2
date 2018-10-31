@@ -430,8 +430,8 @@ public class ProvaBean extends AvaliacaoBean {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 
-            response.reset();   // Algum filtro pode ter configurado alguns cabeçalhos no buffer de antemão. Queremos livrar-se deles, senão ele pode colidir.
-            response.setHeader("Content-Type", "application/pdf");  // Define apenas o tipo de conteúdo, Utilize se necessário ServletContext#getMimeType() para detecção automática com base em nome de arquivo.
+            response.reset();
+            response.setHeader("Content-Type", "application/pdf"); 
             response.setHeader("Content-Disposition", "attachment;" + "filename=Prova_" + System.currentTimeMillis() + ".pdf");
 
             OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();

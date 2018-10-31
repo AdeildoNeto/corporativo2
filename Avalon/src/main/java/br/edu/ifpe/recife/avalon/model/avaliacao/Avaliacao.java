@@ -55,6 +55,10 @@ public class Avaliacao implements Serializable {
     @Column(name = "DT_CRIACAO")
     private Date dataCriacao;
     
+    @NotNull(message = "{avaliacao.nota.maxima.obrigatoria}")
+    @Column(name = "VL_NOTA_MAXIMA")
+    private Double notaMaxima = 10.0;
+    
     @Column(name = "SN_ATIVA", nullable = false)
     private boolean ativa = true;
     
@@ -104,6 +108,14 @@ public class Avaliacao implements Serializable {
 
     public void setAtiva(boolean ativa) {
         this.ativa = ativa;
+    }
+
+    public Double getNotaMaxima() {
+        return notaMaxima;
+    }
+
+    public void setNotaMaxima(Double notaMaxima) {
+        this.notaMaxima = notaMaxima;
     }
     
 }

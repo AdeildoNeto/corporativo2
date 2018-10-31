@@ -138,6 +138,7 @@ public class LoginBean implements Serializable {
     
     private boolean verificarDominioAluno(){
         String[] dominios = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("dominioAluno").split(",");
+        Arrays.sort(dominios);
         int index = Arrays.binarySearch(dominios, payload.getHostedDomain());
         
         return index > -1;
@@ -168,13 +169,13 @@ public class LoginBean implements Serializable {
                 facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
             
-            if(GrupoEnum.PROFESSOR.equals(usuario.getGrupo())){
-                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
-            }else{
+            if(payload.getHostedDomain() != null && verificarDominioAluno()){
                 navigationHandler.handleNavigation(facesContext, null, NAV_HOME_ALUNO);
+            }else{
+                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
             }
             
         } else {

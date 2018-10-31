@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -46,9 +45,8 @@ public class QuestaoAvaliacao implements Serializable, Comparable<Long>{
     @JoinColumn(name = "ID_QUESTAO", referencedColumnName = "ID_QUESTAO")
     private Questao questao;
     
-    @NotNull(message = "{questao.peso.obrigatorio}")
     @Column(name = "VL_PESO")
-    private int peso = 1;
+    private Integer peso = 1;
 
     public Long getId() {
         return id;
@@ -66,11 +64,11 @@ public class QuestaoAvaliacao implements Serializable, Comparable<Long>{
         this.questao = questao;
     }
 
-    public int getPeso() {
+    public Integer getPeso() {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(Integer peso) {
         this.peso = peso;
     }
 
