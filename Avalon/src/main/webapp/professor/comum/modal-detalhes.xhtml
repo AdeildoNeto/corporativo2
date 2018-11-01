@@ -32,6 +32,12 @@ and open the template in the editor.
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12" rendered="#{bean.detalhesViewHelper.questaoDetalhes.solucao != null}">
+                    <label for="txtSolucao">#{msg['label.solucao']}: </label>
+                    <h:outputText id="txtSolucao" value="#{bean.detalhesViewHelper.questaoDetalhes.solucao}" />
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">                  
                     <ui:fragment rendered="#{bean.detalhesViewHelper.questaoDetalhes.imagem != null}">
                         <label for="lbDetalheImagem">#{msg['label.imagem']}: </label>

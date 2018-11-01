@@ -37,6 +37,14 @@ and open the template in the editor.
                     <span>#{msg['btn.falso']}</span>
                 </h:column>
             </h:panelGrid>
+            <p:outputPanel class="row" rendered="#{questao.solucao != null}">
+                <p:outputPanel class="col-md-12 margin-top-10">
+                    <p:outputPanel>
+                        <label for="txtSolucao">#{msg['label.solucao']}: </label>
+                        <h:outputText id="txtSolucao" value="#{questao.solucao}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
         </p:outputPanel>
     </ui:repeat>
 

@@ -236,6 +236,7 @@ public class ProvaBean extends AvaliacaoBean {
     public void excluirProva() {
         provaServico.excluir(prova);
         provas.remove(prova);
+        exibirModalExclusao = false;
     }
 
     /**

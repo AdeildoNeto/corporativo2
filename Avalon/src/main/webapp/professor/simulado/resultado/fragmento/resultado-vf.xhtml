@@ -46,6 +46,10 @@ and open the template in the editor.
             <h:outputText id="respostaCorretaF" rendered="#{!questaoAluno.respostaCorreta}"
                           value="#{msg['btn.falso']}" class="margin-left-10" />
         </p:outputPanel>
+        <p:outputPanel class="form-group" rendered="#{questaoAluno.questaoAvaliacao.questao.solucao != null}">
+            <label for="txtSolucao">#{msg['label.solucao']}: </label>
+            <h:outputText id="txtSolucao" value="#{questaoAluno.questaoAvaliacao.questao.solucao}" />
+        </p:outputPanel>
     </ui:repeat>
 
 </ui:composition>
