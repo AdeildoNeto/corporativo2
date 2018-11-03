@@ -21,7 +21,7 @@ Funcionalidade:
   Cenario: Criticar questao discursiva sem enunciado
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
-    E nao preencher o enunciado da questão
+    E não preencher o enunciado da questão
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
     Então será exibido mensagem para enunciado obrigatório

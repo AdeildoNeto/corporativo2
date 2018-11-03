@@ -28,12 +28,12 @@ public class CriarProvaOnlineSteps {
         BrowserManager.waitTime(1000);
     }
 
-    @E("^preencher o titulo da prova$")
+    @E("^preencher o título da prova$")
     public void preencherTituloProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Prova");
     }
 
-    @E("^preencher a data de inicio da prova$")
+    @E("^preencher a data de início da prova$")
     public void preencherDataInicio() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
@@ -42,7 +42,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
 
-    @E("^preencher a data de termino da prova$")
+    @E("^preencher a data de término da prova$")
     public void preencherDataTermino() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 120);
@@ -75,22 +75,22 @@ public class CriarProvaOnlineSteps {
         BrowserManager.waitTime(3000);
     }
 
-    @E("^nao preencher o titulo da prova$")
+    @E("^não preencher o título da prova$")
     public void naoPreencherTituloProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).clear();
     }
 
-    @E("^nao preencher a data de inicio da prova$")
+    @E("^não preencher a data de início da prova$")
     public void naoPreencherDataInicioProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).clear();
     }
 
-    @E("^nao preencher a data de termino da prova$")
+    @E("^não preencher a data de término da prova$")
     public void naoPreencherDataTerminioProva() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).clear();
     }
 
-    @E("^preencher a data de inicio da prova com uma data menor que a atual$")
+    @E("^preencher a data de início da prova com uma data menor que a atual$")
     public void preencherDataInicioMenorDataAtual() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -10);
@@ -99,7 +99,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
 
-    @E("^preencher a data de inicio da prova com uma data maior que a data de termino$")
+    @E("^preencher a data de início da prova com uma data maior que a data de termino$")
     public void preencherDataInicioMaiorDataTermino() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 360);
@@ -108,7 +108,7 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraInicio_input")).sendKeys(dataInicio);
     }
     
-    @E("^preencher a data de termino da prova com um intervalo menor que trinta minutos$")
+    @E("^preencher a data de término da prova com um intervalo menor que trinta minutos$")
     public void preencherIntervaloMenorMinimo() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
@@ -117,13 +117,28 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
     }
     
-    @E("^preencher a data de termino da prova com um intervalo maior que cinco horas$")
+    @E("^preencher a data de término da prova com um intervalo maior que cinco horas$")
     public void preencherIntervaloMaiorMaximo() throws Throwable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 500);
         String dataTermino = formatarData(calendar);
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).click();
         BrowserManager.getDriver().findElement(By.id("form:calDataHoraFim_input")).sendKeys(dataTermino);
+    }
+    
+    @E("^não preencher o peso de uma questão$")
+    public void naoPreencherPesoQuestao() throws Throwable {
+        
+    }
+    
+    @E("^não preencher a nota máxima da prova$")
+    public void naoPreencherNotaMaxima() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).clear();
+    }
+    
+    @E("^preencher a nota máxima da prova com {nota}$")
+    public void preencherNotaMaxima(Integer nota) throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).sendKeys(nota.toString());
     }
 
     @Entao("^uma nova prova do tipo verdadeiro ou falso sera criada$")
@@ -140,53 +155,11 @@ public class CriarProvaOnlineSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^será exibido mensagem para titulo da prova obrigatório$")
-    public void criticarTituloObrigatorio() {
+    @Entao("^será exibida a mensagem {mensagemEsperada}$")
+    public void exibirMensagemValidacao(String mensagemEsperada) {
         String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O título da prova é obrigatório.", mensagem);
+        assertEquals(mensagemEsperada, mensagem);
         BrowserManager.waitTime(1000);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para data de inicio da prova obrigatório$")
-    public void criticarDataInicioObrigatoria() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A data e hora de início é obrigatória.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para data de termino da prova obrigatório$")
-    public void criticarDataTerminioObrigatoria() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A data e hora de término é obrigatória.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para data de inicio da prova menor que a data atual$")
-    public void criticarDataInicioMenorAtual() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A data de início da prova não pode ser menor que a data e hora atual.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para data de inicio da prova maior que a data de termino$")
-    public void criticarDataInicioMaiorDataTerminio() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A data de início da prova não pode ser maior que a data de término.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para disponibilidade minima da prova$")
-    public void criticarDisponibilidadeMinima() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A prova deve ficar disponível por ao menos 30 minutos.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para disponibilidade maxima da prova$")
-    public void criticarDisponibilidadeMaxima() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A prova deve ficar disponível por no máximo 5 horas.", mensagem);
         LoginSteps.logout();
     }
 

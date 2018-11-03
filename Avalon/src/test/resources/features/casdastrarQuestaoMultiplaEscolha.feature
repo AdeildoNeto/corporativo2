@@ -23,7 +23,7 @@ Funcionalidade:
   Cenario: Criticar questao múltipla escolha sem enunciado
     Quando o professor selecionar o tipo múltipla escolha
     E selecionar um componente curricular
-    E nao preencher o enunciado da questão
+    E não preencher o enunciado da questão
     E preencher todas as alternativas da questão
     E definir a alternativa correta
     E clicar no botão salvar questão
@@ -34,7 +34,7 @@ Funcionalidade:
     Quando o professor selecionar o tipo múltipla escolha
     E selecionar um componente curricular
     E preencher o enunciado da questão
-    E nao preencher um das alternativas da questão
+    E não preencher um das alternativas da questão
     E definir a alternativa correta
     E clicar no botão salvar questão
     E confirmar o cadastro da questão

@@ -53,7 +53,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
         LoginSteps.logout();
     }
 
-    @E("^nao preencher um das alternativas da questão$")
+    @E("^não preencher um das alternativas da questão$")
     public void naoPreencherAlternativas() {
         BrowserManager.getDriver().findElement(By.id("form:alternativas:0:alternativa"))
                 .sendKeys("");

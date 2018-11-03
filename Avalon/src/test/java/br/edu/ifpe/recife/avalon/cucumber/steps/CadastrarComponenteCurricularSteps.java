@@ -65,7 +65,7 @@ public class CadastrarComponenteCurricularSteps {
         LoginSteps.logout();
     }
     
-    @E("^nao preencher o nome do componente curricular$")
+    @E("^não preencher o nome do componente curricular$")
     public void naoPreencherNomeComponente(){
         BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("");
     }

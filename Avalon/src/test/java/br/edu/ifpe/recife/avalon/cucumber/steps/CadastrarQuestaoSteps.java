@@ -42,7 +42,7 @@ public class CadastrarQuestaoSteps {
         BrowserManager.waitTime(1000);
     }
 
-    @E("^nao preencher o enunciado da questão$")
+    @E("^não preencher o enunciado da questão$")
     public void naoPreencherEnunciado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("");
     }

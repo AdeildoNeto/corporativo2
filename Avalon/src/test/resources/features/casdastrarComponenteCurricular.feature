@@ -24,7 +24,7 @@ Funcionalidade:
 
   Cenario: Criticar nome do componente obrigatório
     Quando o professor clicar no botão adicionar componente
-    E nao preencher o nome do componente curricular
+    E não preencher o nome do componente curricular
     E clicar no botão salvar componente
     Então será exibido mensagem para nome do componente curricular obrigatório
 
