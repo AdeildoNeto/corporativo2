@@ -16,15 +16,7 @@ Funcionalidade:
     E preencher o enunciado da questão
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
-    Entao uma nova questao de verdadeiro ou falso será cadastrada
-
-  Cenario: Criticar questao verdadeiro ou falso sem enunciado
-    Quando o professor selecionar o tipo verdadeiro ou falso
-    E selecionar um componente curricular
-    E não preencher o enunciado da questão
-    E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Entao será exibido mensagem para enunciado obrigatório
+    Entao uma nova questão de verdadeiro ou falso será cadastrada
 
   Cenario: Criticar questao verdadeiro ou falso com enunciado duplicado
     Quando o professor selecionar o tipo verdadeiro ou falso
@@ -32,12 +24,4 @@ Funcionalidade:
     E preencher o enunciado da questão com um valor já cadastrado
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
-    Entao será exibido mensagem para questão duplicada
-
-  Cenario: Criticar questao verdadeiro ou falso com enunciado maior que o permitido
-    Quando o professor selecionar o tipo verdadeiro ou falso
-    E selecionar um componente curricular
-    E preencher o enunciado da questão com mais caracteres do que o permitido
-    E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Entao será exibido mensagem para enunciado da questão maior que o permitido
+    Entao será exibida a mensagem "Já existe uma questão com este enunciado."

@@ -117,7 +117,8 @@ public class Questao implements Serializable {
     @Column(name = "SN_QUESTAO_SIMULADO", nullable = false)
     private boolean questaoSimulado = false;
 
-    @Column(name = "TXT_SOLUCAO")
+    @Size(max = 300, message = "{questao.solucao.tamanho.maximo}")
+    @Column(name = "TXT_SOLUCAO", columnDefinition = "varchar(300)")
     private String solucao;
     
     @Transient

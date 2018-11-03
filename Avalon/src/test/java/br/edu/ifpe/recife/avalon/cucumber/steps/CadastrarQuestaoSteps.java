@@ -44,7 +44,7 @@ public class CadastrarQuestaoSteps {
 
     @E("^não preencher o enunciado da questão$")
     public void naoPreencherEnunciado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("");
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).clear();
     }
 
     @E("^preencher o enunciado da questão com um valor já cadastrado$")
@@ -52,37 +52,20 @@ public class CadastrarQuestaoSteps {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Teste 2");
     }
     
-    @Entao("^será exibido mensagem para enunciado obrigatório$")
-    public void exibirMensagemEnunciadoobrigatório() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O enunciado da questão é obrigatório.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibido mensagem para questão duplicada$")
-    public void exibirMensagemQuestaoDuplicada() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("Já existe uma questão com este enunciado.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @E("^preencher o enunciado da questão com mais caracteres do que o permitido$")
+    @E("^preencher o enunciado da questão com mais caracteres que o permitido$")
     public void preencherEnunciadoMaiorPermitido() throws Throwable {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < 30; i++) {
-            builder.append("0123456789012345678901234567890123456789012345678901234567890123456789");
-        }
+        String enunciado = TestUtil.obterTextoRepetido("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 80);
 
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado"))
-                .sendKeys(builder.toString());
+                .sendKeys(enunciado);
     }
+    
+    @E("^preencher a solução da questão com mais caracteres que o permitido$")
+    public void preencherSolucaoMaiorPermitido() throws Throwable {
+        String enunciado = TestUtil.obterTextoRepetido("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 12);
 
-    @Entao("^será exibido mensagem para enunciado da questão maior que o permitido$")
-    public void exibirMensagemEnunciadoLimite() throws Throwable {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O tamanho do enunciado é maior do que o máximo permitido.", mensagem);
-        LoginSteps.logout();
+        BrowserManager.getDriver().findElement(By.id("form:txtSolucao"))
+                .sendKeys(enunciado);
     }
-
+    
 }

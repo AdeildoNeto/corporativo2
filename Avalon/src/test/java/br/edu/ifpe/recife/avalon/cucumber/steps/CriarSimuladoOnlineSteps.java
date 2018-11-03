@@ -11,7 +11,6 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 /**
@@ -24,10 +23,21 @@ public class CriarSimuladoOnlineSteps {
     public void preencherTituloSimulado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Simulado");
     }
-    
+
     @Quando("^o professor não preencher o título do simulado$")
     public void naoPreencherTituloSimulado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("");
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).clear();
+    }
+
+    @Quando("^o professor preencher o título do simulado com um valor em uso$")
+    public void preencherTituloDuplicado() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Engenharia V ou F");
+    }
+
+    @Quando("^o professor preencher o título do simulado com mais caracteres que o permitido$")
+    public void preencherTituloMaiorPermitido() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo"))
+                .sendKeys(TestUtil.obterTextoRepetido("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5));
     }
 
     @E("^selecionar questões para simulado$")
@@ -42,7 +52,7 @@ public class CriarSimuladoOnlineSteps {
         BrowserManager.waitTime(3000);
     }
 
-    @Entao("^um novo simulado do tipo verdadeiro ou falso sera criada$")
+    @Entao("^um novo simulado do tipo verdadeiro ou falso será criado$")
     public void salvarSimuladoVF() {
         int resultado = obterListaSimulados();
         assertTrue(resultado > 0);
@@ -56,17 +66,8 @@ public class CriarSimuladoOnlineSteps {
         LoginSteps.logout();
     }
 
-    @Entao("^será exibido mensagem para titulo do simulado obrigatório$")
-    public void criticarTituloObrigatorio() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O título do simulado é obrigatório.", mensagem);
-        BrowserManager.waitTime(1000);
-        LoginSteps.logout();
-    }
-    
     private int obterListaSimulados() {
         return BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Simulado')]")).size();
     }
-
 
 }

@@ -23,7 +23,7 @@ public class CadastrarQuestaoVerdadeiroFalsoSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@data-label='Verdadeiro ou Falso']")).click();
     }
     
-    @Entao("^uma nova questao de verdadeiro ou falso será cadastrada$")
+    @Entao("^uma nova questão de verdadeiro ou falso será cadastrada$")
     public void questaoCadastrada() {
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Verdadeiro ou Falso')]")).size();
         assertTrue(questoes > 0);

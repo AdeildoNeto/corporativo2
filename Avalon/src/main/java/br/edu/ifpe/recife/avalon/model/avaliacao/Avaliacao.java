@@ -36,8 +36,8 @@ public class Avaliacao implements Serializable {
     private Long id;
 
     @NotBlank(message = "{prova.titulo.obrigatorio}")
-    @Size(max = 40, message = "{titulo.tamanho.maximo}")
-    @Column(name = "TXT_TITULO")
+    @Size(max = 80, message = "{titulo.tamanho.maximo}")
+    @Column(name = "TXT_TITULO", columnDefinition = "varchar(80)")
     private String titulo;
 
     @NotNull(message = "{professor.obrigatorio}")

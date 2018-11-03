@@ -37,7 +37,7 @@ Funcionalidade:
     E preencher a data de início da prova
     E preencher a data de término da prova
     E clicar no botão pesquisar
-    Então será exibida a mensagem "A data de criação é obrigatória."
+    Então será exibida a mensagem "O título da prova é obrigatório."
 
   Cenário: Criticar prova sem data de início
     Quando o professor clicar no botão nova prova
@@ -133,7 +133,7 @@ Funcionalidade:
     E preencher o título da prova
     E preencher a data de início da prova
     E preencher a data de término da prova
-    E preencher a nota máxima da prova 11
+    E preencher a nota máxima da prova com 11
     E clicar no botão pesquisar
     E selecionar questões para prova
     E clicar no botão salvar nova prova

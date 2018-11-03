@@ -16,7 +16,7 @@ Funcionalidade:
     E clicar no botão pesquisar
     E selecionar questões para simulado
     E clicar no botão salvar novo simulado
-    Então um novo simulado do tipo verdadeiro ou falso sera criada
+    Então um novo simulado do tipo verdadeiro ou falso será criado
 
   Cenário: Gerar novo simulado do tipo múltipla escolha
     Quando o professor preencher o título do simulado
@@ -26,7 +26,23 @@ Funcionalidade:
     E clicar no botão salvar novo simulado
     Então um novo simulado do tipo múltipla escolha sera criada
 
-  Cenário: Criticar simulado sem titulo
+  Cenário: Criticar simulado sem título
     Quando o professor não preencher o título do simulado
     E clicar no botão pesquisar
-    Então será exibido mensagem para titulo do simulado obrigatório
+    Então será exibida a mensagem "O título do simulado é obrigatório."
+
+  Cenário: Criticar simulado com título duplicado
+    Quando o professor preencher o título do simulado com um valor em uso
+    E selecionar o tipo múltipla escolha no filtro de questões
+    E clicar no botão pesquisar
+    E selecionar questões para simulado
+    E clicar no botão salvar novo simulado
+    Então será exibida a mensagem "O título do simulado já está em uso."
+
+  Cenário: Criticar título do simulado maior que o limite permitido
+    Quando o professor preencher o título do simulado com mais caracteres que o permitido
+    E selecionar o tipo múltipla escolha no filtro de questões
+    E clicar no botão pesquisar
+    E selecionar questões para simulado
+    E clicar no botão salvar novo simulado
+    Então será exibida a mensagem "O tamanho máximo do título é de 80 caracteres."

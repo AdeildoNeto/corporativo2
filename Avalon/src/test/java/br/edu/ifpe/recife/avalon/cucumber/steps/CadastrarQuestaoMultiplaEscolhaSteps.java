@@ -6,11 +6,9 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 
@@ -46,7 +44,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
         BrowserManager.getDriver().findElement(By.xpath("//*[@id='form:radio:0_clone']")).click();
     }
     
-    @Entao("^uma nova questao de múltipla escolha será cadastrada$")
+    @Entao("^uma nova questão de múltipla escolha será cadastrada$")
     public void questaoCadastrada() {
         int questoes = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Múltipla Escolha')]")).size();
         assertTrue(questoes > 0);
@@ -59,14 +57,7 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
                 .sendKeys("");
     }
 
-    @Entao("^será exibido mensagem para alternativas obrigatórias$")
-    public void exibirMensagemAlternativasObrigatorias() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("O preenchimento das alternativas é obrigatório.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @E("^preencher as alternativas iguais para a questao$")
+    @E("^preencher as alternativas iguais para a questão$")
     public void preencherAlternativasIguais() {
         BrowserManager.getDriver().findElement(By.id("form:alternativas:0:alternativa"))
                 .sendKeys("A");
@@ -80,22 +71,8 @@ public class CadastrarQuestaoMultiplaEscolhaSteps {
                 .sendKeys("C");
     }
 
-    @Entao("^será exibido mensagem para alternativas iguais$")
-    public void exibirMensagemAlternativasIguais() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("Existem alternativas iguais. Favor revisar a questão.", mensagem);
-        LoginSteps.logout();
-    }
-
-    @E("^nao definir a alternativa correta$")
+    @E("^não definir a alternativa correta$")
     public void naoDefinirAlternativaCorreta() {
-    }
-
-    @Entao("^será exibido mensagem para respota obrigatória$")
-    public void exibirMensagemRespostaObrigatoria() {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals("A resposta da questão deve ser selecionada.", mensagem);
-        LoginSteps.logout();
     }
 
 }

@@ -6,14 +6,12 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import br.edu.ifpe.recife.avalon.cucumber.util.TestUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 /**
@@ -128,7 +126,8 @@ public class CriarProvaOnlineSteps {
     
     @E("^não preencher o peso de uma questão$")
     public void naoPreencherPesoQuestao() throws Throwable {
-        
+        BrowserManager. waitTime(2000);
+        BrowserManager.getDriver().findElement(By.id("form:table:0:txtPeso")).clear();
     }
     
     @E("^não preencher a nota máxima da prova$")
@@ -136,9 +135,10 @@ public class CriarProvaOnlineSteps {
         BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).clear();
     }
     
-    @E("^preencher a nota máxima da prova com {nota}$")
-    public void preencherNotaMaxima(Integer nota) throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).sendKeys(nota.toString());
+    @E("^preencher a nota máxima da prova com (\\d+)$")
+    public void preencherNotaMaxima(int nota) throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).clear();
+        BrowserManager.getDriver().findElement(By.id("form:txtNotaMaxima")).sendKeys(String.valueOf(nota));
     }
 
     @Entao("^uma nova prova do tipo verdadeiro ou falso sera criada$")
@@ -152,14 +152,6 @@ public class CriarProvaOnlineSteps {
     public void salvarProvaMultiplaEscolha() {
         int resultado = obterListaProvas();
         assertTrue(resultado > 0);
-        LoginSteps.logout();
-    }
-
-    @Entao("^será exibida a mensagem {mensagemEsperada}$")
-    public void exibirMensagemValidacao(String mensagemEsperada) {
-        String mensagem = TestUtil.obterMensagemValidacao();
-        assertEquals(mensagemEsperada, mensagem);
-        BrowserManager.waitTime(1000);
         LoginSteps.logout();
     }
 

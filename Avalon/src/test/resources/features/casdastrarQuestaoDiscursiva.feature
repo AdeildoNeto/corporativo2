@@ -10,7 +10,7 @@ Funcionalidade:
     E esteja na página minhas questões
     E deseje cadastrar uma nova questão
 
-  Cenario: Cadastrar questao discursiva
+  Cenario: Cadastrar questão discursiva
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
     E preencher o enunciado da questão
@@ -18,26 +18,35 @@ Funcionalidade:
     E confirmar o cadastro da questão
     Então uma nova questão discursiva será cadastrada
 
-  Cenario: Criticar questao discursiva sem enunciado
+  Cenario: Criticar questão sem enunciado
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
     E não preencher o enunciado da questão
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
-    Então será exibido mensagem para enunciado obrigatório
+    Então será exibida a mensagem "O enunciado da questão é obrigatório."
 
-  Cenario: Criticar questao discursiva com enunciado duplicado
+  Cenario: Criticar questão discursiva com enunciado duplicado
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
     E preencher o enunciado da questão com um valor já cadastrado
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
-    Então será exibido mensagem para questão duplicada
+    Então será exibida a mensagem "Já existe uma questão com este enunciado."
 
-Cenario: Criticar questao discursiva com enunciado maior que o permitido
+  Cenario: Criticar questão com enunciado maior que o permitido
     Quando o professor selecionar o tipo discursiva
     E selecionar um componente curricular
-    E preencher o enunciado da questão com mais caracteres do que o permitido
+    E preencher o enunciado da questão com mais caracteres que o permitido
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
-    Então será exibido mensagem para enunciado da questão maior que o permitido
+    Então será exibida a mensagem "O tamanho máximo do enunciado é de 2000 caracteres."
+
+Cenario: Criticar questão com solução maior que o permitido
+    Quando o professor selecionar o tipo discursiva
+    E selecionar um componente curricular
+    E preencher o enunciado da questão
+    E preencher a solução da questão com mais caracteres que o permitido
+    E clicar no botão salvar questão
+    E confirmar o cadastro da questão
+    Então será exibida a mensagem "O tamanho máximo da solução é de 300 caractéres."
