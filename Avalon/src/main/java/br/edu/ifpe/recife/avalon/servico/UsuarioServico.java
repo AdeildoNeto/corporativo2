@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -84,6 +85,16 @@ public class UsuarioServico {
             return query.getSingleResult();
         }
         return null;
+    }
+
+    /**
+     * Consulta todos os alunos cadastrados.
+     * 
+     * @return 
+     */
+    public List<Usuario> buscarAlunos() {
+        TypedQuery<Usuario> query = entityManager.createNamedQuery("Usuario.TodosAlunos", Usuario.class);
+        return query.getResultList();
     }
     
 }

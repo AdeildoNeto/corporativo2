@@ -96,6 +96,21 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goMinhasTurmas</from-outcome>
+            <to-view-id>/professor/turma/listar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goCadastrarTurma</from-outcome>
+            <to-view-id>/professor/turma/cadastrar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goDetalharTurma</from-outcome>
+            <to-view-id>/professor/turma/detalhar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goHomeProfessor</from-outcome>
             <to-view-id>/professor/home.xhtml</to-view-id>
             <redirect />

@@ -679,3 +679,28 @@ input[type="text"]{
 .container-duracao{
     vertical-align: top;
 }
+
+.table-turmas td:first-child{
+    max-width: 780px !important;
+    width: 780px;
+}
+
+.table-turmas td:nth-child(2){
+    width: 260px;
+    max-width: 260px;
+}
+
+.table-turmas td:last-child{
+    width: 80px;
+    max-width: 80px;
+}
+
+.table-alunos td:first-child{
+    max-width: 25px !important;
+    width: 25px;
+}
+
+.table-alunos td:last-child{
+    width: 1024px;
+    max-width: 1024px;
+}

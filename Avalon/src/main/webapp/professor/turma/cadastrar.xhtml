@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h1>#{msg['titulo.cadastrar.turma']}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <p:messages id="msgPrincipal" />
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-6">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtNome" value="#{msg['label.nome']}:" />
+                        <h:inputText id="txtNome" required="true"
+                                     requiredMessage="#{msg['turma.nome.obrigatorio']}"
+                                     class="form-control" value="#{turmaBean.turma.nome}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+                <p:outputPanel class="col-md-3">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtSemestreAno" value="#{msg['label.semestre.ano']} (MM/YYYY):" />
+                        <p:inputMask id="txtSemestreAno" required="true" mask="99/9999"
+                                     requiredMessage="#{msg['turma.semestre.ano.obrigatorio']}"
+                                     class="form-control" value="#{turmaBean.turma.semestreAno}" />
+                    </p:outputPanel>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h3>#{msg['selecionar.alunos']}:</h3>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-table-prova">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable id="table" value="#{turmaBean.alunos}" var="aluno"
+                                 styleClass="table table-striped table-fixed table-alunos">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:selectBooleanCheckbox id="chkSelecionarTodos" value="#{turmaBean.todosSelecionados}">
+                                    <f:ajax listener="#{turmaBean.selecionarTodos()}" render="@form" />
+                                </h:selectBooleanCheckbox>
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="chkSelecionarAluno" value="#{aluno.selecionado}">
+                                <f:ajax listener="#{turmaBean.abrirModalExcluir(aluno)}" render="@form" execute="@form" />
+                            </h:selectBooleanCheckbox>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.nome']}</span>
+                            </f:facet>
+                            <h:outputText value="#{aluno.nome}" />
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel id="button-container" class="row buttons-save">
+                <p:outputPanel class="offset-md-7 col-md-5 form-group">
+                    <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
+                                     action="#{turmaBean.iniciarPagina()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" immediate="true"
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
+                    <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
+                                     action="#{turmaBean.cadastrarTurma()}" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()"
+                                     class="btn btn-primary font-color-default"></p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
