@@ -35,6 +35,16 @@ and open the template in the editor.
                                      class="form-control" value="#{provaBean.prova.titulo}" />
                     </p:outputPanel>
                 </p:outputPanel>
+                <p:outputPanel class="col-md-3">
+                    <p:outputPanel class="form-group">
+                        <p:outputLabel for="txtNotaMaxima" value="#{msg['label.nota.maxima']}:" />
+                        <h:inputText id="txtNotaMaxima" required="true"
+                                     requiredMessage="#{msg['avaliacao.nota.maxima.obrigatoria']}"
+                                     class="form-control" value="#{provaBean.prova.notaMaxima}" maxlength="5">
+                            <f:convertNumber maxFractionDigits="2" minFractionDigits="1" maxIntegerDigits="2" />
+                        </h:inputText>
+                    </p:outputPanel>
+                </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row">
@@ -58,12 +68,13 @@ and open the template in the editor.
                 </p:outputPanel>
                 <p:outputPanel class="col-md-3">
                     <p:outputPanel class="form-group">
-                        <p:outputLabel for="txtNotaMaxima" value="#{msg['label.nota.maxima']}:" />
-                        <h:inputText id="txtNotaMaxima" required="true"
-                                     requiredMessage="#{msg['avaliacao.nota.maxima.obrigatoria']}"
-                                     class="form-control" value="#{provaBean.prova.notaMaxima}">
-                            <f:convertNumber maxFractionDigits="2" minFractionDigits="1" maxIntegerDigits="2" />
-                        </h:inputText>
+                        <p:outputLabel for="selTurma" value="#{msg['label.turma']}:" />
+                        <p:selectOneMenu id="selTurma" value="#{provaBean.nomeTurmaSelecionada}"
+                                         class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width form-control"
+                                         filter="true" filterMatchMode="startsWith">
+                            <f:selectItem noSelectionOption="true" itemLabel="#{msg['label.selecione']}" itemValue="" />
+                            <f:selectItems value="#{provaBean.turmas}" var="turma" itemLabel="#{turma.nome}" itemValue="#{turma.nome}" />
+                        </p:selectOneMenu>
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>

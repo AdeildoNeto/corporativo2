@@ -39,3 +39,11 @@ Funcionalidade:
     E não selecionar os alunos para a turma
     E clicar no botão salvar turma
     Então será exibida a mensagem "É necessário selecionar ao menos um aluno."
+
+Cenario: Criticar turma com nome duplicado
+    Quando o professor clicar no botão cadastrar turma
+    E preencher o nome da turma com um valor já utilizado
+    E preencher o semestre e ano da turma
+    E selecionar os alunos para a turma
+    E clicar no botão salvar turma
+    Então será exibida a mensagem "O nome da turma deve ser único."

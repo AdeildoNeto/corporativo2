@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.model.avaliacao.prova;
 
 import br.edu.ifpe.recife.avalon.model.avaliacao.Avaliacao;
+import br.edu.ifpe.recife.avalon.model.turma.Turma;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,7 +38,11 @@ import javax.validation.constraints.NotNull;
                     query = "Select p from Prova p where p.ativa = true "
                             + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim "
                             + "AND (SELECT pa.id FROM ProvaAluno pa WHERE p.id = pa.prova.id "
-                            + "AND pa.aluno.id = :idAluno AND pa.dataHoraFim IS NOT NULL) IS NULL"
+                            + "AND pa.aluno.id = :idAluno AND pa.dataHoraFim IS NOT NULL) IS NULL "
+                            + "AND (p.turma.id IS NULL OR "
+                            + "p.turma.id = (SELECT t.id FROM Turma t JOIN t.alunos a WHERE a.id = :idAluno))"
+                    
+                    
             ),
             @NamedQuery(
                     name = "Prova.PorProfessor",
@@ -63,6 +70,10 @@ public class Prova extends Avaliacao {
     
     @Column(name = "SN_LIBERAR_RESULTADO")
     private boolean liberarResultado = true;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "ID_TURMA", referencedColumnName = "ID_TURMA", nullable = true)
+    private Turma turma;
     
     @Transient
     private Long duracao;
@@ -103,6 +114,14 @@ public class Prova extends Avaliacao {
         this.liberarResultado = liberarResultado;
     }
 
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+    
     public Long getDuracao() {
         if(dataHoraInicio != null && dataHoraFim != null){
             duracao = TimeUnit.MILLISECONDS.toMinutes(dataHoraFim.getTime() - dataHoraInicio.getTime()); 

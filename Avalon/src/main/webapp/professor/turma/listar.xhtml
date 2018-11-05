@@ -47,8 +47,8 @@ and open the template in the editor.
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
                             <p:commandLink id="btnExcluirTurma"
-                                           action="#{turmaBean.selecionarTurma(turma)}"
-                                           onclick="PF('block').show()"
+                                           action="#{turmaBean.abrirModalExcluir(turma)}"
+                                           onclick="PF('block').show()" update="formModalExcluir"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.excluir']}">
                                 <span class="material-icons">delete</span>

@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.model.turma;
 
+import br.edu.ifpe.recife.avalon.model.avaliacao.prova.Prova;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,31 +38,38 @@ import org.hibernate.validator.constraints.NotBlank;
             @NamedQuery(
                     name = "Turma.PorProfessor",
                     query = "SELECT t FROM Turma t WHERE t.professor.email = :emailProfessor "
-                            + "AND t.ativa = true"
+                    + "AND t.ativa = true"
+            )
+            ,
+            @NamedQuery(
+                    name = "Turma.PorNomeProfessor",
+                    query = "SELECT t FROM Turma t WHERE t.ativa = true "
+                    + "AND t.professor.email = :emailProfessor "
+                    + "AND t.nome = :nome"
             )
         }
 )
-public class Turma implements Serializable {
-    
+public class Turma implements Serializable, Comparable<Turma> {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TURMA")
     private Long id;
-    
+
     @Size(max = 40, message = "{turma.nome.tamanho.maximo}")
     @NotBlank(message = "{turma.nome.obrigatorio}")
     @Column(name = "TXT_NOME", columnDefinition = "varchar(40)")
     private String nome;
-    
+
     @NotBlank(message = "{turma.semestre.ano.obrigatorio}")
-    @Column(name = "DT_ANO")
+    @Column(name = "TXT_SEMESTRE_ANO")
     private String semestreAno;
-    
+
     @NotNull(message = "{turma.professor.obrigatorio}")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_PROFESSOR", referencedColumnName = "ID")
     private Usuario professor;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TB_TURMA_ALUNO", joinColumns = {
         @JoinColumn(name = "ID_TURMA")},
@@ -68,9 +77,20 @@ public class Turma implements Serializable {
                 @JoinColumn(name = "ID_USUARIO")
             })
     private List<Usuario> alunos;
-    
+
+    @OneToMany(mappedBy = "turma", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<Prova> provas;
+
     @Column(name = "SN_ATIVA", nullable = false)
     private boolean ativa = true;
+
+    public Turma(){
+        super();
+    }
+    
+    public Turma(String nome) {
+        this.nome = nome;
+    }
 
     public Long getId() {
         return id;
@@ -119,5 +139,18 @@ public class Turma implements Serializable {
     public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
-    
+
+    public List<Prova> getProvas() {
+        return provas;
+    }
+
+    public void setProvas(List<Prova> provas) {
+        this.provas = provas;
+    }
+
+    @Override
+    public int compareTo(Turma o) {
+        return this.nome.compareTo(o.getNome());
+    }
+
 }

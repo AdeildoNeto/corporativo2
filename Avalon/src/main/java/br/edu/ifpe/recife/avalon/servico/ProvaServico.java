@@ -303,11 +303,11 @@ public class ProvaServico {
     }
 
     private void validarNotaMaxima(Prova prova) throws ValidacaoException {
-        if(prova.getNotaMaxima().compareTo(1.0) < 0){
+        if(prova.getNotaMaxima().compareTo(LIMITE_INFERIOR_NOTA_MAXIMA) < 0){
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("limite.nota.maxima.inferior"));
         }
         
-        if(prova.getNotaMaxima().compareTo(10.0) > 0){
+        if(prova.getNotaMaxima().compareTo(LIMITE_SUPERIOR_NOTA_MAXIMA) > 0){
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("limite.nota.maxima.superior"));
         }
     }

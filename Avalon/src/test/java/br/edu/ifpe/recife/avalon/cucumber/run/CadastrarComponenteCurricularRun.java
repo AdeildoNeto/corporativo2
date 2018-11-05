@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
  * @author eduardoamaral
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/casdastrarComponenteCurricular.feature",
+@CucumberOptions(features = "src/test/resources/features/cadastrarComponenteCurricular.feature",
         glue = "br.edu.ifpe.recife.avalon.cucumber.steps",
         monochrome = false,
         snippets = SnippetType.CAMELCASE)

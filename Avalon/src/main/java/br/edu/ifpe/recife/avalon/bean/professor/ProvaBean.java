@@ -13,10 +13,12 @@ import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
+import br.edu.ifpe.recife.avalon.model.turma.Turma;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
+import br.edu.ifpe.recife.avalon.servico.TurmaServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PdfGeneratorViewHelper;
@@ -27,7 +29,9 @@ import java.io.OutputStream;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -62,40 +66,38 @@ public class ProvaBean extends AvaliacaoBean {
 
     @EJB
     private ProvaServico provaServico;
+    
+    @EJB
+    private TurmaServico turmaServico;
 
-    private final VisualizarAvaliacaoViewHelper visualizarViewHelper;
-    private final ComponenteCurricularViewHelper componenteViewHelper;
-    private final QuestaoDetalhesViewHelper detalhesViewHelper;
+    private final VisualizarAvaliacaoViewHelper visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
+    private final ComponenteCurricularViewHelper componenteViewHelper = new ComponenteCurricularViewHelper();
+    private final QuestaoDetalhesViewHelper detalhesViewHelper = new QuestaoDetalhesViewHelper();
     private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
     private Usuario usuarioLogado;
-    private List<Prova> provas;
     private boolean exibirModalExclusao;
-    private Prova prova;
+    private Prova prova = new Prova();
+    private List<Prova> provas = new ArrayList<>();
 
-    private List<ProvaAluno> resultados;
-    private ProvaAluno provaAlunoDetalhe;
-    private Prova provaResultadoSelecionada;
+    private List<ProvaAluno> resultados = new ArrayList<>();
+    private Prova provaResultadoSelecionada = new Prova();
     
     private boolean exibirModalReagendamento;
     private Date dataHoraInicioReagendamento;
     private Date dataHoraFimReagendamento;
     
-    private final List<QuestaoProva> questoesProva;
-    private final List<QuestaoProva> questoesProvaSelecionadas;
+    private final List<QuestaoProva> questoesProva = new ArrayList<>();
+    private final List<QuestaoProva> questoesProvaSelecionadas = new ArrayList<>();
 
+    private List<Turma> turmas = new ArrayList<>();
+    private String nomeTurmaSelecionada;
+    
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
      */
     public ProvaBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
-        componenteViewHelper = new ComponenteCurricularViewHelper();
-        detalhesViewHelper = new QuestaoDetalhesViewHelper();
-        visualizarViewHelper = new VisualizarAvaliacaoViewHelper();
-        prova = new Prova();
-        provas = new ArrayList<>();
-        questoesProva = new ArrayList<>();
-        questoesProvaSelecionadas = new ArrayList<>();
     }
 
     /**
@@ -119,6 +121,7 @@ public class ProvaBean extends AvaliacaoBean {
     public String iniciarPaginaGerar() {
         inicializarHelpers(true);
         limparPaginaGerar();
+        buscarTurmas();
 
         return GO_GERAR_PROVA;
     }
@@ -191,6 +194,7 @@ public class ProvaBean extends AvaliacaoBean {
      */
     private void limparPaginaGerar() {
         prova = new Prova();
+        nomeTurmaSelecionada = "";
         inicializarQuestoes();
     }
 
@@ -318,6 +322,7 @@ public class ProvaBean extends AvaliacaoBean {
             prova.setProfessor(usuarioLogado);
             prova.setQuestoes(new ArrayList<QuestaoProva>());
             prova.getQuestoes().addAll(questoesProvaSelecionadas);
+            prova.setTurma(buscarTurmaPorCodigo());
             provaServico.salvar(prova);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -325,6 +330,20 @@ public class ProvaBean extends AvaliacaoBean {
         }
 
         return navegacao;
+    }
+    
+    /**
+     * Recupera a turma selecionada para prova.
+     * 
+     * @return 
+     */
+    private Turma buscarTurmaPorCodigo(){
+        if(nomeTurmaSelecionada != null && !nomeTurmaSelecionada.isEmpty()){
+            Collections.sort(turmas);
+            return turmas.get(Arrays.binarySearch(turmas.toArray(), new Turma(nomeTurmaSelecionada)));
+        }
+        
+        return null;
     }
 
     /**
@@ -342,6 +361,11 @@ public class ProvaBean extends AvaliacaoBean {
         }
     }
     
+    /**
+     * Verifica se a prova é de V/F
+     * 
+     * @return 
+     */
     private boolean isProvaVerdadeiroFalso(){
         return prova.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
     }
@@ -425,6 +449,11 @@ public class ProvaBean extends AvaliacaoBean {
         }
     }
 
+    /**
+     * Gera o PDF da prova para impressão.
+     * 
+     * @return 
+     */
     public String imprimirPdf() {
         try {
             PdfGeneratorViewHelper pdf = new PdfGeneratorViewHelper();
@@ -449,6 +478,11 @@ public class ProvaBean extends AvaliacaoBean {
         return "";
     }
     
+    /**
+     * Retorna as questões selecionadas.
+     * 
+     * @return 
+     */
     private List<Questao> getQuestoesSelecionadas(){
         List<Questao> questoes = new ArrayList<>();
         
@@ -459,6 +493,13 @@ public class ProvaBean extends AvaliacaoBean {
         return questoes;
     }
 
+    /**
+     * Lista as turmas do professor logado.
+     */
+    private void buscarTurmas() {
+        turmas = turmaServico.buscarTurmas(usuarioLogado.getEmail());
+    }
+    
     /*
         GETTERS AND SETTERS
      */
@@ -494,10 +535,6 @@ public class ProvaBean extends AvaliacaoBean {
         return provaResultadoSelecionada;
     }
 
-    public ProvaAluno getProvaAlunoDetalhe() {
-        return provaAlunoDetalhe;
-    }
-
     public boolean isExibirModalReagendamento() {
         return exibirModalReagendamento;
     }
@@ -525,5 +562,17 @@ public class ProvaBean extends AvaliacaoBean {
     public List<QuestaoProva> getQuestoesProvaSelecionadas() {
         return questoesProvaSelecionadas;
     }
-    
+
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
+
+    public String getNomeTurmaSelecionada() {
+        return nomeTurmaSelecionada;
+    }
+
+    public void setNomeTurmaSelecionada(String nomeTurmaSelecionada) {
+        this.nomeTurmaSelecionada = nomeTurmaSelecionada;
+    }
+
 }

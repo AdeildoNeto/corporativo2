@@ -6,6 +6,8 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
+import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
@@ -17,6 +19,11 @@ import org.openqa.selenium.By;
  * @author eduardoamaral
  */
 public class CadastrarTurmaSteps {
+
+    public CadastrarTurmaSteps() {
+        DbUnitUtil.setDataSet(DataSetEnum.PROVAS_SIMULADOS);
+        DbUnitUtil.inserirDados();
+    }
     
     @E("^esteja na página minhas turmas$")
     public void irParaMinhasTurmas() throws Throwable {
@@ -71,9 +78,16 @@ public class CadastrarTurmaSteps {
         BrowserManager.waitTime(2000);
     }
     
+    @E("^preencher o nome da turma com um valor já utilizado$")
+    public void preencherTurmaDuplicada() {
+        BrowserManager.getDriver().findElement(By.id("form:txtNome")).sendKeys("Turma 2");
+        BrowserManager.waitTime(1000);
+    }
+    
+    
     @Entao("^uma nova turma será cadastrada$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
-        int count = BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Turma')]")).size();
+        int count = BrowserManager.getDriver().findElements(By.xpath("//span[contains(text(), 'Turma')]")).size();
         assertTrue(count > 0);
         LoginSteps.logout();
     }

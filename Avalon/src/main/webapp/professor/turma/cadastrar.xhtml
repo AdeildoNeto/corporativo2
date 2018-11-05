@@ -58,11 +58,11 @@ and open the template in the editor.
                         <h:column>
                             <f:facet name="header">
                                 <h:selectBooleanCheckbox id="chkSelecionarTodos" value="#{turmaBean.todosSelecionados}">
-                                    <f:ajax listener="#{turmaBean.selecionarTodos()}" render="@form" />
+                                    <f:ajax listener="#{turmaBean.selecionarTodos()}" render="form:table" />
                                 </h:selectBooleanCheckbox>
                             </f:facet>
                             <h:selectBooleanCheckbox id="chkSelecionarAluno" value="#{aluno.selecionado}">
-                                <f:ajax listener="#{turmaBean.abrirModalExcluir(aluno)}" render="@form" execute="@form" />
+                                <f:ajax listener="#{turmaBean.abrirModalExcluir(aluno)}" render="form:table" execute="@this" />
                             </h:selectBooleanCheckbox>
                         </h:column>
                         <h:column>
@@ -80,7 +80,7 @@ and open the template in the editor.
                                      action="#{turmaBean.iniciarPagina()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()" immediate="true"
                                      class="btn btn-secondary font-color-default"></p:commandButton>
-                    <p:commandButton id="btn" value="#{msg['btn.salvar']}" update="@form"
+                    <p:commandButton id="btnSalvar" value="#{msg['btn.salvar']}" update="@form"
                                      action="#{turmaBean.cadastrarTurma()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default"></p:commandButton>

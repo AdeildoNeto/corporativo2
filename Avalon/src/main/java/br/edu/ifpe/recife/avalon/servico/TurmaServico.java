@@ -46,14 +46,38 @@ public class TurmaServico {
      * @throws ValidacaoException 
      */
     public void salvar(@Valid Turma turma) throws ValidacaoException {
+        turma.setNome(turma.getNome().trim());
         validarAlunos(turma);
+        validarNomeDuplicado(turma);
         entityManager.persist(turma);
     }
     
+    /**
+     * Verifica se a turma possuí ao menos um aluno.
+     * 
+     * @param turma
+     * @throws ValidacaoException 
+     */
     private void validarAlunos(Turma turma) throws ValidacaoException {
         if(turma.getAlunos() == null || turma.getAlunos().isEmpty()){
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("turma.alunos.obrigatorio"));
         }
+    }
+    
+    private void validarNomeDuplicado(Turma turma) throws ValidacaoException {
+        if(!buscarTurmaPorNome(turma).isEmpty()){
+            throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("turma.nome.duplicado"));
+        }
+    }
+    
+    private List<Turma> buscarTurmaPorNome(Turma turma){
+        TypedQuery<Turma> query = entityManager.createNamedQuery("Turma.PorNomeProfessor",
+                Turma.class);
+
+        query.setParameter("emailProfessor", turma.getProfessor().getEmail());
+        query.setParameter("nome", turma.getNome());
+
+        return query.getResultList();
     }
 
     /**
