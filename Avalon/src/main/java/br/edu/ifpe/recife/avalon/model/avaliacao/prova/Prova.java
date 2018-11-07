@@ -35,14 +35,17 @@ import javax.validation.constraints.NotNull;
         {
             @NamedQuery(
                     name = "Prova.PorDisponibilidade",
-                    query = "Select p from Prova p where p.ativa = true "
+                    query = "Select p from Prova p where p.ativa = true AND p.turma IS NULL "
                             + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim "
                             + "AND (SELECT pa.id FROM ProvaAluno pa WHERE p.id = pa.prova.id "
-                            + "AND pa.aluno.id = :idAluno AND pa.dataHoraFim IS NOT NULL) IS NULL "
-                            + "AND (p.turma.id IS NULL OR "
-                            + "p.turma.id = (SELECT t.id FROM Turma t JOIN t.alunos a WHERE a.id = :idAluno))"
-                    
-                    
+                            + "AND pa.aluno = :aluno AND pa.dataHoraFim IS NOT NULL) IS NULL"      
+            ),
+            @NamedQuery(
+                    name = "Prova.PorTurmaDisponibilidade",
+                    query = "Select p from Prova p where p.ativa = true AND :aluno MEMBER OF p.turma.alunos "
+                            + "AND :dataHoraAtual BETWEEN p.dataHoraInicio AND p.dataHoraFim "
+                            + "AND (SELECT pa.id FROM ProvaAluno pa WHERE p.id = pa.prova.id "
+                            + "AND pa.aluno = :aluno AND pa.dataHoraFim IS NOT NULL) IS NULL "
             ),
             @NamedQuery(
                     name = "Prova.PorProfessor",

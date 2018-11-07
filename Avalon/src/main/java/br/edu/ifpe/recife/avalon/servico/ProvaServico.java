@@ -169,12 +169,21 @@ public class ProvaServico {
      * @return provas
      */
     public List<Prova> buscarProvasDisponiveis(@NotNull Usuario aluno) {
-        TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorDisponibilidade",
+        List<Prova> provas;
+        
+        provas = consultarProvasDisponiveis(aluno, "Prova.PorDisponibilidade");
+        provas.addAll(consultarProvasDisponiveis(aluno, "Prova.PorTurmaDisponibilidade"));
+
+        return provas;
+    }
+    
+    private List<Prova> consultarProvasDisponiveis(Usuario aluno, String queryName) {
+        TypedQuery<Prova> query = entityManager.createNamedQuery(queryName,
                 Prova.class);
 
         query.setParameter("dataHoraAtual", Calendar.getInstance().getTime());
-        query.setParameter("idAluno", aluno.getId());
-
+        query.setParameter("aluno", aluno);
+        
         return query.getResultList();
     }
 

@@ -52,7 +52,7 @@ public class ComponenteCurricular implements Serializable {
     private String nome;
     
     @OneToMany(mappedBy = "componenteCurricular", fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST, orphanRemoval = true)
+            cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Questao> questoes;
 
     public Long getId() {
