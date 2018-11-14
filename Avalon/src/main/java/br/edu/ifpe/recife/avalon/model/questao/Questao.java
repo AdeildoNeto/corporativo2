@@ -138,12 +138,27 @@ public class Questao implements Serializable {
         return sb.toString();
     }
     
+    /**
+     * Formata o enunciado da questão.
+     * 
+     * @param numeroQuestao
+     * @return 
+     */
     public String formatarEnunciado(int numeroQuestao){
         StringBuilder sb = new StringBuilder();
         sb.append(numeroQuestao);
         sb.append(") ");
         sb.append(enunciado);
         return sb.toString();
+    }
+    
+    /**
+     * Formata a resposta da questão.
+     * 
+     * @return 
+     */
+    public String formatarResposta(){
+        return "";
     }
 
     public Long getId() {

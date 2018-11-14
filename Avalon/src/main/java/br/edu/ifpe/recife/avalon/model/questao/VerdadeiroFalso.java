@@ -42,6 +42,11 @@ public class VerdadeiroFalso extends Questao implements Serializable{
         
         return sb.toString();
     }
+    
+    @Override
+    public String formatarResposta(){
+        return resposta ? "Verdadeiro" : "Falso";
+    }
 
     public Boolean getResposta() {
         return resposta;

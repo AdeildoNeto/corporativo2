@@ -33,6 +33,7 @@ and open the template in the editor.
                     <p:selectOneMenu id="selComponenteCurricular" required="true"
                                      requiredMessage="#{msg['componente.curricular.obrigatorio']}"
                                      value="#{questaoBean.componenteSelecionado}"
+                                     disabled="#{questaoBean.edicaoQuestao()}"
                                      class="btn dropdown-toggle bg-select-menu ui-selectonemenu-width"
                                      filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{questaoBean.todosComponentesCurricular}"

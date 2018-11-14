@@ -31,9 +31,15 @@ and open the template in the editor.
                     </p:outputPanel>
                 </p:outputPanel>
             </p:outputPanel>
+            <p:outputPanel class="row" rendered="#{bean.detalhesViewHelper.questaoDetalhes.tipo == 'VERDADEIRO_FALSO' || bean.detalhesViewHelper.questaoDetalhes.tipo == 'MULTIPLA_ESCOLHA'}">
+                <p:outputPanel class="col-md-12">
+                    <label for="lbResposta">#{msg['label.resposta']}: </label>
+                    <h:outputText id="lbResposta" value="#{bean.detalhesViewHelper.questaoDetalhes.formatarResposta()}" />
+                </p:outputPanel>
+            </p:outputPanel>
             <p:outputPanel class="row">
-                <p:outputPanel class="col-md-12" rendered="#{bean.detalhesViewHelper.questaoDetalhes.solucao != null}">
-                    <label for="txtSolucao">#{msg['label.solucao']}: </label>
+                <p:outputPanel class="col-md-12" rendered="#{!bean.detalhesViewHelper.questaoDetalhes.solucao.isEmpty()}">
+                    <label for="txtSolucao" class="margin-bottom-0">#{msg['label.solucao']}: </label>
                     <h:outputText id="txtSolucao" value="#{bean.detalhesViewHelper.questaoDetalhes.solucao}" />
                 </p:outputPanel>
             </p:outputPanel>

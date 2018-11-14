@@ -53,6 +53,12 @@ public class MultiplaEscolha extends Questao implements Serializable{
         return sb.toString();
     }
     
+    @Override
+    public String formatarResposta(){
+        Character alternativaCorreta = (char) (opcaoCorreta + 97);
+        return alternativaCorreta.toString();
+    }
+    
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }

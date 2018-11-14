@@ -176,11 +176,11 @@ a:focus{
 }
 
 .table-questoes th:first-child{
-    width: 590px;
+    width: 540px;
 }
 
 .table-questoes td:first-child{
-    max-width: 590px;
+    max-width: 540px;
 }
 
 .table-questoes th:nth-child(2){
@@ -703,4 +703,8 @@ input[type="text"]{
 .table-alunos td:last-child{
     width: 1024px;
     max-width: 1024px;
+}
+
+.margin-bottom-0{
+    margin-bottom: 0 !important;
 }
