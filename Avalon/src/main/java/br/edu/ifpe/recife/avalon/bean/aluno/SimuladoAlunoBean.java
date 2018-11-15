@@ -72,6 +72,7 @@ public class SimuladoAlunoBean implements Serializable {
     
     private List<SimuladoAluno> resultados = new ArrayList<>();
     private SimuladoAluno resultadoSimuladoAluno =  new SimuladoAluno();
+    private boolean simuladoVF;
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -118,9 +119,15 @@ public class SimuladoAlunoBean implements Serializable {
         return carregarQuestoes();
     }
     
-    public String iniciarResultadosSimulado(Simulado simulado) {
+    public String iniciarPaginaResultadosSimulado(Simulado simulado) {
         resultados = simuladoServico.buscarResultadosSimuladoAluno(usuarioLogado, simulado);
         return GO_LISTAR_RESULTADOS_SIMULADO_ALUNO;
+    }
+    
+    public String iniciarPaginaDetalharResultado(SimuladoAluno simuladoAluno){
+        resultadoSimuladoAluno = simuladoAluno;
+        simuladoVF = resultadoSimuladoAluno.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+        return GO_DETALHAR_RESULTADO_SIMULADO_ALUNO;
     }
 
     private String carregarQuestoes() {
@@ -355,6 +362,10 @@ public class SimuladoAlunoBean implements Serializable {
 
     public SimuladoAluno getResultadoSimuladoAluno() {
         return resultadoSimuladoAluno;
+    }
+
+    public boolean isSimuladoVF() {
+        return simuladoVF;
     }
     
 }

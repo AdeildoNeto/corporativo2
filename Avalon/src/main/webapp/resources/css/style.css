@@ -708,3 +708,23 @@ input[type="text"]{
 .margin-bottom-0{
     margin-bottom: 0 !important;
 }
+
+/* TELA DE LOGIN */
+.background-ifpe{
+    height: 100%;
+    background-image: url("/Avalon/resources/img/ifpe_frente.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.login-ifpe-logo{
+    position: absolute;
+    top: 28px;
+    left: 140px;
+    zoom: 0.3;
+}
+
+.img-livro{
+    zoom: 0.5;
+}

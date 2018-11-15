@@ -67,7 +67,7 @@ public class ProvaBean extends AvaliacaoBean {
 
     @EJB
     private ProvaServico provaServico;
-    
+
     @EJB
     private TurmaServico turmaServico;
 
@@ -85,17 +85,17 @@ public class ProvaBean extends AvaliacaoBean {
     private ProvaAluno provaAlunoResultado = new ProvaAluno();
     private Prova provaResultadoSelecionada = new Prova();
     private boolean provaVF;
-    
+
     private boolean exibirModalReagendamento;
     private Date dataHoraInicioReagendamento;
     private Date dataHoraFimReagendamento;
-    
+
     private final List<QuestaoProva> questoesProva = new ArrayList<>();
     private final List<QuestaoProva> questoesProvaSelecionadas = new ArrayList<>();
 
     private List<Turma> turmas = new ArrayList<>();
     private String nomeTurmaSelecionada;
-    
+
     /**
      * Cria uma nova instância de <code>ProvaBean</code>.
      */
@@ -166,7 +166,7 @@ public class ProvaBean extends AvaliacaoBean {
         return GO_RESULTADOS_PROVA;
     }
 
-        /**
+    /**
      * Inicializa a prova selecionada para detalha-la.
      *
      * @param provaSelecionada
@@ -174,15 +174,10 @@ public class ProvaBean extends AvaliacaoBean {
      */
     public String iniciarPaginaDetalharResultado(ProvaAluno provaSelecionada) {
         provaAlunoResultado = provaSelecionada;
-
-        if (!provaAlunoResultado.getProva().getQuestoes().isEmpty()) {
-            provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
-            return GO_DETALHAR_RESULTADO_PROVA;
-        }
-
-        return null;
+        provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+        return GO_DETALHAR_RESULTADO_PROVA;
     }
-    
+
     /**
      * Carrega as provas do professor logado.
      */
@@ -224,7 +219,7 @@ public class ProvaBean extends AvaliacaoBean {
     private void limparPaginaImprimir() {
         inicializarQuestoes();
     }
-    
+
     private void inicializarQuestoes() {
         super.setTodosSelecionados(false);
         questoesProvaSelecionadas.clear();
@@ -276,7 +271,7 @@ public class ProvaBean extends AvaliacaoBean {
     public void fecharModalExclusao() {
         exibirModalExclusao = false;
     }
-    
+
     /**
      * Pesquisa as questões disponíveis para impressão.
      */
@@ -286,7 +281,7 @@ public class ProvaBean extends AvaliacaoBean {
             exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem("pesquisa.sem.dados"));
         }
     }
-    
+
     /**
      * Carrega as as questões do a partir do filtro informado.
      */
@@ -313,10 +308,10 @@ public class ProvaBean extends AvaliacaoBean {
             super.setTodosSelecionados(false);
         }
     }
-    
+
     /**
-     * Marca ou desmarca todas as questões disponíveis
-     * para gerar uma prova online.
+     * Marca ou desmarca todas as questões disponíveis para gerar uma prova
+     * online.
      */
     public void selecionarTodasQuestoesProva() {
         questoesProvaSelecionadas.clear();
@@ -351,18 +346,18 @@ public class ProvaBean extends AvaliacaoBean {
 
         return navegacao;
     }
-    
+
     /**
      * Recupera a turma selecionada para prova.
-     * 
-     * @return 
+     *
+     * @return
      */
-    private Turma buscarTurmaPorCodigo(){
-        if(nomeTurmaSelecionada != null && !nomeTurmaSelecionada.isEmpty()){
+    private Turma buscarTurmaPorCodigo() {
+        if (nomeTurmaSelecionada != null && !nomeTurmaSelecionada.isEmpty()) {
             Collections.sort(turmas);
             return turmas.get(Arrays.binarySearch(turmas.toArray(), new Turma(nomeTurmaSelecionada)));
         }
-        
+
         return null;
     }
 
@@ -380,13 +375,13 @@ public class ProvaBean extends AvaliacaoBean {
             }
         }
     }
-    
+
     /**
      * Verifica se a prova é de V/F
-     * 
-     * @return 
+     *
+     * @return
      */
-    private boolean isProvaVerdadeiroFalso(){
+    private boolean isProvaVerdadeiroFalso() {
         return prova.getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
     }
 
@@ -471,8 +466,8 @@ public class ProvaBean extends AvaliacaoBean {
 
     /**
      * Gera o PDF da prova para impressão.
-     * 
-     * @return 
+     *
+     * @return
      */
     public String imprimirPdf() {
         try {
@@ -481,7 +476,7 @@ public class ProvaBean extends AvaliacaoBean {
             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 
             response.reset();
-            response.setHeader("Content-Type", "application/pdf"); 
+            response.setHeader("Content-Type", "application/pdf");
             response.setHeader("Content-Disposition", "attachment;" + "filename=Prova_" + System.currentTimeMillis() + ".pdf");
 
             OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
@@ -497,19 +492,19 @@ public class ProvaBean extends AvaliacaoBean {
 
         return "";
     }
-    
+
     /**
      * Retorna as questões selecionadas.
-     * 
-     * @return 
+     *
+     * @return
      */
-    private List<Questao> getQuestoesSelecionadas(){
+    private List<Questao> getQuestoesSelecionadas() {
         List<Questao> questoes = new ArrayList<>();
-        
+
         for (QuestaoProva questaoProva : questoesProvaSelecionadas) {
             questoes.add(questaoProva.getQuestao());
         }
-        
+
         return questoes;
     }
 
@@ -519,7 +514,7 @@ public class ProvaBean extends AvaliacaoBean {
     private void buscarTurmas() {
         turmas = turmaServico.buscarTurmas(usuarioLogado);
     }
-    
+
     /*
         GETTERS AND SETTERS
      */
@@ -602,5 +597,5 @@ public class ProvaBean extends AvaliacaoBean {
     public boolean isProvaVF() {
         return provaVF;
     }
-    
+
 }

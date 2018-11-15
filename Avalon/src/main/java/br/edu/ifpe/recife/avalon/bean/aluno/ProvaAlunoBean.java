@@ -25,7 +25,6 @@ import javax.enterprise.context.SessionScoped;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -113,13 +112,8 @@ public class ProvaAlunoBean implements Serializable {
      */
     public String iniciarPaginaDetalhar(ProvaAluno provaSelecionada) {
         provaAlunoResultado = provaSelecionada;
-
-        if (!provaAlunoResultado.getProva().getQuestoes().isEmpty()) {
-            provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
-            return GO_DETALHAR_RESULTADO_ALUNO;
-        }
-
-        return null;
+        provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+        return GO_DETALHAR_RESULTADO_ALUNO;
     }
     
     /**
@@ -416,16 +410,6 @@ public class ProvaAlunoBean implements Serializable {
      */
     public void fecharModalFinalizar() {
         exibirModalFinalizar = false;
-    }
-
-    /**
-     * Exibi uma mensagem de erro.
-     *
-     * @param mensagem - mensagem a ser exibida.
-     */
-    private void exibirMensagemError(String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     private void finalizarPorTempo() throws IOException {

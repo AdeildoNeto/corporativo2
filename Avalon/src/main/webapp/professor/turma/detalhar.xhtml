@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h1>#{turmaBean.turma.nome}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h:outputLabel for="txtSemestreAno" value="#{msg['label.semestre.ano']} (MM/YYYY):" />
+                    <h:outputText id="txtSemestreAno" class="margin-left-10" value="#{turmaBean.turma.semestreAno}" />
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 form-group">
+                    <h3>#{msg['label.alunos']}:</h3>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-table-prova">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable id="table" value="#{turmaBean.turma.alunos}" var="aluno"
+                                 styleClass="table table-striped table-fixed table-alunos">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.nome']}</span>
+                            </f:facet>
+                            <h:outputText value="#{aluno.nome}" />
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-10 col-md-2">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                     action="#{turmaBean.iniciarPagina()}" immediate="true"
+                                     class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

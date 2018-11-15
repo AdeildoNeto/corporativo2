@@ -171,6 +171,7 @@ public class TurmaBean implements Serializable {
      */
     public void excluirTurma(){
         turmaServico.remover(turma);
+        iniciarPagina();
         fecharModalExcluir();
     }
     

@@ -197,12 +197,8 @@ public class SimuladoBean extends AvaliacaoBean {
     public String iniciarPaginaDetalhar(SimuladoAluno simuladoAluno) {
         simuladoAlunoResultado = simuladoAluno;
 
-        if (!simuladoAlunoResultado.getSimulado().getQuestoes().isEmpty()) {
-            simuladoVF = simuladoAlunoResultado.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
-            return GO_DETALHAR_RESULTADO;
-        }
-
-        return null;
+        simuladoVF = simuladoAlunoResultado.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+        return GO_DETALHAR_RESULTADO;
     }
 
     /**

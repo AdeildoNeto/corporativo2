@@ -62,11 +62,13 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <ui:include src="../../../comum/fragmento/resultado-vf.xhtml" rendered="#{provaBean.provaVF}">
+                    <ui:include src="../../../comum/fragmento/resultado-vf.xhtml">
                         <ui:param name="questoesAluno" value="#{provaBean.provaAlunoResultado.questoesAluno}" />
+                        <ui:param name="exibirBloco" value="#{provaBean.provaVF}" />
                     </ui:include>
-                    <ui:include src="../../../comum/fragmento/resultado-multipla-escolha.xhtml" rendered="#{!provaBean.provaVF}">
+                    <ui:include src="../../../comum/fragmento/resultado-multipla-escolha.xhtml">
                         <ui:param name="questoesAluno" value="#{provaBean.provaAlunoResultado.questoesAluno}" />
+                        <ui:param name="exibirBloco" value="#{!provaBean.provaVF}" />
                     </ui:include>
                 </p:outputPanel>
             </p:outputPanel>

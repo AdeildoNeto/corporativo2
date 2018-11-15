@@ -11,8 +11,7 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:repeat rendered="#{!bean.provaVF}"
-               value="#{bean.provaAlunoResultado.questoesAluno}"
+    <ui:repeat value="#{questoesAluno}" rendered="#{exibirBloco}"
                var="questaoAluno" varStatus="i" id="repeat">
         <p:outputPanel class="container-prova-questao">
             <span class="bold break-white-space">#{i.index + 1}) #{questaoAluno.questaoAvaliacao.questao.enunciado}</span>
