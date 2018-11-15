@@ -292,17 +292,6 @@ a:focus{
     background-color: #19882c;
 }
 
-/* Login */
-
-#btnGoogleLogin{
-    width: 16%;
-}
-
-#loginRow{
-    height: 100vh;
-    align-items: center;
-}
-
 /* Switch */
 .ui-inputswitch .ui-inputswitch-on,
 .ui-inputswitch .ui-inputswitch-off{
@@ -726,5 +715,28 @@ input[type="text"]{
 }
 
 .img-livro{
-    zoom: 0.5;
+    margin-bottom: 160px;
+    zoom: 0.6;
+}
+
+.login-titulo {
+    margin-bottom: 100px;
+}
+
+.login-titulo h1 {
+    font-size: 36pt !important;
+}
+
+.login-titulo h2 {
+    font-size: 16pt;
+    font-weight: normal;
+}
+
+.btnGoogleLogin{
+    width: 33% !important;
+}
+
+#loginRow{
+    height: 100vh;
+    align-items: center;
 }
