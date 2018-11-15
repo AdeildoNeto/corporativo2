@@ -69,23 +69,24 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-
-                            </f:facet>             
-                            <p:commandLink class="btnDetalhar" rendered="false"
+                            </f:facet>
+                            <p:commandLink id="btnDetalharResultado"
+                                           action="#{provaBean.iniciarPaginaDetalharResultado(resultado)}"
                                            onclick="PF('block').show()"
-                                           oncomplete="PF('block').hide();">
-                                <span class="material-icons">pageview</span>
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.detalhar']}">
+                                <span class="material-icons">list_alt</span>
                             </p:commandLink>
                         </h:column>
                     </h:dataTable>
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 text-right">
                     <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
-                                   action="#{provaBean.iniciarPagina()}" immediate="true"
-                                   class="btn btn-secondary font-color-default">
+                                     action="#{provaBean.iniciarPagina()}" immediate="true"
+                                     class="btn btn-secondary font-color-default">
                     </p:commandButton>
                 </p:outputPanel>
             </p:outputPanel>

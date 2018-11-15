@@ -9,36 +9,60 @@
     
     <TB_COMPONENTE_CURRICULAR ID="1" TXT_NOME="Engenharia de Software"></TB_COMPONENTE_CURRICULAR>
     
-    <TB_QUESTAO ID_QUESTAO="1" TXT_ENUNCIADO="Teste" ID_USUARIO="1" TXT_TIPO="DISCURSIVA" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="Q" />
-    <TB_QUESTAO ID_QUESTAO="2" TXT_ENUNCIADO="Teste 2" ID_USUARIO="1" TXT_TIPO="DISCURSIVA" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="Q" />
+    <TB_QUESTAO ID_QUESTAO="1" TXT_ENUNCIADO="O que é um diagrama de classe?"
+                ID_USUARIO="1" TXT_TIPO="DISCURSIVA" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="Q" />
+    <TB_QUESTAO ID_QUESTAO="2" TXT_ENUNCIADO="O que é um diagrama de atividades?"
+                ID_USUARIO="1" TXT_TIPO="DISCURSIVA" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="Q" />
     
-    <TB_QUESTAO ID_QUESTAO="3" TXT_ENUNCIADO="Teste" ID_USUARIO="1" TXT_TIPO="VERDADEIRO_FALSO" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="V" />
-    <TB_QUESTAO ID_QUESTAO="4" TXT_ENUNCIADO="Teste 2" ID_USUARIO="1" TXT_TIPO="VERDADEIRO_FALSO" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="V" />
-    <TB_VERDADEIRO_FALSO ID_VERDADEIRO_FALSO="3" VF_RESPOSTA="true" />
-    <TB_VERDADEIRO_FALSO ID_VERDADEIRO_FALSO="4" VF_RESPOSTA="false" />
+    <TB_QUESTAO ID_QUESTAO="3" TXT_ENUNCIADO="O diagrama de atividade é composto pelos diagramas de estado e de sequência."
+                ID_USUARIO="1" TXT_TIPO="VERDADEIRO_FALSO" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="V" />
+    <TB_VERDADEIRO_FALSO ID_VERDADEIRO_FALSO="3" VF_RESPOSTA="false" />
     
-    <TB_QUESTAO ID_QUESTAO="5" TXT_ENUNCIADO="Teste" ID_USUARIO="1" TXT_TIPO="MULTIPLA_ESCOLHA" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="M" />
-    <TB_QUESTAO ID_QUESTAO="6" TXT_ENUNCIADO="Teste 2" ID_USUARIO="1" TXT_TIPO="MULTIPLA_ESCOLHA" DT_CRIACAO="2018-01-01"
-                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true" ID_COMPONENTE_CURRICULAR="1" DTYPE="M" />
-    <TB_MULTIPLA_ESCOLHA ID_MULTIPLA_ESCOLHA="5" OP_CORRETA="1" />
-    <TB_MULTIPLA_ESCOLHA ID_MULTIPLA_ESCOLHA="6" OP_CORRETA="3" />
+    <TB_QUESTAO ID_QUESTAO="4" TXT_ENUNCIADO="Scrum é um framework para a criação de produtos complexos."
+                ID_USUARIO="1" TXT_TIPO="VERDADEIRO_FALSO" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="V" />
+    <TB_VERDADEIRO_FALSO ID_VERDADEIRO_FALSO="4" VF_RESPOSTA="true" />
     
-    <TB_ALTERNATIVA TXT_DESCRICAO="A" ID_QUESTAO="5" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="B" ID_QUESTAO="5" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="C" ID_QUESTAO="5" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="D" ID_QUESTAO="5" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="E" ID_QUESTAO="5" />
+    <TB_QUESTAO ID_QUESTAO="5" TXT_ENUNCIADO="O Scrum está sendo implantado dentro da sua empresa, portanto existe a necessidade de se criar o Time Scrum que é formado pelo:"
+                ID_USUARIO="1" TXT_TIPO="MULTIPLA_ESCOLHA" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="M" />
+    <TB_MULTIPLA_ESCOLHA ID_MULTIPLA_ESCOLHA="5" OP_CORRETA="3" />
     
-    <TB_ALTERNATIVA TXT_DESCRICAO="1" ID_QUESTAO="6" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="2" ID_QUESTAO="6" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="3" ID_QUESTAO="6" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="4" ID_QUESTAO="6" />
-    <TB_ALTERNATIVA TXT_DESCRICAO="5" ID_QUESTAO="6" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Backlog, o Time de Planejamento e o Scrum Master"
+                    ID_QUESTAO="5" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Owner, o Time de Desenvolvimento e o Scrum Sprint"
+                    ID_QUESTAO="5" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Backlog, o Time de Planejamento e o Scrum Sprint"
+                    ID_QUESTAO="5" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Owner, o Time de Desenvolvimento e o Scrum Master"
+                    ID_QUESTAO="5" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Backlog, o Time de Desenvolvimento e o Scrum Sprint"
+                    ID_QUESTAO="5" />
+    
+    <TB_QUESTAO ID_QUESTAO="6" TXT_ENUNCIADO="De acordo com as práticas Scrum, o"
+                ID_USUARIO="1" TXT_TIPO="MULTIPLA_ESCOLHA" DT_CRIACAO="2018-01-01"
+                SN_ANULADA="false" SN_COMPARTILHADA="true" SN_QUESTAO_SIMULADO="true"
+                ID_COMPONENTE_CURRICULAR="1" DTYPE="M" />
+    <TB_MULTIPLA_ESCOLHA ID_MULTIPLA_ESCOLHA="6" OP_CORRETA="2" />
+    
+    <TB_ALTERNATIVA TXT_DESCRICAO="Time Scrum é o único responsável por gerenciar o Backlog do Produto e busca garantir que o Backlog do Produto seja visível, transparente, claro para todos, indicando o que o Time de Desenvolvimento vai trabalhar a seguir."
+                    ID_QUESTAO="6" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Product Owner pode ser um comitê e não uma pessoa. O comitê pode representar o desejo do Product Owner e o Scrum Master, podendo realizar alterações nas prioridades dos itens de Backlog do Produto."
+                    ID_QUESTAO="6" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Scrum não reconhece títulos para os integrantes do Time de Desenvolvimento que não seja o Desenvolvedor, independentemente do trabalho que está sendo realizado pela pessoa e não há exceções para esta regra."
+                    ID_QUESTAO="6" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Time Scrum consiste de profissionais que realizam o trabalho de entregar uma versão usável que potencialmente incrementa o produto “Pronto” ao final de cada Sprint. Somente integrantes do Time Scrum criam incrementos."
+                    ID_QUESTAO="6" />
+    <TB_ALTERNATIVA TXT_DESCRICAO="Backlog do Produto é um conjunto de itens do Backlog da Sprint selecionados para a Sprint, juntamente com o plano para entregar o incremento do produto e atingir o objetivo da Sprint. O Backlog do Produto é a previsão do Time Scrum sobre qual funcionalidade estará no próximo incremento."
+                    ID_QUESTAO="6" />
     
     <TB_PROVA ID_AVALIACAO="1" SN_ATIVA="true" DT_CRIACAO="2018-01-01"
               DH_INICIO="2018-01-01 00:00:00" DH_FIM="2018-01-01 05:00:00"

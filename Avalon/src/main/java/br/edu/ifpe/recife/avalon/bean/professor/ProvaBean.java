@@ -56,6 +56,7 @@ public class ProvaBean extends AvaliacaoBean {
     private static final String GO_IMPRIMIR_PROVA = "goImprimirProva";
     private static final String GO_DETALHAR_PROVA = "goDetalharProva";
     private static final String GO_RESULTADOS_PROVA = "goResultadosProva";
+    private static final String GO_DETALHAR_RESULTADO_PROVA = "goDetalharResultadoProva";
     private static final String USUARIO = "usuario";
 
     @EJB
@@ -81,7 +82,9 @@ public class ProvaBean extends AvaliacaoBean {
     private List<Prova> provas = new ArrayList<>();
 
     private List<ProvaAluno> resultados = new ArrayList<>();
+    private ProvaAluno provaAlunoResultado = new ProvaAluno();
     private Prova provaResultadoSelecionada = new Prova();
+    private boolean provaVF;
     
     private boolean exibirModalReagendamento;
     private Date dataHoraInicioReagendamento;
@@ -163,6 +166,23 @@ public class ProvaBean extends AvaliacaoBean {
         return GO_RESULTADOS_PROVA;
     }
 
+        /**
+     * Inicializa a prova selecionada para detalha-la.
+     *
+     * @param provaSelecionada
+     * @return rota
+     */
+    public String iniciarPaginaDetalharResultado(ProvaAluno provaSelecionada) {
+        provaAlunoResultado = provaSelecionada;
+
+        if (!provaAlunoResultado.getProva().getQuestoes().isEmpty()) {
+            provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+            return GO_DETALHAR_RESULTADO_PROVA;
+        }
+
+        return null;
+    }
+    
     /**
      * Carrega as provas do professor logado.
      */
@@ -575,4 +595,12 @@ public class ProvaBean extends AvaliacaoBean {
         this.nomeTurmaSelecionada = nomeTurmaSelecionada;
     }
 
+    public ProvaAluno getProvaAlunoResultado() {
+        return provaAlunoResultado;
+    }
+
+    public boolean isProvaVF() {
+        return provaVF;
+    }
+    
 }

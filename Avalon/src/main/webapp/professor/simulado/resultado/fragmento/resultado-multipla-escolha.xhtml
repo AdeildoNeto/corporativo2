@@ -44,7 +44,7 @@ and open the template in the editor.
             <h:outputText id="alternativaCorreta" class="margin-left-10"
                           value="#{questaoAluno.alternativaCorreta}" />
         </p:outputPanel>
-        <p:outputPanel class="form-group" rendered="#{questaoAluno.questaoAvaliacao.!questao.solucao.isEmpty()}">
+        <p:outputPanel class="form-group" rendered="#{questaoAluno.questaoAvaliacao.questao.exibirSolucao()}">
             <label for="txtSolucao">#{msg['label.solucao']}: </label>
             <h:outputText id="txtSolucao" value="#{questaoAluno.questaoAvaliacao.questao.solucao}" />
         </p:outputPanel>

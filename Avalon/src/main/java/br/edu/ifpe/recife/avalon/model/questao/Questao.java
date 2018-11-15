@@ -160,6 +160,10 @@ public class Questao implements Serializable {
     public String formatarResposta(){
         return "";
     }
+    
+    public boolean exibirSolucao(){
+        return solucao != null && !solucao.isEmpty();
+    }
 
     public Long getId() {
         return id;

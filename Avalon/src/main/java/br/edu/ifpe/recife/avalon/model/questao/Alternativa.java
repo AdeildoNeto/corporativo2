@@ -32,8 +32,8 @@ public class Alternativa implements Serializable {
     @Column(name = "ID_ALTERNATIVA")
     private Long id;
 
-    @Size(max = 255, message = "{alternativa.tamanho.maximo}")
-    @Column(name = "TXT_DESCRICAO")
+    @Size(max = 1000, message = "{alternativa.tamanho.maximo}")
+    @Column(name = "TXT_DESCRICAO", columnDefinition = "varchar(1000)")
     private String descricao;
 
     @NotNull

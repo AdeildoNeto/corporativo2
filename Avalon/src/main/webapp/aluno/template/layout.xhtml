@@ -35,7 +35,7 @@ and open the template in the editor.
                             <h:commandLink id="menuProvas" styleClass="nav-link" value="#{msg['menu.provas']}" action="#{provaAlunoBean.iniciarPagina()}" />
                         </li>
                         <li class="nav-item">
-                            <h:commandLink id="menuResultados" styleClass="nav-link" value="#{msg['label.resultados']}" action="#{resultadoAlunoBean.iniciarPagina()}" />
+                            <h:commandLink id="menuResultados" styleClass="nav-link" value="#{msg['label.resultados']}" action="#{provaAlunoBean.iniciarPaginaResultado()}" />
                         </li>
                         <ui:include src="../../template/logout.xhtml" />
                     </ul>

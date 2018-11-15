@@ -11,8 +11,8 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:repeat rendered="#{!resultadoAlunoBean.provaVF}"
-               value="#{resultadoAlunoBean.provaAlunoDetalhe.questoesAluno}"
+    <ui:repeat rendered="#{!bean.provaVF}"
+               value="#{bean.provaAlunoResultado.questoesAluno}"
                var="questaoAluno" varStatus="i" id="repeat">
         <p:outputPanel class="container-prova-questao">
             <span class="bold break-white-space">#{i.index + 1}) #{questaoAluno.questaoAvaliacao.questao.enunciado}</span>
@@ -44,7 +44,7 @@ and open the template in the editor.
             <h:outputText id="alternativaCorreta" class="margin-left-10"
                           value="#{questaoAluno.alternativaCorreta}" />
         </p:outputPanel>
-        <p:outputPanel class="form-group" rendered="#{questaoAluno.questaoAvaliacao.!questao.solucao.isEmpty()}">
+        <p:outputPanel class="form-group" rendered="#{questaoAluno.questaoAvaliacao.questao.exibirSolucao()}">
             <label for="txtSolucao">#{msg['label.solucao']}: </label>
             <h:outputText id="txtSolucao" value="#{questaoAluno.questaoAvaliacao.questao.solucao}" />
         </p:outputPanel>

@@ -38,9 +38,14 @@ import javax.servlet.http.HttpSession;
 public class ProvaAlunoBean implements Serializable {
 
     public static final String NOME = "provaAlunoBean";
+    
+    private static final String USUARIO = "usuario";
+    
     private static final String GO_INICIAR_PROVA = "goIniciarProva";
     private static final String GO_LISTAR_PROVAS = "goListarProvas";
-    private static final String USUARIO = "usuario";
+    private static final String GO_LISTAR_RESULTADO = "goListarResultados";
+    private static final String GO_DETALHAR_RESULTADO_ALUNO = "goDetalharResultadoAluno";
+    
     private static final String PROVA_QUESTOES_EM_BRANCO = "prova.mensagem.questoes.em.branco";
     private static final String PROVA_FINALIZAR = "prova.mensagem.finalizar";
     private static final String OBSERVACAO_TEMPO = "prova.observacao.tempo";
@@ -56,13 +61,20 @@ public class ProvaAlunoBean implements Serializable {
     private List<Prova> provasDisponiveis = new ArrayList<>();
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
+    
     private boolean exibirModalIniciar;
     private boolean exibirModalFinalizar;
+    
     private String resultado;
     private String observacaoDuracao;
     private String msgConfirmarFinalizacao;
+    
     private long duracaoMinutos;
     private long duracaoSegundos;
+    
+    private List<ProvaAluno> provasResultados = new ArrayList<>();
+    private ProvaAluno provaAlunoResultado = new ProvaAluno();
+    private boolean provaVF;
 
     /**
      * Cria uma nova instância de <code>ProvaAlunoBean</code>.
@@ -82,6 +94,34 @@ public class ProvaAlunoBean implements Serializable {
         return GO_LISTAR_PROVAS;
     }
 
+    /**
+     * Inicia a página contendo todas as provas realizadas pelo aluno e seus
+     * respectivos resultados.
+     *
+     * @return rota
+     */
+    public String iniciarPaginaResultado() {
+        buscarProvasResultados();
+        return GO_LISTAR_RESULTADO;
+    }
+    
+    /**
+     * Inicializa a prova selecionada para detalha-la.
+     *
+     * @param provaSelecionada
+     * @return rota
+     */
+    public String iniciarPaginaDetalhar(ProvaAluno provaSelecionada) {
+        provaAlunoResultado = provaSelecionada;
+
+        if (!provaAlunoResultado.getProva().getQuestoes().isEmpty()) {
+            provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+            return GO_DETALHAR_RESULTADO_ALUNO;
+        }
+
+        return null;
+    }
+    
     /**
      * Inicia uma nova Prova.
      *
@@ -421,6 +461,26 @@ public class ProvaAlunoBean implements Serializable {
             --duracaoSegundos;
         }
 
+    }
+    
+    /**
+     * Busca por todos as provas realizadas pelo aluon e seus respectivos
+     * resultados.
+     */
+    private void buscarProvasResultados() {
+        provasResultados = provaServico.buscarResultadosProvasAluno(usuarioLogado);
+    }
+
+    public boolean isProvaVF() {
+        return provaVF;
+    }
+
+    public List<ProvaAluno> getProvasResultados() {
+        return provasResultados;
+    }
+
+    public ProvaAluno getProvaAlunoResultado() {
+        return provaAlunoResultado;
     }
 
     public List<MultiplaEscolha> getQuestoesMultiplaEscolha() {

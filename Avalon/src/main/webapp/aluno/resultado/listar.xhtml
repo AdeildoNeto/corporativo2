@@ -28,7 +28,7 @@ and open the template in the editor.
             
             <p:outputPanel class="row container-listar">
                 <p:outputPanel class="col-md-12">
-                    <h:dataTable id="table" value="#{resultadoAlunoBean.provasResultados}" var="provaAluno" styleClass="table table-striped table-fixed table-provas-aluno">
+                    <h:dataTable id="table" value="#{provaAlunoBean.provasResultados}" var="provaAluno" styleClass="table table-striped table-fixed table-provas-aluno">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -71,7 +71,7 @@ and open the template in the editor.
                             <f:facet name="header">
                             </f:facet>
                             <p:commandLink id="btnDetalharResultado"
-                                           action="#{resultadoAlunoBean.iniciarPaginaDetalhar(provaAluno)}"
+                                           action="#{provaAlunoBean.iniciarPaginaDetalhar(provaAluno)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.detalhar']}">

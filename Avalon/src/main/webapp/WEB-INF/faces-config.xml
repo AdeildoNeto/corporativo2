@@ -71,6 +71,11 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goDetalharResultadoProva</from-outcome>
+            <to-view-id>/professor/prova/resultado/detalhar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goGerarSimulado</from-outcome>
             <to-view-id>/professor/simulado/gerar.xhtml</to-view-id>
             <redirect />
@@ -148,7 +153,7 @@
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>goDetalharResultado</from-outcome>
+            <from-outcome>goDetalharResultadoAluno</from-outcome>
             <to-view-id>/aluno/resultado/detalhar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
