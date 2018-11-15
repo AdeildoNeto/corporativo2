@@ -29,13 +29,14 @@ import javax.validation.constraints.NotNull;
         {
             @NamedQuery(
                     name = "SimuladoAluno.PorAluno",
-                    query = "Select sa from SimuladoAluno sa where sa.aluno.id = :idAluno "
-                            + "ORDER BY sa.dataHoraInicio"
+                    query = "Select sa from SimuladoAluno sa where sa.aluno = :aluno"
+                            + " AND sa.simulado = :simulado"
+                            + " ORDER BY sa.dataHoraInicio"
             ),
             @NamedQuery(
                     name = "SimuladoAluno.PorSimulado",
-                    query = "Select sa from SimuladoAluno sa where sa.simulado.id = :idSimulado "
-                    + "ORDER BY sa.aluno.nome, sa.aluno.sobrenome"
+                    query = "Select sa from SimuladoAluno sa where sa.simulado = :simulado"
+                    + " ORDER BY sa.aluno.nome, sa.aluno.sobrenome"
             )
         }
 )

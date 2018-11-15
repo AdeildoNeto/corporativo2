@@ -44,9 +44,6 @@ public class TurmaTest {
 
     private static Logger logger;
 
-    public TurmaTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();

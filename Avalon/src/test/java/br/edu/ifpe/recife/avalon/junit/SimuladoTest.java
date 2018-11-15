@@ -15,6 +15,7 @@ import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
 import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoAlunoSimulado;
 import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
+import br.edu.ifpe.recife.avalon.model.questao.componente.ComponenteCurricular;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
 import br.edu.ifpe.recife.avalon.servico.QuestaoServico;
@@ -63,9 +64,6 @@ public class SimuladoTest {
 
     private static Logger logger;
 
-    public SimuladoTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();
@@ -107,6 +105,7 @@ public class SimuladoTest {
         logger.info("Executando t02: criticarSimuladoComTituloRepetido");
         Simulado simulado = new Simulado();
         preencherNovoSimulado(simulado);
+        simulado.setTitulo("SCRUM");
 
         simuladoServico.salvar(simulado);
     }
@@ -229,17 +228,36 @@ public class SimuladoTest {
     }
 
     @Test
-    public void t14_listarResultadosSimuladoAluno() {
-        logger.info("Executando t14: listarResultadosSimuladoAluno");
+    public void t14_listarResultadosSimuladoPorSimulado() {
+        logger.info("Executando t14: listarResultadosSimuladoPorSimulado");
         Simulado simulado = simuladoServico.buscarSimuladoPorId(1l);
         List<SimuladoAluno> resultados = simuladoServico.buscarResultadosSimulado(simulado);
 
         assertTrue(!resultados.isEmpty());
     }
+    
+    @Test
+    public void t15_listarResultadosSimuladoPorAluno() {
+        logger.info("Executando t15: listarResultadosSimuladoPorAluno");
+        Simulado simulado = simuladoServico.buscarSimuladoPorId(1l);
+        Usuario aluno = getAluno();
+        
+        List<SimuladoAluno> resultados = simuladoServico.buscarResultadosSimuladoAluno(aluno, simulado);
+
+        assertTrue(!resultados.isEmpty());
+    }
+    
+    @Test
+    public void t16_listarSimuladosProfessor() {
+        logger.info("Executando t16: listarSimuladosProfessor");
+        List<Simulado> simulados = simuladoServico.buscarSimuladosProfessor(getProfessor());
+
+        assertTrue(!simulados.isEmpty());
+    }
 
     private Simulado preencherNovoSimulado(Simulado simulado) {
-        simulado.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
-        simulado.setProfessor(usuarioServico.buscarUsuarioPorEmail("teste@gmail.com"));
+        simulado.setComponenteCurricular(getComponenteCurricular());
+        simulado.setProfessor(getProfessor());
         simulado.setTitulo("Teste Simulado.");
         simulado.setDataCriacao(Calendar.getInstance().getTime());
 
@@ -263,9 +281,9 @@ public class SimuladoTest {
     }
 
     private void preencherSimuladoAluno(SimuladoAluno simuladoAluno) {
-        Usuario aluno = usuarioServico.buscarUsuarioPorEmail(EMAIL_TESTE);
+        Usuario aluno = getAluno();
         FiltroSimulado filtro = new FiltroSimulado();
-        filtro.setIdComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste").getId());
+        filtro.setIdComponenteCurricular(getComponenteCurricular().getId());
         Simulado simulado = simuladoServico.buscarSimuladoPorFiltro(filtro).get(0);
         simuladoAluno.setAluno(aluno);
         simuladoAluno.setSimulado(simulado);
@@ -281,6 +299,18 @@ public class SimuladoTest {
             simuladoAluno.getQuestoesAluno().add(simuladoAlunoQuestao);
         }
 
+    }
+    
+    private Usuario getProfessor(){
+        return usuarioServico.buscarUsuarioPorEmail("teste@gmail.com");
+    }
+    
+    private Usuario getAluno(){
+        return usuarioServico.buscarUsuarioPorEmail("teste@a.recife.ifpe.edu.br");
+    }
+    
+    private ComponenteCurricular getComponenteCurricular(){
+        return ccurricularServico.buscarComponentePorNome("Engenharia de Software");
     }
 
 }

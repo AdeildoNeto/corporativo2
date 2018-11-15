@@ -102,7 +102,7 @@ public class TurmaBean implements Serializable {
      * Lista todas as turmas de um professor.
      */
     private void buscarTurmas() {
-        turmas = turmaServico.buscarTurmas(usuarioLogado.getEmail());
+        turmas = turmaServico.buscarTurmas(usuarioLogado);
     }
     
     /**

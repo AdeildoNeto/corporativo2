@@ -74,8 +74,8 @@ public class SimuladoServico {
                 Simulado.class);
 
         query.setParameter("titulo", simulado.getTitulo());
-        query.setParameter("idComponenteCurricular", simulado.getComponenteCurricular().getId());
-        query.setParameter("emailProfessor", simulado.getProfessor().getEmail());
+        query.setParameter("componenteCurricular", simulado.getComponenteCurricular());
+        query.setParameter("professor", simulado.getProfessor());
 
         if (!query.getResultList().isEmpty()) {
             throw new ValidacaoException(AvalonUtil.getInstance()
@@ -100,14 +100,14 @@ public class SimuladoServico {
     /**
      * Consulta simulados por professor.
      *
-     * @param emailProfessor - email do professor.
+     * @param professor
      * @return lista de simulados.
      */
-    public List<Simulado> buscarSimuladosPorProfessor(@NotNull String emailProfessor) {
+    public List<Simulado> buscarSimuladosProfessor(Usuario professor) {
         TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorProfessor",
                 Simulado.class);
 
-        query.setParameter("emailProfessor", emailProfessor);
+        query.setParameter("professor", professor);
 
         return query.getResultList();
     }
@@ -142,13 +142,15 @@ public class SimuladoServico {
      * Consulta todos os simulados realizados por um aluno.
      *
      * @param aluno
+     * @param simulado
      * @return lista de simulados realizados pelo aluno.
      */
-    public List<SimuladoAluno> buscarResultadosSimuladoAluno(Usuario aluno) {
+    public List<SimuladoAluno> buscarResultadosSimuladoAluno(Usuario aluno, Simulado simulado) {
         TypedQuery<SimuladoAluno> query = entityManager.createNamedQuery("SimuladoAluno.PorAluno",
                 SimuladoAluno.class);
 
-        query.setParameter("idAluno", aluno.getId());
+        query.setParameter("aluno", aluno);
+        query.setParameter("simulado", simulado);
 
         return query.getResultList();
     }
@@ -163,7 +165,7 @@ public class SimuladoServico {
         TypedQuery<SimuladoAluno> query = entityManager.createNamedQuery("SimuladoAluno.PorSimulado",
                 SimuladoAluno.class);
 
-        query.setParameter("idSimulado", simulado.getId());
+        query.setParameter("simulado", simulado);
 
         return query.getResultList();
     }

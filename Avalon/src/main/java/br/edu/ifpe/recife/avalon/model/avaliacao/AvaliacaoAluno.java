@@ -104,7 +104,7 @@ public class AvaliacaoAluno implements Serializable {
 
         MultiplaEscolha questaoMS = (MultiplaEscolha) questaoAlunoAvalicao.getQuestaoAvaliacao().getQuestao();
         if (questaoMS.isAnulada()
-                || questaoMS.getOpcaoCorreta().equals(questaoAlunoAvalicao.getRespostaMultiplaEscolha())) {
+                || questaoMS.getAlternativaCorreta().equals(questaoAlunoAvalicao.getRespostaMultiplaEscolha())) {
             pontos = questaoAlunoAvalicao.getQuestaoAvaliacao().getPeso();
         }
         

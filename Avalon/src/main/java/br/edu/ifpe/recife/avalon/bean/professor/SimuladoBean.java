@@ -67,7 +67,7 @@ public class SimuladoBean extends AvaliacaoBean {
     private boolean exibirModalExclusao;
 
     private List<SimuladoAluno> resultados;
-    private SimuladoAluno simuladoAlunoDetalhe;
+    private SimuladoAluno simuladoAlunoResultado;
     private Simulado simuladoResultadoSelecionado;
     private boolean simuladoVF;
 
@@ -195,10 +195,10 @@ public class SimuladoBean extends AvaliacaoBean {
      * @return rota
      */
     public String iniciarPaginaDetalhar(SimuladoAluno simuladoAluno) {
-        simuladoAlunoDetalhe = simuladoAluno;
+        simuladoAlunoResultado = simuladoAluno;
 
-        if (!simuladoAlunoDetalhe.getSimulado().getQuestoes().isEmpty()) {
-            simuladoVF = simuladoAlunoDetalhe.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
+        if (!simuladoAlunoResultado.getSimulado().getQuestoes().isEmpty()) {
+            simuladoVF = simuladoAlunoResultado.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
             return GO_DETALHAR_RESULTADO;
         }
 
@@ -231,7 +231,7 @@ public class SimuladoBean extends AvaliacaoBean {
      * Carrega os simulados do usuário.
      */
     private void buscarSimulados() {
-        simulados = simuladoServico.buscarSimuladosPorProfessor(usuarioLogado.getEmail());
+        simulados = simuladoServico.buscarSimuladosProfessor(usuarioLogado);
     }
 
     /**
@@ -382,8 +382,8 @@ public class SimuladoBean extends AvaliacaoBean {
         return resultados;
     }
 
-    public SimuladoAluno getSimuladoAlunoDetalhe() {
-        return simuladoAlunoDetalhe;
+    public SimuladoAluno getSimuladoAlunoResultado() {
+        return simuladoAlunoResultado;
     }
 
     public boolean isSimuladoVF() {

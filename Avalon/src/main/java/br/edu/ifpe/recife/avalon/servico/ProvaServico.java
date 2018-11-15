@@ -177,6 +177,13 @@ public class ProvaServico {
         return provas;
     }
     
+    /**
+     * Recupera todas as provas disponíveis para o aluno.
+     * 
+     * @param aluno
+     * @param queryName
+     * @return 
+     */
     private List<Prova> consultarProvasDisponiveis(Usuario aluno, String queryName) {
         TypedQuery<Prova> query = entityManager.createNamedQuery(queryName,
                 Prova.class);
@@ -190,14 +197,14 @@ public class ProvaServico {
     /**
      * Consulta todas as provas criadas por um Professor.
      *
-     * @param email - email do professor.
+     * @param professor
      * @return provas
      */
-    public List<Prova> buscarProvasPorProfessor(@NotNull String email) {
+    public List<Prova> buscarProvasProfessor(Usuario professor) {
         TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorProfessor",
                 Prova.class);
 
-        query.setParameter("emailProfessor", email);
+        query.setParameter("professor", professor);
 
         return query.getResultList();
     }
@@ -227,7 +234,7 @@ public class ProvaServico {
     public List<ProvaAluno> buscarResultadosProvasAluno(Usuario aluno) {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorResultadoAluno",
                 ProvaAluno.class);
-        query.setParameter("idAluno", aluno.getId());
+        query.setParameter("aluno", aluno);
         query.setParameter("dataAtual", new Date());
 
         return query.getResultList();
@@ -243,25 +250,9 @@ public class ProvaServico {
         TypedQuery<ProvaAluno> query = entityManager.createNamedQuery("ProvaAluno.PorProva",
                 ProvaAluno.class);
 
-        query.setParameter("idProva", prova.getId());
+        query.setParameter("prova", prova);
 
         return query.getResultList();
-    }
-
-    /**
-     * Recupera uma prova por ID.
-     *
-     * @param id
-     * @return
-     */
-    public Prova buscarProvaPorId(@NotNull Long id) {
-        TypedQuery<Prova> query = entityManager.createNamedQuery("Prova.PorId", Prova.class);
-        query.setParameter("idProva", id);
-
-        if (!query.getResultList().isEmpty()) {
-            return query.getSingleResult();
-        }
-        return null;
     }
 
     /**
@@ -276,8 +267,8 @@ public class ProvaServico {
                 ProvaAluno.class);
         ProvaAluno provaAluno = new ProvaAluno();
 
-        query.setParameter("idAluno", aluno.getId());
-        query.setParameter("idProva", prova.getId());
+        query.setParameter("aluno", aluno);
+        query.setParameter("prova", prova);
 
         if (!query.getResultList().isEmpty()) {
             provaAluno = query.getSingleResult();
@@ -311,6 +302,12 @@ public class ProvaServico {
         }
     }
 
+    /**
+     * Valida se a nota máxima informada está dentro do intervalo permitido.
+     * 
+     * @param prova
+     * @throws ValidacaoException 
+     */
     private void validarNotaMaxima(Prova prova) throws ValidacaoException {
         if(prova.getNotaMaxima().compareTo(LIMITE_INFERIOR_NOTA_MAXIMA) < 0){
             throw new ValidacaoException(AvalonUtil.getInstance().getMensagemValidacao("limite.nota.maxima.inferior"));

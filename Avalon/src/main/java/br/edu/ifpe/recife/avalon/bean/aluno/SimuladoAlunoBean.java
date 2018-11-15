@@ -44,6 +44,8 @@ public class SimuladoAlunoBean implements Serializable {
     public static final String NOME = "simuladoAlunoBean";
     private static final String GO_INICIAR_SIMULADO = "goIniciarSimulado";
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
+    private static final String GO_LISTAR_RESULTADOS_SIMULADO_ALUNO = "goListarResultadosSimuladoAluno";
+    private static final String GO_DETALHAR_RESULTADO_SIMULADO_ALUNO = "goDetalharResultadoSimuladoAluno";
     private static final String USUARIO = "usuario";
     private static final String RESULTADO_ACERTOS = "resultado.obtido";
     private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
@@ -66,7 +68,10 @@ public class SimuladoAlunoBean implements Serializable {
     private List<MultiplaEscolha> questoesMultiplaEscolha;
     private boolean exibirModalResultado;
     private String resultado;
-    SimuladoAluno simuladoAluno;
+    private SimuladoAluno simuladoAluno;
+    
+    private List<SimuladoAluno> resultados = new ArrayList<>();
+    private SimuladoAluno resultadoSimuladoAluno =  new SimuladoAluno();
 
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
@@ -101,7 +106,7 @@ public class SimuladoAlunoBean implements Serializable {
      */
     public String iniciarSimulado(Simulado simulado) {
         limparTelaSimulado();
-        simuladoSelecionado = simuladoServico.buscarSimuladoPorId(simulado.getId());
+        simuladoSelecionado = simulado;
         simuladoAluno = new SimuladoAluno();
         simuladoAluno.setAluno(usuarioLogado);
         simuladoAluno.setSimulado(simuladoSelecionado);
@@ -111,6 +116,11 @@ public class SimuladoAlunoBean implements Serializable {
         questoesVerdadeiroFalso.clear();
 
         return carregarQuestoes();
+    }
+    
+    public String iniciarResultadosSimulado(Simulado simulado) {
+        resultados = simuladoServico.buscarResultadosSimuladoAluno(usuarioLogado, simulado);
+        return GO_LISTAR_RESULTADOS_SIMULADO_ALUNO;
     }
 
     private String carregarQuestoes() {
@@ -339,4 +349,12 @@ public class SimuladoAlunoBean implements Serializable {
         return resultado;
     }
 
+    public List<SimuladoAluno> getResultados() {
+        return resultados;
+    }
+
+    public SimuladoAluno getResultadoSimuladoAluno() {
+        return resultadoSimuladoAluno;
+    }
+    
 }

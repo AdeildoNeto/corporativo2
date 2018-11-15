@@ -11,6 +11,7 @@ import br.edu.ifpe.recife.avalon.model.filtro.FiltroQuestao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
 import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.enums.TipoQuestaoEnum;
+import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
 import java.io.Serializable;
 import java.util.List;
@@ -105,14 +106,14 @@ public class QuestaoServico implements Serializable{
     }
 
     /**
-     * Consulta questões por professor.
+     * Consulta as questões do professor logado.
      *
-     * @param emailProfessor
+     * @param professor
      * @return lista de questões
      */
-    public List<Questao> buscarQuestoesPorProfessor(@NotNull String emailProfessor) {
+    public List<Questao> buscarQuestoesProfessor(@Valid Usuario professor) {
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorProfessor", Questao.class);
-        query.setParameter("emailProfessor", emailProfessor);
+        query.setParameter("professor", professor);
 
         return query.getResultList();
     }
@@ -127,8 +128,8 @@ public class QuestaoServico implements Serializable{
         TypedQuery<Questao> query = entityManager.createNamedQuery("Questao.PorTipoValido", Questao.class);
         query.setParameter("enunciado", questao.getEnunciado().trim());
         query.setParameter("tipo", questao.getTipo());
-        query.setParameter("idProfessor", questao.getProfessor().getId());
-        query.setParameter("idComponenteCurricular", questao.getComponenteCurricular().getId());
+        query.setParameter("professor", questao.getProfessor());
+        query.setParameter("componenteCurricular", questao.getComponenteCurricular());
         query.setParameter("idQuestao", questao.getId());
 
         if (!TipoQuestaoEnum.MULTIPLA_ESCOLHA.equals(questao.getTipo()) && !query.getResultList().isEmpty()) {

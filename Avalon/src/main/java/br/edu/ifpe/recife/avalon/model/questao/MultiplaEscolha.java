@@ -35,7 +35,7 @@ public class MultiplaEscolha extends Questao implements Serializable{
     
     @NotNull(message = "{questao.reposta.obrigatoria}")
     @Column(name = "OP_CORRETA")
-    private Integer opcaoCorreta;
+    private Integer alternativaCorreta;
             
     @Transient
     private Integer respostaUsuario;
@@ -55,7 +55,7 @@ public class MultiplaEscolha extends Questao implements Serializable{
     
     @Override
     public String formatarResposta(){
-        Character alternativaCorreta = (char) (opcaoCorreta + 97);
+        Character alternativaCorreta = (char) (this.alternativaCorreta + 97);
         return alternativaCorreta.toString();
     }
     
@@ -67,12 +67,12 @@ public class MultiplaEscolha extends Questao implements Serializable{
         this.alternativas = alternativas;
     }
 
-    public Integer getOpcaoCorreta() {
-        return opcaoCorreta;
+    public Integer getAlternativaCorreta() {
+        return alternativaCorreta;
     }
 
-    public void setOpcaoCorreta(Integer opcaoCorreta) {
-        this.opcaoCorreta = opcaoCorreta;
+    public void setAlternativaCorreta(Integer alternativaCorreta) {
+        this.alternativaCorreta = alternativaCorreta;
     }
 
     public Integer getRespostaUsuario() {

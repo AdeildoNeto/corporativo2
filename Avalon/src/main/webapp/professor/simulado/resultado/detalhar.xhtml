@@ -16,39 +16,39 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <h1>#{simuladoBean.simuladoAlunoDetalhe.simulado.titulo}</h1>
+                    <h1>#{simuladoBean.simuladoAlunoResultado.simulado.titulo}</h1>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
                     <label for="componente">#{msg['label.componente.curricular']}: </label>
-                    <span id="componente"> #{simuladoBean.simuladoAlunoDetalhe.simulado.componenteCurricular.nome}</span>
+                    <span id="componente"> #{simuladoBean.simuladoAlunoResultado.simulado.componenteCurricular.nome}</span>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
                     <label for="professor">#{msg['cabecalho.professor']}: </label>
-                    <span id="professor"> #{simuladoBean.simuladoAlunoDetalhe.simulado.professor.nomeCompleto}</span>
+                    <span id="professor"> #{simuladoBean.simuladoAlunoResultado.simulado.professor.nomeCompleto}</span>
                 </p:outputPanel>
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraInicio">#{msg['prova.data.inicio']}: </label>
                     <h:outputText id="dataHoraInicio" class="margin-left-10"
-                                  value="#{simuladoBean.simuladoAlunoDetalhe.dataHoraInicio}">
+                                  value="#{simuladoBean.simuladoAlunoResultado.dataHoraInicio}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </p:outputPanel>
                 <p:outputPanel class="col-md-4 form-group">
                     <label for="dataHoraFim">#{msg['prova.data.fim']}: </label>
                     <h:outputText id="dataHoraFim" class="margin-left-10"
-                                  value="#{simuladoBean.simuladoAlunoDetalhe.dataHoraFim}">
+                                  value="#{simuladoBean.simuladoAlunoResultado.dataHoraFim}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{baseBean.gmt}" />
                     </h:outputText>
                 </p:outputPanel>
                 <p:outputPanel class="col-md-4 form-group">
                     <label for="nota">#{msg['cabecalho.nota']}: </label>
-                    <h:outputText id="nota" value="#{simuladoBean.simuladoAlunoDetalhe.nota}"
+                    <h:outputText id="nota" value="#{simuladoBean.simuladoAlunoResultado.nota}"
                                   class="margin-left-10">
                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                     </h:outputText>
@@ -56,13 +56,17 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <ui:include src="fragmento/resultado-vf.xhtml" />
-                    <ui:include src="fragmento/resultado-multipla-escolha.xhtml" />
+                    <ui:include src="../../../comum/fragmento/resultado-vf.xhtml" rendered="#{simuladoBean.simuladoVF}">
+                        <ui:param name="questoesAluno" value="#{simuladoBean.simuladoAlunoResultado.questoesAluno}" />
+                    </ui:include>
+                    <ui:include src="../../../comum/fragmento/resultado-multipla-escolha.xhtml" rendered="#{!simuladoBean.simuladoVF}">
+                        <ui:param name="questoesAluno" value="#{simuladoBean.simuladoAlunoResultado.questoesAluno}" />
+                    </ui:include>
                 </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row">
-                <p:outputPanel class="offset-md-8 col-md-2">
+                <p:outputPanel class="offset-md-10 col-md-2">
                     <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
                                      action="goResultadosSimulado" immediate="true"
                                      class="btn btn-secondary font-color-default">

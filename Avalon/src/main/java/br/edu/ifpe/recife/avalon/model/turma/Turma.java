@@ -37,14 +37,14 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Turma.PorProfessor",
-                    query = "SELECT t FROM Turma t WHERE t.professor.email = :emailProfessor "
+                    query = "SELECT t FROM Turma t WHERE t.professor = :professor "
                     + "AND t.ativa = true"
             )
             ,
             @NamedQuery(
                     name = "Turma.PorNomeProfessor",
                     query = "SELECT t FROM Turma t WHERE t.ativa = true "
-                    + "AND t.professor.email = :emailProfessor "
+                    + "AND t.professor = :professor "
                     + "AND t.nome = :nome"
             )
         }

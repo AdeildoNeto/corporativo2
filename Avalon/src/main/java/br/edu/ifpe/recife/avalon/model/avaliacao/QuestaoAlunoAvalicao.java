@@ -48,7 +48,7 @@ public class QuestaoAlunoAvalicao implements Serializable {
     }
     
     public char getAlternativaCorreta(){
-        return (char) (65 + ((MultiplaEscolha) questaoAvaliacao.getQuestao()).getOpcaoCorreta());
+        return (char) (65 + ((MultiplaEscolha) questaoAvaliacao.getQuestao()).getAlternativaCorreta());
     }
     
     public List<Alternativa> getAlternativas(){

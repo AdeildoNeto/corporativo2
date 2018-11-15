@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../template/layout.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form" class="container">
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <h1>#{simuladoBean.simuladoResultadoSelecionado.titulo}</h1>
+                </p:outputPanel>
+            </p:outputPanel>
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12">
+                    <label for="componente">#{msg['label.componente.curricular']}: </label>
+                    <span id="componente"> #{simuladoBean.simuladoResultadoSelecionado.componenteCurricular.nome}</span>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row container-listar">
+                <p:outputPanel class="col-md-12">
+                    <h:dataTable id="tableResultados" value="#{simuladoBean.resultados}"
+                                 var="resultado" styleClass="table table-striped table-fixed table-resultados">
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.aluno']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoAluno" value="#{resultado.aluno.nome}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['label.email']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoEmail" value="#{resultado.aluno.email}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <span>#{msg['cabecalho.nota']}</span>
+                            </f:facet>
+                            <h:outputText class="resultadoNota"
+                                          value="#{resultado.nota}">
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+
+                            </f:facet>             
+                            <p:commandLink id="btnDetalharResultado"
+                                           action="#{simuladoBean.iniciarPaginaDetalhar(resultado)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.detalhar']}">
+                                <span class="material-icons">list_alt</span>
+                            </p:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+            
+            <p:outputPanel class="row">
+                <p:outputPanel class="col-md-12 text-right">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
+                                     action="#{simuladoBean.iniciarPagina()}" immediate="true"
+                                   class="btn btn-secondary font-color-default">
+                    </p:commandButton>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:blockUI id="blockUI" animate="true" block="form" widgetVar="block">
+                <p:graphicImage name="img/loading.gif" width="60" height="60"/>
+            </p:blockUI>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

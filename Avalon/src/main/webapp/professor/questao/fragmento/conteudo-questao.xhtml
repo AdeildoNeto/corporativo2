@@ -88,7 +88,7 @@ and open the template in the editor.
     <p:outputPanel id="panelAlt">
         <p:outputPanel rendered="#{questaoBean.tipoSelecionado == 'MULTIPLA_ESCOLHA'}"
                        styleClass="col-md-6 form-group">
-            <p:selectOneRadio id="radio" value="#{questaoBean.opcaoCorreta}" layout="custom" plain="true" >
+            <p:selectOneRadio id="radio" value="#{questaoBean.alternativaCorreta}" layout="custom" plain="true" >
                 <f:selectItem itemValue="0" />
                 <f:selectItem itemValue="1" />
                 <f:selectItem itemValue="2" />

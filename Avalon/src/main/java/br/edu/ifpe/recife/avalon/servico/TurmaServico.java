@@ -74,7 +74,7 @@ public class TurmaServico {
         TypedQuery<Turma> query = entityManager.createNamedQuery("Turma.PorNomeProfessor",
                 Turma.class);
 
-        query.setParameter("emailProfessor", turma.getProfessor().getEmail());
+        query.setParameter("professor", turma.getProfessor());
         query.setParameter("nome", turma.getNome());
 
         return query.getResultList();
@@ -95,14 +95,14 @@ public class TurmaServico {
     /**
      * Consulta todas as turmas de um professor.
      * 
-     * @param emailProfessor
+     * @param professor
      * @return 
      */
-    public List<Turma> buscarTurmas(@NotNull String emailProfessor) {
+    public List<Turma> buscarTurmas(Usuario professor) {
         TypedQuery<Turma> query = entityManager.createNamedQuery("Turma.PorProfessor",
                 Turma.class);
 
-        query.setParameter("emailProfessor", emailProfessor);
+        query.setParameter("professor", professor);
 
         return query.getResultList();
     }

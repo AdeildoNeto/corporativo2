@@ -63,9 +63,6 @@ public class ProvaTest {
 
     private static Logger logger;
 
-    public ProvaTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();
@@ -175,7 +172,7 @@ public class ProvaTest {
     @Test
     public void t09_buscarPorProfessor() {
         logger.info("Executando t09: buscarPorProfessor");
-        List<Prova> lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
+        List<Prova> lista = provaServico.buscarProvasProfessor(getProfessor());
 
         assertTrue(!lista.isEmpty());
     }
@@ -281,7 +278,7 @@ public class ProvaTest {
     @Test
     public void t22_listarResultadosProvaAluno() {
         logger.info("Executando t22: listarResultadosProvaAluno");
-        List<Prova> provas = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
+        List<Prova> provas = provaServico.buscarProvasProfessor(getProfessor());
         List<ProvaAluno> resultados = provaServico.buscarResultadosProva(provas.get(0));
 
         assertTrue(!resultados.isEmpty());
@@ -329,11 +326,12 @@ public class ProvaTest {
     public void t99_excluirProva() throws InterruptedException {
         logger.info("Executando t99: excluirProva");
         TimeUnit.SECONDS.sleep(20);
-        List<Prova> lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
+        
+        List<Prova> lista = provaServico.buscarProvasProfessor(getProfessor());
         int size = lista.size();
 
         provaServico.excluir(lista.get(0));
-        lista = provaServico.buscarProvasPorProfessor(EMAIL_PROFESSOR);
+        lista = provaServico.buscarProvasProfessor(getProfessor());
 
         assertTrue(size - 1 == lista.size());
     }
@@ -341,7 +339,7 @@ public class ProvaTest {
     private void preencherNovaProva(Prova prova) {
         Calendar calendar = Calendar.getInstance();
 
-        prova.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Teste"));
+        prova.setComponenteCurricular(ccurricularServico.buscarComponentePorNome("Engenharia de Software"));
         prova.setProfessor(usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR));
         prova.setTitulo("Teste Prova.");
         prova.setDataCriacao(calendar.getTime());
@@ -387,6 +385,10 @@ public class ProvaTest {
             provaAluno.getQuestoesAluno().add(provaAlunoQuestao);
         }
 
+    }
+    
+    private Usuario getProfessor(){
+        return usuarioServico.buscarUsuarioPorEmail(EMAIL_PROFESSOR);
     }
 
 }

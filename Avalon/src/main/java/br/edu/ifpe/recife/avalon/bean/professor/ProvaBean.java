@@ -188,7 +188,7 @@ public class ProvaBean extends AvaliacaoBean {
      */
     private void buscarProvas() {
         this.provas.clear();
-        this.provas = provaServico.buscarProvasPorProfessor(usuarioLogado.getEmail());
+        this.provas = provaServico.buscarProvasProfessor(usuarioLogado);
     }
 
     /**
@@ -517,7 +517,7 @@ public class ProvaBean extends AvaliacaoBean {
      * Lista as turmas do professor logado.
      */
     private void buscarTurmas() {
-        turmas = turmaServico.buscarTurmas(usuarioLogado.getEmail());
+        turmas = turmaServico.buscarTurmas(usuarioLogado);
     }
     
     /*

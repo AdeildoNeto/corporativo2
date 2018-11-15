@@ -31,6 +31,8 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ComponenteCurricularTest {
     
+    private static String NOME_COMPONENTE = "Engenharia de Software";
+    
     private static EJBContainer container;
     
     @EJB
@@ -38,9 +40,6 @@ public class ComponenteCurricularTest {
 
     private static Logger logger;
     
-    public ComponenteCurricularTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
         container = EJBContainer.createEJBContainer();
@@ -68,7 +67,7 @@ public class ComponenteCurricularTest {
         logger.info("Executando t01: inserirComponenteCurricular");
         ComponenteCurricular componente = new ComponenteCurricular();
         
-        componente.setNome("Engenharia de Software");
+        componente.setNome("Teste");
         
         ccurricularServico.salvar(componente);
         
@@ -80,7 +79,7 @@ public class ComponenteCurricularTest {
         logger.info("Executando t02: criticarComponenteCurricularRepetido");
         ComponenteCurricular componente =  new ComponenteCurricular();
         
-        componente.setNome("Engenharia de Software");
+        componente.setNome(NOME_COMPONENTE);
         
         ccurricularServico.salvar(componente);
     }
@@ -96,7 +95,7 @@ public class ComponenteCurricularTest {
     @Test
     public void t04_buscarComponentesCurricularPorNome(){
         logger.info("Executando t04: buscarComponentesCurricularPorNome");
-        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome("Teste");
+        ComponenteCurricular componente = ccurricularServico.buscarComponentePorNome(NOME_COMPONENTE);
         
         assertNotNull(componente);
     }

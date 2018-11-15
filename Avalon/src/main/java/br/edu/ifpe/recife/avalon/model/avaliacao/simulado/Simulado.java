@@ -27,13 +27,13 @@ import javax.persistence.Table;
                     name = "Simulado.PorTituloValido",
                     query = "Select s from Simulado s where s.ativa = true"
                     + " AND s.titulo = :titulo"
-                    + " AND s.componenteCurricular.id = :idComponenteCurricular"
-                    + " AND s.professor.email = :emailProfessor"
+                    + " AND s.componenteCurricular = :componenteCurricular"
+                    + " AND s.professor = :professor"
             )
             ,@NamedQuery(
                     name = "Simulado.PorProfessor",
                     query = "Select s from Simulado s where s.ativa = true"
-                    + " AND s.professor.email = :emailProfessor"
+                    + " AND s.professor = :professor"
             )
             ,@NamedQuery(
                     name = "Simulado.PorFiltro",

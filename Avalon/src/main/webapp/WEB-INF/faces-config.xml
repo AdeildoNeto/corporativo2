@@ -157,6 +157,16 @@
             <to-view-id>/aluno/resultado/detalhar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>goListarResultadosSimuladoAluno</from-outcome>
+            <to-view-id>/aluno/simulado/resultado/listar.xhml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goDetalharResultadoSimuladoAluno</from-outcome>
+            <to-view-id>/aluno/simulado/resultado/detalhar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

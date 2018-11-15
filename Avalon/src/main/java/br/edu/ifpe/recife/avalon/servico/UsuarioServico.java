@@ -51,27 +51,6 @@ public class UsuarioServico {
     }
 
     /**
-     * Método para alterar um usuário.
-     *
-     * @param usuario
-     */
-    public void alterar(@Valid Usuario usuario) {
-        entityManager.merge(usuario);
-    }
-
-    /**
-     * Método para remover um usuário.
-     *
-     * @param usuario
-     */
-    public void remover(@Valid Usuario usuario) {
-        if (!entityManager.contains(usuario)) {
-            usuario = entityManager.merge(usuario);
-        }
-        entityManager.remove(usuario);
-    }
-
-    /**
      * Método para consultar um usuário por Email.
      * 
      * @param email

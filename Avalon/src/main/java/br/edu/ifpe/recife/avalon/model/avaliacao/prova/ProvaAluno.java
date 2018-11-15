@@ -29,20 +29,20 @@ import javax.validation.constraints.NotNull;
         {
             @NamedQuery(
                     name = "ProvaAluno.PorResultadoAluno",
-                    query = "Select pa from ProvaAluno pa where pa.aluno.id = :idAluno"
+                    query = "Select pa from ProvaAluno pa where pa.aluno = :aluno"
                     + " AND (pa.prova.liberarResultado = true AND :dataAtual > pa.prova.dataHoraFim)"
             )
             ,
             @NamedQuery(
                     name = "ProvaAluno.PorProva",
-                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
+                    query = "Select pa from ProvaAluno pa where pa.prova = :prova "
                     + "ORDER BY pa.aluno.nome, pa.aluno.sobrenome"
             )
             ,
             @NamedQuery(
                     name = "ProvaAluno.PorAlunoProva",
-                    query = "Select pa from ProvaAluno pa where pa.prova.id = :idProva "
-                    + "AND pa.aluno.id = :idAluno"
+                    query = "Select pa from ProvaAluno pa where pa.prova = :prova "
+                    + "AND pa.aluno = :aluno"
             )
         }
 )

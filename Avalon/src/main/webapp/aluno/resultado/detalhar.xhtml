@@ -56,17 +56,17 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <ui:include src="../../comum/fragmento/resultado-vf.xhtml">
-                        <ui:param name="bean" value="#{provaAlunoBean}" />
+                    <ui:include src="../../../comum/fragmento/resultado-vf.xhtml" rendered="#{provaAlunoBean.provaVF}">
+                        <ui:param name="questoesAluno" value="#{provaAlunoBean.provaAlunoResultado.questoesAluno}" />
                     </ui:include>
-                    <ui:include src="../../comum/fragmento/resultado-multipla-escolha.xhtml">
-                        <ui:param name="bean" value="#{provaAlunoBean}" />
+                    <ui:include src="../../../comum/fragmento/resultado-multipla-escolha.xhtml" rendered="#{!provaAlunoBean.provaVF}">
+                        <ui:param name="questoesAluno" value="#{provaAlunoBean.provaAlunoResultado.questoesAluno}" />
                     </ui:include>
                 </p:outputPanel>
             </p:outputPanel>
 
             <p:outputPanel class="row">
-                <p:outputPanel class="offset-md-8 col-md-2">
+                <p:outputPanel class="offset-md-10 col-md-2">
                     <p:commandButton id="goListarSimulado" value="#{msg['btn.voltar']}"
                                      action="#{provaAlunoBean.iniciarPaginaResultado()}" immediate="true"
                                      class="btn btn-secondary font-color-default">

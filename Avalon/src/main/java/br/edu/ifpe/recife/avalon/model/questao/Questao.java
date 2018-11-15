@@ -51,15 +51,15 @@ import org.hibernate.validator.constraints.NotBlank;
         {
             @NamedQuery(
                     name = "Questao.PorProfessor",
-                    query = "SELECT q FROM Questao q WHERE q.professor.email = :emailProfessor"
+                    query = "SELECT q FROM Questao q WHERE q.professor = :professor"
             )
             ,@NamedQuery(
                     name = "Questao.PorTipoValido",
                     query = "SELECT q FROM Questao q WHERE q.anulada = false"
                     + " AND q.tipo = :tipo"
                     + " AND q.enunciado = :enunciado"
-                    + " AND q.professor.id = :idProfessor"
-                    + " AND q.componenteCurricular.id = :idComponenteCurricular"
+                    + " AND q.professor = :professor"
+                    + " AND q.componenteCurricular = :componenteCurricular"
                     + " AND (:idQuestao IS NULL OR q.id <> :idQuestao)"
             )
             ,@NamedQuery(
@@ -104,7 +104,7 @@ public class Questao implements Serializable {
     private Date dataCriacao;
 
     @Column(name = "SN_COMPARTILHADA", nullable = false)
-    private Boolean compartilhada = true;
+    private boolean compartilhada = true;
 
     @Column(name = "SN_ANULADA", nullable = false)
     private boolean anulada = false;
@@ -128,6 +128,27 @@ public class Questao implements Serializable {
     @Embedded
     private Imagem imagem;
 
+    public Questao() {
+        super();
+    }
+
+    /**
+     * Copia os valores do parâmetro para o objeto.
+     * 
+     * @param questao 
+     */
+    public void copiar(Questao questao){
+        enunciado = questao.getEnunciado();
+        professor = questao.getProfessor();
+        tipo = questao.getTipo();
+        dataCriacao = questao.getDataCriacao();
+        componenteCurricular = questao.getComponenteCurricular();
+        compartilhada = questao.getCompartilhada();
+        imagem = questao.getImagem();
+        questaoSimulado = questao.isQuestaoSimulado();
+        solucao = questao.getSolucao();
+    }
+    
     /**
      * Formata a apresentação da questão de acordo com seu tipo.
      *
@@ -213,11 +234,11 @@ public class Questao implements Serializable {
         this.selecionada = selecionada;
     }
 
-    public Boolean getCompartilhada() {
+    public boolean getCompartilhada() {
         return compartilhada;
     }
 
-    public void setCompartilhada(Boolean compartilhada) {
+    public void setCompartilhada(boolean compartilhada) {
         this.compartilhada = compartilhada;
     }
 
