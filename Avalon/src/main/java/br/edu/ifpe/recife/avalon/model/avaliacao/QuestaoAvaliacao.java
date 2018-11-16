@@ -23,6 +23,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -74,23 +76,16 @@ public class QuestaoAvaliacao implements Serializable, Comparable<Long>{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        return hash;
+        return new HashCodeBuilder().append(this.id).build();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
         if (getClass() != obj.getClass()) {
             return false;
         }
         final QuestaoAvaliacao other = (QuestaoAvaliacao) obj;
-        return Objects.equals(this.id, other.id);
+        return new EqualsBuilder().append(this.id, other.id).build();
     }
 
     @Override

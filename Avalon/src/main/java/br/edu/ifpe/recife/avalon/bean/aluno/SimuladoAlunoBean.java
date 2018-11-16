@@ -69,9 +69,9 @@ public class SimuladoAlunoBean implements Serializable {
     private boolean exibirModalResultado;
     private String resultado;
     private SimuladoAluno simuladoAluno;
-    
+
     private List<SimuladoAluno> resultados = new ArrayList<>();
-    private SimuladoAluno resultadoSimuladoAluno =  new SimuladoAluno();
+    private SimuladoAluno resultadoSimuladoAluno = new SimuladoAluno();
     private boolean simuladoVF;
 
     /**
@@ -118,13 +118,13 @@ public class SimuladoAlunoBean implements Serializable {
 
         return carregarQuestoes();
     }
-    
+
     public String iniciarPaginaResultadosSimulado(Simulado simulado) {
         resultados = simuladoServico.buscarResultadosSimuladoAluno(usuarioLogado, simulado);
         return GO_LISTAR_RESULTADOS_SIMULADO_ALUNO;
     }
-    
-    public String iniciarPaginaDetalharResultado(SimuladoAluno simuladoAluno){
+
+    public String iniciarPaginaDetalharResultado(SimuladoAluno simuladoAluno) {
         resultadoSimuladoAluno = simuladoAluno;
         simuladoVF = resultadoSimuladoAluno.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
         return GO_DETALHAR_RESULTADO_SIMULADO_ALUNO;
@@ -206,19 +206,28 @@ public class SimuladoAlunoBean implements Serializable {
         try {
             simuladoAluno.setQuestoesAluno(new ArrayList<QuestaoAlunoSimulado>());
 
-            if (!questoesVerdadeiroFalso.isEmpty()) {
-                verificarTodasQuestoesPreenchidasVF();
-                preencherSimuladoVF();
-            } else {
-                verificarTodasQuestoesPreenchidasMultiplaEscolha();
-                preencherSimuladoMultiplaEscolha();
-            }
+            prepararSimuladoAlunoSalvar();
 
             exibirResultado(simuladoAluno.getNota());
             simuladoAluno.setDataHoraFim(Calendar.getInstance().getTime());
             simuladoServico.salvarSimuladoAluno(simuladoAluno);
         } catch (ValidacaoException ex) {
             exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+
+    /**
+     * Prepara as questões para salvar o simulado.
+     * 
+     * @throws ValidacaoException 
+     */
+    private void prepararSimuladoAlunoSalvar() throws ValidacaoException {
+        if (!questoesVerdadeiroFalso.isEmpty()) {
+            verificarTodasQuestoesPreenchidasVF();
+            preencherSimuladoVF();
+        } else {
+            verificarTodasQuestoesPreenchidasMultiplaEscolha();
+            preencherSimuladoMultiplaEscolha();
         }
     }
 
@@ -367,5 +376,5 @@ public class SimuladoAlunoBean implements Serializable {
     public boolean isSimuladoVF() {
         return simuladoVF;
     }
-    
+
 }

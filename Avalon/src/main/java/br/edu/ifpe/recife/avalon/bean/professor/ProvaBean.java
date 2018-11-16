@@ -332,12 +332,7 @@ public class ProvaBean extends AvaliacaoBean {
         String navegacao = null;
 
         try {
-            prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
-            prova.setDataCriacao(Calendar.getInstance().getTime());
-            prova.setProfessor(usuarioLogado);
-            prova.setQuestoes(new ArrayList<QuestaoProva>());
-            prova.getQuestoes().addAll(questoesProvaSelecionadas);
-            prova.setTurma(buscarTurmaPorCodigo());
+            prepararProvaSalvar();
             provaServico.salvar(prova);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
@@ -345,6 +340,17 @@ public class ProvaBean extends AvaliacaoBean {
         }
 
         return navegacao;
+    }
+
+    /**
+     * Prepara a prova para finalizar cadastro.
+     */
+    private void prepararProvaSalvar() {
+        prova.setComponenteCurricular(componenteViewHelper.getComponenteCurricularPorId(getPesquisarQuestoesViewHelper().getFiltro().getIdComponenteCurricular()));
+        prova.setDataCriacao(Calendar.getInstance().getTime());
+        prova.setProfessor(usuarioLogado);
+        prova.setQuestoes(new ArrayList<>(questoesProvaSelecionadas));
+        prova.setTurma(buscarTurmaPorCodigo());
     }
 
     /**
@@ -473,15 +479,9 @@ public class ProvaBean extends AvaliacaoBean {
         try {
             PdfGeneratorViewHelper pdf = new PdfGeneratorViewHelper();
             FacesContext facesContext = FacesContext.getCurrentInstance();
-            HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-
-            response.reset();
-            response.setHeader("Content-Type", "application/pdf");
-            response.setHeader("Content-Disposition", "attachment;" + "filename=Prova_" + System.currentTimeMillis() + ".pdf");
-
+            criarResponse(facesContext);
             OutputStream responseOutputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
-            List<Questao> questoesImpressao = new ArrayList<>();
-            questoesImpressao.addAll(getQuestoesSelecionadas());
+            List<Questao> questoesImpressao = new ArrayList<>(getQuestoesSelecionadas());
 
             pdf.gerarArquivo(responseOutputStream, questoesImpressao);
 
@@ -491,6 +491,18 @@ public class ProvaBean extends AvaliacaoBean {
         }
 
         return "";
+    }
+
+    /**
+     * Cria o response da requisição de download.
+     *
+     * @return
+     */
+    private void criarResponse(FacesContext context) {
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        response.reset();
+        response.setHeader("Content-Type", "application/pdf");
+        response.setHeader("Content-Disposition", "attachment;" + "filename=Prova_" + System.currentTimeMillis() + ".pdf");
     }
 
     /**

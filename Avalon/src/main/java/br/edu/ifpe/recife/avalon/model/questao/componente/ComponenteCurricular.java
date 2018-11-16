@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -33,7 +35,8 @@ import org.hibernate.validator.constraints.NotBlank;
             @NamedQuery(
                     name = "ComponenteCurricular.PorNome",
                     query = "SELECT c FROM ComponenteCurricular c WHERE c.nome = :nomeComponente"
-            ),
+            )
+            ,
             @NamedQuery(
                     name = "ComponenteCurricular.Todos",
                     query = "SELECT c FROM ComponenteCurricular c"
@@ -45,12 +48,12 @@ public class ComponenteCurricular implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    
+
     @NotBlank(message = "{componente.curricular.nome.obrigatorio}")
     @Size(max = 255, message = "{componente.curricular.tamanho.nome}")
     @Column(name = "TXT_NOME", unique = true)
     private String nome;
-    
+
     @OneToMany(mappedBy = "componenteCurricular", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST, orphanRemoval = false)
     private List<Questao> questoes;
@@ -78,29 +81,26 @@ public class ComponenteCurricular implements Serializable {
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
     }
-    
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder().append(this.id).build();
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof ComponenteCurricular)) {
+        if (object.getClass() != this.getClass()) {
             return false;
         }
-        ComponenteCurricular other = (ComponenteCurricular) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+
+        ComponenteCurricular componenteCurricular = (ComponenteCurricular) object;
+
+        return new EqualsBuilder().append(this.id, componenteCurricular.id).build();
     }
 
     @Override
     public String toString() {
         return "br.edu.ifpe.recife.avalon.model.questao.ComponenteCurricular[ id=" + id + " ]";
     }
-    
+
 }

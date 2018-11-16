@@ -36,6 +36,8 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -284,24 +286,16 @@ public class Questao implements Serializable {
     
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        return hash;
+        return new HashCodeBuilder().append(this.id).build();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
         if (getClass() != obj.getClass()) {
             return false;
         }
         final Questao other = (Questao) obj;
-        return Objects.equals(this.id, other.id);
+        return new EqualsBuilder().append(this.id, other.id).build();
     }
 
 }
