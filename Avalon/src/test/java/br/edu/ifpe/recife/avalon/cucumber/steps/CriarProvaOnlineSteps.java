@@ -127,6 +127,7 @@ public class CriarProvaOnlineSteps {
     @E("^não preencher o peso de uma questão$")
     public void naoPreencherPesoQuestao() throws Throwable {
         BrowserManager. waitTime(2000);
+        BrowserManager.getDriver().findElement(By.id("form:table:0:txtPeso")).click();
         BrowserManager.getDriver().findElement(By.id("form:table:0:txtPeso")).clear();
     }
     

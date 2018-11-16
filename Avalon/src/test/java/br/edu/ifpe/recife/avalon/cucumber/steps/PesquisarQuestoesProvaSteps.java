@@ -23,7 +23,7 @@ public class PesquisarQuestoesProvaSteps {
 
     @Quando("^o professor preencher o filtro enunciado$")
     public void preencherFiltroEnunciado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Teste");
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("diagrama");
     }
     
     @Quando("^o professor preencher o filtro nome do professor$")
@@ -68,7 +68,7 @@ public class PesquisarQuestoesProvaSteps {
 
     @Entao("^será exibido a lista de questões onde o enunciado contenha o filtro informado$")
     public void pesquisaPorEnunciado() {
-        int resultado = obterResultado();
+        int resultado = obterResultado("diagrama");
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
@@ -89,21 +89,21 @@ public class PesquisarQuestoesProvaSteps {
     
     @Entao("^será exibido a lista de questões do tipo discursiva$")
     public void pesquisaPorTipoDiscursiva() {
-        int resultado = obterResultado();
+        int resultado = obterResultado("diagrama");
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
     @Entao("^será exibido a lista de questões do tipo verdadeiro ou falso$")
     public void pesquisaPorTipoVF() {
-        int resultado = obterResultado();
+        int resultado = obterResultado("Scrum");
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
     
     @Entao("^será exibido a lista de questões do tipo múltipla escolha$")
     public void pesquisaPorTipoMultiplaEscolha() {
-        int resultado = obterResultado();
+        int resultado = obterResultado("Scrum");
         assertTrue(resultado > 0);
         LoginSteps.logout();
     }
@@ -132,8 +132,8 @@ public class PesquisarQuestoesProvaSteps {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Não");
     }
     
-    private int obterResultado(){
-        return BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), 'Teste')]")).size();
+    private int obterResultado(String texto){
+        return BrowserManager.getDriver().findElements(By.xpath("//td/span[contains(text(), '"+ texto +"')]")).size();
     }
 
 }

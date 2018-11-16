@@ -87,7 +87,7 @@ public class CadastrarTurmaSteps {
     
     @Entao("^uma nova turma será cadastrada$")
     public void exibirMensagemComponenteObrigatorio() throws Throwable {
-        int count = BrowserManager.getDriver().findElements(By.xpath("//span[contains(text(), 'Turma')]")).size();
+        int count = BrowserManager.getDriver().findElements(By.xpath("//td[contains(text(), 'Turma')]")).size();
         assertTrue(count > 0);
         LoginSteps.logout();
     }
