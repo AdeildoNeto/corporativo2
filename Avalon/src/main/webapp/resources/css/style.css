@@ -232,8 +232,8 @@ a:focus{
 
 .table-questao-avaliacao td:nth-child(4),
 .table-questao-prova td:nth-child(5){
-    width: 200px;
-    max-width: 200px;
+    width: 240px;
+    max-width: 240px;
 }
 
 .table-questao-prova td:nth-child(2){
