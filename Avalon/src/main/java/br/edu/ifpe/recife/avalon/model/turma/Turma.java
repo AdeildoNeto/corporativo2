@@ -38,14 +38,15 @@ import org.hibernate.validator.constraints.NotBlank;
             @NamedQuery(
                     name = "Turma.PorProfessor",
                     query = "SELECT t FROM Turma t WHERE t.professor = :professor "
-                    + "AND t.ativa = true"
+                    + " AND t.ativa = true"
             )
             ,
             @NamedQuery(
                     name = "Turma.PorNomeProfessor",
                     query = "SELECT t FROM Turma t WHERE t.ativa = true "
-                    + "AND t.professor = :professor "
-                    + "AND t.nome = :nome"
+                    + " AND t.professor = :professor"
+                    + " AND t.nome = :nome"
+                    + " AND (:idTurma IS NULL OR t.id <> :idTurma)"
             )
         }
 )
@@ -84,10 +85,10 @@ public class Turma implements Serializable, Comparable<Turma> {
     @Column(name = "SN_ATIVA", nullable = false)
     private boolean ativa = true;
 
-    public Turma(){
+    public Turma() {
         super();
     }
-    
+
     public Turma(String nome) {
         this.nome = nome;
     }

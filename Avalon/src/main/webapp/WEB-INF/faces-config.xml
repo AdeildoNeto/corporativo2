@@ -116,6 +116,11 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goEditarTurma</from-outcome>
+            <to-view-id>/professor/turma/editar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goHomeProfessor</from-outcome>
             <to-view-id>/professor/home.xhtml</to-view-id>
             <redirect />

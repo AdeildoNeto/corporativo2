@@ -56,10 +56,10 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <ui:include src="../../comum/fragmento/resultado-vf.xhtml" rendered="#{simuladoAlunoBean.simuladoVF}">
+                    <ui:include src="../../comum/conteudo/resultado-vf.xhtml" rendered="#{simuladoAlunoBean.simuladoVF}">
                         <ui:param name="questoesAluno" value="#{simuladoAlunoBean.simuladoAlunoResultado.questoesAluno}" />
                     </ui:include>
-                    <ui:include src="../../comum/fragmento/resultado-multipla-escolha.xhtml" rendered="#{!simuladoAlunoBean.simuladoVF}">
+                    <ui:include src="../../comum/conteudo/resultado-multipla-escolha.xhtml" rendered="#{!simuladoAlunoBean.simuladoVF}">
                         <ui:param name="questoesAluno" value="#{simuladoAlunoBean.simuladoAlunoResultado.questoesAluno}" />
                     </ui:include>
                 </p:outputPanel>

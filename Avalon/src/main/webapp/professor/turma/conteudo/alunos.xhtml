@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel class="row">
+        <p:outputPanel class="col-md-12 form-group">
+            <h3>#{msg['selecionar.alunos']}:</h3>
+        </p:outputPanel>
+    </p:outputPanel>
+
+    <p:outputPanel class="row container-table-prova">
+        <p:outputPanel class="col-md-12">
+            <h:dataTable id="table" value="#{turmaBean.alunos}" var="aluno"
+                         styleClass="table table-striped table-fixed table-alunos">
+                <h:column>
+                    <f:facet name="header">
+                        <h:selectBooleanCheckbox id="chkSelecionarTodos" value="#{turmaBean.todosSelecionados}">
+                            <f:ajax listener="#{turmaBean.selecionarTodos()}" render="form:table" />
+                        </h:selectBooleanCheckbox>
+                    </f:facet>
+                    <h:selectBooleanCheckbox id="chkSelecionarAluno" value="#{aluno.selecionado}">
+                        <f:ajax listener="#{turmaBean.selecionarAluno(aluno)}" render="form:table" execute="@this" />
+                    </h:selectBooleanCheckbox>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <span>#{msg['label.nome']}</span>
+                    </f:facet>
+                    <h:outputText value="#{aluno.nome}" />
+                </h:column>
+            </h:dataTable>
+        </p:outputPanel>
+    </p:outputPanel>
+</ui:composition>

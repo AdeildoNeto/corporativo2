@@ -32,11 +32,12 @@ public class TurmaBean implements Serializable {
     private static final String GO_CADASTRAR_TURMA = "goCadastrarTurma";
     private static final String GO_MINHAS_TURMAS = "goMinhasTurmas";
     private static final String GO_DETALHAR_TURMA = "goDetalharTurma";
+    private static final String GO_EDITAR_TURMA = "goEditarTurma";
     private static final String USUARIO = "usuario";
 
     @EJB
     private UsuarioServico usuarioServico;
-    
+
     @EJB
     private TurmaServico turmaServico;
 
@@ -46,10 +47,10 @@ public class TurmaBean implements Serializable {
     private Turma turma = new Turma();
     private List<Turma> turmas = new ArrayList<>();
     private List<Usuario> alunos = new ArrayList<>();
-    private List<Usuario> alunosSelecionados = new ArrayList<>();
-    
+    private final List<Usuario> alunosSelecionados = new ArrayList<>();
+
     private boolean exibirModalExcluir;
-    private boolean todosSelecionados = false;
+    private boolean todosSelecionados;
 
     /**
      * Cria uma nova instância de <code>TurmaBean</code>.
@@ -91,9 +92,22 @@ public class TurmaBean implements Serializable {
         selecionarTurma(turmaSelecionada);
         return GO_DETALHAR_TURMA;
     }
-    
-    private void limparPaginaCadastro(){
+
+    public String iniciarPaginaEditar(Turma turmaSelecionada) {
+        inicializarGridSelecionados();
+        selecionarTurma(turmaSelecionada);
+        buscarAlunos();
+        preencherAlunosSelecionados();
+        
+        return GO_EDITAR_TURMA;
+    }
+
+    private void limparPaginaCadastro() {
         turma = new Turma();
+        inicializarGridSelecionados();
+    }
+
+    private void inicializarGridSelecionados() {
         alunosSelecionados.clear();
         todosSelecionados = false;
     }
@@ -104,40 +118,41 @@ public class TurmaBean implements Serializable {
     private void buscarTurmas() {
         turmas = turmaServico.buscarTurmas(usuarioLogado);
     }
-    
+
     /**
      * Lista todos os alunos cadastrados.
      */
-    private void buscarAlunos(){
+    private void buscarAlunos() {
         alunos = usuarioServico.buscarAlunos();
     }
-    
-    public void selecionarTodos(){
+
+    public void selecionarTodos() {
         alunosSelecionados.clear();
-        
-        if(todosSelecionados){
+
+        if (todosSelecionados) {
             alunosSelecionados.addAll(alunos);
         }
-        
+
         for (Usuario aluno : alunos) {
             aluno.setSelecionado(todosSelecionados);
         }
     }
-    
-    public void selecionarAluno(Usuario aluno){
-        if(alunosSelecionados.contains(aluno)){
+
+    public void selecionarAluno(Usuario aluno) {
+        if (alunosSelecionados.contains(aluno)) {
             alunosSelecionados.remove(aluno);
-        }else{
+        } else {
             alunosSelecionados.add(aluno);
         }
+        
     }
 
     /**
      * Cadastrar uma nova turma.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String cadastrarTurma() {
+    public String cadastrar() {
         String navegacao = "";
         try {
             turma.setProfessor(usuarioLogado);
@@ -145,36 +160,63 @@ public class TurmaBean implements Serializable {
             turmaServico.salvar(turma);
             navegacao = iniciarPagina();
         } catch (ValidacaoException ex) {
-            FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), null);
-            FacesContext.getCurrentInstance().addMessage(null, mensagem);
+            exibirMensagemValidacao(ex.getMessage());
         }
 
         return navegacao;
     }
-    
+
+    /**
+     * Altera uma turma selecionada.
+     *
+     * @return
+     */
+    public String alterar() {
+        String navegacao = "";
+        try {
+            turma.setAlunos(alunosSelecionados);
+            turmaServico.alterar(turma);
+            navegacao = iniciarPagina();
+        } catch (ValidacaoException ex) {
+            exibirMensagemValidacao(ex.getMessage());
+        }
+
+        return navegacao;
+    }
+
+    /**
+     * Exibi uma mensagem de validação.
+     *
+     * @param mensagem
+     */
+    private void exibirMensagemValidacao(String mensagem) {
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, null);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+    }
+
     /**
      * Seleciona uma turma para detalhe ou exclusão.
-     * 
-     * @param turmaSelecionada 
+     *
+     * @param turmaSelecionada
      */
     private void selecionarTurma(Turma turmaSelecionada) {
         turma = turmaSelecionada;
     }
-    
+
     public void abrirModalExcluir(Turma turmaSelecionada) {
         selecionarTurma(turmaSelecionada);
         exibirModalExcluir = true;
     }
-    
+
     /**
      * Excluir uma turma selecionada.
      */
-    public void excluirTurma(){
+    public void excluirTurma() {
         turmaServico.remover(turma);
         iniciarPagina();
         fecharModalExcluir();
     }
-    
+
     /**
      * Fecha o modal de exclusão.
      */
@@ -189,7 +231,7 @@ public class TurmaBean implements Serializable {
     public List<Usuario> getAlunos() {
         return alunos;
     }
-    
+
     public Turma getTurma() {
         return turma;
     }
@@ -209,5 +251,14 @@ public class TurmaBean implements Serializable {
     public boolean isTodosSelecionados() {
         return todosSelecionados;
     }
-    
+
+    private void preencherAlunosSelecionados() {
+        for (Usuario aluno : alunos) {
+            if (turma.getAlunos().contains(aluno)) {
+                aluno.setSelecionado(true);
+                selecionarAluno(aluno);
+            }
+        }
+    }
+
 }

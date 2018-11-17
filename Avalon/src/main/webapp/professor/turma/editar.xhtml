@@ -16,7 +16,7 @@ and open the template in the editor.
         <h:form id="form" class="container">
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12 form-group">
-                    <h1>#{msg['titulo.cadastrar.turma']}</h1>
+                    <h1>#{msg['titulo.editar.turma']}</h1>
                 </p:outputPanel>
             </p:outputPanel>
 
@@ -54,7 +54,7 @@ and open the template in the editor.
                                      oncomplete="PF('block').hide()" immediate="true"
                                      class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btnSalvar" value="#{msg['btn.salvar']}" update="@form"
-                                     action="#{turmaBean.cadastrar()}" onclick="PF('block').show()"
+                                     action="#{turmaBean.alterar()}" onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn btn-primary font-color-default"></p:commandButton>
                 </p:outputPanel>

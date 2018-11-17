@@ -6,8 +6,6 @@
 package br.edu.ifpe.recife.avalon.servico;
 
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
-import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.Simulado;
-import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.turma.Turma;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
@@ -23,7 +21,6 @@ import javax.persistence.PersistenceContext;
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 import javax.persistence.TypedQuery;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -46,9 +43,7 @@ public class TurmaServico {
      * @throws ValidacaoException 
      */
     public void salvar(@Valid Turma turma) throws ValidacaoException {
-        turma.setNome(turma.getNome().trim());
-        validarAlunos(turma);
-        validarNomeDuplicado(turma);
+        validarTurma(turma);
         entityManager.persist(turma);
     }
     
@@ -76,6 +71,7 @@ public class TurmaServico {
 
         query.setParameter("professor", turma.getProfessor());
         query.setParameter("nome", turma.getNome());
+        query.setParameter("idTurma", turma.getId());
 
         return query.getResultList();
     }
@@ -105,6 +101,29 @@ public class TurmaServico {
         query.setParameter("professor", professor);
 
         return query.getResultList();
+    }
+
+    /**
+     * Altera uma turma.
+     * 
+     * @param turma
+     * @throws ValidacaoException 
+     */
+    public void alterar(Turma turma) throws ValidacaoException {
+        validarTurma(turma);
+        entityManager.merge(turma);
+    }
+
+    /**
+     * Valida se todos os campos obrigatórios da turma foram preenchidos.
+     * 
+     * @param turma
+     * @throws ValidacaoException 
+     */
+    private void validarTurma(Turma turma) throws ValidacaoException {
+        turma.setNome(turma.getNome().trim());
+        validarAlunos(turma);
+        validarNomeDuplicado(turma);
     }
 
 }

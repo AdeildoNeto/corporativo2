@@ -4,6 +4,7 @@
     <TB_USUARIO ID="1" TXT_EMAIL="avalonifpe@gmail.com" TXT_NOME="Jose" TXT_SOBRENOME="Silva" TXT_GRUPO="PROFESSOR"></TB_USUARIO>
     <TB_USUARIO ID="2" TXT_EMAIL="efsa@a.recife.ifpe.edu.br" TXT_NOME="Eduardo Fabricio Santana do Amaral" TXT_SOBRENOME="IFPE - Campus Recife" TXT_GRUPO="ALUNO"></TB_USUARIO>
     <TB_USUARIO ID="3" TXT_EMAIL="eduardoamaral@recife.ifpe.edu.br" TXT_NOME="Eduardo" TXT_SOBRENOME="Amaral" TXT_GRUPO="PROFESSOR" />
+    <TB_USUARIO ID="4" TXT_EMAIL="jgs1@a.recife.ifpe.edu.br" TXT_NOME="José Gomes da Silva" TXT_SOBRENOME="IFPE - Campus Recife" TXT_GRUPO="ALUNO"></TB_USUARIO>
     <TB_TURMA ID_TURMA="1" SN_ATIVA="true" TXT_NOME="Turma 2" TXT_SEMESTRE_ANO="01/2019" ID_PROFESSOR="1" />
     <TB_TURMA_ALUNO ID_TURMA="1" ID_USUARIO="2" />
     

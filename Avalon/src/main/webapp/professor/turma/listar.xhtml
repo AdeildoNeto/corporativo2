@@ -39,6 +39,13 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
+                            <p:commandLink id="btnEditarTurma"
+                                           action="#{turmaBean.iniciarPaginaEditar(turma)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.editar']}">
+                                <span class="material-icons">edit</span>
+                            </p:commandLink>
                             <p:commandLink id="btnDetalharTurma"
                                            action="#{turmaBean.iniciarPaginaDetalhar(turma)}"
                                            onclick="PF('block').show()"

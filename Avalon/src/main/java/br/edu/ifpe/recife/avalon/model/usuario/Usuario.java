@@ -21,6 +21,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -141,5 +143,22 @@ public class Usuario implements Serializable {
     public void setSelecionado(boolean selecionado) {
         this.selecionado = selecionado;
     }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.id).build();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+        
+        Usuario other = (Usuario) obj;
+        return new EqualsBuilder().append(this.id, other.id).build();
+    }
+    
+    
     
 }
