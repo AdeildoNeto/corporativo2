@@ -6,8 +6,6 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
-import br.edu.ifpe.recife.avalon.cucumber.util.DataSetEnum;
-import br.edu.ifpe.recife.avalon.cucumber.util.DbUnitUtil;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
@@ -19,17 +17,6 @@ import org.openqa.selenium.By;
  * @author eduardoamaral
  */
 public class CadastrarTurmaSteps {
-
-    public CadastrarTurmaSteps() {
-        DbUnitUtil.setDataSet(DataSetEnum.PROVAS_SIMULADOS);
-        DbUnitUtil.inserirDados();
-    }
-    
-    @E("^esteja na página minhas turmas$")
-    public void irParaMinhasTurmas() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("menu:menuTurmas")).click();
-        BrowserManager.waitTime(3000);
-    }
     
     @Quando("^o professor clicar no botão cadastrar turma$")
     public void irParaCadastrarTurma() throws Throwable {
