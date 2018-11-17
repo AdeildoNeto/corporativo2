@@ -148,12 +148,12 @@ and open the template in the editor.
 
                     <p:outputPanel class="row">
                         <p:outputPanel class="col text-right">
-                            <p:commandButton id="btnNaoFinalizar"
+                            <p:commandButton id="btnCancelar"
                                              value="#{msg['btn.nao']}" action="#{provaAlunoBean.fecharModalFinalizar()}"
                                              styleClass="btn btn-secondary"
                                              immediate="true" process="@this" update="form" />
 
-                            <p:commandButton id="btnSimFinalizar"
+                            <p:commandButton id="btnConfirmar"
                                              value="#{msg['btn.sim']}"
                                              action="#{provaAlunoBean.finalizar()}"
                                              onclick="PF('block').show();" oncomplete="PF('block').hide();"

@@ -11,7 +11,6 @@ package br.edu.ifpe.recife.avalon.cucumber.util;
  */
 public enum DataSetEnum {
     
-    CADASTRAR_QUESTOES("src/main/resources/dbunit/cadastrarQuestoes.xml"),
     PROVAS_SIMULADOS("src/main/resources/dbunit/provasSimulados.xml");
 
     private final String source;

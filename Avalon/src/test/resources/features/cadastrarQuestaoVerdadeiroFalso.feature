@@ -21,7 +21,7 @@ Funcionalidade:
   Cenario: Criticar questao verdadeiro ou falso com enunciado duplicado
     Quando o professor selecionar o tipo verdadeiro ou falso
     E selecionar um componente curricular
-    E preencher o enunciado da questão com um valor já cadastrado
+    E preencher o enunciado da questão de verdadeiro ou falso com um valor já cadastrado
     E clicar no botão salvar questão
     E confirmar o cadastro da questão
     Entao será exibida a mensagem "Já existe uma questão com este enunciado."

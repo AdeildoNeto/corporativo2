@@ -17,12 +17,12 @@ and open the template in the editor.
         <p:outputPanel class="row">
             <p:outputPanel class="col text-right button-footer">
                 <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.salvarEdicao()}"
-                                 validateClient="true" id="btnSimEditar"
+                                 validateClient="true" id="btnConfirmar"
                                  onclick="PF('block').show(); PF('modalSalvar').hide()"
                                  oncomplete="PF('modalSalvar').hide(); PF('block').hide()"
                                  styleClass="btn btn-primary" update="form" />
 
-                <p:commandButton value="#{msg['btn.nao']}" id="btnNaoEditar"
+                <p:commandButton value="#{msg['btn.nao']}" id="btnCancelar"
                                  onclick="PF('modalSalvar').hide();"
                                  type="button" styleClass="btn btn-secondary" />
             </p:outputPanel>

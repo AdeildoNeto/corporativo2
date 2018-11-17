@@ -72,7 +72,7 @@ public class RealizarProvaSteps {
     
     @E("^confirmar o fim da prova$")
     public void confirmarFinalizarProva() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:btnSimFinalizar")).click();
+        BrowserManager.getDriver().findElement(By.id("form:btnConfirmar")).click();
         BrowserManager.waitTime(1000);
     }
     
@@ -111,7 +111,7 @@ public class RealizarProvaSteps {
         String mensagem = BrowserManager.getDriver().findElement(By.id("lbMensagemFinalizacao")).getText();
         
         assertEquals("Ainda há questões não respondidas, deseja finalizar a prova?", mensagem);
-        BrowserManager.getDriver().findElement(By.id("form:btnNaoFinalizar")).click();
+        BrowserManager.getDriver().findElement(By.id("form:btnCancelar")).click();
         BrowserManager.waitTime(1000);
         BrowserManager.getDriver().close();
     }

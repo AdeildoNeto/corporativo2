@@ -35,13 +35,13 @@ public class CadastrarComponenteCurricularSteps {
     
     @E("^preencher o nome do componente curricular$")
     public void preencherNomeComponente(){
-        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Engenharia de Software");
+        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Teste");
     }
     
     
     @E("^preencher o nome do componente curricular com um nome já cadastrado$")
     public void preencherNomeComponenteDuplicado(){
-        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Teste");
+        BrowserManager.getDriver().findElement(By.id("formComponente:txtNomeComponente")).sendKeys("Engenharia de Software");
     }
     
     @E("^clicar no botão salvar componente$")

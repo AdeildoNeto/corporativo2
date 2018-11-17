@@ -104,10 +104,10 @@ and open the template in the editor.
                              closeOnEscape="true">
                 <p:outputPanel class="row">
                     <p:outputPanel class="col text-right button-footer">
-                        <p:commandButton value="#{msg['btn.sim']}" id="btnSimExcluirProva"
+                        <p:commandButton value="#{msg['btn.sim']}" id="btnConfirmar"
                                          action="#{provaBean.excluirProva()}"
                                          update="form formModalExcluir" styleClass="btn btn-primary" />
-                        <p:commandButton value="#{msg['btn.nao']}" id="btnNaoExcluirProva"
+                        <p:commandButton value="#{msg['btn.nao']}" id="btnCancelar"
                                          action="#{provaBean.fecharModalExclusao()}"
                                          styleClass="btn btn-secondary" update="formModalExcluir form"
                                          process="@this" />

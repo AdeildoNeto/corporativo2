@@ -26,7 +26,7 @@ public class ExcluirTurmaSteps {
     
     @E("^confirmar a exclusão da turma$")
     public void confirmarExclusaoTurma() {
-        BrowserManager.getDriver().findElement(By.id("formModalExcluir:btnSimExcluirTurma")).click();
+        BrowserManager.getDriver().findElement(By.id("formModalExcluir:btnConfirmarExclusaoTurma")).click();
         BrowserManager.waitTime(1000);
     }
     

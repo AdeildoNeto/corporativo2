@@ -54,14 +54,14 @@ and open the template in the editor.
                             <f:facet name="header">
 
                             </f:facet>
-                            <p:commandLink action="#{questaoBean.iniciparPaginaAlteracao(questao)}"
+                            <p:commandLink id="btnEditarQuestao" action="#{questaoBean.iniciparPaginaAlteracao(questao)}"
                                            onclick="PF('block').show()"
                                            rendered="#{!questao.anulada}"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.editar']}">
                                 <span class="material-icons">mode_edit</span>
                             </p:commandLink>
-                            <p:commandLink action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"
+                            <p:commandLink id="btnAnularQuestao" action="#{questaoBean.selecionarQuestaoAnulacao(questao)}"
                                            onclick="PF('block').show()"
                                            rendered="#{!questao.anulada}"
                                            title="#{msg['questao.anular']}"
@@ -91,8 +91,8 @@ and open the template in the editor.
                              widgetVar="modalAnular" closeOnEscape="true">
                 <p:outputPanel class="row">
                     <p:outputPanel class="col text-right button-footer">
-                        <p:commandButton value="#{msg['btn.sim']}" action="#{questaoBean.anularQuestao()}" oncomplete="PF('modalAnular').hide()" update="form" styleClass="btn btn-primary" />
-                        <p:commandButton value="#{msg['btn.nao']}" onclick="PF('modalAnular').hide();" type="button" styleClass="btn btn-secondary" />
+                        <p:commandButton id="btnConfirmarAnulacao" value="#{msg['btn.sim']}" action="#{questaoBean.anularQuestao()}" oncomplete="PF('modalAnular').hide()" update="form" styleClass="btn btn-primary" />
+                        <p:commandButton id="btnCancelarAnulacao" value="#{msg['btn.nao']}" onclick="PF('modalAnular').hide();" type="button" styleClass="btn btn-secondary" />
                     </p:outputPanel>
                 </p:outputPanel>
             </p:confirmDialog>

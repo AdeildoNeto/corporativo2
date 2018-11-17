@@ -38,18 +38,13 @@ public class CadastrarQuestaoSteps {
 
     @E("^confirmar o cadastro da questão$")
     public void confirmarCadastro() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:btnSimAdicionar")).click();
+        BrowserManager.getDriver().findElement(By.id("form:btnConfirmar")).click();
         BrowserManager.waitTime(1000);
     }
 
     @E("^não preencher o enunciado da questão$")
     public void naoPreencherEnunciado() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).clear();
-    }
-
-    @E("^preencher o enunciado da questão com um valor já cadastrado$")
-    public void preencherEnunciadoDuplicado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("Teste 2");
     }
     
     @E("^preencher o enunciado da questão com mais caracteres que o permitido$")

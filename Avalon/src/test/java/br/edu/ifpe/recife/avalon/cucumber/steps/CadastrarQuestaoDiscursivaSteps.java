@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.avalon.cucumber.steps;
 
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
+import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +19,11 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class CadastrarQuestaoDiscursivaSteps {
 
+    @E("^preencher o enunciado da questão discursiva com um valor já cadastrado$")
+    public void preencherEnunciadoDuplicado() throws Throwable {
+        BrowserManager.getDriver().findElement(By.id("form:txtEnunciado")).sendKeys("O que é um diagrama de classe?");
+    }
+    
     @Quando("^o professor selecionar o tipo discursiva$")
     public void selecionarTipoDiscursiva() throws Throwable {
         Select selectTipo = new Select(BrowserManager.getDriver().findElement(By.id("form:selTipo_input")));
