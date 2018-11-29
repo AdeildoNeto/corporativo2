@@ -38,18 +38,20 @@ import javax.validation.Valid;
  *
  * @author eduardoamaral
  */
-@Named(value  = "loginBean")
+@Named(value = "loginBean")
 @RequestScoped
 public class LoginBean implements Serializable {
 
     @Inject
     private HttpServletRequest httpServletRequest;
-    
+
     private static final String NAV_HOME_PROFESSOR = "goHomeProfessor";
     private static final String NAV_HOME_ALUNO = "goHomeAluno";
     private static final String NAV_LOGIN = "goLogin";
     private static final String LOGIN_FALHA_GERAL = "login.falha.geral";
     private static final String LOGIN_FALHA_TOKEN = "login.falha.token";
+    private static final String DOMINIO_PROFESSOR = "dominioProfessor";
+    private static final String DOMINIO_ALUNO = "dominioAluno";
 
     @EJB
     private UsuarioServico usuarioServico;
@@ -58,19 +60,19 @@ public class LoginBean implements Serializable {
     private Usuario usuario = new Usuario();
 
     private String token;
-    
+
     private Payload payload;
-    
+
     private final FacesContext facesContext = FacesContext.getCurrentInstance();
 
     /**
      * Realiza login utilizando uma conta Google.
      */
     public void googleLogin() {
-        
+
         Map<String, String> param = facesContext.getExternalContext().getRequestParameterMap();
         token = param.get("token");
-        
+
         if (token != null) {
 
             verificarToken();
@@ -81,7 +83,7 @@ public class LoginBean implements Serializable {
 
             realizarLogin();
 
-        }else{
+        } else {
             facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
         }
 
@@ -124,28 +126,31 @@ public class LoginBean implements Serializable {
 
             usuario.setNome(payload.get("given_name").toString());
             usuario.setSobrenome(payload.get("family_name").toString());
-            
-            if(payload.getHostedDomain() != null && verificarDominioAluno()){
-                usuario.setGrupo(GrupoEnum.ALUNO);
-            }else{
-                usuario.setGrupo(GrupoEnum.PROFESSOR);
+
+            if (payload.getHostedDomain() != null) {
+                if (verificarDominio(DOMINIO_ALUNO)) {
+                    usuario.setGrupo(GrupoEnum.ALUNO);
+                } else if (verificarDominio(DOMINIO_PROFESSOR)) {
+                    usuario.setGrupo(GrupoEnum.PROFESSOR);
+                }
             }
-            
+
             usuarioServico.salvar(usuario);
-            
+
         }
     }
-    
-    private boolean verificarDominioAluno(){
-        String[] dominios = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("dominioAluno").split(",");
+
+    private boolean verificarDominio(String dominio) {
+        String[] dominios = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(dominio).split(",");
         Arrays.sort(dominios);
         int index = Arrays.binarySearch(dominios, payload.getHostedDomain());
-        
+
         return index > -1;
     }
 
     /**
      * Verifica se o usuário não existe.
+     *
      * @return true - quando o usuário não existe.
      */
     private boolean isNotUsuarioCadastrado() {
@@ -162,42 +167,57 @@ public class LoginBean implements Serializable {
         if (usuario != null) {
             facesContext.getExternalContext().getSessionMap().put("usuario", usuario);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            
+
             try {
+                NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
+
+                if (payload.getHostedDomain() != null) {
+                    if (verificarDominio(DOMINIO_ALUNO)) {
+                        request.login(usuario.getEmail(), usuario.getEmail());
+                        navigationHandler.handleNavigation(facesContext, null, NAV_HOME_ALUNO);
+                    } else if (verificarDominio(DOMINIO_PROFESSOR)) {
+                        request.login(usuario.getEmail(), usuario.getEmail());
+                        navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
+                    }
+                }
+
+                //MOCK
                 request.login(usuario.getEmail(), usuario.getEmail());
+                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
+                //MOCK
+
+                exibirMensagemLoginInvalido();
+
             } catch (ServletException ex) {
                 facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            NavigationHandler navigationHandler = facesContext.getApplication().getNavigationHandler();
-            
-            if(payload.getHostedDomain() != null && verificarDominioAluno()){
-                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_ALUNO);
-            }else{
-                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
-            }
-            
+
         } else {
-            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            exibirMensagemLoginInvalido();
         }
 
     }
-    
+
+    private void exibirMensagemLoginInvalido() {
+        facesContext.addMessage(null, new FacesMessage("Falha ao realizar login. Domínio não cadastrado."));
+    }
+
     /**
      * Finaliza a sessão do usuário.
+     *
      * @return retorna para a tela de Login.
      * @throws javax.servlet.ServletException
      */
-    public String logout() throws ServletException{
+    public String logout() throws ServletException {
         HttpSession sessao = httpServletRequest.getSession(false);
-        
-        if(sessao != null){
+
+        if (sessao != null) {
             sessao.invalidate();
         }
-        
+
         httpServletRequest.logout();
-        
+
         return NAV_LOGIN;
     }
 

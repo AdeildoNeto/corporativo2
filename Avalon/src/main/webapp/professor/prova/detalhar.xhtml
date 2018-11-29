@@ -54,10 +54,10 @@ and open the template in the editor.
             </p:outputPanel>
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
-                    <ui:include src="../comum/avaliacao/conteudo-vf.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}">
+                    <ui:include src="../../comum/avaliacao/conteudo-vf.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesVerdadeiroFalso.size() > 0}">
                         <ui:param name="bean" value="#{provaBean}" />
                     </ui:include>
-                    <ui:include src="../comum/avaliacao/conteudo-multipla-escolha.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}">
+                    <ui:include src="../../comum/avaliacao/conteudo-multipla-escolha.xhtml" rendered="#{provaBean.visualizarViewHelper.questoesMultiplaEscolha.size() > 0}">
                         <ui:param name="bean" value="#{provaBean}" />
                     </ui:include>
                 </p:outputPanel>

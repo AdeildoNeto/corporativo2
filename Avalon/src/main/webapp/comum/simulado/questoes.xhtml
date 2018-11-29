@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel class="row container-table-prova">
+        <p:outputPanel class="col-md-12">
+            <h:dataTable id="table" value="#{bean.questoesSimulado}" var="questaoSimulado"
+                         styleClass="table table-striped table-fixed table-questao-avaliacao">
+                <h:column>
+                    <f:facet name="header">
+                        <h:selectBooleanCheckbox id="chkSelecionarTodas" value="#{bean.todosSelecionados}">
+                            <f:ajax listener="#{bean.selecionarTodasQuestoesSimulado()}" render="@form" />
+                        </h:selectBooleanCheckbox>
+                    </f:facet>
+                    <h:selectBooleanCheckbox value="#{questaoSimulado.questao.selecionada}">
+                        <f:ajax listener="#{bean.selecionarQuestaoSimulado(questaoSimulado)}" render="@form" execute="@form" />
+                    </h:selectBooleanCheckbox>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <span>#{msg['questao.listar.header.questao']}</span>
+                    </f:facet>
+                    <h:outputText title="#{questaoSimulado.questao.enunciado}"
+                                  value="#{questaoSimulado.questao.enunciado}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <span>#{msg['label.componente.curricular']}</span>
+                    </f:facet>
+                    <h:outputText title="#{questaoSimulado.questao.componenteCurricular.nome}"
+                                  value="#{questaoSimulado.questao.componenteCurricular.nome}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <span>#{msg['label.professor']}</span>
+                    </f:facet>
+                    <h:outputText title="#{questaoSimulado.questao.professor.nomeCompleto}"
+                                  value="#{questaoSimulado.questao.professor.nomeCompleto}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header"></f:facet>
+                    <p:commandLink action="#{bean.detalhesViewHelper.exibirDetalhes(questaoSimulado.questao)}" update="formDetalhes">
+                        <h:outputText title="#{msg['label.detalhes']}" class="material-icons" value="info" />
+                    </p:commandLink>
+                </h:column>
+            </h:dataTable>
+        </p:outputPanel>
+    </p:outputPanel>
+</ui:composition>

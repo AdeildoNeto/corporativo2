@@ -143,6 +143,16 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>goAlunoGerarSimulado</from-outcome>
+            <to-view-id>/aluno/simulado/gerar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goAlunoVisualizarSimulado</from-outcome>
+            <to-view-id>/aluno/simulado/visualizar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>goListarProvas</from-outcome>
             <to-view-id>/aluno/prova/listar.xhml</to-view-id>
             <redirect />
@@ -170,6 +180,11 @@
         <navigation-case>
             <from-outcome>goDetalharResultadoSimuladoAluno</from-outcome>
             <to-view-id>/aluno/simulado/resultado/detalhar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goGerenciarSimuladoAluno</from-outcome>
+            <to-view-id>/aluno/simulado/gerenciar.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

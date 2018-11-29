@@ -8,7 +8,6 @@ package br.edu.ifpe.recife.avalon.cucumber.steps;
 import br.edu.ifpe.recife.avalon.cucumber.util.BrowserManager;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
-import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 
 /**

@@ -43,6 +43,4 @@ Funcionalidade:
     Quando o professor preencher o título do simulado com mais caracteres que o permitido
     E selecionar o tipo múltipla escolha no filtro de questões
     E clicar no botão pesquisar
-    E selecionar questões para simulado
-    E clicar no botão salvar novo simulado
     Então será exibida a mensagem "O tamanho máximo do título é de 80 caracteres."

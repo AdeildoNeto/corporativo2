@@ -3,7 +3,7 @@
 Funcionalidade: 
   Eu como professor
   Quero salvar questões discursivas
-  Para usá-las na geração de provas
+  Para usá-las na impressão de provas
 
   Contexto: 
     Dado que o usuário está logado como professor

@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.avalon.bean.aluno;
 
+import br.edu.ifpe.recife.avalon.bean.comum.AbstractSimuladoBean;
 import br.edu.ifpe.recife.avalon.excecao.ValidacaoException;
 import br.edu.ifpe.recife.avalon.model.avaliacao.QuestaoAvaliacao;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
@@ -14,10 +15,7 @@ import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.SimuladoAluno;
 import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoAlunoSimulado;
 import br.edu.ifpe.recife.avalon.model.avaliacao.simulado.QuestaoSimulado;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
-import br.edu.ifpe.recife.avalon.servico.ComponenteCurricularServico;
-import br.edu.ifpe.recife.avalon.servico.SimuladoServico;
 import br.edu.ifpe.recife.avalon.util.AvalonUtil;
-import br.edu.ifpe.recife.avalon.viewhelper.ComponenteCurricularViewHelper;
 import br.edu.ifpe.recife.avalon.viewhelper.PesquisarSimuladoViewHelper;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,10 +26,7 @@ import java.util.Calendar;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,47 +34,37 @@ import javax.servlet.http.HttpSession;
  */
 @Named(value = SimuladoAlunoBean.NOME)
 @SessionScoped
-public class SimuladoAlunoBean implements Serializable {
+public class SimuladoAlunoBean extends AbstractSimuladoBean implements Serializable {
 
     public static final String NOME = "simuladoAlunoBean";
     private static final String GO_INICIAR_SIMULADO = "goIniciarSimulado";
     private static final String GO_PROCURAR_SIMULADO = "goProcurarSimulado";
     private static final String GO_LISTAR_RESULTADOS_SIMULADO_ALUNO = "goListarResultadosSimuladoAluno";
     private static final String GO_DETALHAR_RESULTADO_SIMULADO_ALUNO = "goDetalharResultadoSimuladoAluno";
+    private static final String GO_ALUNO_VISUALIZAR_SIMULADO = "goAlunoVisualizarSimulado";
+    private static final String GO_ALUNO_GERAR_SIMULADO = "goAlunoGerarSimulado";
+    private static final String GO_GERENCIAR_SIMULADO_ALUNO = "goGerenciarSimuladoAluno";
     private static final String USUARIO = "usuario";
     private static final String RESULTADO_ACERTOS = "resultado.obtido";
     private static final String SIMULADO_QUESTOES_OBRIGATORIAS = "simulado.questoes.obrigatorias";
     private static final String PESQUISA_SEM_DADOS = "pesquisa.sem.dados";
 
-    @EJB
-    private SimuladoServico simuladoServico;
-
-    @EJB
-    private ComponenteCurricularServico componenteCurricularServico;
-
-    private final ComponenteCurricularViewHelper componenteViewHelper;
     private final PesquisarSimuladoViewHelper pesquisarSimuladoViewHelper;
-    private final HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-    private final Usuario usuarioLogado;
 
     private Simulado simuladoSelecionado;
-    private List<Simulado> simulados;
     private List<VerdadeiroFalso> questoesVerdadeiroFalso;
     private List<MultiplaEscolha> questoesMultiplaEscolha;
     private boolean exibirModalResultado;
     private String resultado;
     private SimuladoAluno simuladoAluno;
 
-    private List<SimuladoAluno> resultados = new ArrayList<>();
     private SimuladoAluno resultadoSimuladoAluno = new SimuladoAluno();
-    private boolean simuladoVF;
-
+    
     /**
      * Cria uma nova instância de <code>SimuladoAlunoBean</code>.
      */
     public SimuladoAlunoBean() {
         usuarioLogado = (Usuario) sessao.getAttribute(USUARIO);
-        componenteViewHelper = new ComponenteCurricularViewHelper();
         pesquisarSimuladoViewHelper = new PesquisarSimuladoViewHelper();
         questoesVerdadeiroFalso = new ArrayList<>();
         questoesMultiplaEscolha = new ArrayList<>();
@@ -95,6 +80,7 @@ public class SimuladoAlunoBean implements Serializable {
         componenteViewHelper.inicializar(componenteCurricularServico);
         pesquisarSimuladoViewHelper.inicializar(simuladoServico, usuarioLogado);
         limparTela();
+        super.limparPagina();
 
         return GO_PROCURAR_SIMULADO;
     }
@@ -118,18 +104,70 @@ public class SimuladoAlunoBean implements Serializable {
 
         return carregarQuestoes();
     }
+    
+    public String iniciarPaginaGerenciar(){
+        simulados = simuladoServico.buscarSimuladosUsuario(usuarioLogado);
+        return GO_GERENCIAR_SIMULADO_ALUNO;
+    }
+    
+    /**
+     * Inicializa a página de resultados de um simulado.
+     * 
+     * @param simulado
+     * @return 
+     */
+    public String iniciarPaginaResultados(Simulado simulado) {
+        this.simulado = simulado;
+        resultados = simuladoServico.buscarResultadosSimulado(simulado);
+        return GO_LISTAR_RESULTADOS_SIMULADO_ALUNO;
+    }
 
-    public String iniciarPaginaResultadosSimulado(Simulado simulado) {
+    /**
+     * Inicializa a página de resultados do aluno para um simulado.
+     * 
+     * @param simulado
+     * @return 
+     */
+    public String iniciarPaginaResultadosAluno(Simulado simulado) {
+        this.simulado = simulado;
         resultados = simuladoServico.buscarResultadosSimuladoAluno(usuarioLogado, simulado);
         return GO_LISTAR_RESULTADOS_SIMULADO_ALUNO;
     }
 
+    /**
+     * Inicializa a página de detalhe de um resultado.
+     * 
+     * @param simuladoAluno
+     * @return 
+     */
     public String iniciarPaginaDetalharResultado(SimuladoAluno simuladoAluno) {
         resultadoSimuladoAluno = simuladoAluno;
         simuladoVF = resultadoSimuladoAluno.getSimulado().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
         return GO_DETALHAR_RESULTADO_SIMULADO_ALUNO;
     }
+    
+    /**
+     * Inicializa os dados necessários para p[agina gerar novo simulado.
+     *
+     * @return navegação.
+     */
+    public String iniciarPaginaGerar() {
+        inicializarPaginaGerar();
+        return GO_ALUNO_GERAR_SIMULADO;
 
+    }
+    
+    /**
+     * Inicializa a página de resultados de um simulado.
+     *
+     * @param simulado
+     * @return
+     */
+    public String iniciarPaginaVisualizar(Simulado simulado) {
+        inicializarPaginaVisualizarSimulado(simulado);
+        return GO_ALUNO_VISUALIZAR_SIMULADO;
+    }
+    
     private String carregarQuestoes() {
         String navegacao = GO_INICIAR_SIMULADO;
 
@@ -192,7 +230,7 @@ public class SimuladoAlunoBean implements Serializable {
     /**
      * Pesquisa os simulados disponíveis.
      */
-    public void pesquisar() {
+    public void pesquisarSimulados() {
         simulados = pesquisarSimuladoViewHelper.pesquisar();
         if (simulados.isEmpty()) {
             exibirMensagem(FacesMessage.SEVERITY_INFO, AvalonUtil.getInstance().getMensagem(PESQUISA_SEM_DADOS));
@@ -318,27 +356,24 @@ public class SimuladoAlunoBean implements Serializable {
         exibirModalResultado = false;
         return iniciarPagina();
     }
-
+    
     /**
-     * Exibi uma mensagem.
+     * Salva um novo simulado.
      *
-     * @param mensagem - mensagem a ser exibida.
+     * @return navegacao
      */
-    private void exibirMensagem(FacesMessage.Severity severity, String mensagem) {
-        FacesMessage facesMessage = new FacesMessage(severity, mensagem, null);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-    }
-
-    public ComponenteCurricularViewHelper getComponenteViewHelper() {
-        return componenteViewHelper;
+    public String salvar() {
+        String navegacao = super.salvarSimulado(GO_PROCURAR_SIMULADO);
+        
+        if(navegacao != null){
+            iniciarPaginaGerenciar();
+        }
+        
+        return navegacao;
     }
 
     public PesquisarSimuladoViewHelper getPesquisarSimuladoViewHelper() {
         return pesquisarSimuladoViewHelper;
-    }
-
-    public List<Simulado> getSimulados() {
-        return simulados;
     }
 
     public Simulado getSimuladoSelecionado() {
@@ -365,16 +400,8 @@ public class SimuladoAlunoBean implements Serializable {
         return resultado;
     }
 
-    public List<SimuladoAluno> getResultados() {
-        return resultados;
-    }
-
     public SimuladoAluno getResultadoSimuladoAluno() {
         return resultadoSimuladoAluno;
-    }
-
-    public boolean isSimuladoVF() {
-        return simuladoVF;
     }
 
 }

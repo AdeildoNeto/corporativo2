@@ -22,7 +22,7 @@ and open the template in the editor.
 
             <p:outputPanel class="row container-listar">
                 <p:outputPanel class="col-md-12">
-                    <h:dataTable id="tableSimulados" value="#{simuladoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-exames">
+                    <h:dataTable id="tableSimulados" value="#{simuladoAlunoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-exames">
                         <h:column>
                             <f:facet name="header">
                                 <span>#{msg['label.titulo']}</span>
@@ -41,21 +41,21 @@ and open the template in the editor.
 
                             </f:facet>
                             <p:commandLink id="btnResultadosSimulado"
-                                           action="#{simuladoBean.iniciarPaginaResultados(simulado)}"
+                                           action="#{simuladoAlunoBean.iniciarPaginaResultados(simulado)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide()"
                                            title="#{msg['label.resultados']}">
                                 <span class="material-icons">assessment</span>
                             </p:commandLink>
                             <p:commandLink id="btnDetalharSimulado"
-                                           action="#{simuladoBean.iniciarPaginaVisualizarSimulado(simulado)}"
+                                           action="#{simuladoAlunoBean.iniciarPaginaVisualizar(simulado)}"
                                            onclick="PF('block').show()"
                                            oncomplete="PF('block').hide();"
                                            title="#{msg['label.detalhar']}">
                                 <span class="material-icons">pageview</span>
                             </p:commandLink>
                             <p:commandLink id="btnExcluirSimulado"
-                                           action="#{simuladoBean.selecionarSimuladoExclusao(simulado)}"
+                                           action="#{simuladoAlunoBean.selecionarSimuladoExclusao(simulado)}"
                                            onclick="PF('block').show()"
                                            update="formModalExcluir"
                                            oncomplete="PF('block').hide();"
@@ -66,10 +66,15 @@ and open the template in the editor.
                     </h:dataTable>
                 </p:outputPanel>
             </p:outputPanel>
-            <p:outputPanel class="row">
-                <p:outputPanel class="offset-md-9 col-md-3 form-group">
+            
+            <p:outputPanel id="button-container" class="row buttons-save">
+                <p:outputPanel class="offset-md-7 col-md-5 form-group">
+                    <p:commandButton id="btnCancelar" value="#{msg['btn.cancelar']}" update="@form"
+                                     action="goProcurarSimulado" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" immediate="true"
+                                     class="btn btn-secondary font-color-default"></p:commandButton>
                     <p:commandButton id="btnGerarSimulado" value="#{msg['btn.gerar.simulado']}"
-                                     action="#{simuladoBean.iniciarPaginaGerar()}"
+                                     action="#{simuladoAlunoBean.iniciarPaginaGerar()}"
                                      onclick="PF('block').show()"
                                      oncomplete="PF('block').hide()"
                                      class="btn bg-default btn-block font-color-default">
@@ -86,12 +91,12 @@ and open the template in the editor.
         <h:form id="formModalExcluir">
             <p:confirmDialog message="#{msg['mensagem.confirmacao.excluir']}"
                              header="#{msg['modal.header.excluir']}" severity="alert"
-                             visible="#{simuladoBean.exibirModalExclusao}"
+                             visible="#{simuladoAlunoBean.exibirModalExclusao}"
                              closeOnEscape="true">
-                <p:commandButton value="#{msg['btn.nao']}" action="#{simuladoBean.fecharModalExclusao()}" 
+                <p:commandButton value="#{msg['btn.nao']}" action="#{simuladoAlunoBean.fecharModalExclusao()}" 
                                  process="@this" update="formModalExcluir form"
                                  styleClass="btn btn-secondary" />
-                <p:commandButton value="#{msg['btn.sim']}" action="#{simuladoBean.excluir()}" update="form formModalExcluir" styleClass="btn btn-primary" />
+                <p:commandButton value="#{msg['btn.sim']}" action="#{simuladoAlunoBean.excluir()}" update="form formModalExcluir" styleClass="btn btn-primary" />
             </p:confirmDialog>
         </h:form>
     </ui:define>

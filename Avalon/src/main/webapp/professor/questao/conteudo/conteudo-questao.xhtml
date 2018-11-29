@@ -116,8 +116,8 @@ and open the template in the editor.
     <p:outputPanel id="panelVF">
         <p:outputPanel styleClass="row margin-top-bottom-10" rendered="#{questaoBean.tipoSelecionado == 'VERDADEIRO_FALSO'}">
             <p:outputPanel class="col-md-4 display-flex">
-                <p:outputLabel for="resposta-vf" value="#{msg['label.resposta']}:" />
-                <p:inputSwitch id="resposta-vf" styleClass="switch"
+                <p:outputLabel for="tglRespostaVF" value="#{msg['label.resposta']}:" />
+                <p:inputSwitch id="tglRespostaVF" styleClass="switch"
                                value="#{questaoBean.respostaVF}"
                                offLabel="#{msg['btn.falso']}" onLabel="#{msg['btn.verdadeiro']}"
                                required="true" requiredMessage="#{msg['questao.resposta.obrigatoria']}" />

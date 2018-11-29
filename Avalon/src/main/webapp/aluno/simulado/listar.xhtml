@@ -19,17 +19,17 @@ and open the template in the editor.
                     <h1 id="headerSimulados">#{msg['menu.simulados']}</h1>
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <p:outputPanel class="row">
                 <p:outputPanel class="col-md-12">
                     <p:messages id="msgPrincipal" />
                 </p:outputPanel>
             </p:outputPanel>
-            
+
             <ui:include src="conteudo/pesquisar-simulado.xhtml">
                 <ui:param name="bean" value="#{simuladoAlunoBean}" />
             </ui:include>
-            
+
             <p:outputPanel class="row container-listar">
                 <p:outputPanel class="col-md-12">
                     <h:dataTable id="table" value="#{simuladoAlunoBean.simulados}" var="simulado" styleClass="table table-striped table-fixed table-simulados-aluno">
@@ -48,7 +48,7 @@ and open the template in the editor.
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <span>#{msg['label.professor']}</span>
+                                <span>#{msg['label.autor']}</span>
                             </f:facet>
                             <h:outputText class="simuladoProfessor" title="#{simulado.professor.nomeCompleto}"
                                           value="#{simulado.professor.nome}" />
@@ -56,12 +56,31 @@ and open the template in the editor.
                         <h:column>
                             <f:facet name="header">
                             </f:facet>
-                            <p:commandButton id="btnIniciar" value="#{msg['btn.iniciar']}" update="@form"
-                                             action="#{simuladoAlunoBean.iniciarSimulado(simulado)}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()"
-                                     class="btn bg-default btn-block font-color-default"></p:commandButton>
+                            <p:commandLink id="btnDetalharSimulado"
+                                           action="#{simuladoAlunoBean.iniciarSimulado(simulado)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['btn.iniciar']}">
+                                <span class="material-icons">play_circle_filled</span>
+                            </p:commandLink>
+                            <p:commandLink id="btnExcluirSimulado"
+                                           action="#{simuladoAlunoBean.iniciarPaginaResultadosAluno(simulado)}"
+                                           onclick="PF('block').show()"
+                                           oncomplete="PF('block').hide();"
+                                           title="#{msg['label.resultados']}">
+                                <span class="material-icons">assessment</span>
+                            </p:commandLink>
                         </h:column>
                     </h:dataTable>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <p:outputPanel class="row">
+                <p:outputPanel class="offset-md-9 col-md-3 form-group">
+                    <p:commandButton id="goListarSimulado" value="#{msg['btn.gerenciar.simulados']}"
+                                     action="#{simuladoAlunoBean.iniciarPaginaGerenciar()}" immediate="true"
+                                     class="btn btn-primary font-color-default">
+                    </p:commandButton>
                 </p:outputPanel>
             </p:outputPanel>
 

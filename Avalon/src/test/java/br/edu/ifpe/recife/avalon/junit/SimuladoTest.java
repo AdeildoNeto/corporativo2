@@ -250,7 +250,7 @@ public class SimuladoTest {
     @Test
     public void t16_listarSimuladosProfessor() {
         logger.info("Executando t16: listarSimuladosProfessor");
-        List<Simulado> simulados = simuladoServico.buscarSimuladosProfessor(getProfessor());
+        List<Simulado> simulados = simuladoServico.buscarSimuladosUsuario(getProfessor());
 
         assertTrue(!simulados.isEmpty());
     }

@@ -31,13 +31,13 @@ public class CriarSimuladoOnlineSteps {
 
     @Quando("^o professor preencher o título do simulado com um valor em uso$")
     public void preencherTituloDuplicado() throws Throwable {
-        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Engenharia V ou F");
+        BrowserManager.getDriver().findElement(By.id("form:txtTitulo")).sendKeys("Simulado Engenharia V ou F");
     }
 
     @Quando("^o professor preencher o título do simulado com mais caracteres que o permitido$")
     public void preencherTituloMaiorPermitido() throws Throwable {
         BrowserManager.getDriver().findElement(By.id("form:txtTitulo"))
-                .sendKeys(TestUtil.obterTextoRepetido("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5));
+                .sendKeys(TestUtil.obterTextoRepetido("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10));
     }
 
     @E("^selecionar questões para simulado$")

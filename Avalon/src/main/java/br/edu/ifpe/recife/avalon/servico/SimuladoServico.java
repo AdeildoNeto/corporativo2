@@ -100,14 +100,14 @@ public class SimuladoServico {
     /**
      * Consulta simulados por professor.
      *
-     * @param professor
+     * @param usuario
      * @return lista de simulados.
      */
-    public List<Simulado> buscarSimuladosProfessor(Usuario professor) {
+    public List<Simulado> buscarSimuladosUsuario(Usuario usuario) {
         TypedQuery<Simulado> query = entityManager.createNamedQuery("Simulado.PorProfessor",
                 Simulado.class);
 
-        query.setParameter("professor", professor);
+        query.setParameter("professor", usuario);
 
         return query.getResultList();
     }

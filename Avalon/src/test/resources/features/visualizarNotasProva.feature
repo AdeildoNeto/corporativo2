@@ -2,7 +2,7 @@
 # ID.30
 Funcionalidade: 
   Eu como professor
-  Quero poder visualizar lista de notas de uma prova
+  Quero poder visualizar a lista de notas de uma prova
   Para poder transcrevê-las para o Q-Acadêmico
 
   Contexto: 

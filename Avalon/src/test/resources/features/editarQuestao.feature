@@ -1,52 +1,37 @@
 # language: pt
-# ID.01
 Funcionalidade: 
   Eu como professor
-  Quero salvar questões discursivas
-  Para usá-las na geração de provas
+  Quero editar questões por mim criadas
+  Para que eu possa corrigí-las
 
   Contexto: 
     Dado que o usuário está logado como professor
     E esteja na página minhas questões
-    E deseje cadastrar uma nova questão
 
-  Cenario: Cadastrar questão discursiva
-    Quando o professor selecionar o tipo discursiva
-    E selecionar um componente curricular
-    E preencher o enunciado da questão
+  Cenario: Editar enunciado da questão
+    Quando o professor selecionar uma questão para edição
+    E alterar o enunciado da questão
     E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Então uma nova questão discursiva será cadastrada
+    E confirmar a edição da questão
+    Então o enunciado da questão será alterado
 
-  Cenario: Criticar questão sem enunciado
-    Quando o professor selecionar o tipo discursiva
-    E selecionar um componente curricular
-    E não preencher o enunciado da questão
+  Cenario: Criticar enunciado da questão duplicado para edição
+    Quando o professor selecionar uma questão para edição
+    E alterar o enunciado com um valor já existente para o tipo selecionado
     E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Então será exibida a mensagem "O enunciado da questão é obrigatório."
-
-  Cenario: Criticar questão discursiva com enunciado duplicado
-    Quando o professor selecionar o tipo discursiva
-    E selecionar um componente curricular
-    E preencher o enunciado da questão com um valor já cadastrado
-    E clicar no botão salvar questão
-    E confirmar o cadastro da questão
+    E confirmar a edição da questão
     Então será exibida a mensagem "Já existe uma questão com este enunciado."
 
-  Cenario: Criticar questão com enunciado maior que o permitido
-    Quando o professor selecionar o tipo discursiva
-    E selecionar um componente curricular
-    E preencher o enunciado da questão com mais caracteres que o permitido
+  Cenario: Editar resposta da questão de verdadeiro ou falso
+    Quando o professor selecionar uma questão de verdadeiro ou falso para edição
+    E alterar a respota da questão
     E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Então será exibida a mensagem "O tamanho máximo do enunciado é de 2000 caracteres."
+    E confirmar a edição da questão
+    Então a respota da questão será alterada
 
-Cenario: Criticar questão com solução maior que o permitido
-    Quando o professor selecionar o tipo discursiva
-    E selecionar um componente curricular
-    E preencher o enunciado da questão
-    E preencher a solução da questão com mais caracteres que o permitido
+  Cenario: Editar resposta da questão de múltipla escolha
+    Quando o professor selecionar uma questão de múltipla escolha para edição
+    E alterar a alternativa correta da questão
     E clicar no botão salvar questão
-    E confirmar o cadastro da questão
-    Então será exibida a mensagem "O tamanho máximo da solução é de 300 caractéres."
+    E confirmar a edição da questão
+    Então a alternativa correta da questão será alterada

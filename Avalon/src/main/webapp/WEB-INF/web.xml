@@ -48,7 +48,7 @@
     </context-param>
     <context-param>
         <param-name>dominioProfessor</param-name>
-        <param-value>recife.ifpe.edu.br,gmail.com</param-value>
+        <param-value>recife.ifpe.edu.br</param-value>
     </context-param>
     <context-param>
         <param-name>dominioAluno</param-name>
