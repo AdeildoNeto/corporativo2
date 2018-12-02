@@ -181,11 +181,6 @@ public class LoginBean implements Serializable {
                     }
                 }
 
-                //MOCK
-                request.login(usuario.getEmail(), usuario.getEmail());
-                navigationHandler.handleNavigation(facesContext, null, NAV_HOME_PROFESSOR);
-                //MOCK
-
                 exibirMensagemLoginInvalido();
 
             } catch (ServletException ex) {
