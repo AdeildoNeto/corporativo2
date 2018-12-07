@@ -18,13 +18,9 @@
     <h:body>
         <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
         <h:form id="loginForm">
-            <div class="row">
-                <div class="offset-md-1 col-md-6">
-                    <p:messages id="msgPrincipal" />
-                </div>
-            </div>
 
-            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin()}"
+
+            <p:remoteCommand name="login" actionListener="#{loginBean.googleLogin()}" update="@form"
                              onstart="PF('block').show()"
                              oncomplete="PF('block').hide()"/>
 
@@ -33,6 +29,11 @@
                     <p:graphicImage name="img/ifpe_white.png" class="login-ifpe-logo" alt="Logo IFPE" />
                 </div>
                 <div class="col-md-5 text-center">
+                    <div class="row">
+                        <div class="offset-md-1 col-md-10">
+                            <p:messages id="msgPrincipal" />
+                        </div>
+                    </div>
                     <div class="login-titulo">
                         <h1>#{msg['titulo.login']}</h1>
                         <h2>#{msg['subtitulo.login']}</h2>

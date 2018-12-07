@@ -29,6 +29,7 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,7 +69,7 @@ public class LoginBean implements Serializable {
     /**
      * Realiza login utilizando uma conta Google.
      */
-    public void googleLogin() {
+    public void googleLogin() throws LoginException {
 
         Map<String, String> param = facesContext.getExternalContext().getRequestParameterMap();
         token = param.get("token");
@@ -84,7 +85,7 @@ public class LoginBean implements Serializable {
             realizarLogin();
 
         } else {
-            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            exibirMensagemFalhaLogin();
         }
 
     }
@@ -92,7 +93,7 @@ public class LoginBean implements Serializable {
     /**
      * Verifica a validade do token recebido.
      */
-    private void verificarToken() {
+    private void verificarToken() throws LoginException {
         GoogleIdTokenVerifier verificador = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
                 .setAudience(Collections.singletonList("131562098478-bvjjnubvmsauka865rsd8rrdol9flj9n.apps.googleusercontent.com"))
                 .build();
@@ -106,14 +107,16 @@ public class LoginBean implements Serializable {
             if (googleIdToken != null) {
                 payload = googleIdToken.getPayload();
 
+                Logger.getGlobal().log(Level.SEVERE, payload.toString());
+
                 usuario.setEmail(payload.getEmail());
             } else {
-                facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_TOKEN)));
+                exibirMensagemFalhaLogin();
             }
 
         } catch (IOException | GeneralSecurityException e) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, e);
-            facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
+            exibirMensagemFalhaLogin();
         }
 
     }
@@ -121,7 +124,7 @@ public class LoginBean implements Serializable {
     /**
      * Salva um novo usário.
      */
-    private void salvarNovoUsuario() {
+    private void salvarNovoUsuario() throws LoginException {
         if (payload != null) {
 
             usuario.setNome(payload.get("given_name").toString());
@@ -133,6 +136,8 @@ public class LoginBean implements Serializable {
                 } else if (verificarDominio(DOMINIO_PROFESSOR)) {
                     usuario.setGrupo(GrupoEnum.PROFESSOR);
                 }
+            } else {
+                exibirMensagemLoginInvalido();
             }
 
             usuarioServico.salvar(usuario);
@@ -149,7 +154,7 @@ public class LoginBean implements Serializable {
     }
 
     /**
-     * Verifica se o usuário não existe.
+     * Verifica se o usuário ainda não possuí cadastro.
      *
      * @return true - quando o usuário não existe.
      */
@@ -161,7 +166,7 @@ public class LoginBean implements Serializable {
     /**
      * Realiza o login do usuário.
      */
-    private void realizarLogin() {
+    private void realizarLogin() throws LoginException {
         usuario = usuarioServico.buscarUsuarioPorEmail(usuario.getEmail());
 
         if (usuario != null) {
@@ -184,8 +189,8 @@ public class LoginBean implements Serializable {
                 exibirMensagemLoginInvalido();
 
             } catch (ServletException ex) {
-                facesContext.addMessage(null, new FacesMessage(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_GERAL)));
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+                exibirMensagemFalhaLogin();
             }
 
         } else {
@@ -194,8 +199,8 @@ public class LoginBean implements Serializable {
 
     }
 
-    private void exibirMensagemLoginInvalido() {
-        facesContext.addMessage(null, new FacesMessage("Falha ao realizar login. Domínio não cadastrado."));
+    private void exibirMensagemLoginInvalido() throws LoginException {
+        exibirMensagemErro(AvalonUtil.getInstance().getMensagem("login.dominio.invalido"));
     }
 
     /**
@@ -222,6 +227,15 @@ public class LoginBean implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    private void exibirMensagemFalhaLogin() throws LoginException {
+        exibirMensagemErro(AvalonUtil.getInstance().getMensagem(LOGIN_FALHA_TOKEN));
+    }
+    
+    private void exibirMensagemErro(String mensagem) throws LoginException {
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagem, mensagem));
+        throw new LoginException(mensagem);
     }
 
 }
