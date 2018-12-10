@@ -22,19 +22,16 @@ function startApp() {
 ;
 
 function attachSignin(element) {
-    console.log(element.id);
     auth2.attachClickHandler(element, {},
             function (googleUser) {
                 onSignIn(googleUser);
             },
             function (error) {
-                console.log("Google Login Error.");
+                console.log(error);
             });
 }
 
 function onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-
     var id_token = googleUser.getAuthResponse().id_token;
 
     login([{name: 'token', value: id_token}]);

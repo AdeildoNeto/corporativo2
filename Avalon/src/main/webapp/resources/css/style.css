@@ -701,7 +701,7 @@ input[type="text"]{
 /* TELA DE LOGIN */
 .background-ifpe{
     height: 100%;
-    background-image: url("/Avalon/resources/img/ifpe_frente.png");
+    background-image: url("/Avalon/resources/img/ifpe_frente.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;

@@ -2,7 +2,7 @@
 # ID.23 - ID.19
 Funcionalidade: 
   Eu como aluno
-  Quero poder responder os simulados disponibilizados pelos professores.
+  Quero poder responder os simulados disponibilizados
   Para medir meus conhecimentos
 
   Contexto: 
