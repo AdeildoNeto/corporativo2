@@ -59,8 +59,8 @@ public class PdfGeneratorViewHelper implements Serializable {
     }
     
     private void imprimirCabecalho() throws DocumentException, IOException{
-        Image cabecalho = Image.getInstance("https://localhost:8181/Avalon/resources/img/cabecalho.png");
-            
+        Image cabecalho = Image.getInstance("/opt/glassfish4/glassfish/domains/domain1/applications/Avalon/resources/img/cabecalho.png");
+        
         cabecalho.scalePercent(40.5f, 40.5f);
         
         document.add(cabecalho);
