@@ -77,8 +77,7 @@ and open the template in the editor.
             <p:outputPanel id="button-container" class="row buttons-save">
                 <p:outputPanel class="offset-md-9 col-md-2 form-group">
                     <p:commandLink id="btn" value="#{msg['btn.imprimir']}" ajax="false"
-                                     action="#{provaBean.imprimirPdf()}" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide()" disabled="#{provaBean.questoesProvaSelecionadas.isEmpty()}"
+                                     action="#{provaBean.imprimirPdf()}" disabled="#{provaBean.questoesProvaSelecionadas.isEmpty()}"
                                      class="btn bg-default btn-block font-color-default" />
                 </p:outputPanel>
             </p:outputPanel>
