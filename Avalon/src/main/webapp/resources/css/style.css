@@ -567,13 +567,19 @@ input[type="text"]{
 }
 
 /* Carousel */
-.ui-carousel .ui-carousel-page-link, .ui-carousel .ui-carousel-button {
+.ui-carousel .ui-carousel-button {
     cursor: pointer;
     width: 15px;
     height: 15px;
     margin: 5px;
-    background-color: #BEBEBE;
+    background-color: #1e9e33;
     border-radius: 5px;
+    width: 35px;
+    height: 35px;
+}
+
+.ui-carousel .ui-carousel-page-link{
+    display: none;
 }
 
 .ui-carousel-button.ui-state-disabled{
@@ -581,19 +587,21 @@ input[type="text"]{
 }
 
 .ui-carousel-prev-button{
-    background-image: url("/Avalon/resources/img/ui-icons.png");
-    transform: rotate(-90deg);
+    background-image: url("/Avalon/resources/img/before.png");
 }
 
 .ui-carousel-next-button{
-    background-image: url("/Avalon/resources/img/ui-icons.png");
-    transform: rotate(90deg);
+    background-image: url("/Avalon/resources/img/next.png");
 }
 
 .ui-carousel-header{
     width: 50%;
     position: absolute;
-    bottom: -30px;
+    bottom: -45px;
+}
+
+.ui-carousel .ui-carousel-dropdown{
+    margin-top: 7px !important;
 }
 
 /* UPLOAD IMAGE */
@@ -739,4 +747,17 @@ input[type="text"]{
 #loginRow{
     height: 100vh;
     align-items: center;
+}
+
+.height-100vh{
+    height: 100vh;
+}
+
+.alternativa{
+    margin-top: 10px;
+}
+
+.titulo-alternativa{
+    font-weight: bold;
+    font-size: 14pt;
 }

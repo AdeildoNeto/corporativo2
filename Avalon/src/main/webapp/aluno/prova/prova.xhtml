@@ -17,7 +17,7 @@ and open the template in the editor.
 
     <h:body>
         <p:outputPanel class="container-principal col-md-12">
-            <h:form id="form" class="container">
+            <h:form id="form" class="container height-100vh">
                 <p:outputPanel class="row">
                     <p:outputPanel class="col-md-12">
                         <h1>#{provaAlunoBean.prova.titulo}</h1>
@@ -60,7 +60,8 @@ and open the template in the editor.
                                     rendered="#{provaAlunoBean.questoesVerdadeiroFalso.size() > 0}"
                                     numVisible="1" pageLinks="2">
                             <p:outputPanel class="form-group">
-                                <span class="bold">#{carouselVerdadeiroFalso.rowIndex + 1}) #{questao.enunciado}</span>
+                                <span class="bold">#{provaAlunoBean.getNumeroQuestao(questao)}) #{questao.enunciado}</span>
+                                <br />
                                 <p:selectOneRadio id="rbRespostaVerdadeiroFalso" layout="custom" plain="true" value="#{questao.respostaUsuario}">
                                     <f:selectItem itemValue="#{true}" itemLabel="#{msg['btn.verdadeiro']}" />
                                     <f:selectItem itemValue="#{false}" itemLabel="#{msg['btn.falso']}" />
@@ -73,7 +74,7 @@ and open the template in the editor.
                                         </p:graphicImage>
                                     </ui:fragment>
                                 </p:outputPanel>
-                                <h:panelGrid class="margin-left-20">
+                                <h:panelGrid class="alternativa">
                                     <h:column>
                                         <p:radioButton id="opcVerdadeiro" for="rbRespostaVerdadeiroFalso" itemIndex="0" class="radio-button" />
                                         <span>#{msg['btn.verdadeiro']}</span>
@@ -91,7 +92,8 @@ and open the template in the editor.
                                     rendered="#{provaAlunoBean.questoesMultiplaEscolha.size() > 0}"
                                     numVisible="1" pageLinks="2">
                             <p:outputPanel class="form-group">
-                                <span class="bold break-white-space">#{caraouselMS.rowIndex + 1}) #{questao.enunciado}</span>
+                                <span class="titulo-alternativa">#{provaAlunoBean.getNumeroQuestao(questao)}) #{questao.enunciado}</span>
+                                <br />
                                 <p:outputPanel class="imagem">
                                     <ui:fragment rendered="#{questao.imagem != null}">
                                         <p:graphicImage value="#{baseBean.imagem}" width="225px" height="225px">
@@ -109,7 +111,7 @@ and open the template in the editor.
                                 </p:selectOneRadio>
 
                                 <ui:repeat value="#{questao.alternativas}" var="alternativa" varStatus="j">
-                                    <p:outputPanel>
+                                    <p:outputPanel class="alternativa">
                                         <p:radioButton for="form:cslMultiplaEscolha:0:rbRespostaMultiplaEscolha" itemIndex="#{j.index}" />
                                         <span>#{alternativa.descricao}</span>
                                     </p:outputPanel>
@@ -121,11 +123,11 @@ and open the template in the editor.
 
                 <p:outputPanel class="row">
                     <p:outputPanel class="offset-md-9 col-md-2">
-                        <p:commandButton id="btnFinalizar" value="#{msg['btn.finalizar']}"
+                        <p:commandButton id="btnFinalizar" value="#{msg['btn.encerrar.prova']}"
                                          update="form:modalFinalizar msgPrincipal"
                                          action="#{provaAlunoBean.verificarQuestoesEmBranco()}" onclick="PF('block').show()"
                                          oncomplete="PF('block').hide();"
-                                         class="btn btn-primary font-color-default">
+                                         class="btn btn-danger">
                         </p:commandButton>
                     </p:outputPanel>
                 </p:outputPanel>
@@ -151,7 +153,7 @@ and open the template in the editor.
                             <p:commandButton id="btnCancelar"
                                              value="#{msg['btn.nao']}" action="#{provaAlunoBean.fecharModalFinalizar()}"
                                              styleClass="btn btn-secondary"
-                                             immediate="true" process="@this" update="form" />
+                                             immediate="true" process="@this" update="form:modalFinalizar" />
 
                             <p:commandButton id="btnConfirmar"
                                              value="#{msg['btn.sim']}"

@@ -11,6 +11,7 @@ import br.edu.ifpe.recife.avalon.model.avaliacao.prova.ProvaAluno;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoAlunoProva;
 import br.edu.ifpe.recife.avalon.model.avaliacao.prova.QuestaoProva;
 import br.edu.ifpe.recife.avalon.model.questao.MultiplaEscolha;
+import br.edu.ifpe.recife.avalon.model.questao.Questao;
 import br.edu.ifpe.recife.avalon.model.questao.VerdadeiroFalso;
 import br.edu.ifpe.recife.avalon.model.usuario.Usuario;
 import br.edu.ifpe.recife.avalon.servico.ProvaServico;
@@ -37,14 +38,14 @@ import javax.servlet.http.HttpSession;
 public class ProvaAlunoBean implements Serializable {
 
     public static final String NOME = "provaAlunoBean";
-    
+
     private static final String USUARIO = "usuario";
-    
+
     private static final String GO_INICIAR_PROVA = "goIniciarProva";
     private static final String GO_LISTAR_PROVAS = "goListarProvas";
     private static final String GO_LISTAR_RESULTADO = "goListarResultados";
     private static final String GO_DETALHAR_RESULTADO_ALUNO = "goDetalharResultadoAluno";
-    
+
     private static final String PROVA_QUESTOES_EM_BRANCO = "prova.mensagem.questoes.em.branco";
     private static final String PROVA_FINALIZAR = "prova.mensagem.finalizar";
     private static final String OBSERVACAO_TEMPO = "prova.observacao.tempo";
@@ -60,17 +61,17 @@ public class ProvaAlunoBean implements Serializable {
     private List<Prova> provasDisponiveis = new ArrayList<>();
     private List<VerdadeiroFalso> questoesVerdadeiroFalso = new ArrayList<>();
     private List<MultiplaEscolha> questoesMultiplaEscolha = new ArrayList<>();
-    
+
     private boolean exibirModalIniciar;
     private boolean exibirModalFinalizar;
-    
+
     private String resultado;
     private String observacaoDuracao;
     private String msgConfirmarFinalizacao;
-    
+
     private long duracaoMinutos;
     private long duracaoSegundos;
-    
+
     private List<ProvaAluno> provasResultados = new ArrayList<>();
     private ProvaAluno provaAlunoResultado = new ProvaAluno();
     private boolean provaVF;
@@ -103,7 +104,7 @@ public class ProvaAlunoBean implements Serializable {
         buscarProvasResultados();
         return GO_LISTAR_RESULTADO;
     }
-    
+
     /**
      * Inicializa a prova selecionada para detalha-la.
      *
@@ -115,7 +116,7 @@ public class ProvaAlunoBean implements Serializable {
         provaVF = provaAlunoResultado.getProva().getQuestoes().get(0).getQuestao() instanceof VerdadeiroFalso;
         return GO_DETALHAR_RESULTADO_ALUNO;
     }
-    
+
     /**
      * Inicia uma nova Prova.
      *
@@ -128,8 +129,10 @@ public class ProvaAlunoBean implements Serializable {
         if (!prova.getQuestoes().isEmpty()) {
             if (isProvaVerdadeiroFalso()) {
                 questoesVerdadeiroFalso = carregarQuestoesVerdadeiroFalso();
+                provaVF = true;
             } else {
                 questoesMultiplaEscolha = carregarQuestoesMultiplaEscolha();
+                provaVF = false;
             }
 
             carregarObservacoes();
@@ -208,6 +211,7 @@ public class ProvaAlunoBean implements Serializable {
             preencherRespostasSalvas();
         }
 
+        fecharModalIniciar();
         fecharModalFinalizar();
         return GO_INICIAR_PROVA;
     }
@@ -354,7 +358,7 @@ public class ProvaAlunoBean implements Serializable {
      */
     private QuestaoAvaliacao carregarQuestaoAvaliacao(Long idQuestao) {
         for (QuestaoProva questaoProva : prova.getQuestoes()) {
-            if(questaoProva.getQuestao().getId().equals(idQuestao)){
+            if (questaoProva.getQuestao().getId().equals(idQuestao)) {
                 return questaoProva;
             }
         }
@@ -425,7 +429,6 @@ public class ProvaAlunoBean implements Serializable {
     public void prepararContador() {
         duracaoMinutos = TimeUnit.MILLISECONDS.toMinutes(prova.getDataHoraFim().getTime() - Calendar.getInstance().getTimeInMillis());
         duracaoSegundos = 59;
-
     }
 
     /**
@@ -446,13 +449,21 @@ public class ProvaAlunoBean implements Serializable {
         }
 
     }
-    
+
     /**
      * Busca por todos as provas realizadas pelo aluon e seus respectivos
      * resultados.
      */
     private void buscarProvasResultados() {
         provasResultados = provaServico.buscarResultadosProvasAluno(usuarioLogado);
+    }
+
+    public int getNumeroQuestao(Questao questao) {
+        if (provaVF) {
+            return questoesVerdadeiroFalso.indexOf(questao) + 1;
+        } else {
+            return questoesMultiplaEscolha.indexOf(questao) + 1;
+        }
     }
 
     public boolean isProvaVF() {
